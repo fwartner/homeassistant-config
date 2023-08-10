@@ -286,7 +286,7 @@
     domain: light
   - type: turn_off
     device_id: 58ad2259e60395f647695636a43a16c8
-    entity_id: switch.steckdose_tv_bank
+    entity_id: switch.steckdose_tv_bank_wohnzimmer
     domain: switch
   - type: turn_off
     device_id: aaad1ea70b31b2d4cdd44583712720b2
@@ -541,22 +541,6 @@
         target:
           entity_id: input_boolean.florian_im_bett
   mode: single
-- id: '1678784096528'
-  alias: 'Prusa: Druck fertig'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.prusalink_e179f03b0fae400a821966e036fefabd_printer_state
-    to: idle
-    from: printing
-  condition: []
-  action:
-  - service: notify.mobile_app_iphone_von_florian
-    data:
-      title: Der Prusa Mini ist fertig
-      message: Dein aktueller Druck auf deineme Prusa Mini ist fertig.
-  mode: single
 - id: '1678799484819'
   alias: 'Boolean: Reset Mitternacht'
   description: Staubsauger Einmal Täglich
@@ -706,11 +690,11 @@
     Aus: Wenn unter 24 Grad'
   trigger:
   - platform: numeric_state
-    entity_id: sensor.aqara_thermo_wohnzimmer_temperature
+    entity_id: sensor.temperatur_wohnzimmer
     above: 26
     id: fanOn
   - platform: numeric_state
-    entity_id: sensor.aqara_thermo_wohnzimmer_temperature
+    entity_id: sensor.temperatur_wohnzimmer
     above: 2
     id: fanOff
     below: 24
@@ -756,7 +740,7 @@
   description: ''
   trigger:
   - platform: numeric_state
-    entity_id: sensor.aqara_thermo_balkon_temperature
+    entity_id: sensor.temperatur_balkon
     above: 26
   condition: []
   action:
@@ -1026,33 +1010,6 @@
           entity_id:
           - input_boolean.putzen_wohnzimmer
   mode: single
-- id: '1690551991511'
-  alias: Update OpenUV every 59 minutes during the daytime
-  description: ''
-  trigger:
-  - platform: time_pattern
-    minutes: '59'
-  condition:
-  - after: sunrise
-    before: sunset
-    condition: sun
-  action:
-  - service: homeassistant.update_entity
-    data: {}
-    target:
-      entity_id:
-      - binary_sensor.protection_window
-      - sensor.current_uv_index
-  mode: single
-- id: '1690565335007'
-  alias: Auto Backup Failed
-  description: ''
-  use_blueprint:
-    path: jcwillox/notify_auto_backup.yaml
-    input:
-      devices:
-      - 7124b1b88521af6f496569e07af3666d
-      notify_hass: true
 - id: '1690625427032'
   alias: Daily Backup
   description: ''
@@ -1260,57 +1217,6 @@
       - type: turn_off
         device_id: b59da74a1ad03e0a6c798def814580fa
         entity_id: ceaf8ad210dc0faa638375e7524024c1
-        domain: light
-  mode: single
-- id: '1691426445801'
-  alias: Nachtlicht Badezimmer
-  description: ''
-  trigger:
-  - type: opened
-    platform: device
-    device_id: 6317c4a5a106974844e7c1a42fe407b3
-    entity_id: b2eacee9f533bde2ae542cb210312f79
-    domain: binary_sensor
-    id: badezimmerNachtlichtOff
-  - type: not_opened
-    platform: device
-    device_id: 6317c4a5a106974844e7c1a42fe407b3
-    entity_id: b2eacee9f533bde2ae542cb210312f79
-    domain: binary_sensor
-    id: badezimmerNachtlichtOn
-  condition:
-  - condition: sun
-    after: sunset
-    before: sunrise
-    after_offset: '1'
-    enabled: true
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - badezimmerNachtlichtOn
-      sequence:
-      - type: turn_on
-        device_id: 507d523084cd0d287b97a79f906aef8d
-        entity_id: f9898315524e3aee17127ffd4c15b5db
-        domain: light
-        brightness_pct: 15
-    - conditions:
-      - condition: trigger
-        id:
-        - badezimmerNachtlichtOff
-      - condition: state
-        entity_id: light.decke_badezimmer
-        state: 'on'
-        for:
-          hours: 0
-          minutes: 0
-          seconds: 10
-      sequence:
-      - type: turn_off
-        device_id: 507d523084cd0d287b97a79f906aef8d
-        entity_id: f9898315524e3aee17127ffd4c15b5db
         domain: light
   mode: single
 - id: '1691429105737'

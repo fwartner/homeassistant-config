@@ -23,3 +23,4 @@ ignore: |
   .git
   .github/workflows/yaml-lint.yaml
   scenes.yaml
+  blueprints/

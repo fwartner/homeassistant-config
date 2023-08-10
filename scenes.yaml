@@ -1,3 +1,12 @@
+#-
+#
+#  ___  ___ ___ _ __   ___  ___
+# / __|/ __/ _ \ '_ \ / _ \/ __|
+# \__ \ (_|  __/ | | |  __/\__ \
+# |___/\___\___|_| |_|\___||___/
+#
+#
+#- from github.com/basnijholt/home-assistant-config
 - id: '1666318734760'
   name: Rollos Schlafzimmer Zu
   entities:

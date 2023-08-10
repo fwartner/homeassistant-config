@@ -1,3 +1,12 @@
+#-
+#                _       _
+#  ___  ___ _ __(_)_ __ | |_ ___
+# / __|/ __| '__| | '_ \| __/ __|
+# \__ \ (__| |  | | |_) | |_\__ \
+# |___/\___|_|  |_| .__/ \__|___/
+#                 |_|
+#
+#- from github.com/basnijholt/home-assistant-config
 3_minuten_bettzeit:
   alias: 3 Minuten Bettzeit
   sequence:

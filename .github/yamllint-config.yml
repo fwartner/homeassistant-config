@@ -1,0 +1,25 @@
+---
+#-
+#                         _ _ _       _
+#   _   _  __ _ _ __ ___ | | (_)_ __ | |_
+#  | | | |/ _` | '_ ` _ \| | | | '_ \| __|
+#  | |_| | (_| | | | | | | | | | | | | |_
+# (_)__, |\__,_|_| |_| |_|_|_|_|_| |_|\__|
+#   |___/
+#
+#- from github.com/basnijholt/home-assistant-config
+extends: default
+
+rules:
+  line-length: disable
+  comments: disable
+  comments-indentation: disable
+
+ignore: |
+  lovelace-ui.yaml
+  custom_components/
+  rhasspy/
+  notebooks/
+  .git
+  .github/workflows/yaml-lint.yaml
+  scenes.yaml

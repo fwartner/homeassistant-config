@@ -1,0 +1,140 @@
+- id: '1666318734760'
+  name: Rollos Schlafzimmer Zu
+  entities:
+    cover.ikea_rollo_links_schlafzimmer:
+      current_position: 0
+      friendly_name: IKEA Rollo Links Schlafzimmer
+      supported_features: 15
+      state: closed
+    cover.ikea_rollo_rechts_schlafzimmer:
+      current_position: 0
+      friendly_name: IKEA Rollo Rechts Schlafzimmer
+      supported_features: 15
+      state: closed
+  icon: mdi:roller-shade-closed
+  metadata: {}
+- id: '1666318857751'
+  name: Rollos Schlafzimmer Auf
+  entities:
+    cover.ikea_rollo_rechts_schlafzimmer:
+      current_position: 100
+      friendly_name: IKEA Rollo Rechts Schlafzimmer
+      supported_features: 15
+      state: open
+    cover.ikea_rollo_links_schlafzimmer:
+      current_position: 100
+      friendly_name: IKEA Rollo Links Schlafzimmer
+      supported_features: 15
+      state: open
+  icon: mdi:blinds-open
+  metadata: {}
+- id: '1666319720541'
+  name: Rollos Wohnzimmer Auf
+  entities:
+    cover.ikea_rollo_links_wohnzimmer:
+      current_position: 100
+      friendly_name: IKEA Rollo Links Wohnzimmer
+      supported_features: 15
+      state: open
+    cover.ikea_rollo_rechts_wohnzimmer:
+      current_position: 100
+      friendly_name: IKEA Rollo Rechts Wohnzimmer
+      supported_features: 15
+      state: open
+  icon: mdi:blinds-open
+  metadata: {}
+- id: '1666319764775'
+  name: Rollos Wohnzimmer Zu
+  entities:
+    cover.ikea_rollo_links_wohnzimmer:
+      current_position: 0
+      friendly_name: IKEA Rollo Links Wohnzimmer
+      supported_features: 15
+      state: closed
+    cover.ikea_rollo_rechts_wohnzimmer:
+      current_position: 0
+      friendly_name: IKEA Rollo Rechts Wohnzimmer
+      supported_features: 15
+      state: closed
+  icon: mdi:roller-shade-closed
+  metadata: {}
+- id: '1666351106791'
+  name: Decke Wohnzimmer An
+  entities:
+    light.decke_wohnzimmer:
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - None
+      - candle
+      - fire
+      supported_color_modes:
+      - color_temp
+      - xy
+      mode: normal
+      dynamics: none
+      friendly_name: Decke Wohnzimmer
+      supported_features: 44
+      color_mode: color_temp
+      brightness: 255
+      color_temp: 366
+      hs_color:
+      - 28.327
+      - 64.71
+      rgb_color:
+      - 255
+      - 167
+      - 89
+      xy_color:
+      - 0.524
+      - 0.387
+      effect: None
+      state: 'on'
+  icon: mdi:ceiling-light
+  metadata: {}
+- id: '1666351136419'
+  name: Decke Wohnzimmer Aus
+  entities:
+    light.decke_wohnzimmer:
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - None
+      - candle
+      - fire
+      supported_color_modes:
+      - color_temp
+      - xy
+      mode: normal
+      dynamics: none
+      friendly_name: Decke Wohnzimmer
+      supported_features: 44
+      state: 'off'
+  icon: mdi:ceiling-light-outline
+  metadata: {}
+- id: '1666558730941'
+  name: Wecker Aus
+  entities:
+    input_boolean.wecker_schalter:
+      editable: true
+      icon: mdi:alarm
+      friendly_name: Wecker Schalter
+      state: 'off'
+  metadata:
+    input_boolean.wecker_schalter:
+      entity_only: true
+- id: '1666607897292'
+  name: Meeting
+  entities:
+    cover.rollos_fensterbank_wohnzimmer:
+      current_position: 74
+      entity_id:
+      - cover.ikea_rollo_rechts_wohnzimmer
+      - cover.ikea_rollo_links_wohnzimmer
+      friendly_name: Rollos Fensterbank Wohnzimmer
+      supported_features: 15
+      state: open
+  icon: mdi:roller-shade-closed
+  metadata:
+    cover.rollos_fensterbank_wohnzimmer:
+      entity_only: true

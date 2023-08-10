@@ -1,0 +1,261 @@
+blueprint:
+  name: Turn on light, switch, scene, script or group based on motion and illuminance.
+  description: "Turn on a light, switch, scene, script or group based on motion detection,
+    and low light level.\nThis blueprint uses helper entities you have to create yourself
+    for some input values, to be able to dynamically set limits.  For instructions
+    on creating the helper entities take a look in the Home Assistant Community forum
+    topic: https://community.home-assistant.io/t/turn-on-light-switch-scene-or-script-based-on-motion-and-illuminance-more-conditions/257085\n\nRequired
+    entities:\n  - Motion sensor (single sensor or group)\n  - Target entity (light,
+    switch, scene* or script*)\n\n(*) If you select a scene or script as your target_entity,
+    you must also define a target_off_entity, since scenes and scripts cannot be turned
+    off.\n  An example for a target_off_entity could be a light or a light group.\n\nOptional
+    features:\n- You can set a cutoff entity of which the value determines whether
+    the illuminance level is low and the automation needs to trigger.\n- You can define
+    a blocking entity, which blocks the automation from running when this entity's
+    state is on.\n- You can define a turn-off blocking entity, which blocks the entity
+    from turning off after the set delay.\n- Time limits can also be defined to limit
+    the time before and after the automation should trigger.\n- If you want the entity
+    to turn off after a certain amount of minutes, you can use the Wait Time input.\n-
+    If you want another entity than the target_entity to turn off after the delay,
+    you can define a separate Turn-off entity (also important for scenes and scripts).\n-
+    If you do not enable the optional entities the automation will skip these conditions.\n\n\nOptional
+    entities:\n- Illuminance sensor (sensor in illuminance class)\n- Illuminance cutoff
+    value  (input_number)\n- Blocking entity (any entity with state on/off)\n- Time
+    limit before (input_datetime)\n- Time limit after (input_datetime)\n- Turn off
+    wait time (input_number defining amount in minutes)\n- Turn off entity (any entity_id
+    that needs to be turned off after wait)\n"
+  domain: automation
+  input:
+    motion_sensor:
+      name: Motion Sensor
+      description: This sensor will trigger the turning on of the target entity.
+      selector:
+        entity: {}
+    target_entity:
+      name: Target entity.
+      description: The light, switch, scene to turn on (or script to run) when the
+        automation is triggered.
+      selector:
+        entity: {}
+    illuminance_sensor:
+      name: (OPTIONAL) Illuminance sensor
+      description: This sensor will be used to determine the illumination.
+      default:
+      selector:
+        entity:
+          domain: sensor
+          device_class: illuminance
+          multiple: false
+    illuminance_cutoff:
+      name: (OPTIONAL) Illuminance cutoff value
+      description: This input_number will be used to compare to the current illumination
+        to determine if it is low.
+      default:
+      selector:
+        entity:
+          domain: input_number
+          multiple: false
+    blocker_entity:
+      name: (OPTIONAL) Blocking entity
+      description: If this entity's state is on, it will prevent the automation from
+        running. E.g. sleepmode or away mode.
+      default:
+      selector:
+        entity: {}
+    time_limit_after:
+      name: (OPTIONAL) Only run after time.
+      description: Automation will only run when time is later than this input_datetime
+        value.
+      default:
+      selector:
+        entity:
+          domain: input_datetime
+          multiple: false
+    time_limit_before:
+      name: (OPTIONAL) Only run before time.
+      description: Automation will only run when time is earlier than this input_datetime
+        value.
+      default:
+      selector:
+        entity:
+          domain: input_datetime
+          multiple: false
+    no_motion_wait:
+      name: (OPTIONAL) Turn off wait time (minutes)
+      description: Time in minutes to leave the target entity on after last motion
+        is detected. If not used entity will not auto turn off.
+      default:
+      selector:
+        entity:
+          domain: input_number
+          multiple: false
+    turn_off_blocker_entity:
+      name: (OPTIONAL) Turn-off Blocking entity
+      description: If this entity's state is on, it will prevent the target entity
+        from turning off after the set delay.
+      default:
+      selector:
+        entity: {}
+    target_off_entity:
+      name: (OPTIONAL) Turn-off entity
+      description: If defined, this entity will be turned off instead of the default
+        target entity. This can be helpful when using target entities of type scene
+        or script.
+      default:
+      selector:
+        entity: {}
+    sunstate_condition:
+      name: When to trigger automation, based on the elevation of the sun. Use always
+        when you don't want to add a condition for this.
+      default: Always
+      selector:
+        select:
+          options:
+          - Always
+          - Below horizon
+          - Above horizon
+          multiple: false
+          custom_value: false
+  source_url: https://gist.github.com/freakshock88/2311759ba64f929f6affad4c0a67110b
+mode: restart
+max_exceeded: silent
+variables:
+  target_entity: !input target_entity
+  illuminance_currently: !input illuminance_sensor
+  illuminance_cutoff: !input illuminance_cutoff
+  blocker_entity: !input blocker_entity
+  time_limit_before: !input time_limit_before
+  time_limit_after: !input time_limit_after
+  no_motion_wait: !input no_motion_wait
+  entity_domain: '{{ states[target_entity].domain }}'
+  turn_off_blocker_entity: !input turn_off_blocker_entity
+  target_off_entity: !input target_off_entity
+  sun_condition: !input sunstate_condition
+trigger:
+  platform: state
+  entity_id: !input motion_sensor
+  to: 'on'
+condition:
+- condition: template
+  alias: Check for illuminance conditions
+  value_template: '{% set illuminance_defined = illuminance_currently != none and
+    illuminance_cutoff != none  %} {% set illuminance_defined_and_low = (illuminance_defined
+    and (states(illuminance_currently) | int(0) < states(illuminance_cutoff) | int(0)))  %}
+
+    {% set target_entity_domain_supports_on_state_check = entity_domain != ''scene''
+    and entity_domain != ''script'' %} {{  ( target_entity_domain_supports_on_state_check
+    and states(target_entity) == ''on'') or ( target_entity_domain_supports_on_state_check
+    and states(target_entity) == ''off'' and not illuminance_defined) or ( target_entity_domain_supports_on_state_check
+    and states(target_entity) == ''off'' and illuminance_defined_and_low) or ( not
+    target_entity_domain_supports_on_state_check and illuminance_defined_and_low)
+    or ( not target_entity_domain_supports_on_state_check and not illuminance_defined)
+    }}
+
+    '
+- condition: template
+  alias: Check for blocker entity
+  value_template: '{{ (blocker_entity == none) or (states(blocker_entity) == ''off'')
+    }}'
+- condition: template
+  alias: Check for time limits
+  value_template: "{% set current_time = now().strftime(\"%H:%M\")  %}\n{% if time_limit_before
+    == none and time_limit_after == none %} true {% endif %}\n{% if time_limit_before
+    != none and time_limit_after == none %} {% set current_time_is_before_limit =
+    current_time < states(time_limit_before)  %} {{ current_time_is_before_limit }}
+    {% elif time_limit_before == none and time_limit_after != none %} {% set current_time_is_after_limit
+    = current_time > states(time_limit_after)  %} {{ current_time_is_after_limit }}
+    {% endif %}\n{% if time_limit_before != none and time_limit_after != none %} {%
+    set before_limit_is_tomorrow = states(time_limit_before) < states(time_limit_after)
+    \ %} {% set current_time_is_before_limit = current_time < states(time_limit_before)
+    \ %} {% set current_time_is_after_limit = current_time > states(time_limit_after)
+    \ %} {% set time_window_spans_midnight = states(time_limit_after) > states(time_limit_before)
+    \ %}\n  {% if time_window_spans_midnight != none and time_window_spans_midnight
+    and before_limit_is_tomorrow %}\n  {{ current_time_is_after_limit or current_time_is_before_limit
+    }}\n  {% elif time_window_spans_midnight != none and not time_window_spans_midnight
+    %}\n  {{ current_time_is_before_limit and current_time_is_after_limit }}\n  {%
+    endif %}\n{% endif %}\n"
+- condition: template
+  alias: Check for sun state
+  value_template: '{# Prevent breaking when no sun condition is set in existing automations
+    #} {% if not sun_condition is defined %} {% set sun_condition = ''Always''   %}
+    {% endif %}
+
+    {# Get current sun state #} {% set current_sun_condition = states[''sun.sun''].state  %}
+
+    {# Checks for current sun state #} {% set sun_state_is_below_horizon = current_sun_condition
+    == ''below_horizon'' %} {% set sun_state_is_above_horizon = current_sun_condition
+    == ''above_horizon'' %}
+
+    {# Check to see if a condition for sunstate is set by user #} {% set no_sun_condition
+    = sun_condition is defined and sun_condition == ''Always'' %} {# Check to see
+    if the user wants automation to trigger below horizon #} {% set sun_condition_is_below_horizon
+    = sun_condition == ''Below horizon'' %} {# Check to see if the user wants automation
+    to trigger above horizon #} {% set sun_condition_is_above_horizon = sun_condition
+    == ''Above horizon'' %}
+
+    {# Checks to see if sunstate matches up with users condition #} {% set sun_condition_below_horizon_match
+    = sun_state_is_below_horizon and sun_condition_is_below_horizon %} {% set sun_condition_above_horizon_match
+    = sun_state_is_above_horizon and sun_condition_is_above_horizon %} {% set sun_condition_matching
+    = sun_condition_below_horizon_match or sun_condition_above_horizon_match or no_sun_condition
+    %} {{ sun_condition_matching }}
+
+    {# Debug values: (uncomment to check in template dev tool) ## Set at top of template:
+    {% set sun_condition = ''Above horizon''  %} Current sun condition: {{current_sun_condition}}
+    Sun state is below horizon: {{ sun_state_is_below_horizon }} Sun state is above
+    horizon: {{ sun_state_is_above_horizon }} Sun condition is set to always: {{ sun_condition_always
+    }} Sun condition is below horizon: {{ sun_condition_is_below_horizon }} Sun condition
+    is above horizon: {{ sun_condition_is_above_horizon }} Sun condition is below
+    horizon match: {{ sun_condition_below_horizon_match }} Sun condition is above
+    horizon match: {{ sun_condition_above_horizon_match }} Sun condition is a match:
+    {{ sun_condition_matching }} #}
+
+    '
+action:
+- service: homeassistant.turn_on
+  entity_id: !input target_entity
+- wait_for_trigger:
+    platform: state
+    entity_id: !input motion_sensor
+    from: 'on'
+    to: 'off'
+- choose:
+  - alias: Motion wait not defined and target off entity not defined
+    conditions:
+    - condition: template
+      value_template: '{{ no_motion_wait == none and target_off_entity == none }}'
+    sequence:
+    - service: homeassistant.turn_off
+      entity_id: !input target_entity
+  - alias: Motion wait not defined and target off entity defined
+    conditions:
+    - condition: template
+      value_template: '{{ no_motion_wait == none and target_off_entity != none }}'
+    sequence:
+    - service: homeassistant.turn_off
+      entity_id: !input target_off_entity
+  - alias: Motion wait defined and target off entity not defined
+    conditions:
+    - condition: template
+      value_template: '{{ no_motion_wait != none and target_off_entity == none }}'
+    sequence:
+    - delay:
+        minutes: '{{ states(no_motion_wait) | int(0) }}'
+    - alias: Check if blocker entity is defined and on
+      condition: template
+      value_template: '{{ (turn_off_blocker_entity == none) or (states(turn_off_blocker_entity)
+        == ''off'') }}'
+    - service: homeassistant.turn_off
+      entity_id: !input target_entity
+  - alias: Motion wait defined and target off entity defined
+    conditions:
+    - condition: template
+      value_template: '{{ no_motion_wait != none and target_off_entity != none }}'
+    sequence:
+    - delay:
+        minutes: '{{ states(no_motion_wait) | int(0) }}'
+    - alias: Check if blocker entity is defined and on
+      condition: template
+      value_template: '{{ (turn_off_blocker_entity == none) or (states(turn_off_blocker_entity)
+        == ''off'') }}'
+    - service: homeassistant.turn_off
+      entity_id: !input target_off_entity

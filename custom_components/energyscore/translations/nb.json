@@ -1,0 +1,34 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "data": {
+                    "price_entity": "Prisenhet",
+                    "energy_entity": "Energienhet",
+                    "name": "Navnet på EnergyScore sensoren"
+                },
+                "description": "EnergyScore blir laget av en energi- og en prisenhet. Vennligst velg de relevante sensorene:",
+                "title": "Velg kildeenheter"
+            }
+        },
+        "abort": {
+            "already_configured": "Denne kombinasjonen av enheter er allerede konfigurert"
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "Alternativer",
+                "description": "Se dokumentasjon for forklaring på hvordan alternativene påvirker EnergyScore",
+                "data": {
+                    "energy_treshold": "Energigrense",
+                    "rolling_hours": "Periode i timer"
+                },
+                "data_description": {
+                    "energy_treshold": "Energi mindre enn grensen (i løpet av en time) bidrar ikke til EnergyScore. Standardverdi = 0",
+                    "rolling_hours": "Tidsperioden EnergyScore skal bli kalkulert over. Standardverdi = 24 timer"
+                }
+            }
+        }
+    }
+}

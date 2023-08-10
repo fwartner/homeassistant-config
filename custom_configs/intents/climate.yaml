@@ -1,0 +1,23 @@
+GetTemperatureLivingroom:
+  speech:
+    text: Es sind aktuell {{ states.sensor.aqara_thermo_wohnzimmer_temperature }} Grad im Wohnzimmer.
+
+GetTemperatureBedroom:
+  speech:
+    text: Es sind aktuell {{ states.sensor.aqara_thermo_schlafzimmer_temperature }} Grad im Schlafzimmer.
+
+GetTemperatureHallway:
+  speech:
+    text: Es sind aktuell {{ states.sensor.aqara_thermo_flur_temperature }} Grad im Flur.
+
+GetTemperatureKitchen:
+  speech:
+    text: Es sind aktuell {{ states.sensor.aqara_thermo_kuche_temperature }} Grad in der Küche.
+
+GetTemperatureKBathroo,:
+  speech:
+    text: Es sind aktuell {{ states.sensor.aqara_thermo_badezimmer_temperature }} Grad im Badezimmer.
+
+GetTemperatureOffice:
+  speech:
+    text: Es sind aktuell {{ states.sensor.aqara_thermo_kinderzimmer_temperature }} Grad im Kinderzimmer und dem Büro.

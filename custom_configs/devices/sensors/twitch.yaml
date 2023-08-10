@@ -1,0 +1,14 @@
+- platform: twitch_helix
+  client_id: !secret twitch_client_id
+  client_secret: !secret twitch_client_secret
+  own_channel: wartnerio
+  thumbnail_dimensions: 320x180
+  entity_prefix: twitch_
+  channels:
+    - "spielundzeug"
+    - "disane87"
+    - "l_b_music"
+    - "achnina"
+  api_opt_outs:
+  # - subscription_user
+  # - stream

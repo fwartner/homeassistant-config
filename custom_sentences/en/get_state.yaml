@@ -1,0 +1,24 @@
+language: en
+intents:
+  HassGetState:
+    data:
+      - sentences:
+          - what is <name> [in <area>]
+          - is <name> {state} [in <area>]
+
+responses:
+  intents:
+    HassGetState:
+      default: "{{ slots.name }} is {{ state.state_with_unit }}"
+
+lists:
+  state:
+    values:
+      - "on"
+      - "off"
+      - open
+      - closed
+      - locked
+      - unlocked
+      - wet
+      - dry

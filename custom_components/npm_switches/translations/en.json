@@ -1,0 +1,31 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "NPM Instance",
+                "description": "If you need help with the configuration have a look here: https://github.com/InTheDaylight14/nginx-proxy-manager-switches",
+                "data": {
+                    "username": "Username",
+                    "password": "Password",
+                    "npm_url": "NPM URL ex. http://ip:port"
+                }
+            }
+        },
+        "error": {
+            "auth": "Username/Password is wrong."
+        },
+        "abort": {
+            "single_instance_allowed": "Only a single instance is allowed."
+        }
+    },
+    "options": {
+        "step": {
+            "user": {
+                "data": {
+                    "sensor": "Sensor enabled",
+                    "switch": "Switch enabled"
+                }
+            }
+        }
+    }
+}

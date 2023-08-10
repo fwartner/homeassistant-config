@@ -1,0 +1,20 @@
+{
+    "config": {
+      "flow_title": "Setup Rewe",
+      "step": {
+        "user": {
+          "description": "Get your REWE market id from https://www.rewe.de/",
+          "data": {
+            "market_id": "Rewe Market ID"
+          }
+        }
+      },
+      "abort": {
+        "already_configured": "This rewe market ID is already configured"
+      },
+      "error": {
+        "invalid_station": "Invalid market ID",
+        "unknown": "Unknown Error"
+      }
+    }
+  }

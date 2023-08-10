@@ -1,0 +1,21 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Personio API credentials",
+        "description": "Your credentials to the Personio API",
+        "data": {
+          "client_id": "Client ID",
+          "client_secret": "Client secret",
+          "partner_id": "Partner identifier",
+          "app_id": "Application identifier",
+          "user_id": "Personio employee user email"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "[%key:common::config_flow::error::invalid_auth%]",
+      "unknown": "[%key:common::config_flow::error::unknown%]"
+    }
+  }
+}

@@ -1,0 +1,5 @@
+flash_briefings:
+  password: Wertlos203
+  temperaturelivingroom:
+    - title: Wie ist die Temperatur im Wohnzimmer?
+      text: Es sind gerade {{ states.sensor.aqara_thermo_wohnzimmer_temperature }} Grad im Wohnzimmer

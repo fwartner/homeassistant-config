@@ -1,0 +1,20 @@
+{
+    "config": {
+      "flow_title": "Rewe Einrichtung",
+      "step": {
+        "user": {
+          "description": "Finde deine Rewe Markt ID auf https://www.rewe.de/",
+          "data": {
+            "market_id": "Rewe Markt ID"
+          }
+        }
+      },
+      "abort": {
+        "already_configured": "Diese Rewe Markt ID ist bereits konfiguriert."
+      },
+      "error": {
+        "invalid_station": "Ungültige Markt ID",
+        "unknown": "Unbekannter Fehler"
+      }
+    }
+  }

@@ -1,0 +1,9 @@
+- platform: template
+  sensors:
+    playstation_image:
+      value_template: >
+        {% if states("sensor.playstation_5_activity") == "playing" %}
+          {{state_attr('sensor.playstation_5_activity', 'title_image') }}
+        {% else %}
+          https://www.nicepng.com/png/full/10-104138_blue-playstation-logo-png-playstation-logo-no-background.png
+        {% endif %}

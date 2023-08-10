@@ -1,0 +1,34 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "data": {
+                    "price_entity": "Price entity",
+                    "energy_entity": "Energy entity",
+                    "name": "Name of the EnergyScore sensor"
+                },
+                "description": "EnergyScore is created from an energy and a price sensor. Please choose the relevant sensors:",
+                "title": "Choose source entities"
+            }
+        },
+        "abort": {
+            "already_configured": "The entity combination is already configured"
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "Manage options",
+                "description": "See documentation for how these options affect the EnergyScore",
+                "data": {
+                    "energy_treshold": "Energy Treshold",
+                    "rolling_hours": "Rolling Hours"
+                },
+                "data_description": {
+                    "energy_treshold": "Energy less than the treshold (during one hour) will not contribute to the EnergyScore. Default value = 0",
+                    "rolling_hours": "The period of time an EnergyScore should be scored on. Default value = 24 hours"
+                }
+            }
+        }
+    }
+}

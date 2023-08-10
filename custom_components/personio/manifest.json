@@ -1,0 +1,12 @@
+{
+  "domain": "personio",
+  "name": "Personio",
+  "codeowners": ["@Sese-Schneider"],
+  "config_flow": true,
+  "documentation": "https://github.com/Sese-Schneider/ha-personio",
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/Sese-Schneider/ha-personio/issues",
+  "requirements": [],
+  "version": "1.1.0"
+}

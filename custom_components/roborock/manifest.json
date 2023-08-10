@@ -1,0 +1,21 @@
+{
+  "domain": "roborock",
+  "name": "Roborock",
+  "codeowners": [
+    "@humbertogontijo"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/humbertogontijo/homeassistant-roborock",
+  "integration_type": "hub",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/humbertogontijo/homeassistant-roborock/issues",
+  "loggers": [
+    "custom_components.roborock",
+    "roborock"
+  ],
+  "requirements": [
+    "python-roborock==0.32.3",
+    "ical==5.0.0"
+  ],
+  "version": "1.0.11"
+}

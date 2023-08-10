@@ -1,0 +1,14 @@
+{
+	"domain": "bunq",
+	"name": "bunq",
+	"version": "2.0.0",
+	"documentation": "https://github.com/ben8p/home-assistant-bunq-balance-sensors/",
+	"requirements": [],
+	"codeowners": [
+		"@BSantalucia"
+	],
+	"config_flow": true,
+	"dependencies": [
+		"application_credentials"
+	]
+}

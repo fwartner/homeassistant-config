@@ -1,0 +1,9 @@
+{
+  "domain": "twitch_helix",
+  "name": "Twitch Helix",
+  "documentation": "https://github.com/Radioh/ha_twitch_helix",
+  "requirements": ["twitchAPI==3.10.0"],
+  "codeowners": ["@Radioh"],
+  "iot_class": "cloud_polling",
+  "version": "1.0.0"
+}

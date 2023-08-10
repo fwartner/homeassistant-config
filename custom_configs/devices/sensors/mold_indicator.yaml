@@ -1,0 +1,41 @@
+- platform: mold_indicator
+  indoor_temp_sensor: sensor.temperatur_wohnzimmer
+  indoor_humidity_sensor: sensor.luftfeuchtigkeit_wohnzimmer
+  outdoor_temp_sensor: sensor.openweathermap_temperature
+  calibration_factor: 2.0
+  name: Wohnzimmer Schimmel Warnung
+
+- platform: mold_indicator
+  indoor_temp_sensor: sensor.temperatur_schlafzimmer
+  indoor_humidity_sensor: sensor.luftfeuchtigkeit_schlafzimmer
+  outdoor_temp_sensor: sensor.openweathermap_temperature
+  calibration_factor: 2.0
+  name: Schlafzimmer Schimmel Warnung
+
+- platform: mold_indicator
+  indoor_temp_sensor: sensor.temperatur_kueche
+  indoor_humidity_sensor: sensor.luftfeuchtigkeit_kueche
+  outdoor_temp_sensor: sensor.openweathermap_temperature
+  calibration_factor: 2.0
+  name: Küche Schimmel Warnung
+
+- platform: mold_indicator
+  indoor_temp_sensor: sensor.temperatur_flur
+  indoor_humidity_sensor: sensor.luftfeuchtigkeit_flur
+  outdoor_temp_sensor: sensor.openweathermap_temperature
+  calibration_factor: 2.0
+  name: Flur Schimmel Warnung
+
+- platform: mold_indicator
+  indoor_temp_sensor: sensor.temperatur_badezimmer
+  indoor_humidity_sensor: sensor.luftfeuchtigkeit_badezimmer
+  outdoor_temp_sensor: sensor.openweathermap_temperature
+  calibration_factor: 2.0
+  name: Badezimmer Schimmel Warnung
+
+- platform: mold_indicator
+  indoor_temp_sensor: sensor.temperatur_kinderzimmer
+  indoor_humidity_sensor: sensor.luftfeuchtigkeit_kinderzimmer
+  outdoor_temp_sensor: sensor.openweathermap_temperature
+  calibration_factor: 2.0
+  name: Kinderzimmer Schimmel Warnung

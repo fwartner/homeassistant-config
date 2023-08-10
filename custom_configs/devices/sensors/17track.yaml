@@ -1,0 +1,3 @@
+- platform: seventeentrack
+  username: !secret seventeentrack_email
+  password: !secret seventeentrack_password

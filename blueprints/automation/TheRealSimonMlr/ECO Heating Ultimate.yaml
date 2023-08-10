@@ -1,0 +1,543 @@
+blueprint:
+  name: ECO Heating Ultimate v1.1
+  description: "# ECO Heating Ultimate\nControl your Thermostat heating Schedule Entities
+    by various Factors like Global Presence, Room Presence, etc. \n\nFor Details see
+    this Blog post:\nhttps://simon42.com/home-assistant-thermostatsteuerung\n\nCapabilitys:\n
+    - Trigger on Presence Change (or any other Input Boolean)\n - Wait time for turning
+    off\n - Only Set Comfort Temprature if entity is in desired state (optional)\n
+    - 4 Slots with individual Temprature Settings for different times of day (optional)\n"
+  domain: automation
+  source_url: https://gist.github.com/TheRealSimonMlr/3b783cf34cf3185ada8dfa0ff67249c5
+  input:
+    climate_entity:
+      name: Climate Entity
+      description: The Thermostat or Climate Entity for the Room which will be controlled
+        by this automation
+      selector:
+        entity:
+          domain: climate
+          multiple: false
+    presence_detector:
+      name: Presence Detector
+      description: Only run if this boolean is true (Normally this is set to a Entity
+        which reflects if someone is currently at home)
+      default:
+      selector:
+        entity:
+          domain:
+          - binary_sensor
+          - input_boolean
+          multiple: false
+    no_presence_wait:
+      name: Wait time
+      description: Time to wait befor setting the away temprature if the presence
+        detector changes to false (Nobody is home anymore).
+      default: 120
+      selector:
+        number:
+          min: 0.0
+          max: 3600.0
+          unit_of_measurement: seconds
+          mode: slider
+          step: 1.0
+    away_temprature:
+      name: Away Temprature
+      description: This is the Temparture which is set when nobody is at home (Input
+        Boolean above)
+      default: 16
+      selector:
+        number:
+          min: 5.0
+          max: 25.0
+          unit_of_measurement: temperature
+          mode: slider
+          step: 1.0
+    eco_temprature:
+      name: Default Eco Temprature
+      description: This is the Temparture which is set when someone is at home (Input
+        Boolean above) and no other Temprature is set for the given tiemframe.
+      default: 17
+      selector:
+        number:
+          min: 5.0
+          max: 25.0
+          unit_of_measurement: temperature
+          mode: slider
+          step: 1.0
+    window_contact:
+      name: Window Contact (Optional)
+      description: Do not set temprature if Window Contact is in chosen state (see
+        next input)
+      default:
+      selector:
+        entity:
+          domain:
+          - binary_sensor
+          - input_boolean
+          multiple: false
+    window_contact_boolean:
+      name: Window Contact Chooser (Optional)
+      description: Unwanted state of Window Contact, choose on for on and off for
+        off (On is the most common case here)
+      default: true
+      selector:
+        boolean: {}
+    automation_blocker:
+      name: Automation Blocker (Optional)
+      description: Only run if this boolean is in desired state (see next input)
+      default:
+      selector:
+        entity:
+          domain:
+          - binary_sensor
+          - input_boolean
+          multiple: false
+    automation_blocker_boolean:
+      name: Automation Blocker Chooser (Optional)
+      description: Desired state of automation blocker, choose on for on and off for
+        off
+      default: false
+      selector:
+        boolean: {}
+    time_morning:
+      name: Time for the morning
+      description: A time input which defines the time from which on the Temparture
+        Settings will be enabled when someone is at home.
+      default: 06:00:00
+      selector:
+        time: {}
+    morning_eco_temprature:
+      name: Morning ECO Temprature (Default Temprature)
+      description: This is the Temparture which should normally be set for this timeframe
+        (when someone is at home).
+      default: 19
+      selector:
+        number:
+          min: 5.0
+          max: 25.0
+          unit_of_measurement: temperature
+          mode: slider
+          step: 1.0
+    morning_comfort_checker_boolean:
+      name: Comfort Temprature Checker
+      description: If this input Boolean is set to true, Comfort Temprature (see below)
+        will be set at morning Timeframe.
+      default:
+      selector:
+        entity:
+          domain:
+          - binary_sensor
+          - input_boolean
+          multiple: false
+    morning_comfort_temprature:
+      name: Morning Comfort Temprature
+      description: This is the Temparture which is set instead of ECO Temparture,
+        when someone is at home and the Input boolean above is true.
+      default: 21
+      selector:
+        number:
+          min: 5.0
+          max: 25.0
+          unit_of_measurement: temperature
+          mode: slider
+          step: 1.0
+    time_day:
+      name: Time for the day
+      description: A time input which defines the time from which on the Temparture
+        Settings will be enabled when someone is at home.
+      default: 09:00:00
+      selector:
+        time: {}
+    day_eco_temprature:
+      name: Day ECO Temprature (Default Temprature)
+      description: This is the Temparture which should normally be set for this timeframe
+        (when someone is at home).
+      default: 19
+      selector:
+        number:
+          min: 5.0
+          max: 25.0
+          unit_of_measurement: temperature
+          mode: slider
+          step: 1.0
+    day_comfort_checker_boolean:
+      name: Comfort Temprature Checker
+      description: If this input Boolean is set to true, Comfort Temprature (see below)
+        will be set at day Timeframe.
+      default:
+      selector:
+        entity:
+          domain:
+          - binary_sensor
+          - input_boolean
+          multiple: false
+    day_comfort_temprature:
+      name: Day Comfort Temprature
+      description: This is the Temparture which is set instead of ECO Temparture,
+        when someone is at home and the Input boolean above is true.
+      default: 21
+      selector:
+        number:
+          min: 5.0
+          max: 25.0
+          unit_of_measurement: temperature
+          mode: slider
+          step: 1.0
+    time_evening:
+      name: Time for the evening
+      description: A time input which defines the time from which on the Temparture
+        Settings will be enabled when someone is at home.
+      default: '17:00:00'
+      selector:
+        time: {}
+    evening_eco_temprature:
+      name: Evening ECO Temprature (Default Temprature)
+      description: This is the Temparture which should normally be set for this timeframe
+        (when someone is at home).
+      default: 19
+      selector:
+        number:
+          min: 5.0
+          max: 25.0
+          unit_of_measurement: temperature
+          mode: slider
+          step: 1.0
+    evening_comfort_checker_boolean:
+      name: Comfort Temprature Checker
+      description: If this input Boolean is set to true, Comfort Temprature (see below)
+        will be set at evening Timeframe.
+      default:
+      selector:
+        entity:
+          domain:
+          - binary_sensor
+          - input_boolean
+          multiple: false
+    evening_comfort_temprature:
+      name: Evening Comfort Temprature
+      description: This is the Temparture which is set instead of ECO Temparture,
+        when someone is at home and the Input boolean above is true.
+      default: 20
+      selector:
+        number:
+          min: 5.0
+          max: 25.0
+          unit_of_measurement: temperature
+          mode: slider
+          step: 1.0
+    time_night:
+      name: Time for the night
+      description: A time input which defines the time from which on the Temparture
+        Settings will be enabled when someone is at home.
+      default: '21:00:00'
+      selector:
+        time: {}
+    night_eco_temprature:
+      name: Night ECO Temprature (Default Temprature)
+      description: This is the Temparture which should normally be set for this timeframe
+        (when someone is at home).
+      default: 17
+      selector:
+        number:
+          min: 5.0
+          max: 25.0
+          unit_of_measurement: temperature
+          mode: slider
+          step: 1.0
+    night_comfort_checker_boolean:
+      name: Comfort Temprature Checker
+      description: If this input Boolean is set to true, Comfort Temprature (see below)
+        will be set at night Timeframe.
+      default:
+      selector:
+        entity:
+          domain:
+          - binary_sensor
+          - input_boolean
+          multiple: false
+    night_comfort_temprature:
+      name: Night Comfort Temprature
+      description: This is the Temparture which is set instead of ECO Temparture,
+        when someone is at home and the Input boolean above is true.
+      default: 18
+      selector:
+        number:
+          min: 5.0
+          max: 25.0
+          unit_of_measurement: temperature
+          mode: slider
+          step: 1.0
+mode: restart
+max_exceeded: silent
+variables:
+  climate_entity_var: !input climate_entity
+  presence_detector: !input presence_detector
+  away_temprature: !input away_temprature
+  eco_temprature: !input eco_temprature
+  automation_blocker: !input automation_blocker
+  automation_blocker_boolean: !input automation_blocker_boolean
+  window_contact: !input window_contact
+  window_contact_boolean: !input window_contact_boolean
+  morning_eco_temprature: !input morning_eco_temprature
+  morning_comfort_temprature: !input morning_comfort_temprature
+  morning_comfort_checker_boolean: !input morning_comfort_checker_boolean
+  day_eco_temprature: !input day_eco_temprature
+  day_comfort_temprature: !input day_comfort_temprature
+  day_comfort_checker_boolean: !input day_comfort_checker_boolean
+  evening_eco_temprature: !input evening_eco_temprature
+  evening_comfort_temprature: !input evening_comfort_temprature
+  evening_comfort_checker_boolean: !input evening_comfort_checker_boolean
+  night_eco_temprature: !input night_eco_temprature
+  night_comfort_temprature: !input night_comfort_temprature
+  night_comfort_checker_boolean: !input night_comfort_checker_boolean
+trigger:
+- platform: state
+  entity_id: !input presence_detector
+  from: 'off'
+  to: 'on'
+- platform: state
+  entity_id: !input presence_detector
+  from: 'on'
+  to: 'off'
+  for: !input no_presence_wait
+- platform: time_pattern
+  minutes: /5
+- platform: time
+  at: !input time_morning
+- platform: time
+  at: !input time_day
+- platform: time
+  at: !input time_evening
+- platform: time
+  at: !input time_night
+condition:
+- condition: or
+  conditions:
+  - '{{ automation_blocker == none }}'
+  - '{{ automation_blocker_boolean and states[automation_blocker].state == ''on''
+    }}'
+  - '{{ not automation_blocker_boolean and states[automation_blocker].state == ''off''
+    }}'
+action:
+- choose:
+  - conditions:
+    - condition: or
+      conditions:
+      - '{{ window_contact != none and (window_contact_boolean and states[window_contact].state
+        == ''on'') }}'
+      - '{{ window_contact != none and (not window_contact_boolean and states[window_contact].state
+        == ''off'') }}'
+    sequence: []
+  - conditions:
+    - condition: state
+      entity_id: !input presence_detector
+      state: 'off'
+    sequence:
+    - service: climate.set_temperature
+      data:
+        temperature: !input away_temprature
+      target:
+        entity_id: !input climate_entity
+  - conditions:
+    - condition: time
+      after: !input time_morning
+      before: !input time_day
+    sequence:
+    - choose:
+      - conditions:
+        - condition: template
+          value_template: '{{ morning_comfort_checker_boolean != none }}'
+        sequence:
+        - choose:
+          - conditions:
+            - condition: template
+              value_template: '{{ states[morning_comfort_checker_boolean].state ==
+                ''on'' }}'
+            sequence:
+            - condition: not
+              conditions:
+              - condition: template
+                value_template: '{{ (state_attr(climate_entity_var, ''temperature'')
+                  | float(0)) == morning_comfort_temprature }}'
+            - service: climate.set_temperature
+              data:
+                temperature: !input morning_comfort_temprature
+              target:
+                entity_id: !input climate_entity
+          default:
+          - condition: not
+            conditions:
+            - condition: template
+              value_template: '{{ (state_attr(climate_entity_var, ''temperature'')
+                | float(0)) == morning_eco_temprature }}'
+          - service: climate.set_temperature
+            data:
+              temperature: !input morning_eco_temprature
+            target:
+              entity_id: !input climate_entity
+      default:
+      - condition: not
+        conditions:
+        - condition: template
+          value_template: '{{ (state_attr(climate_entity_var, ''temperature'') | float(0))
+            == morning_eco_temprature }}'
+      - service: climate.set_temperature
+        data:
+          temperature: !input morning_eco_temprature
+        target:
+          entity_id: !input climate_entity
+  - conditions:
+    - condition: time
+      after: !input time_day
+      before: !input time_evening
+    sequence:
+    - choose:
+      - conditions:
+        - condition: template
+          value_template: '{{ day_comfort_checker_boolean != none }}'
+        sequence:
+        - choose:
+          - conditions:
+            - condition: template
+              value_template: '{{ states[day_comfort_checker_boolean].state == ''on''
+                }}'
+            sequence:
+            - condition: not
+              conditions:
+              - condition: template
+                value_template: '{{ (state_attr(climate_entity_var, ''temperature'')
+                  | float(0)) == day_comfort_temprature }}'
+            - service: climate.set_temperature
+              data:
+                temperature: !input day_comfort_temprature
+              target:
+                entity_id: !input climate_entity
+          default:
+          - condition: not
+            conditions:
+            - condition: template
+              value_template: '{{ (state_attr(climate_entity_var, ''temperature'')
+                | float(0)) == day_eco_temprature }}'
+          - service: climate.set_temperature
+            data:
+              temperature: !input day_eco_temprature
+            target:
+              entity_id: !input climate_entity
+      default:
+      - condition: not
+        conditions:
+        - condition: template
+          value_template: '{{ (state_attr(climate_entity_var, ''temperature'') | float(0))
+            == day_eco_temprature }}'
+      - service: climate.set_temperature
+        data:
+          temperature: !input day_eco_temprature
+        target:
+          entity_id: !input climate_entity
+  - conditions:
+    - condition: time
+      after: !input time_evening
+      before: !input time_night
+    sequence:
+    - choose:
+      - conditions:
+        - condition: template
+          value_template: '{{ evening_comfort_checker_boolean != none }}'
+        sequence:
+        - choose:
+          - conditions:
+            - condition: template
+              value_template: '{{ states[evening_comfort_checker_boolean].state ==
+                ''on'' }}'
+            sequence:
+            - condition: not
+              conditions:
+              - condition: template
+                value_template: '{{ (state_attr(climate_entity_var, ''temperature'')
+                  | float(0)) == evening_comfort_temprature }}'
+            - service: climate.set_temperature
+              data:
+                temperature: !input evening_comfort_temprature
+              target:
+                entity_id: !input climate_entity
+          default:
+          - condition: not
+            conditions:
+            - condition: template
+              value_template: '{{ (state_attr(climate_entity_var, ''temperature'')
+                | float(0)) == evening_eco_temprature }}'
+          - service: climate.set_temperature
+            data:
+              temperature: !input evening_eco_temprature
+            target:
+              entity_id: !input climate_entity
+      default:
+      - condition: not
+        conditions:
+        - condition: template
+          value_template: '{{ (state_attr(climate_entity_var, ''temperature'') | float(0))
+            == evening_eco_temprature }}'
+      - service: climate.set_temperature
+        data:
+          temperature: !input evening_eco_temprature
+        target:
+          entity_id: !input climate_entity
+  - conditions:
+    - condition: time
+      after: !input time_night
+      before: !input time_morning
+    sequence:
+    - choose:
+      - conditions:
+        - condition: template
+          value_template: '{{ night_comfort_checker_boolean != none }}'
+        sequence:
+        - choose:
+          - conditions:
+            - condition: template
+              value_template: '{{ states[night_comfort_checker_boolean].state == ''on''
+                }}'
+            sequence:
+            - condition: not
+              conditions:
+              - condition: template
+                value_template: '{{ (state_attr(climate_entity_var, ''temperature'')
+                  | float(0)) == night_comfort_temprature }}'
+            - service: climate.set_temperature
+              data:
+                temperature: !input night_comfort_temprature
+              target:
+                entity_id: !input climate_entity
+          default:
+          - condition: not
+            conditions:
+            - condition: template
+              value_template: '{{ (state_attr(climate_entity_var, ''temperature'')
+                | float(0)) == night_eco_temprature }}'
+          - service: climate.set_temperature
+            data:
+              temperature: !input night_eco_temprature
+            target:
+              entity_id: !input climate_entity
+      default:
+      - condition: not
+        conditions:
+        - condition: template
+          value_template: '{{ (state_attr(climate_entity_var, ''temperature'') | float(0))
+            == night_eco_temprature }}'
+      - service: climate.set_temperature
+        data:
+          temperature: !input night_eco_temprature
+        target:
+          entity_id: !input climate_entity
+  default:
+  - condition: not
+    conditions:
+    - condition: template
+      value_template: '{{ (state_attr(climate_entity_var, ''temperature'') | float(0))
+        == eco_temprature }}'
+  - service: climate.set_temperature
+    data:
+      temperature: !input eco_temprature
+    target:
+      entity_id: !input climate_entity

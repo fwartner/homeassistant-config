@@ -1,0 +1,142 @@
+blueprint:
+  name: Notify - Auto Backup
+  description: 'Send notifications based on events created by the [Auto Backup](https://jcwillox.github.io/hass-auto-backup)
+    integration, such as when a backup fails.
+
+
+    **Note: requires the [Auto Backup](https://jcwillox.github.io/hass-auto-backup)
+    custom integration.**
+
+    '
+  domain: automation
+  input:
+    events:
+      name: Events
+      description: Which events to send notifications
+      default:
+      - auto_backup.backup_failed
+      selector:
+        select:
+          multiple: true
+          mode: dropdown
+          options:
+          - label: Backup Start
+            value: auto_backup.backup_start
+          - label: Backup Successful
+            value: auto_backup.backup_successful
+          - label: Backup Failed
+            value: auto_backup.backup_failed
+          - label: Backup Purged
+            value: auto_backup.purged_backups
+          custom_value: false
+    notify_hass:
+      name: Send to Home Assistant
+      description: Send to Home Assistant as a persistent notification
+      default: false
+      selector:
+        boolean: {}
+    devices:
+      name: Mobile Devices
+      description: Send notifications to mobile devices
+      default: []
+      selector:
+        device:
+          integration: mobile_app
+          multiple: true
+    only_after:
+      name: Only after
+      description: Only send notifications to mobile devices after this time
+      default: 00:00:00
+      selector:
+        time: {}
+    only_before:
+      name: Only before
+      description: Only send notifications to mobile devices before this time
+      default: 00:00:00
+      selector:
+        time: {}
+  source_url: https://raw.githubusercontent.com/jcwillox/home-assistant-blueprints/main/automation/notify_auto_backup.yaml
+mode: parallel
+variables:
+  notify_hass: !input notify_hass
+trigger:
+  platform: event
+  event_type: !input events
+action:
+- choose:
+  - conditions: '{{ trigger.event.event_type == "auto_backup.backup_start" }}'
+    sequence:
+    - variables:
+        notify_title: Backup Started
+        notify_message: '{{ trigger.event.data.name }}'
+        notify_data:
+          group: Auto Backup
+          url: /hassio/backups
+          clickAction: /hassio/backups
+          tag: auto-backup-{{ trigger.event.data.name }}
+          notification_icon: mdi:package-variant
+    - &id001
+      if: '{{ True }}'
+      then:
+      - if:
+          condition: time
+          after: !input only_after
+          before: !input only_before
+        then:
+        - alias: Send notifications to mobile devices
+          repeat:
+            for_each: !input devices
+            sequence:
+            - alias: Notify mobile device
+              service: notify.mobile_app_{{ device_attr(repeat.item, "name") | slugify
+                }}
+              data:
+                title: '{{ notify_title }}'
+                message: '{{ notify_message }}'
+                data: '{{ notify_data }}'
+      - if: '{{ notify_hass }}'
+        then:
+        - alias: Send a notification to HA
+          service: persistent_notification.create
+          data:
+            title: '{{ notify_title }}'
+            message: '{{ notify_message }}'
+  - conditions: '{{ trigger.event.event_type == "auto_backup.backup_successful" }}'
+    sequence:
+    - variables:
+        notify_title: Backup Successful
+        notify_message: '{{ trigger.event.data.name }}'
+        notify_data:
+          group: Auto Backup
+          url: /hassio/backups
+          clickAction: /hassio/backups
+          tag: auto-backup-{{ trigger.event.data.name }}
+          notification_icon: mdi:package-variant-closed
+    - *id001
+  - conditions: '{{ trigger.event.event_type == "auto_backup.backup_failed" }}'
+    sequence:
+    - variables:
+        notify_title: Backup Failed
+        notify_message: '{{ trigger.event.data.name }}
+
+          {{ trigger.event.data.error }}
+
+          '
+        notify_data:
+          group: Auto Backup
+          url: /hassio/backups
+          clickAction: /hassio/backups
+          tag: auto-backup-{{ trigger.event.data.name }}
+          notification_icon: mdi:package-variant-closed-remove
+    - *id001
+  - conditions: '{{ trigger.event.event_type == "auto_backup.purged_backups" }}'
+    sequence:
+    - variables:
+        notify_title: Backup(s) Purged
+        notify_message: '{{ trigger.event.data.backups | join('', '') }}'
+        notify_data:
+          group: Auto Backup
+          url: /hassio/backups
+          clickAction: /hassio/backups
+          notification_icon: mdi:package-variant-closed-minus
+    - *id001

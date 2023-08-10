@@ -1,0 +1,23 @@
+{
+  "config": {
+    "flow_title": "Setup DeutscheBahn",
+    "step": {
+      "user": {
+        "description": "Submit your train station details for the search queries.",
+        "data": {
+          "start": "Start station",
+          "destination": "Destination station",
+          "offset": "Offset in minutes",
+          "only_direct": "Only show direct connections?"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "This start & Destination combination is already configured"
+    },
+    "error": {
+      "invalid_station": "Invalid Start / Destination station",
+      "unknown": "Unknown Error"
+    }
+  }
+}

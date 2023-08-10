@@ -1,0 +1,251 @@
+blueprint:
+  name: Aqara Buttons All-In-One [Zigbee2MQTT]
+  description: 'All-In-One package for Aqara Switches.
+
+    Supports: WXKG11LM, WXKG12LM, WXKG03LM, WXKG06LM, WXKG07LM, WXKG02LM, QBKG03LM,
+    QBKG04LM, QBKG11LM, QBKG12LM, QBKG21LM, QBKG22LM, QBKG25LM, etc..).
+
+    Does not supports Opple.
+
+    Some actions may be unsupported by your switch. Check the available actions of
+    your device on zigbee2mqtt.io.
+
+    '
+  domain: automation
+  input:
+    action_sensor:
+      name: Action Sensor
+      description: Zigbee2mqtt action sensor
+      selector:
+        entity:
+          integration: mqtt
+          domain:
+          - sensor
+          multiple: false
+    single_action:
+      name: Single Click
+      description: Single click for devices with one button
+      default: []
+      selector:
+        action: {}
+    double_action:
+      name: Double Click
+      description: Double click for devices with one button
+      default: []
+      selector:
+        action: {}
+    triple_action:
+      name: Triple Click
+      description: Triple click for devices with one button
+      default: []
+      selector:
+        action: {}
+    quadruple_action:
+      name: Quadruple Click
+      description: Triple click for devices with one button
+      default: []
+      selector:
+        action: {}
+    hold_action:
+      name: Hold Action
+      description: Hold action for devices with one button
+      default: []
+      selector:
+        action: {}
+    release_action:
+      name: Release Action
+      description: Release action for devices with one button
+      default: []
+      selector:
+        action: {}
+    shake_action:
+      name: Shake Action
+      description: Shake action for devices with one button
+      default: []
+      selector:
+        action: {}
+    single_left_action:
+      name: Single Left Click
+      description: Left click for devices with multiple buttons
+      default: []
+      selector:
+        action: {}
+    double_left_action:
+      name: Double Left Click
+      description: Double left click for devices with multiple buttons
+      default: []
+      selector:
+        action: {}
+    triple_left_action:
+      name: Triple Left Click
+      description: Triple left click for devices with multiple buttons
+      default: []
+      selector:
+        action: {}
+    hold_left_action:
+      name: Hold Left Action
+      description: Hold left action for devices with multiple buttons
+      default: []
+      selector:
+        action: {}
+    release_left_action:
+      name: Release Left Action
+      description: Release left action for devices with multiple buttons
+      default: []
+      selector:
+        action: {}
+    single_center_action:
+      name: Single Center Click
+      description: Center click for devices with three buttons
+      default: []
+      selector:
+        action: {}
+    double_center_action:
+      name: Double Center Click
+      description: Double center click for devices with three buttons
+      default: []
+      selector:
+        action: {}
+    triple_center_action:
+      name: Triple Center Click
+      description: Triple center click for devices with three buttons
+      default: []
+      selector:
+        action: {}
+    hold_center_action:
+      name: Hold Center Action
+      description: Hold center action for devices with three buttons
+      default: []
+      selector:
+        action: {}
+    release_center_action:
+      name: Release Center Action
+      description: Release center action for devices with three buttons
+      default: []
+      selector:
+        action: {}
+    single_right_action:
+      name: Single Right Click
+      description: Right click for devices with multiple buttons
+      default: []
+      selector:
+        action: {}
+    double_right_action:
+      name: Double Right Click
+      description: Double right click for devices with multiple buttons
+      default: []
+      selector:
+        action: {}
+    triple_right_action:
+      name: Triple Right Click
+      description: Triple right click for devices with multiple buttons
+      default: []
+      selector:
+        action: {}
+    hold_right_action:
+      name: Hold Right Action
+      description: Hold right action for devices with multiple buttons
+      default: []
+      selector:
+        action: {}
+    release_right_action:
+      name: Release Right Action
+      description: Release right action for devices with multiple buttons
+      default: []
+      selector:
+        action: {}
+    single_both_action:
+      name: Single Both Click
+      description: Both click for devices with multiple buttons
+      default: []
+      selector:
+        action: {}
+    double_both_action:
+      name: Double Both Click
+      description: Double both click for devices with multiple buttons
+      default: []
+      selector:
+        action: {}
+    triple_both_action:
+      name: Triple Both Click
+      description: Triple both click for devices with multiple buttons
+      default: []
+      selector:
+        action: {}
+    hold_both_action:
+      name: Hold Both Action
+      description: Hold both action for devices with multiple buttons
+      default: []
+      selector:
+        action: {}
+    release_both_action:
+      name: Release Both Action
+      description: Release both action for devices with multiple buttons
+      default: []
+      selector:
+        action: {}
+  source_url: https://community.home-assistant.io/t/aqara-buttons-all-in-one-zigbee2mqtt/268717
+mode: parallel
+max_exceeded: silent
+trigger:
+  platform: state
+  entity_id: !input action_sensor
+action:
+- variables:
+    command: '{{ trigger.to_state.attributes.action if trigger.to_state.state == ""
+      else trigger.to_state.state }}'
+- choose:
+  - conditions: '{{ command == ''single'' }}'
+    sequence: !input single_action
+  - conditions: '{{ command == ''double'' }}'
+    sequence: !input double_action
+  - conditions: '{{ command == ''triple'' }}'
+    sequence: !input triple_action
+  - conditions: '{{ command == ''quadruple'' }}'
+    sequence: !input quadruple_action
+  - conditions: '{{ command == ''hold'' }}'
+    sequence: !input hold_action
+  - conditions: '{{ command == ''release'' }}'
+    sequence: !input release_action
+  - conditions: '{{ command == ''shake'' }}'
+    sequence: !input shake_action
+  - conditions: '{{ command == ''single_left'' }}'
+    sequence: !input single_left_action
+  - conditions: '{{ command == ''double_left'' }}'
+    sequence: !input double_left_action
+  - conditions: '{{ command == ''triple_left'' }}'
+    sequence: !input triple_left_action
+  - conditions: '{{ command == ''hold_left'' }}'
+    sequence: !input hold_left_action
+  - conditions: '{{ command == ''release_left'' }}'
+    sequence: !input release_left_action
+  - conditions: '{{ command == ''single_center'' }}'
+    sequence: !input single_center_action
+  - conditions: '{{ command == ''double_center'' }}'
+    sequence: !input double_center_action
+  - conditions: '{{ command == ''triple_center'' }}'
+    sequence: !input triple_center_action
+  - conditions: '{{ command == ''hold_center'' }}'
+    sequence: !input hold_center_action
+  - conditions: '{{ command == ''release_center'' }}'
+    sequence: !input release_center_action
+  - conditions: '{{ command == ''single_right'' }}'
+    sequence: !input single_right_action
+  - conditions: '{{ command == ''double_right'' }}'
+    sequence: !input double_right_action
+  - conditions: '{{ command == ''triple_right'' }}'
+    sequence: !input triple_right_action
+  - conditions: '{{ command == ''hold_right'' }}'
+    sequence: !input hold_right_action
+  - conditions: '{{ command == ''release_right'' }}'
+    sequence: !input release_right_action
+  - conditions: '{{ command == ''single_both'' }}'
+    sequence: !input single_both_action
+  - conditions: '{{ command == ''double_both'' }}'
+    sequence: !input double_both_action
+  - conditions: '{{ command == ''triple_both'' }}'
+    sequence: !input triple_both_action
+  - conditions: '{{ command == ''hold_both'' }}'
+    sequence: !input hold_both_action
+  - conditions: '{{ command == ''release_both'' }}'
+    sequence: !input release_both_action

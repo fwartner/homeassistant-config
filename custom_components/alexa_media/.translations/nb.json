@@ -1,0 +1,60 @@
+{
+  "config": {
+    "abort": {
+      "forgot_password": "Siden Glemt passord ble oppdaget. Dette er vanligvis et resultat av også mislykkede pålogginger. Amazon kan kreve handling før en pålogging kan forsøkes.",
+      "login_failed": "Alexa Media Player kunne ikke logge inn.",
+      "reauth_successful": "Alexa Media Player er godkjent på nytt."
+    },
+    "error": {
+      "2fa_key_invalid": "Invalid Built-In 2FA key",
+      "connection_error": "Feil ved tilkobling; sjekk nettverket og prøv på nytt",
+      "identifier_exists": "E-post for Alexa URL allerede registrert",
+      "invalid_credentials": "ugyldige legitimasjon",
+      "invalid_url": "URL er ugyldig: {message}",
+      "unable_to_connect_hass_url": "Kan ikke koble til Home Assistant-nettadressen. Vennligst sjekk den eksterne nettadressen under Konfigurasjon - > Generelt",
+      "unknown_error": "Ukjent feil, vennligst rapporter logginfo"
+    },
+    "step": {
+      "proxy_warning": {
+        "data": {
+          "proxy_warning": "Ignore and Continue - I understand that no support for login issues are provided for bypassing this warning."
+        },
+        "description": "The HA server cannot connect to the URL provided: {hass_url}.\n> {error}\n\nTo fix this, please confirm your **HA server** can reach {hass_url}. This field is from the External Url under Configuration -> General but you can try your internal url.\n\nIf you are **certain** your client can reach this url, you can bypass this warning.",
+        "title": "Alexa Media Player - Unable to Connect to HA URL"
+      },
+      "totp_register": {
+        "data": {
+          "registered": "OTP from the Built-in 2FA App Key confirmed successfully."
+        },
+        "description": "**{email} - alexa.{url}**  \nHave you successfully confirmed an OTP from the Built-in 2FA App Key with Amazon?  \n >OTP Code {message}",
+        "title": "Alexa Media Player - OTP Confirmation"
+      },
+      "user": {
+        "data": {
+          "debug": "Avansert feilsøking",
+          "email": "Epostadresse",
+          "exclude_devices": "Ekskludert enhet (kommaseparert)",
+          "hass_url": "Url to access Home Assistant",
+          "include_devices": "Inkluder enhet (kommaseparert)",
+          "otp_secret": "Built-in 2FA App Key (automatically generate 2FA Codes)",
+          "password": "Passord",
+          "scan_interval": "Sekunder mellom skanninger",
+          "securitycode": "2FA-kode (anbefales for å unngå påloggingsproblemer)",
+          "url": "Amazon-regiondomenet (f.eks. Amazon.co.uk)"
+        },
+        "description": "Bekreft informasjonen nedenfor.",
+        "title": "Alexa Media Player - Konfigurasjon"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "extended_entity_discovery": "Inkluder enheter som er koblet til via Echo",
+          "queue_delay": "Sekunder for å vente på køkommandoer sammen"
+        }
+      }
+    }
+  }
+}

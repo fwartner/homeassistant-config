@@ -1,0 +1,10 @@
+- platform: template
+  sensors:
+    pills_taken:
+      friendly_name: "Anzahl an Pillen"
+      value_template: >
+        {{[ states.input_boolean.steffi_angst,
+            states.input_boolean.steffi_migrane,
+            states.input_boolean.steffi_babypille,
+            states.input_boolean.steffi_herz]
+          | selectattr('state', 'eq', 'off') | list | count}}

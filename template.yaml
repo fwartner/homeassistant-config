@@ -1,0 +1,29 @@
+- sensor:
+    - name: "Low Battery Devices"
+      unique_id: ba292875-ae67-480d-9867-29cdb20afaea
+      icon: >
+        mdi:battery-low
+      state: >
+        {% set threshold = states('input_number.battery_threshold') | int %}
+        {%- set ns = namespace(sensors=[]) -%}
+        {%- for state in states.sensor 
+          | selectattr('attributes.device_class', 'defined') 
+          | selectattr('attributes.state_class', 'defined') 
+          | selectattr('attributes.device_class', '==', 'battery') 
+          | selectattr('attributes.state_class', '==', 'measurement') 
+          | selectattr('state', 'is_number') -%}
+          {%- if state.state | int <= threshold -%}
+            {% set ns.sensors = ns.sensors + [dict(name = state.name | replace(' battery', '') | replace(' Battery', ''), state = state.state | int)] %}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- set batt = ns.sensors | sort(attribute='state') %}
+        {%- set ns = namespace(batt='') -%}
+        {%- for state in batt -%}
+            {% set ns.batt= ns.batt + (state.name  ~ ' (' ~ state.state ~'%)' ~ "\n") %}
+        {%- endfor -%}
+
+        {% if ns.batt | count > 0 %}
+          {{ ns.batt | truncate(255, true, '...') }}
+        {% else %}
+          {{ 'unavailable' }}
+        {% endif %}

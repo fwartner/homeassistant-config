@@ -1,0 +1,11 @@
+- platform: min_max
+  name: Temperature mean
+  type: mean
+  entity_ids:
+    - sensor.tempatur_wohnzimmer
+    - sensor.tempatur_kueche
+    - sensor.tempatur_schlafzimmer
+    - sensor.tempatur_balkon
+    - sensor.tempatur_kinderzimmer
+    - sensor.tempatur_flur
+    - sensor.tempatur_badezimmer

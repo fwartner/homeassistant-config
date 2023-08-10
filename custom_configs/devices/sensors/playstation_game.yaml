@@ -1,0 +1,9 @@
+- platform: template
+  sensors:
+    playstation_game:
+      value_template: >
+        {% if states("sensor.playstation_5_activity") == "playing" %}
+          {{state_attr('sensor.playstation_5_activity', 'title_name') }}
+        {% else %}
+          Zur Zeit wird nichts gespielt
+        {% endif %}

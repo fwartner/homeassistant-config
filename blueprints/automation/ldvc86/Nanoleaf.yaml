@@ -1,0 +1,68 @@
+blueprint:
+  name: Nanoleaf gestures
+  description: 'Use gestures (swipes) on your Nanoleaf panels to control other devices.
+    Swipe gestures are supported on Canvas, Shapes and Elements devices; Light panels
+    (Aurora) and Lines do not support touch gestures.
+
+
+    Make sure that touch events are enabled for your Nanoleaf device. You can use
+    the Nanoleaf app to enable or disable touch events, per device.
+
+    '
+  domain: automation
+  input:
+    Nano_device:
+      name: Nanoleaf
+      description: Select Nanoleaf of type Canvas, Shapes or Elements
+      selector:
+        device:
+          integration: nanoleaf
+          multiple: false
+    swipe_left:
+      name: Swipe left
+      default: []
+      description: action(s) to perform on swipe left gesture
+      selector:
+        action: {}
+    swipe_right:
+      name: Swipe right
+      description: action(s) to perform on swipe right gesture
+      default: []
+      selector:
+        action: {}
+    swipe_up:
+      name: Swipe up
+      description: action(s) to perform on swipe up gesture
+      default: []
+      selector:
+        action: {}
+    swipe_down:
+      name: Swipe down
+      description: action(s) to perform on swipe down gesture
+      default: []
+      selector:
+        action: {}
+  source_url: https://raw.githubusercontent.com/ldvc86/HA_blueprint/main/Nanoleaf
+mode: restart
+max_exceeded: silent
+trigger:
+- platform: event
+  event_type: nanoleaf_event
+  event_data:
+    device_id: !input Nano_device
+action:
+- variables:
+    event: '{{ trigger.event.data.type }}'
+- choose:
+  - conditions:
+    - '{{ event == "swipe_left" }}'
+    sequence: !input swipe_left
+  - conditions:
+    - '{{ event == "swipe_right" }}'
+    sequence: !input swipe_right
+  - conditions:
+    - '{{ event == "swipe_up" }}'
+    sequence: !input swipe_up
+  - conditions:
+    - '{{ event == "swipe_down" }}'
+    sequence: !input swipe_down

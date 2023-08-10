@@ -1,0 +1,5 @@
+# You don't need to add the MQTT details for Home Assistant with the add-on installation, it will be auto-discovered!
+global:
+  instanceName: changeme
+  integrations:
+    - homeAssistant

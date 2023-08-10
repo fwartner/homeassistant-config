@@ -1,0 +1,43 @@
+influxdb:
+  api_version: 2
+  ssl: false
+  host: 10.182.1.205
+  port: 8086
+  organization: smarthome
+  bucket: homeassistant
+  token: !secret influx_token
+  default_measurement: state
+  tags:
+    source: HA
+  tags_attributes:
+    - friendly_name
+  ignore_attributes:
+    - icon
+  include:
+    domains:
+      - alarm_control_panel
+      - light
+      - person
+      - zone
+      - automation
+      - fan
+      - cover
+      - script
+      - update
+      - switch
+      - sensor
+      - binary_sensor
+      - climate
+    entities:
+      - sensor.stromverbrauch_aktuell
+      - person.florian
+      - person.anni
+      - weather.openweathermap
+    entity_globs:
+      - sensor.aqara_thermo_*_temperature
+      - sensor.aqara_thermo_*_pressure
+      - sensor.aqara_thermo_*_humidity
+      - sensor.shelly_em3_channel_*_power
+      - sensor.shelly_em3_channel_*_current
+      - sensor.shelly_em3_channel_*_energy
+      - binary_sensor.*_occupancy

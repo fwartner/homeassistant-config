@@ -1,0 +1,105 @@
+blueprint:
+  name: Room Music
+  description: This blueprint can automatically play and stop music in a room as soon
+    as motion is detected. It can used with HomePods and OwnTone.
+  domain: automation
+  source_url: https://gist.github.com/AlexanderBabel/57722accf43c9bd3e98f52ce30db8589
+  input:
+    motion_sensor:
+      name: Motion Sensor
+      description: You can choose a motion sensor or a sensor group as the trigger
+        for the music to play or stop. Also occupancy sensors are possible.
+      selector:
+        entity:
+          multiple: false
+    turn_off_delay:
+      name: Motion Sensor turn off delay
+      description: Time after the sensor no longer detects motion to turn off the
+        music in the room. (Default = 120s)
+      default: 120
+      selector:
+        number:
+          mode: box
+          min: 0.0
+          max: 3600.0
+          unit_of_measurement: seconds
+          step: 1.0
+    global_media_player:
+      name: Global Media Player
+      description: A media player that plays the music for all rooms (e.g. OwnTone)
+      selector:
+        entity:
+          domain: media_player
+          multiple: false
+    room_media_player:
+      name: Room Media Player
+      description: A media player for the specific room. (e.g. OwnTone Output for
+        this room)
+      selector:
+        entity:
+          domain: media_player
+          multiple: false
+trigger:
+- platform: state
+  entity_id: !input motion_sensor
+  from: 'off'
+  to: 'on'
+  id: motion
+- platform: state
+  entity_id: !input motion_sensor
+  from: 'on'
+  to: 'off'
+  for: !input turn_off_delay
+  id: clear
+- platform: state
+  entity_id: !input global_media_player
+  to: playing
+  id: media_playing
+condition: []
+action:
+- choose:
+  - alias: Turn on music in room, when motion is detected, the global media player
+      is playing and it is not on.
+    conditions:
+    - condition: or
+      conditions:
+      - alias: Motion is detected (trigger), media is already playing
+        condition: and
+        conditions:
+        - condition: trigger
+          id: motion
+        - condition: state
+          entity_id: !input global_media_player
+          state: playing
+      - alias: Media starts playing (trigger), motion is already detected
+        condition: and
+        conditions:
+        - condition: trigger
+          id: media_playing
+        - condition: state
+          entity_id: !input motion_sensor
+          state: 'on'
+    - condition: state
+      entity_id: !input room_media_player
+      state: 'off'
+    sequence:
+    - service: media_player.turn_on
+      data: {}
+      target:
+        entity_id: !input room_media_player
+  - alias: Turn off the music in room, when no longer motion is detected, and the
+      room media player is on
+    conditions:
+    - condition: trigger
+      id: clear
+    - condition: state
+      entity_id: !input room_media_player
+      state: 'on'
+    sequence:
+    - service: media_player.turn_off
+      data: {}
+      target:
+        entity_id: !input room_media_player
+  default: []
+mode: queued
+max: 10

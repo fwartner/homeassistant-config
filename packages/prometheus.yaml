@@ -1,0 +1,18 @@
+prometheus:
+  filter:
+    include_domains:
+      - alarm_control_panel
+      - light
+      - person
+      - zone
+      - automation
+      - fan
+      - cover
+      - script
+      - update
+      - switch
+      - sensor
+      - binary_sensor
+      - climate
+    include_entity_globs:
+      - binary_sensor.*_occupancy

@@ -1,0 +1,12 @@
+{
+  "domain": "npm_switches",
+  "name": "NPM Switches",
+  "codeowners": [
+    "@InTheDaylight14"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/InTheDaylight14/nginx-proxy-manager-switches",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/InTheDaylight14/nginx-proxy-manager-switches/issues",
+  "version": "1.0.1"
+}

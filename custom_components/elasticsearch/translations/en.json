@@ -1,0 +1,73 @@
+{
+    "config": {
+        "abort": {
+            "reauth_successful": "Re-authentication was successful",
+            "single_instance_allowed": "Already configured. Only a single configuration possible.",
+            "configured_via_yaml": "Configuration impored from configuration.yaml. Remove entry from configuration.yaml, restart, and re-add this integration to proceed."
+        },
+        "error": {
+            "cannot_connect": "Failed to connect",
+            "invalid_auth": "Invalid username or password.",
+            "insufficient_privileges": "Insufficient privileges for specified user.",
+            "missing_credentials": "This cluster requires authentication. Please provide a username and password.",
+            "untrusted_connection": "Elasticsearch's server certificate could not be verified. Either disable TLS verification, or specify a custom CA path below.",
+            "unsupported_version": "Unsupported version of Elastcsearch detected. The minimum supported version is 7.11.0."
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "url": "URL",
+                    "password": "Password",
+                    "username": "Username",
+                    "timeout": "Connection timeout in seconds"
+                },
+                "title": "Fill in your Elasticsearch login information"
+            },
+            "tls": {
+                "data": {
+                    "verify_ssl": "Verify TLS certificate (recommended)",
+                    "ssl_ca_path": "Fully qualified path to custom certificate authority"
+                }
+            }
+        }
+    },
+    "options": {
+        "abort": {
+            "configured_via_yaml": "Configuration impored from configuration.yaml. Remove entry from configuration.yaml, restart, and re-add this integration to proceed."
+        },
+        "step": {
+            "publish_options": {
+                "title": "Elastic",
+                "description": "Configure publish options",
+                "data": {
+                    "publish_enabled": "Publish events to Elasticsearch",
+                    "publish_frequency": "How frequently events are published, in seconds",
+                    "publish_mode": "Choose which entity states to publish",
+                    "excluded_domains": "Domains to exclude from publishing. Defaults to none.",
+                    "excluded_entities": "Entities to exclude from publishing. Defaults to none.",
+                    "included_domains": "Domains to publish. Defaults to all domains.",
+                    "included_entities": "Entities to publish. Defaults to all entities.",
+                    "index_format": "The index name prefix to publish events to",
+                    "alias": "The index alias used for writing events to Elasticsearch"
+                }
+            },
+            "ilm_options": {
+                "title": "Elastic",
+                "description": "Configure ILM options",
+                "data": {
+                    "ilm_enabled": "Enable ILM",
+                    "ilm_policy_name": "ILM policy name",
+                    "ilm_max_size": "Max index size",
+                    "ilm_delete_after": "Delete indices after"
+                }
+            },
+            "health_options": {
+                "title": "Cluster health monitoring",
+                "description": "Configure health monitoring",
+                "data": {
+                    "health_sensor_enabled": "Enable health sensor"
+                }
+            }
+        }
+    }
+}

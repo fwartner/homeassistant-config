@@ -5,3 +5,12 @@ My personal home assistant configuation files.
 - Fully featured
 - Always up to date
 - Updated automatically based on an automation
+## Authors
+
+- [@fwartner](https://www.github.com/fwartner)
+
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+

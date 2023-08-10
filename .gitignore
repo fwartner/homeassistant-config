@@ -109,6 +109,8 @@ venv.bak/
 *.log
 *.log.1
 watchman_report.txt
+zigbee.db
+ps5-mqtt/.gitignore
 
 ## You can whitelist files/folders with !, these will not be ignored.
 !*.yaml

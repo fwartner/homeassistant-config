@@ -24,7 +24,7 @@ import yaml
 
 from _readme_tables import html_table
 
-URL = "https://github.com/basnijholt/home-assistant-config/blob/{commit_hash}/{fname}"
+URL = "https://github.com/fwartner/homeassistant-config/blob/{commit_hash}/{fname}"
 
 
 @functools.lru_cache()
@@ -109,13 +109,11 @@ def get_dependencies(automation):
 
     for domain, yaml_file in [
         ("script", "scripts.yaml"),
-        ("sensor", "includes/sensors.yaml"),
-        ("binary_sensor", "includes/binary_sensors.yaml"),
-        ("switch", "includes/switches.yaml"),
-        ("shell_command", "includes/shell_commands.yaml"),
-        ("group", "includes/groups.yaml"),
-        ("plant", "includes/plant.yaml"),
-        ("sensor", "includes/utility_meter.yaml"),
+        ("sensor", "packages/sensors.yaml"),
+        ("binary_sensor", "packages/binary_sensors.yaml"),
+        ("switch", "packages/switches.yaml"),
+        ("shell_command", "packages/shell_commands.yaml"),
+        ("group", "packages/groups.yaml"),
     ]:
         entities = find_entities(str(automation), domain)
         for entity in sorted(entities):
@@ -129,32 +127,8 @@ def get_dependencies(automation):
         text = "  *which uses:*\n" + text + "\n"
     return text
 
-
-def toc_entry(automations):
-    title, _ = title_and_summary(automations[0])
-    return f"1. [{title}](#{slugify(title)}) ({len(automations)} automations)"
-
-
-def get_header(fname, automation):
-    title, _ = title_and_summary(automation)
-    return f"## [{title}]({permalink(fname)})"
-
-
-def get_automation_line(fname, automation):
-    _, summary = title_and_summary(automation)
-    return f"### [{summary}]({permalink_automation(fname, automation)})"
-
-
 def slugify(s):
     return s.lower().strip().replace(" ", "-").encode("ascii", "ignore").decode("ascii")
-
-
-def get_description(automation):
-    if "description" not in automation:
-        return ""
-    desc = automation["description"]
-    return "\n  " + desc + "\n"
-
 
 def remove_text(content, start, end):
     do_append = True
@@ -167,7 +141,6 @@ def remove_text(content, start, end):
         if start in line:
             do_append = not do_append
     return new
-
 
 def get_emoji(title):
     return {

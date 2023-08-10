@@ -11,5 +11,5 @@
 python3 utils/commit-updates.py
 pip3 -q install pyfiglet jinja2
 python3 utils/ascii_art.py
-python3 utils/update-readme.py
+#python3 utils/update-readme.py
 ./utils/commit-readme.sh

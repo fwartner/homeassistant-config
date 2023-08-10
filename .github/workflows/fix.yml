@@ -12,5 +12,5 @@ jobs:
         uses: opt-nc/yamlfixer-action
         with:
             options: --summary
-            user: ${{secrets.my_user}}
-            token: ${{secrets.my_user_password}}
+            user: ${{secrets.GUSER}}
+            token: ${{secrets.GPASS}}

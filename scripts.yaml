@@ -1,94 +1,86 @@
-#-
-#                _       _
-#  ___  ___ _ __(_)_ __ | |_ ___
-# / __|/ __| '__| | '_ \| __/ __|
-# \__ \ (__| |  | | |_) | |_\__ \
-# |___/\___|_|  |_| .__/ \__|___/
-#                 |_|
-#
-#- from github.com/basnijholt/home-assistant-config
 3_minuten_bettzeit:
   alias: 3 Minuten Bettzeit
   sequence:
-  - service: timer.start
-    data:
-      duration: 0
-    target:
-      entity_id: timer.3_minuten_bett
-  - type: turn_on
-    device_id: 496f1ee059a80ce3be70b9a32eb69778
-    entity_id: light.bett
-    domain: light
-    brightness_pct: 30
-  - type: turn_off
-    device_id: 816e324d0db76f186a09970899b71f68
-    entity_id: light.decke_schlafzimmer
-    domain: light
-  - type: turn_off
-    device_id: 3fec69e2d26141a480d886592ddb9b07
-    entity_id: light.stehlampe
-    domain: light
-  - service: cover.close_cover
-    data: {}
-    target:
-      entity_id: cover.rollos_fensterbank_schlafzimmer
-  - type: turn_off
-    device_id: 2580802aa078f9f43a98c3951327a6e9
-    entity_id: switch.steckdosenleiste_schlafzimmer
-    domain: switch
-  - service: switch.turn_off
-    data: {}
-    target:
-      entity_id: switch.dashboard_screen
+    - service: timer.start
+      data:
+        duration: 0
+      target:
+        entity_id: timer.3_minuten_bett
+    - type: turn_on
+      device_id: 496f1ee059a80ce3be70b9a32eb69778
+      entity_id: light.bett
+      domain: light
+      brightness_pct: 30
+    - type: turn_off
+      device_id: 816e324d0db76f186a09970899b71f68
+      entity_id: light.decke_schlafzimmer
+      domain: light
+    - type: turn_off
+      device_id: 3fec69e2d26141a480d886592ddb9b07
+      entity_id: light.stehlampe
+      domain: light
+    - service: cover.close_cover
+      data: {}
+      target:
+        entity_id: cover.rollos_fensterbank_schlafzimmer
+    - type: turn_off
+      device_id: 2580802aa078f9f43a98c3951327a6e9
+      entity_id: switch.steckdosenleiste_schlafzimmer
+      domain: switch
+    - service: switch.turn_off
+      data: {}
+      target:
+        entity_id: switch.dashboard_screen
   mode: single
   icon: mdi:bed-clock
 polly_futtern:
   alias: Polly füttern
   sequence:
-  - device_id: a4c274664cb7efe6046fa12adbcc36a2
-    domain: select
-    entity_id: select.aqara_futterautomat_feed
-    type: select_option
-    option: START
+    - device_id: a4c274664cb7efe6046fa12adbcc36a2
+      domain: select
+      entity_id: select.aqara_futterautomat_feed
+      type: select_option
+      option: START
   mode: single
   icon: mdi:cat
 spiele_radio:
   alias: Spiele Radio
   sequence:
-  - service: media_player.play_media
-    data_template:
-      entity_id: media_player.nest
-      media_content_id: '{% if is_state("input_select.radio_station", "Q-dance Radio")
-        %} http://25253.live.streamtheworld.com/Q_DANCE.mp3 {% elif is_state("input_select.radio_station",
-        "RSH") %} https://rsh.streamabc.net/regc-rshlive5331785-mp3-192-8119086?sABC=648o0rr0%230%238q58rr09ss15s81sqn5n9n7or6pn6s73%23fgernzf.efu.qr&aw_0_1st.playerid=streams.rsh.de&amsparams=playerid:streams.rsh.de;skey:1686834912
-        {% elif is_state("input_select.radio_station", "NDR2") %} https://www.ndr.de/resources/metadaten/audio/m3u/ndr1wellenord_hl.m3u
-        {% elif is_state("input_select.radio_station", "Radio Hamburg") %} https://frontend.streamonkey.net/rhh-1036/mp3-stream.m3u
-        {% elif is_state("input_select.radio_station", "NJOY") %} http://www.ndr.de/resources/metadaten/audio/m3u/n-joy.m3u
-        {% endif %}
+    - service: media_player.play_media
+      data_template:
+        entity_id: media_player.nest
+        media_content_id:
+          '{% if is_state("input_select.radio_station", "Q-dance Radio")
+          %} http://25253.live.streamtheworld.com/Q_DANCE.mp3 {% elif is_state("input_select.radio_station",
+          "RSH") %} https://rsh.streamabc.net/regc-rshlive5331785-mp3-192-8119086?sABC=648o0rr0%230%238q58rr09ss15s81sqn5n9n7or6pn6s73%23fgernzf.efu.qr&aw_0_1st.playerid=streams.rsh.de&amsparams=playerid:streams.rsh.de;skey:1686834912
+          {% elif is_state("input_select.radio_station", "NDR2") %} https://www.ndr.de/resources/metadaten/audio/m3u/ndr1wellenord_hl.m3u
+          {% elif is_state("input_select.radio_station", "Radio Hamburg") %} https://frontend.streamonkey.net/rhh-1036/mp3-stream.m3u
+          {% elif is_state("input_select.radio_station", "NJOY") %} http://www.ndr.de/resources/metadaten/audio/m3u/n-joy.m3u
+          {% endif %}
 
-        '
-      media_content_type: audio/mp4
+          '
+        media_content_type: audio/mp4
   mode: single
   icon: mdi:radio
 anni_musik:
   alias: Anni Musik
   sequence:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.nest_kuche
-    data:
-      media_content_id: spotify://71c55d65e0fb83ea97ebfd495afe5ed5/spotify:playlist:0cxlQu2hr6yFYZXds7HK6h
-      media_content_type: spotify://playlist
-    metadata:
-      title: "Musik zum aufstehen \U0001F31E"
-      thumbnail: https://i.scdn.co/image/ab67706c0000bebb4c8c729ddff49692ef888a62
-      media_class: playlist
-      children_media_class: track
-      navigateIds:
-      - {}
-      - media_content_type: spotify://library
-        media_content_id: spotify://71c55d65e0fb83ea97ebfd495afe5ed5
-      - media_content_type: spotify://current_user_playlists
-        media_content_id: spotify://71c55d65e0fb83ea97ebfd495afe5ed5/current_user_playlists
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.nest_kuche
+      data:
+        media_content_id: spotify://71c55d65e0fb83ea97ebfd495afe5ed5/spotify:playlist:0cxlQu2hr6yFYZXds7HK6h
+        media_content_type: spotify://playlist
+      metadata:
+        title: "Musik zum aufstehen \U0001F31E"
+        thumbnail: https://i.scdn.co/image/ab67706c0000bebb4c8c729ddff49692ef888a62
+        media_class: playlist
+        children_media_class: track
+        navigateIds:
+          - {}
+          - media_content_type: spotify://library
+            media_content_id: spotify://71c55d65e0fb83ea97ebfd495afe5ed5
+          - media_content_type: spotify://current_user_playlists
+            media_content_id: spotify://71c55d65e0fb83ea97ebfd495afe5ed5/current_user_playlists
   mode: single
   icon: mdi:account-music

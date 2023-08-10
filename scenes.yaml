@@ -1,13 +1,4 @@
-#-
-#
-#  ___  ___ ___ _ __   ___  ___
-# / __|/ __/ _ \ '_ \ / _ \/ __|
-# \__ \ (_|  __/ | | |  __/\__ \
-# |___/\___\___|_| |_|\___||___/
-#
-#
-#- from github.com/basnijholt/home-assistant-config
-- id: '1666318734760'
+- id: "1666318734760"
   name: Rollos Schlafzimmer Zu
   entities:
     cover.ikea_rollo_links_schlafzimmer:
@@ -22,7 +13,7 @@
       state: closed
   icon: mdi:roller-shade-closed
   metadata: {}
-- id: '1666318857751'
+- id: "1666318857751"
   name: Rollos Schlafzimmer Auf
   entities:
     cover.ikea_rollo_rechts_schlafzimmer:
@@ -37,7 +28,7 @@
       state: open
   icon: mdi:blinds-open
   metadata: {}
-- id: '1666319720541'
+- id: "1666319720541"
   name: Rollos Wohnzimmer Auf
   entities:
     cover.ikea_rollo_links_wohnzimmer:
@@ -52,7 +43,7 @@
       state: open
   icon: mdi:blinds-open
   metadata: {}
-- id: '1666319764775'
+- id: "1666319764775"
   name: Rollos Wohnzimmer Zu
   entities:
     cover.ikea_rollo_links_wohnzimmer:
@@ -67,19 +58,19 @@
       state: closed
   icon: mdi:roller-shade-closed
   metadata: {}
-- id: '1666351106791'
+- id: "1666351106791"
   name: Decke Wohnzimmer An
   entities:
     light.decke_wohnzimmer:
       min_mireds: 153
       max_mireds: 500
       effect_list:
-      - None
-      - candle
-      - fire
+        - None
+        - candle
+        - fire
       supported_color_modes:
-      - color_temp
-      - xy
+        - color_temp
+        - xy
       mode: normal
       dynamics: none
       friendly_name: Decke Wohnzimmer
@@ -88,58 +79,58 @@
       brightness: 255
       color_temp: 366
       hs_color:
-      - 28.327
-      - 64.71
+        - 28.327
+        - 64.71
       rgb_color:
-      - 255
-      - 167
-      - 89
+        - 255
+        - 167
+        - 89
       xy_color:
-      - 0.524
-      - 0.387
+        - 0.524
+        - 0.387
       effect: None
-      state: 'on'
+      state: "on"
   icon: mdi:ceiling-light
   metadata: {}
-- id: '1666351136419'
+- id: "1666351136419"
   name: Decke Wohnzimmer Aus
   entities:
     light.decke_wohnzimmer:
       min_mireds: 153
       max_mireds: 500
       effect_list:
-      - None
-      - candle
-      - fire
+        - None
+        - candle
+        - fire
       supported_color_modes:
-      - color_temp
-      - xy
+        - color_temp
+        - xy
       mode: normal
       dynamics: none
       friendly_name: Decke Wohnzimmer
       supported_features: 44
-      state: 'off'
+      state: "off"
   icon: mdi:ceiling-light-outline
   metadata: {}
-- id: '1666558730941'
+- id: "1666558730941"
   name: Wecker Aus
   entities:
     input_boolean.wecker_schalter:
       editable: true
       icon: mdi:alarm
       friendly_name: Wecker Schalter
-      state: 'off'
+      state: "off"
   metadata:
     input_boolean.wecker_schalter:
       entity_only: true
-- id: '1666607897292'
+- id: "1666607897292"
   name: Meeting
   entities:
     cover.rollos_fensterbank_wohnzimmer:
       current_position: 74
       entity_id:
-      - cover.ikea_rollo_rechts_wohnzimmer
-      - cover.ikea_rollo_links_wohnzimmer
+        - cover.ikea_rollo_rechts_wohnzimmer
+        - cover.ikea_rollo_links_wohnzimmer
       friendly_name: Rollos Fensterbank Wohnzimmer
       supported_features: 15
       state: open

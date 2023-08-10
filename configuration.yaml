@@ -23,4 +23,4 @@ intent_script: !include_dir_merge_list custom_configs/intents/
 #shell_command: !include_dir_merge_list custom_configs/shell_commands/
 
 shell_command:
-  update_repo: bash config/shell_scripts/git.sh
+  update_repo: 'cd /config && git add . && git commit -am "Automatic Commit" && git pull && git push'

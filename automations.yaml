@@ -1462,3 +1462,48 @@
   - service: shell_command.update_repo
     data: {}
   mode: single
+- id: '1691741828322'
+  alias: 'Ankommen: Schalten Sie die Musik vom iPhone auf die Lautsprecher um, wenn
+    niemand zu Hause ist'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.aqara_contact_wohnungstur_contact
+    from: 'on'
+    to: 'off'
+    enabled: true
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.guestmode
+      state: 'off'
+    - condition: template
+      value_template: '{{ is_state_attr(''media_player.spotify_florian'', ''source'',
+        ''iPhone'') }}'
+      enabled: true
+    - condition: template
+      value_template: '{{ is_state(''media_player.spotify_florian'', ''playing'')
+        }}'
+      enabled: true
+  action:
+  - service: notify.mobile_app_florians_iphone
+    data:
+      title: "Willkommen Zuhause \U0001F3E0"
+      message: 'Ich habe die Musik von deinem iPhone auf Sonos Ray gestellt '
+  - service: media_player.select_source
+    data:
+      source: Spotify Connect
+    target:
+      entity_id: media_player.sonos_ray
+  - service: media_player.select_source
+    data:
+      source: Sonos Ray
+    target:
+      entity_id: media_player.spotify_florian
+  - service: media_player.media_play
+    data: {}
+    target:
+      entity_id: media_player.sonos_ray
+  mode: single

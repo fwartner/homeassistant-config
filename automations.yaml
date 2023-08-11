@@ -943,7 +943,7 @@
   action:
   - service: fully_kiosk.load_url
     data:
-      url: http://10.182.1.240:8123/dashboard-tablet/tablet-overview
+      url: http://10.182.1.240:8123/dashboard-desktop/0?kiosk
     target:
       device_id: 8d9991a5dd07654891a5cf3a476cba07
   - service: switch.turn_on

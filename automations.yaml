@@ -506,6 +506,7 @@
     - timer.zahneputzen
     to: active
     id: jonasCleanToothTimerOn
+    from:
   - platform: state
     entity_id:
     - timer.zahneputzen
@@ -574,25 +575,24 @@
         id:
         - jonasCleanToothTimerOn
       sequence:
-      - service: media_player.play_media
+      - service: media_player.turn_on
+        data: {}
         target:
-          entity_id: media_player.hp_badezimmer
+          device_id: e44130d7e1ed3ec3b0a00e119c9f9e64
+      - service: chime_tts.say
         data:
-          media_content_id: media-source://tts/cloud?message=Und+los+gehts%21+Putz+deine+Z%C3%A4hne+sch%C3%B6n+gr%C3%BCndlich.%0AIch+sage+dir+Bescheid%2C+wenn+du+fertig+bist.&language=de-DE&voice=KatjaNeural
-          media_content_type: provider
-        metadata:
-          title: 'Und los gehts! Putz deine Zähne schön gründlich.
-
-            Ich sage dir Bescheid, wenn du fertig bist.'
-          thumbnail: https://brands.home-assistant.io/_/cloud/logo.png
-          media_class: app
-          children_media_class:
-          navigateIds:
-          - {}
-          - media_content_type: app
-            media_content_id: media-source://tts
-          - media_content_type: provider
-            media_content_id: media-source://tts/cloud?message=Und+los+gehts%21+Putz+deine+Z%C3%A4hne+sch%C3%B6n+gr%C3%BCndlich.%0AIch+sage+dir+Bescheid%2C+wenn+du+fertig+bist.&language=de-DE&voice=KatjaNeural
+          delay: 10
+          tts_playback_speed: 100
+          volume_level: 1
+          tts_platform: tts.piper
+          cache: true
+          announce: true
+          gender: female
+          message: Und los gehts! Putz deine Zähne schön gründlich. Ich sage dir Bescheid,
+            wenn du fertig bist.
+          chime_path: custom_components/chime_tts/mp3s/bells.mp3
+        target:
+          device_id: e44130d7e1ed3ec3b0a00e119c9f9e64
     - conditions:
       - condition: trigger
         id:

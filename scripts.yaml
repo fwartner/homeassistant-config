@@ -85,6 +85,10 @@ anni_musik:
   icon: mdi:account-music
 zahneputzen:
   alias: Zähneputzen
-  sequence: []
+  sequence:
+  - service: timer.start
+    data: {}
+    target:
+      entity_id: timer.zahneputzen
   mode: single
   icon: mdi:toothbrush

@@ -1634,3 +1634,44 @@
         state: 'on'
       - service: script.zahneputzen
         data: {}
+- id: '1691786451171'
+  alias: Nachtlicht Badezimmer
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.mmwave_badezimmer
+    to: 'on'
+    id: badezimmerOn
+  - platform: state
+    entity_id:
+    - binary_sensor.mmwave_badezimmer
+    to: 'off'
+    id: badezimmerOff
+  condition:
+  - condition: sun
+    before: sunrise
+    after: sunset
+    after_offset: '1'
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - badezimmerOn
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness_pct: 30
+        target:
+          entity_id: light.decke_badezimmer
+    - conditions:
+      - condition: trigger
+        id:
+        - badezimmerOff
+      sequence:
+      - service: light.turn_off
+        data: {}
+        target:
+          device_id: 507d523084cd0d287b97a79f906aef8d
+  mode: single

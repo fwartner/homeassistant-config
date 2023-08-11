@@ -1,0 +1,41 @@
+- platform: template
+  sensors:
+    tv_schlafzimmer_volume:
+      value_template: >
+        {{ state_attr("media_player.tv_schlafzimmer", "volume_level") }}
+      unit_of_measurement: "%"
+
+    tv_wohnzimmer_volume:
+      value_template: >
+        {{ state_attr("media_player.tv_wohnzimmer", "volume_level") }}
+      unit_of_measurement: "%"
+
+    sonos_ray_volume:
+      value_template: >
+        {{ state_attr("media_player.sonos_ray", "volume_level") }}
+      unit_of_measurement: "%"
+
+    hp_wohnzimmer_volume:
+      value_template: >
+        {{ state_attr("media_player.hp_wohnzimmer", "volume_level") }}
+      unit_of_measurement: "%"
+
+    hp_flur_volume:
+      value_template: >
+        {{ state_attr("media_player.hp_flur", "volume_level") }}
+      unit_of_measurement: "%"
+
+    hp_schlafzimmer_volume:
+      value_template: >
+        {{ state_attr("media_player.hp_schlafzimmer", "volume_level") }}
+      unit_of_measurement: "%"
+
+    hp_badezimmer_volume:
+      value_template: >
+        {{ state_attr("media_player.hp_badezimmer", "volume_level") }}
+      unit_of_measurement: "%"
+
+    hp_buero_volume:
+      value_template: >
+        {{ state_attr("media_player.hp_buero", "volume_level") }}
+      unit_of_measurement: "%"

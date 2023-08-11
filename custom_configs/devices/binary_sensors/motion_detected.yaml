@@ -1,0 +1,56 @@
+- platform: template
+  sensors:
+    motion_detected:
+      friendly_name: Any motion detected
+      value_template: >
+        {{ is_state("binary_sensor.activity_in_kitchen", "on")
+            or is_state("binary_sensor.activity_in_living_room", "on")
+            or is_state("binary_sensor.activity_in_hall", "on")
+            or is_state("binary_sensor.activity_in_bathroom", "on")
+            or is_state("binary_sensor.activity_in_bedroom", "on") }}
+
+    motion_detected_in_last_hour:
+      friendly_name: Any motion detected in last hour
+      value_template: >
+        {{ is_state("binary_sensor.motion_detected", "on") }}
+      delay_off: "01:00:00"
+
+    activity_in_bathroom:
+      friendly_name: Aktivität im Badezimmer
+      value_template: >
+        {{ is_state("binary_sensor.mmwave_badezimmer", "on")
+            or is_state("binary_sensor.aqara_water_badezimmer_water_leak", "on")
+            or is_state("media_player.hp_badezimmer", "playing") }}
+      delay_off: "00:03:00"
+
+    activity_in_living_room:
+      friendly_name: Aktivität im Wohnzimmer
+      value_template: >
+        {{ is_state("media_player.apple_tv_wohnzimmmer", "playing")
+            or is_state("media_player.sonos_ray", "playing") }}
+      delay_off: "00:20:00"
+
+    activity_in_kitchen:
+      friendly_name: Aktivität in der Küche
+      value_template: >
+        {{ is_state("binary_sensor.hlk_kuche_bewegung", "on")
+            or is_state("binary_sensor.hlk_kuche_belegung", "on") }}
+      delay_off: "00:01:00"
+
+    activity_in_hall:
+      friendly_name: Aktivität im Flur
+      value_template: >
+        {{ is_state("binary_sensor.hlk_flur_bewegung", "on")
+            or is_state("binary_sensor.hlk_flur_belegung", "on")
+            or is_state("binary_sensor.aqara_contact_wohnungstur_contact", "on") }}
+      delay_off: "00:01:00"
+
+    activity_in_bedroom:
+      friendly_name: Aktivität im Schlafzimmer
+      value_template: >
+        {{ is_state("binary_sensor.motion_sensor_bedroom_door", "on")
+            or is_state("binary_sensor.bed_sensor_bett_links", "on")
+            or is_state("binary_sensor.bed_sensor_bett_rechts", "on")
+            or is_state("media_player.hp_schlafzimmer", "playing")
+            or is_state("media_player.tv_schlafzimmer", "playing") }}
+      delay_off: "00:01:00"

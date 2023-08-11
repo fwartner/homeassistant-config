@@ -477,22 +477,148 @@
       entity_id: input_boolean.florian_im_meeting
   mode: single
 - id: '1676121630166'
-  alias: 'Büro: Jonas erkannt'
-  description: ''
+  alias: Jonas
+  description: Erkennung Büro, Spielzeit, Schlafenszeit, Musik
   trigger:
   - type: motion
     platform: device
-    device_id: 460a091a39a1f6f0571b20e2330c370c
-    entity_id: binary_sensor.motion_buro_motion
+    device_id: 618fef42fa8e6efc59445fc6314ada4b
+    entity_id: 105a3f210a0d1dd818f80a2e1c8987a2
     domain: binary_sensor
-  condition:
-  - condition: state
-    entity_id: input_boolean.jonas_ist_da
-    state: 'on'
+    id: jonasMotionOn
+  - platform: time
+    at: '19:00:00'
+    id: jonasCleanTeethOn
+  - platform: state
+    entity_id:
+    - input_boolean.jonas_ist_da
+    from: 'off'
+    to: 'on'
+    id: jonasHereOn
+  - platform: state
+    entity_id:
+    - input_boolean.jonas_ist_da
+    from: 'on'
+    to: 'off'
+    id: jonasHereOff
+  - platform: state
+    entity_id:
+    - timer.zahneputzen
+    to: active
+    id: jonasCleanToothTimerOn
+  - platform: state
+    entity_id:
+    - timer.zahneputzen
+    to: idle
+    id: jonasCleanToothTimerOff
+  condition: []
   action:
-  - service: notify.alexa_media_florians_echo_show_8_2nd_gen
-    data:
-      message: Jonas ist im Büro
+  - choose:
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id:
+          - jonasMotionOn
+        - condition: state
+          entity_id: input_boolean.jonas_ist_da
+          state: 'on'
+      sequence:
+      - service: notify.alexa_media_florians_echo_show_8_2nd_gen
+        data:
+          message: Jonas ist im Büro
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: input_boolean.jonas_ist_da
+          state: 'on'
+        - condition: trigger
+          id:
+          - jonasCleanTeethOn
+        - condition: state
+          entity_id: sensor.people_home
+          state: '1'
+      sequence:
+      - service: notify.alexa_media_florians_echo_show_8_2nd_gen
+        data:
+          message: Lieber Jonas.. Es wird Zeit, ins Bett zu gehen. Bitte geh ins Badezimmer
+            und putz deine Zähne, zieh dir deinen Schlafanzug an und leg dich schonmal
+            ins Bett.
+    - conditions:
+      - condition: trigger
+        id:
+        - jonasHereOn
+      sequence:
+      - service: roborock.vacuum_clean_segment
+        data:
+          segments:
+          - '16'
+          - '18'
+        target:
+          entity_id: vacuum.roborock_s7_maxv
+    - conditions:
+      - condition: trigger
+        id:
+        - jonasHereOff
+      sequence:
+      - service: roborock.vacuum_clean_segment
+        data:
+          segments:
+          - '16'
+          - '18'
+        target:
+          entity_id: vacuum.roborock_s7_maxv
+    - conditions:
+      - condition: trigger
+        id:
+        - jonasCleanToothTimerOn
+      sequence:
+      - service: media_player.play_media
+        target:
+          entity_id: media_player.hp_badezimmer
+        data:
+          media_content_id: media-source://tts/cloud?message=Und+los+gehts%21+Putz+deine+Z%C3%A4hne+sch%C3%B6n+gr%C3%BCndlich.%0AIch+sage+dir+Bescheid%2C+wenn+du+fertig+bist.&language=de-DE&voice=KatjaNeural
+          media_content_type: provider
+        metadata:
+          title: 'Und los gehts! Putz deine Zähne schön gründlich.
+
+            Ich sage dir Bescheid, wenn du fertig bist.'
+          thumbnail: https://brands.home-assistant.io/_/cloud/logo.png
+          media_class: app
+          children_media_class:
+          navigateIds:
+          - {}
+          - media_content_type: app
+            media_content_id: media-source://tts
+          - media_content_type: provider
+            media_content_id: media-source://tts/cloud?message=Und+los+gehts%21+Putz+deine+Z%C3%A4hne+sch%C3%B6n+gr%C3%BCndlich.%0AIch+sage+dir+Bescheid%2C+wenn+du+fertig+bist.&language=de-DE&voice=KatjaNeural
+    - conditions:
+      - condition: trigger
+        id:
+        - jonasCleanToothTimerOff
+      sequence:
+      - service: media_player.play_media
+        target:
+          entity_id: media_player.hp_badezimmer
+        data:
+          media_content_id: media-source://tts/cloud?message=Super%21+Du+kannst+die+Zahnb%C3%BCrste+jetzt+saubermachen+und+dich+ins+Bett+legen.%0A%0ASchlaf+gut%21&language=de-DE&voice=KatjaNeural
+          media_content_type: provider
+        metadata:
+          title: 'Super! Du kannst die Zahnbürste jetzt saubermachen und dich ins
+            Bett legen.
+
+
+            Schlaf gut!'
+          thumbnail: https://brands.home-assistant.io/_/cloud/logo.png
+          media_class: app
+          children_media_class:
+          navigateIds:
+          - {}
+          - media_content_type: app
+            media_content_id: media-source://tts
+          - media_content_type: provider
+            media_content_id: media-source://tts/cloud?message=Super%21+Du+kannst+die+Zahnb%C3%BCrste+jetzt+saubermachen+und+dich+ins+Bett+legen.%0A%0ASchlaf+gut%21&language=de-DE&voice=KatjaNeural
   mode: single
 - id: '1677005798686'
   alias: 'Bett: Flo im Bett'

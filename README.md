@@ -38,6 +38,15 @@ My personal home assistant configuation files.
 - Paperless-NGX running on Proxmox
 - UptimeKuma running on Proxmox (https://status.wartner.io)
 
+## Devices
+| Count | Name | Buy Link |
+|---|---|---|
+| 7 | Aqara Temperature & Humidity Sensor | https://amzn.to/44agb1M |
+| 7 | Aqara Door & Window Sensor | https://amzn.to/45lsb1t |
+| 3 | Aqara Water Leak Sensor | https://amzn.to/442abYR |
+| 2 | IKEA FYRTUR | / |
+| 2 | IKEA TREDANSEN | / |
+| 1 | Aqara Pet Feeder C1 | https://amzn.to/3s3DMnv |
 
 ## Authors
 - [@fwartner](https://www.github.com/fwartner)

@@ -1,5 +1,6 @@
 homeassistant:
   packages: !include_dir_named packages
+  legacy_templates: false
 
 script: !include scripts.yaml
 scene: !include scenes.yaml

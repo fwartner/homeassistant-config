@@ -1495,7 +1495,7 @@
   - service: notify.mobile_app_florians_iphone
     data:
       title: "Willkommen Zuhause \U0001F3E0"
-      message: 'Ich habe die Musik von deinem iPhone auf Sonos Ray gestellt '
+      message: Ich habe die Musik von deinem iPhone auf Sonos Ray gestellt
   - service: media_player.select_source
     data:
       source: Spotify Connect

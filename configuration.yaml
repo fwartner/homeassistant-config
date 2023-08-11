@@ -23,19 +23,3 @@ conversation: !include_dir_merge_list custom_configs/conversation/
 intent_script: !include_dir_merge_list custom_configs/intents/
 #shell_command: !include_dir_merge_list custom_configs/shell_commands/
 
-shell_command:
-  update_repo: 'cd /config && git add . && git commit -am "Automatic Commit" && git pull && git push'
-
-tts:
-  - platform: amazon_polly
-    aws_access_key_id: !secret AWS_ACCESS_KEY_ID
-    aws_secret_access_key: !secret AWS_SECRET_ACCESS_KEY
-    region_name: eu-central-1
-    voice: Vicki
-    cache: true
-    engine: neural
-  - platform: google_translate
-    cache: true
-    cache_dir: /tmp/tts
-    time_memory: 300
-    language: "de"

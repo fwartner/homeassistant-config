@@ -506,7 +506,6 @@
     - timer.zahneputzen
     to: active
     id: jonasCleanToothTimerOn
-    from:
   - platform: state
     entity_id:
     - timer.zahneputzen
@@ -575,50 +574,19 @@
         id:
         - jonasCleanToothTimerOn
       sequence:
-      - service: media_player.turn_on
-        data: {}
-        target:
-          device_id: e44130d7e1ed3ec3b0a00e119c9f9e64
-      - service: chime_tts.say
+      - service: notify.alexa_media_florians_echo_show_8_2nd_gen
         data:
-          delay: 10
-          tts_playback_speed: 100
-          volume_level: 1
-          tts_platform: tts.piper
-          cache: true
-          announce: true
-          gender: female
           message: Und los gehts! Putz deine Zähne schön gründlich. Ich sage dir Bescheid,
             wenn du fertig bist.
-          chime_path: custom_components/chime_tts/mp3s/bells.mp3
-        target:
-          device_id: e44130d7e1ed3ec3b0a00e119c9f9e64
     - conditions:
       - condition: trigger
         id:
         - jonasCleanToothTimerOff
       sequence:
-      - service: media_player.play_media
-        target:
-          entity_id: media_player.hp_badezimmer
+      - service: notify.alexa_media_florians_echo_show_8_2nd_gen
         data:
-          media_content_id: media-source://tts/cloud?message=Super%21+Du+kannst+die+Zahnb%C3%BCrste+jetzt+saubermachen+und+dich+ins+Bett+legen.%0A%0ASchlaf+gut%21&language=de-DE&voice=KatjaNeural
-          media_content_type: provider
-        metadata:
-          title: 'Super! Du kannst die Zahnbürste jetzt saubermachen und dich ins
-            Bett legen.
-
-
-            Schlaf gut!'
-          thumbnail: https://brands.home-assistant.io/_/cloud/logo.png
-          media_class: app
-          children_media_class:
-          navigateIds:
-          - {}
-          - media_content_type: app
-            media_content_id: media-source://tts
-          - media_content_type: provider
-            media_content_id: media-source://tts/cloud?message=Super%21+Du+kannst+die+Zahnb%C3%BCrste+jetzt+saubermachen+und+dich+ins+Bett+legen.%0A%0ASchlaf+gut%21&language=de-DE&voice=KatjaNeural
+          message: Super! Du kannst die Zahnbürste jetzt saubermachen und dich ins
+            Bett legen. Schlaf gut!
   mode: single
 - id: '1677005798686'
   alias: 'Bett: Flo im Bett'
@@ -935,50 +903,6 @@
     device_id: 1908fc0d3ce48c73492fb9d57e328810
     entity_id: switch.roborock_s7_maxv_dnd_switch
     domain: switch
-  mode: single
-- id: '1688122097812'
-  alias: 'Staubsauger: Jonas'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - input_boolean.jonas_ist_da
-    from: 'off'
-    to: 'on'
-    id: jonasOn
-  - platform: state
-    entity_id:
-    - input_boolean.jonas_ist_da
-    from: 'on'
-    to: 'off'
-    id: jonasOff
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - jonasOn
-      sequence:
-      - service: roborock.vacuum_clean_segment
-        data:
-          segments:
-          - '16'
-          - '18'
-        target:
-          entity_id: vacuum.roborock_s7_maxv
-    - conditions:
-      - condition: trigger
-        id:
-        - jonasOff
-      sequence:
-      - service: roborock.vacuum_clean_segment
-        data:
-          segments:
-          - '16'
-          - '18'
-        target:
-          entity_id: vacuum.roborock_s7_maxv
   mode: single
 - id: '1689600805179'
   alias: Anni ist da
@@ -1693,3 +1617,16 @@
             critical: 1
             volume: 1
   mode: single
+- id: '1691769668517'
+  alias: 'Jonas: Zähneputzen Starten'
+  description: ''
+  use_blueprint:
+    path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
+    input:
+      action_sensor: sensor.aqara_taster_badezimmer_action
+      single_action:
+      - condition: state
+        entity_id: input_boolean.jonas_ist_da
+        state: 'on'
+      - service: script.zahneputzen
+        data: {}

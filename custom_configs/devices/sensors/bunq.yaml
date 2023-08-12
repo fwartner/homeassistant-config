@@ -15,3 +15,67 @@
     bunq_transactions_gehalt:
       value_template: >
         {{ state_attr('sensor.bunq_gehalt', 'transactions') }}
+
+    bunq_latest_transaction_amount_miete_und_nebenkosten:
+      value_template: >
+        {{  state_attr('sensor.bunq_miete_und_nebenkosten', 'transactions') |
+        sort(attribute= 'created', reverse=true) 
+        | map(attribute ='amount') 
+        | first
+        }}
+
+    bunq_latest_transaction_amount_bankkonto:
+      value_template: >
+        {{  state_attr('sensor.bunq_bankkonto', 'transactions') |
+        sort(attribute= 'created', reverse=true) 
+        | map(attribute ='amount') 
+        | first
+        }}
+
+    bunq_latest_transaction_amount_einkauf:
+      value_template: >
+        {{  state_attr('sensor.bunq_einkauf', 'transactions') |
+        sort(attribute= 'created', reverse=true) 
+        | map(attribute ='amount') 
+        | first
+        }}
+
+    bunq_latest_transaction_amount_gehalt:
+      value_template: >
+        {{  state_attr('sensor.bunq_gehalt', 'transactions') |
+        sort(attribute= 'created', reverse=true) 
+        | map(attribute ='amount') 
+        | first
+        }}
+
+    bunq_latest_transaction_description_gehalt:
+      value_template: >
+        {{  state_attr('sensor.bunq_gehalt', 'transactions') |
+        sort(attribute= 'created', reverse=true) 
+        | map(attribute ='description') 
+        | first
+        }}
+
+    bunq_latest_transaction_description_miete_und_nebenkosten:
+      value_template: >
+        {{  state_attr('sensor.bunq_miete_und_nebenkosten', 'transactions') |
+        sort(attribute= 'created', reverse=true) 
+        | map(attribute ='description') 
+        | first
+        }}
+
+    bunq_latest_transactiondescriptiont_bankkonto:
+      value_template: >
+        {{  state_attr('sensor.bunq_bankkonto', 'transactions') |
+        sort(attribute= 'created', reverse=true) 
+        | map(attribute ='description') 
+        | first
+        }}
+
+    bunq_latest_transaction_description_einkauf:
+      value_template: >
+        {{  state_attr('sensor.bunq_einkauf', 'transactions') |
+        sort(attribute= 'created', reverse=true) 
+        | map(attribute ='description') 
+        | first
+        }}

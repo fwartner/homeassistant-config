@@ -356,38 +356,36 @@
         domain: remote
   mode: single
 - id: '1673947899624'
-  alias: 'Futterautomat: Alle 2 Stunden füttern'
+  alias: 'Futterautomat: Alle 3 Stunden füttern'
   description: ''
   trigger:
-  - platform: sun
-    event: sunrise
-    offset: '1'
-  condition: []
+  - platform: time_pattern
+    hours: '3'
+    id: feedOn
+  condition:
+  - condition: time
+    after: 07:30:00
+    before: '22:00:00'
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+    - sun
   action:
-  - repeat:
-      while:
-      - condition: time
-        after: 02:00:00
-        before: '22:00:00'
-        weekday:
-        - sun
-        - sat
-        - fri
-        - thu
-        - wed
-        - tue
-        - mon
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - feedOn
       sequence:
       - service: select.select_option
         data:
           option: START
         target:
           entity_id: select.aqara_futterautomat_feed
-      - delay:
-          hours: 3
-          minutes: 0
-          seconds: 0
-          milliseconds: 0
   mode: restart
 - id: '1673948568537'
   alias: Urlaubsmodus nach Kalender

@@ -1,9 +1,11 @@
 esphome:
   name: pflanzen-test
   friendly_name: pflanzen-test
+  platformio_options:
+    board_build.f_cpu: 160000000L
 
 esp8266:
-  board: nodemcu
+  board: d1_mini
 
 # Enable logging
 logger:
@@ -27,18 +29,40 @@ wifi:
 
 captive_portal:
 
-uart:
-  tx_pin: TX
-  rx_pin: RX
-  baud_rate: 9600
+web_server:
+    port: 80
+
+light:
+  - platform: binary
+    name: "Blue Light"
+    output: light_output
+    id: led_light
+    restore_mode: ALWAYS_OFF
+
+output:
+  - platform: gpio
+    pin: GPIO2
+    id: light_output
+    inverted: true
 
 sensor:
-  - platform: smt100
-    counts:
-        name: "Counts"
-    temperature:
-        name: "Temperature"
-    moisture:
-        name: "Moisture"
-    voltage:
-        name: "Voltage"
+- platform: adc
+  pin: A0
+  id: "adcMoisture"
+  accuracy_decimals: 5
+  unit_of_measurement: '%'
+  filters:
+    - calibrate_linear:
+      - 0.32324  -> 100.0
+      - 0.69336 -> 0
+  name: "Plant - Moisture Level"
+  update_interval: 30s
+- platform: adc
+  pin: A0
+  id: "adcRaw_Sensor_Data"
+  accuracy_decimals: 5
+  name: "Plant - Sensor Voltage"
+  update_interval: 30s
+- platform: wifi_signal
+  name: "Plant - WiFi Signal Sensor"
+  update_interval: 30s

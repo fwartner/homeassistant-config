@@ -1,0 +1,17 @@
+- platform: template
+  sensors:
+    bunq_transactions_miete_und_nebenkosten:
+      value_template: >
+        {{ state_attr('sensor.bunq_miete_und_nebenkosten', 'transactions') }}
+
+    bunq_transactions_bankkonto:
+      value_template: >
+        {{ state_attr('sensor.bunq_bankkonto', 'transactions') }}
+
+    bunq_transactions_einkauf:
+      value_template: >
+        {{ state_attr('sensor.bunq_einkauf', 'transactions') }}
+
+    bunq_transactions_gehalt:
+      value_template: >
+        {{ state_attr('sensor.bunq_gehalt', 'transactions') }}

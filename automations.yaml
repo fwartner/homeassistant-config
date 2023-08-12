@@ -1634,6 +1634,11 @@
         state: 'on'
       - service: script.zahneputzen
         data: {}
+      - condition: time
+        weekday:
+        - fri
+        - sat
+        before: '20:00:00'
 - id: '1691786451171'
   alias: Nachtlicht Badezimmer
   description: ''

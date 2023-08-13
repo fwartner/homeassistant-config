@@ -461,32 +461,38 @@
     from: 'off'
     to: 'on'
     id: jonasHereOn
+    alias: Jonas ist da
   - platform: state
     entity_id:
     - input_boolean.jonas_ist_da
     from: 'on'
     to: 'off'
     id: jonasHereOff
+    alias: Jonas ist nicht mehr da
   - platform: state
     entity_id:
     - timer.zahneputzen
     to: active
     id: jonasCleanToothTimerOn
+    alias: Zähneputzen beginnt
   - platform: state
     entity_id:
     - timer.zahneputzen
     to: idle
     id: jonasCleanToothTimerOff
+    alias: Zähneputzen endet
   - platform: calendar
     event: start
     offset: 0:0:0
     entity_id: calendar.jonas
     id: jonasCalendaOn
+    alias: Papawochenende beginnt
   - platform: calendar
     event: end
     offset: 0:0:0
     entity_id: calendar.jonas
     id: jonasCalendaOff
+    alias: Papawochenende endet
   condition: []
   action:
   - choose:

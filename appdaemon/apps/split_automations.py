@@ -1,9 +1,9 @@
-"""Splits automation.yaml into seperate files.
+"""Splits automation.yaml into seperate automation files.
 
 # Example `apps.yaml` config:
 ```
 split_automation:
-  module: split_automation
+  module: split_automations
   class: SplitAutomation
 ```
 """
@@ -11,9 +11,13 @@ split_automation:
 import hassapi as hass
 import os
 import yaml
+import datetime
+import unicodedata
 
 SPLIT_DIR = "/config/custom_configs/automations"
-AUTOMATION_FILE = "/config/automation.yaml"
+AUTOMATION_FILE = "/config/automations.yaml"
+DEFAULT_HOUR = 13
+DEFAULT_MINUTE = 0
 
 class SplitAutomation(hass.Hass):
 
@@ -23,34 +27,39 @@ class SplitAutomation(hass.Hass):
         
         # Read the automation.yaml file
         automation_path = "/config/automation.yaml"
-        automations = self.read_yaml_file(AUTOMATION_FILE)
+        automations = self._read_yaml_file(AUTOMATION_FILE)
+        h = self.args.get("hour", DEFAULT_HOUR)
+        m = self.args.get("minute", DEFAULT_MINUTE)
 
         if not os.path.exists(SPLIT_DIR):
             os.makedirs(SPLIT_DIR)
 
-        self.run_daily(self.start_cb)
+        self.run_daily(self.start_cb, datetime.time(h, m, 30))
 
         # Iterate through each automation and save it as a separate file
-    def start_cb:
+    def start_cb(self, kwargs):
         for automation in automations:
-            automation_name = self.get_automation_name(automation)
+            automation_name = self._get_automation_name(automation)
             automation_filename = os.path.join(SPLIT_DIR, f"{automation_name}.yaml")
-            self.write_yaml_file(automation_filename, automation)
+            self._write_yaml_file(automation_filename, automation)
 
         self.log("Automations split and saved successfully.")
 
-    def read_yaml_file(self, file_path):
-        with open(file_path, 'r') as file:
+    def _read_yaml_file(self, file_path):
+        with open(file_path, 'r', encoding='utf-8') as file:
             return yaml.safe_load(file)
 
-    def write_yaml_file(self, file_path, data):
-        with open(file_path, 'w') as file:
-            yaml.dump(data, file, default_flow_style=False)
+    def _write_yaml_file(self, file_path, data):
+        with open(file_path, 'w', encoding='utf-8') as file:
+            yaml.dump(data, file, default_flow_style=False, allow_unicode=True)
 
-    def get_automation_name(self, automation):
-        return automation.get("alias", "Unnamed_Automation").replace(" ", "_").lower()
+    def _get_automation_name(self, automation):
+        automation_alias = automation.get("alias", "Unnamed_Automation")
+        normalized_alias = self._normalize_string(automation_alias)
+        return normalized_alias.replace(" ", "_").lower()
 
-
-
+    def _normalize_string(self, text):
+        normalized_text = unicodedata.normalize("NFKD", text)
+        return normalized_text.encode("ascii", "ignore").decode("utf-8")
 
 

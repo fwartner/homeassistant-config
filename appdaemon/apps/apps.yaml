@@ -8,5 +8,5 @@ battery_monitor:
   minute: 0
 
 split_automation:
-  module: split_automation
+  module: split_automations
   class: SplitAutomation

@@ -1,48 +1,12 @@
 alias: Taster Schlafzimmer Actions
 description: ''
-id: '1670802573901'
+id: '1683574940325'
 use_blueprint:
   input:
     action_sensor: sensor.aqara_taster_schlafzimmer_action
     double_action:
-    - device_id: 969bcb84da5527d41edf70f3c7cb80a5
-      domain: switch
-      entity_id: switch.steckdose_bett
-      type: turn_on
-    - device_id: 1b7c5895c9f406690baac9b141e2bbc0
-      domain: switch
-      entity_id: switch.steckdose_tv_schlafzimmer
-      type: turn_on
     - data: {}
-      service: script.3_minuten_bettzeit
-    single_action:
-    - else:
-      - if:
-        - condition: or
-          conditions:
-          - condition: state
-            entity_id: cover.rollos_fensterbank_schlafzimmer
-            state: opening
-          - condition: state
-            entity_id: cover.rollos_fensterbank_schlafzimmer
-            state: open
-        then:
-        - data: {}
-          service: cover.close_cover
-          target:
-            entity_id: cover.rollos_fensterbank_schlafzimmer
-      if:
-      - condition: or
-        conditions:
-        - condition: state
-          entity_id: cover.rollos_fensterbank_schlafzimmer
-          state: closing
-        - condition: state
-          entity_id: cover.rollos_fensterbank_schlafzimmer
-          state: closed
-      then:
-      - data: {}
-        service: cover.open_cover
-        target:
-          entity_id: cover.rollos_fensterbank_schlafzimmer
+      service: script.turn_on
+      target:
+        entity_id: script.3_minuten_bettzeit
   path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml

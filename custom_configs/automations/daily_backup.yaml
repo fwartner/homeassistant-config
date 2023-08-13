@@ -10,3 +10,5 @@ mode: single
 trigger:
 - at: 02:00:00
   platform: time
+- command: Mache ein Backup
+  platform: conversation

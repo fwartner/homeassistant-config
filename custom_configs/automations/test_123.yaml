@@ -1,0 +1,13 @@
+action:
+- metadata: {}
+  service: scene.turn_on
+  target:
+    entity_id: scene.decke_wohnzimmer_an
+alias: Test 123
+condition: []
+description: ''
+id: '1691944102304'
+mode: single
+trigger:
+- event: start
+  platform: homeassistant

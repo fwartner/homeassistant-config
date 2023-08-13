@@ -20,13 +20,12 @@ class SplitAutomations(hass.Hass):
     def initialize(self):
         self._load_config()
 
-        # Check if the split directory is empty, and perform initial import if needed
-        if not os.listdir(self.split_dir):
-            self.log("Split directory is empty. Performing initial import...")
-            self.initial_import()
+        self.listen_event(self.automation_created, event="automation_created")
+        self.listen_event(self.automation_updated, event="automation_updated")
+        self.listen_event(self.automation_deleted, event="automation_deleted")
 
-        self.listen_event(self.new_automation_created, event="automation_reloaded")
-        self.listen_event(self.automation_deleted, event="automation_removed")
+        # Perform initial import if needed
+        self.initial_import()
 
     def _load_config(self):
         # Get configuration parameters
@@ -47,42 +46,52 @@ class SplitAutomations(hass.Hass):
 
         self.log("Initial import completed.")
 
-    def new_automation_created(self, event_name, data, kwargs):
-        self.log("New automation created. Splitting and updating automations...")
-        self.split_and_update_automations()
+    def automation_created(self, event_name, data, kwargs):
+        self.log("New automation created. Creating split file...")
+        automation = data.get("automation")
+        if automation:
+            self.create_split_file(automation)
+
+    def automation_updated(self, event_name, data, kwargs):
+        self.log("Automation updated. Updating split file...")
+        automation = data.get("automation")
+        if automation:
+            self.update_split_file(automation)
 
     def automation_deleted(self, event_name, data, kwargs):
-        automation_id = data.get("automation_id", None)
-        if automation_id:
-            automation_name = self._get_normalized_name(self.get_state(automation_id, attribute="friendly_name"))
-            split_filename = os.path.join(self.split_dir, f"{automation_name}.yaml")
+        self.log("Automation deleted. Deleting split file...")
+        automation = data.get("automation")
+        if automation:
+            self.delete_split_file(automation)
 
-            if os.path.exists(split_filename):
-                os.remove(split_filename)
-                self.log(f"Deleted split file: {split_filename}")
+    def create_split_file(self, automation):
+        automation_alias = automation.get("alias", None)
+        automation_name = self._get_normalized_name(automation_alias) if automation_alias else self._get_normalized_name(automation.get("name", "Unnamed_Automation"))
+        split_filename = os.path.join(self.split_dir, f"{automation_name}.yaml")
 
-    def split_and_update_automations(self):
-        automations = self._read_yaml_file(self.automations_file)
-        split_automation_names = []
+        if not os.path.exists(split_filename):
+            self._write_yaml_file(split_filename, automation)
+            self.log(f"Created split file: {split_filename}")
 
-        for automation in automations:
-            automation_alias = automation.get("alias", None)
-            automation_name = self._get_normalized_name(automation_alias) if automation_alias else self._get_normalized_name(automation.get("name", "Unnamed_Automation"))
-            split_filename = os.path.join(self.split_dir, f"{automation_name}.yaml")
+    def update_split_file(self, automation):
+        automation_alias = automation.get("alias", None)
+        automation_name = self._get_normalized_name(automation_alias) if automation_alias else self._get_normalized_name(automation.get("name", "Unnamed_Automation"))
+        split_filename = os.path.join(self.split_dir, f"{automation_name}.yaml")
 
-            existing_automation = self._read_yaml_file(split_filename) if os.path.exists(split_filename) else None
+        existing_automation = self._read_yaml_file(split_filename) if os.path.exists(split_filename) else None
 
-            if existing_automation != automation:
-                self._write_yaml_file(split_filename, automation)
-                split_automation_names.append(automation_name)
+        if existing_automation != automation:
+            self._write_yaml_file(split_filename, automation)
+            self.log(f"Updated split file: {split_filename}")
 
-        # Delete split files corresponding to deleted automations
-        for split_file in os.listdir(self.split_dir):
-            if split_file[:-5] not in split_automation_names:  # Remove ".yaml" extension
-                os.remove(os.path.join(self.split_dir, split_file))
-                self.log(f"Deleted split file: {split_file}")
+    def delete_split_file(self, automation):
+        automation_alias = automation.get("alias", None)
+        automation_name = self._get_normalized_name(automation_alias) if automation_alias else self._get_normalized_name(automation.get("name", "Unnamed_Automation"))
+        split_filename = os.path.join(self.split_dir, f"{automation_name}.yaml")
 
-        self.log("Automations split and updated successfully.")
+        if os.path.exists(split_filename):
+            os.remove(split_filename)
+            self.log(f"Deleted split file: {split_filename}")
 
     def _read_yaml_file(self, file_path):
         with open(file_path, 'r', encoding='utf-8') as file:

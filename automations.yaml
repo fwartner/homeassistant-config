@@ -1,1715 +1,1726 @@
-- id: '1666350817094'
+- id: "1666350817094"
   alias: Taster Schreibtisch Actions
-  description: ''
+  description: ""
   use_blueprint:
     path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
     input:
       action_sensor: sensor.aqara_taster_schlafzimmer_action
       single_action:
-      - type: toggle
-        device_id: 900249bc412782f591b44b1dfbf6784a
-        entity_id: light.hue_go_1
-        domain: light
+        - type: toggle
+          device_id: 900249bc412782f591b44b1dfbf6784a
+          entity_id: light.hue_go_1
+          domain: light
       double_action:
-      - service: switch.toggle
-        data: {}
-        target:
-          entity_id: switch.steckdose_schreibtisch
-- id: '1666541360265'
+        - service: switch.toggle
+          data: {}
+          target:
+            entity_id: switch.steckdose_schreibtisch
+- id: "1666541360265"
   alias: Wecker
-  description: ''
+  description: ""
   trigger:
-  - platform: template
-    value_template: "{{ states.sensor.time.state + \n':00' == states.input_datetime.wecker.state
-      }}"
+    - platform: template
+      value_template:
+        "{{ states.sensor.time.state + \n':00' == states.input_datetime.wecker.state
+        }}"
   condition:
-  - condition: state
-    entity_id: input_boolean.wecker_schalter
-    state: 'on'
-  action:
-  - parallel:
-    - service: cover.open_cover
-      data: {}
-      target:
-        entity_id: cover.rollos_fensterbank_schlafzimmer
-  - repeat:
-      until:
-      - condition: state
-        entity_id: input_boolean.wecker_schalter
-        state: 'off'
-      sequence:
-      - service: media_player.play_media
-        target:
-          entity_id: media_player.hp_schlafzimmer
-        data:
-          media_content_id: media-source://media_source/local/mixkit-short-rooster-crowing-2470
-            (online-audio-converter.com).mp3
-          media_content_type: audio/mpeg
-        metadata:
-          title: mixkit-short-rooster-crowing-2470 (online-audio-converter.com).mp3
-          thumbnail:
-          media_class: music
-          children_media_class:
-          navigateIds:
-          - {}
-          - media_content_type: app
-            media_content_id: media-source://media_source
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 5
-          milliseconds: 0
-    enabled: false
-  - service: input_boolean.turn_off
-    data: {}
-    target:
-      entity_id: input_boolean.wecker_schalter
-  mode: single
-- id: '1666561975498'
-  alias: Alles aus wenn der letzte Zuhause verlässt
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.people_home
-    to: '0'
-  condition: []
-  action:
-  - service: light.turn_off
-    data: {}
-    target:
-      area_id:
-      - badezimmer
-      - buro
-      - flur
-      - kuche
-      - schlafzimmer
-      - wohnzimmer
-  - service: media_player.turn_off
-    data: {}
-    target:
-      area_id:
-      - wohnzimmer
-      - serverschrank
-      - badezimmer
-      - schlafzimmer
-      - kuche
-      - flur
-      - buro
-  - service: cover.close_cover
-    data: {}
-    target:
-      area_id: schlafzimmer
-  - service: switch.turn_off
-    data: {}
-    target:
-      entity_id:
-      - switch.steckdose_badezimmer
-      - switch.steckdose_bett
-      - switch.steckdose_hlf_socket_1
-      - switch.steckdose_optigrill_socket_1
-      - switch.steckdose_schreibtisch
-      - switch.steckdose_kaffeemaschine
-      - switch.steckdose_tv_schlafzimmer
-      - switch.steckdose_tv_bank_wohnzimmer
-      - switch.steckdose_dyson
-  - if:
     - condition: state
-      entity_id: binary_sensor.aqara_contact_balkontur_wohnzimmer_contact
-      state: 'off'
-    then:
-    - service: cover.close_cover
-      data: {}
-      target:
-        entity_id: cover.ikea_rollo_balkontur_wohnzimmer
-  mode: single
-- id: '1667647447637'
-  alias: 'Täglich: Schlafzimmer Steckdosen An'
-  description: Luftreiniger Schlafzimmer
-  trigger:
-  - platform: time
-    at: 09:00:00
-  condition: []
+      entity_id: input_boolean.wecker_schalter
+      state: "on"
   action:
-  - parallel:
-    - type: turn_off
-      device_id: 36a22733000aafdf6981ae28050acce6
-      entity_id: 9f3df5bcd72d18271a9c756a3e74a615
-      domain: switch
-    - type: turn_off
-      device_id: 3f3b82e0e25c8dae98f62ab1589ba2ca
-      entity_id: 7f3a644d010f80177ccd87f3d8915a5a
-      domain: switch
-    - type: turn_on
-      device_id: 478b9723de0593d7ecd82df10b431d50
-      entity_id: fba8f3766a6d41db9350ef9b99cc0fa7
-      domain: switch
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 20
-      milliseconds: 0
-  - type: turn_on
-    device_id: 107bc2a015d51fadd9d94ff04a352037
-    entity_id: cadfec9848a0910ae75dd30429f1c044
-    domain: switch
-  mode: single
-- id: '1667905476778'
-  alias: Waschmaschine
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.aeg_lavamat_6000_series
-    from: 'on'
-    to: 'off'
-    for:
-      hours: 2
-      minutes: 0
-      seconds: 0
-  condition:
-  - condition: state
-    entity_id: sensor.people_home
-    state: '1'
-  action:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.nest_kuche
-    data:
-      media_content_id: media-source://tts/cloud?message=Vergiss+nicht+nicht%2C+die+Waschmaschine+auszur%C3%A4umen.&language=de-DE&voice=KatjaNeural
-      media_content_type: provider
-    metadata:
-      title: Vergiss nicht nicht, die Waschmaschine auszuräumen.
-      thumbnail: https://brands.home-assistant.io/_/cloud/logo.png
-      media_class: app
-      children_media_class:
-      navigateIds:
-      - {}
-      - media_content_type: app
-        media_content_id: media-source://tts
-      - media_content_type: provider
-        media_content_id: media-source://tts/cloud?message=Vergiss+nicht+nicht%2C+die+Waschmaschine+auszur%C3%A4umen.&language=de-DE&voice=KatjaNeural
-  mode: single
-- id: '1669632865548'
-  alias: 'Flur: Licht an wenn Tür auf'
-  description: ''
-  trigger:
-  - type: opened
-    platform: device
-    device_id: a02d56ba8b08c82c59f4530165d45028
-    entity_id: 4117df274860b910c20a5ff969c8b8f4
-    domain: binary_sensor
-    id: flurOn
-  condition:
-  - condition: sun
-    after: sunset
-    before: sunrise
-    after_offset: '1'
-  action:
-  - type: turn_on
-    device_id: d8c4a563740ad75c1264d8ea5a45f73e
-    entity_id: light.decke_flur
-    domain: light
-    brightness_pct: 40
-  - delay:
-      hours: 0
-      minutes: 1
-      seconds: 0
-      milliseconds: 0
-  - type: turn_off
-    device_id: d8c4a563740ad75c1264d8ea5a45f73e
-    entity_id: light.decke_flur
-    domain: light
-  mode: single
-- id: '1670802573901'
-  alias: Taster Schlafzimmer Actions
-  description: ''
-  use_blueprint:
-    path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
-    input:
-      action_sensor: sensor.aqara_taster_schlafzimmer_action
-      double_action:
-      - type: turn_on
-        device_id: 969bcb84da5527d41edf70f3c7cb80a5
-        entity_id: switch.steckdose_bett
-        domain: switch
-      - type: turn_on
-        device_id: 1b7c5895c9f406690baac9b141e2bbc0
-        entity_id: switch.steckdose_tv_schlafzimmer
-        domain: switch
-      - service: script.3_minuten_bettzeit
-        data: {}
-      single_action:
-      - if:
-        - condition: or
-          conditions:
-          - condition: state
-            entity_id: cover.rollos_fensterbank_schlafzimmer
-            state: closing
-          - condition: state
-            entity_id: cover.rollos_fensterbank_schlafzimmer
-            state: closed
-        then:
+    - parallel:
         - service: cover.open_cover
           data: {}
           target:
             entity_id: cover.rollos_fensterbank_schlafzimmer
-        else:
-        - if:
-          - condition: or
-            conditions:
-            - condition: state
-              entity_id: cover.rollos_fensterbank_schlafzimmer
-              state: opening
-            - condition: state
-              entity_id: cover.rollos_fensterbank_schlafzimmer
-              state: open
-          then:
-          - service: cover.close_cover
-            data: {}
+    - repeat:
+        until:
+          - condition: state
+            entity_id: input_boolean.wecker_schalter
+            state: "off"
+        sequence:
+          - service: media_player.play_media
             target:
-              entity_id: cover.rollos_fensterbank_schlafzimmer
-- id: '1671819328944'
-  alias: Fernseher Schlafzimmer
-  description: ''
-  trigger:
-  - platform: device
-    device_id: c59d71c186dd5113268a8d1e392e68b7
-    domain: media_player
-    entity_id: 4748d69b5a095c96044b7453983b2f60
-    type: turned_on
-    id: tvSchlafzimmerOn
-  - platform: device
-    device_id: c59d71c186dd5113268a8d1e392e68b7
-    domain: media_player
-    entity_id: 4748d69b5a095c96044b7453983b2f60
-    type: turned_off
-    id: tvSchlafzimmerOff
-  condition:
-  - condition: sun
-    before: sunrise
-    after: sunset
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - tvSchlafzimmerOn
-      sequence:
-      - type: turn_off
-        device_id: 6c73301e52dd6dcbca19086b41a34e63
-        entity_id: 9f660825ed28073a10dae2644091c8e6
-        domain: light
-      - type: turn_off
-        device_id: fe77e96440ea5bd125bde57df02a005b
-        entity_id: c0d9fd3b4aacf9d5b5a02d67e56ab0a1
-        domain: light
-      - type: turn_on
-        device_id: efbc936ef67025b80589311a47c29a35
-        entity_id: f9fb56b2246d7619148afe44df6bedcc
-        domain: remote
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - tvSchlafzimmerOff
-      sequence:
-      - type: turn_off
-        device_id: efbc936ef67025b80589311a47c29a35
-        entity_id: f9fb56b2246d7619148afe44df6bedcc
-        domain: remote
+              entity_id: media_player.hp_schlafzimmer
+            data:
+              media_content_id:
+                media-source://media_source/local/mixkit-short-rooster-crowing-2470
+                (online-audio-converter.com).mp3
+              media_content_type: audio/mpeg
+            metadata:
+              title: mixkit-short-rooster-crowing-2470 (online-audio-converter.com).mp3
+              thumbnail:
+              media_class: music
+              children_media_class:
+              navigateIds:
+                - {}
+                - media_content_type: app
+                  media_content_id: media-source://media_source
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 5
+              milliseconds: 0
+      enabled: false
+    - service: input_boolean.turn_off
+      data: {}
+      target:
+        entity_id: input_boolean.wecker_schalter
   mode: single
-- id: '1673948568537'
-  alias: Urlaubsmodus nach Kalender
-  description: ''
+- id: "1666561975498"
+  alias: Alles aus wenn der letzte Zuhause verlässt
+  description: ""
   trigger:
-  - platform: calendar
-    event: start
-    offset: 0:0:0
-    entity_id: calendar.personio_cloud37_abwesenheiten_mein_kalender_remote_d_schleswig_holstein_cloud_infrastructure_d
-    id: urlaubOn
-  - platform: calendar
-    event: end
-    offset: 0:0:0
-    entity_id: calendar.personio_cloud37_abwesenheiten_mein_kalender_remote_d_schleswig_holstein_cloud_infrastructure_d
-    id: urlaubOff
+    - platform: state
+      entity_id:
+        - sensor.people_home
+      to: "0"
   condition: []
   action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - urlaubOn
-      sequence:
-      - service: input_boolean.turn_on
-        data: {}
-        target:
-          entity_id: input_boolean.urlaubsmodus
-    - conditions:
-      - condition: trigger
-        id:
-        - urlaubOff
-      sequence:
-      - service: input_boolean.turn_off
-        data: {}
-        target:
-          entity_id: input_boolean.urlaubsmodus
+    - service: light.turn_off
+      data: {}
+      target:
+        area_id:
+          - badezimmer
+          - buro
+          - flur
+          - kuche
+          - schlafzimmer
+          - wohnzimmer
+    - service: media_player.turn_off
+      data: {}
+      target:
+        area_id:
+          - wohnzimmer
+          - serverschrank
+          - badezimmer
+          - schlafzimmer
+          - kuche
+          - flur
+          - buro
+    - service: cover.close_cover
+      data: {}
+      target:
+        area_id: schlafzimmer
+    - service: switch.turn_off
+      data: {}
+      target:
+        entity_id:
+          - switch.steckdose_badezimmer
+          - switch.steckdose_bett
+          - switch.steckdose_hlf_socket_1
+          - switch.steckdose_optigrill_socket_1
+          - switch.steckdose_schreibtisch
+          - switch.steckdose_kaffeemaschine
+          - switch.steckdose_tv_schlafzimmer
+          - switch.steckdose_tv_bank_wohnzimmer
+          - switch.steckdose_dyson
+    - if:
+        - condition: state
+          entity_id: binary_sensor.aqara_contact_balkontur_wohnzimmer_contact
+          state: "off"
+      then:
+        - service: cover.close_cover
+          data: {}
+          target:
+            entity_id: cover.ikea_rollo_balkontur_wohnzimmer
   mode: single
-- id: '1674670778068'
+- id: "1667647447637"
+  alias: "Täglich: Schlafzimmer Steckdosen An"
+  description: Luftreiniger Schlafzimmer
+  trigger:
+    - platform: time
+      at: 09:00:00
+  condition: []
+  action:
+    - parallel:
+        - type: turn_off
+          device_id: 36a22733000aafdf6981ae28050acce6
+          entity_id: 9f3df5bcd72d18271a9c756a3e74a615
+          domain: switch
+        - type: turn_off
+          device_id: 3f3b82e0e25c8dae98f62ab1589ba2ca
+          entity_id: 7f3a644d010f80177ccd87f3d8915a5a
+          domain: switch
+        - type: turn_on
+          device_id: 478b9723de0593d7ecd82df10b431d50
+          entity_id: fba8f3766a6d41db9350ef9b99cc0fa7
+          domain: switch
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 20
+        milliseconds: 0
+    - type: turn_on
+      device_id: 107bc2a015d51fadd9d94ff04a352037
+      entity_id: cadfec9848a0910ae75dd30429f1c044
+      domain: switch
+  mode: single
+- id: "1667905476778"
+  alias: Waschmaschine
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.aeg_lavamat_6000_series
+      from: "on"
+      to: "off"
+      for:
+        hours: 2
+        minutes: 0
+        seconds: 0
+  condition:
+    - condition: state
+      entity_id: sensor.people_home
+      state: "1"
+  action:
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.nest_kuche
+      data:
+        media_content_id: media-source://tts/cloud?message=Vergiss+nicht+nicht%2C+die+Waschmaschine+auszur%C3%A4umen.&language=de-DE&voice=KatjaNeural
+        media_content_type: provider
+      metadata:
+        title: Vergiss nicht nicht, die Waschmaschine auszuräumen.
+        thumbnail: https://brands.home-assistant.io/_/cloud/logo.png
+        media_class: app
+        children_media_class:
+        navigateIds:
+          - {}
+          - media_content_type: app
+            media_content_id: media-source://tts
+          - media_content_type: provider
+            media_content_id: media-source://tts/cloud?message=Vergiss+nicht+nicht%2C+die+Waschmaschine+auszur%C3%A4umen.&language=de-DE&voice=KatjaNeural
+  mode: single
+- id: "1669632865548"
+  alias: "Flur: Licht an wenn Tür auf"
+  description: ""
+  trigger:
+    - type: opened
+      platform: device
+      device_id: a02d56ba8b08c82c59f4530165d45028
+      entity_id: 4117df274860b910c20a5ff969c8b8f4
+      domain: binary_sensor
+      id: flurOn
+  condition:
+    - condition: sun
+      after: sunset
+      before: sunrise
+      after_offset: "1"
+  action:
+    - type: turn_on
+      device_id: d8c4a563740ad75c1264d8ea5a45f73e
+      entity_id: light.decke_flur
+      domain: light
+      brightness_pct: 40
+    - delay:
+        hours: 0
+        minutes: 1
+        seconds: 0
+        milliseconds: 0
+    - type: turn_off
+      device_id: d8c4a563740ad75c1264d8ea5a45f73e
+      entity_id: light.decke_flur
+      domain: light
+  mode: single
+- id: "1670802573901"
+  alias: Taster Schlafzimmer Actions
+  description: ""
+  use_blueprint:
+    path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
+    input:
+      action_sensor: sensor.aqara_taster_schlafzimmer_action
+      double_action:
+        - type: turn_on
+          device_id: 969bcb84da5527d41edf70f3c7cb80a5
+          entity_id: switch.steckdose_bett
+          domain: switch
+        - type: turn_on
+          device_id: 1b7c5895c9f406690baac9b141e2bbc0
+          entity_id: switch.steckdose_tv_schlafzimmer
+          domain: switch
+        - service: script.3_minuten_bettzeit
+          data: {}
+      single_action:
+        - if:
+            - condition: or
+              conditions:
+                - condition: state
+                  entity_id: cover.rollos_fensterbank_schlafzimmer
+                  state: closing
+                - condition: state
+                  entity_id: cover.rollos_fensterbank_schlafzimmer
+                  state: closed
+          then:
+            - service: cover.open_cover
+              data: {}
+              target:
+                entity_id: cover.rollos_fensterbank_schlafzimmer
+          else:
+            - if:
+                - condition: or
+                  conditions:
+                    - condition: state
+                      entity_id: cover.rollos_fensterbank_schlafzimmer
+                      state: opening
+                    - condition: state
+                      entity_id: cover.rollos_fensterbank_schlafzimmer
+                      state: open
+              then:
+                - service: cover.close_cover
+                  data: {}
+                  target:
+                    entity_id: cover.rollos_fensterbank_schlafzimmer
+- id: "1671819328944"
+  alias: Fernseher Schlafzimmer
+  description: ""
+  trigger:
+    - platform: device
+      device_id: c59d71c186dd5113268a8d1e392e68b7
+      domain: media_player
+      entity_id: 4748d69b5a095c96044b7453983b2f60
+      type: turned_on
+      id: tvSchlafzimmerOn
+    - platform: device
+      device_id: c59d71c186dd5113268a8d1e392e68b7
+      domain: media_player
+      entity_id: 4748d69b5a095c96044b7453983b2f60
+      type: turned_off
+      id: tvSchlafzimmerOff
+  condition:
+    - condition: sun
+      before: sunrise
+      after: sunset
+  action:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - tvSchlafzimmerOn
+          sequence:
+            - type: turn_off
+              device_id: 6c73301e52dd6dcbca19086b41a34e63
+              entity_id: 9f660825ed28073a10dae2644091c8e6
+              domain: light
+            - type: turn_off
+              device_id: fe77e96440ea5bd125bde57df02a005b
+              entity_id: c0d9fd3b4aacf9d5b5a02d67e56ab0a1
+              domain: light
+            - type: turn_on
+              device_id: efbc936ef67025b80589311a47c29a35
+              entity_id: f9fb56b2246d7619148afe44df6bedcc
+              domain: remote
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - tvSchlafzimmerOff
+          sequence:
+            - type: turn_off
+              device_id: efbc936ef67025b80589311a47c29a35
+              entity_id: f9fb56b2246d7619148afe44df6bedcc
+              domain: remote
+  mode: single
+- id: "1673948568537"
+  alias: Urlaubsmodus nach Kalender
+  description: ""
+  trigger:
+    - platform: calendar
+      event: start
+      offset: 0:0:0
+      entity_id: calendar.personio_cloud37_abwesenheiten_mein_kalender_remote_d_schleswig_holstein_cloud_infrastructure_d
+      id: urlaubOn
+    - platform: calendar
+      event: end
+      offset: 0:0:0
+      entity_id: calendar.personio_cloud37_abwesenheiten_mein_kalender_remote_d_schleswig_holstein_cloud_infrastructure_d
+      id: urlaubOff
+  condition: []
+  action:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - urlaubOn
+          sequence:
+            - service: input_boolean.turn_on
+              data: {}
+              target:
+                entity_id: input_boolean.urlaubsmodus
+        - conditions:
+            - condition: trigger
+              id:
+                - urlaubOff
+          sequence:
+            - service: input_boolean.turn_off
+              data: {}
+              target:
+                entity_id: input_boolean.urlaubsmodus
+  mode: single
+- id: "1674670778068"
   alias: Kaffeemaschine morgens um 07:30 an
   description: Fü vier Stunden
   trigger:
-  - platform: time
-    at: 07:30:00
-    id: kaffeemaschineOn
-  - platform: time
-    at: '11:30:00'
-    id: kaffeemaschineOff
+    - platform: time
+      at: 07:30:00
+      id: kaffeemaschineOn
+    - platform: time
+      at: "11:30:00"
+      id: kaffeemaschineOff
   condition:
-  - condition: state
-    entity_id: sensor.people_home
-    state: '1'
+    - condition: state
+      entity_id: sensor.people_home
+      state: "1"
   action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - kaffeemaschineOn
-      sequence:
-      - type: turn_on
-        device_id: 031993d091ace5064c51fb0681918e2f
-        entity_id: 1a7e2f959d8c36322587a817c3a2d043
-        domain: switch
-    - conditions:
-      - condition: trigger
-        id:
-        - kaffeemaschineOff
-      sequence:
-      - type: turn_off
-        device_id: 031993d091ace5064c51fb0681918e2f
-        entity_id: switch.steckdose_kaffeemaschine
-        domain: switch
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - kaffeemaschineOn
+          sequence:
+            - type: turn_on
+              device_id: 031993d091ace5064c51fb0681918e2f
+              entity_id: 1a7e2f959d8c36322587a817c3a2d043
+              domain: switch
+        - conditions:
+            - condition: trigger
+              id:
+                - kaffeemaschineOff
+          sequence:
+            - type: turn_off
+              device_id: 031993d091ace5064c51fb0681918e2f
+              entity_id: switch.steckdose_kaffeemaschine
+              domain: switch
   mode: single
-- id: '1674722882778'
+- id: "1674722882778"
   alias: Florian nicht mehr im Meeting
-  description: ''
+  description: ""
   trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.macbook_pro_camera_in_use
-    from: 'on'
-    to: 'off'
+    - platform: state
+      entity_id:
+        - binary_sensor.macbook_pro_camera_in_use
+      from: "on"
+      to: "off"
   condition: []
   action:
-  - service: input_boolean.turn_off
-    data: {}
-    target:
-      entity_id: input_boolean.florian_im_meeting
+    - service: input_boolean.turn_off
+      data: {}
+      target:
+        entity_id: input_boolean.florian_im_meeting
   mode: single
-- id: '1676121630166'
+- id: "1676121630166"
   alias: Jonas
   description: Erkennung Büro, Spielzeit, Schlafenszeit, Musik
   trigger:
-  - type: motion
-    platform: device
-    device_id: 618fef42fa8e6efc59445fc6314ada4b
-    entity_id: 105a3f210a0d1dd818f80a2e1c8987a2
-    domain: binary_sensor
-    id: jonasMotionOn
-  - platform: time
-    at: '19:00:00'
-    id: jonasCleanTeethOn
-  - platform: state
-    entity_id:
-    - input_boolean.jonas_ist_da
-    from: 'off'
-    to: 'on'
-    id: jonasHereOn
-    alias: Jonas ist da
-  - platform: state
-    entity_id:
-    - input_boolean.jonas_ist_da
-    from: 'on'
-    to: 'off'
-    id: jonasHereOff
-    alias: Jonas ist nicht mehr da
-  - platform: state
-    entity_id:
-    - timer.zahneputzen
-    to: active
-    id: jonasCleanToothTimerOn
-    alias: Zähneputzen beginnt
-  - platform: state
-    entity_id:
-    - timer.zahneputzen
-    to: idle
-    id: jonasCleanToothTimerOff
-    alias: Zähneputzen endet
-  - platform: calendar
-    event: start
-    offset: 0:0:0
-    entity_id: calendar.jonas
-    id: jonasCalendaOn
-    alias: Papawochenende beginnt
-  - platform: calendar
-    event: end
-    offset: 0:0:0
-    entity_id: calendar.jonas
-    id: jonasCalendaOff
-    alias: Papawochenende endet
+    - type: motion
+      platform: device
+      device_id: 618fef42fa8e6efc59445fc6314ada4b
+      entity_id: 105a3f210a0d1dd818f80a2e1c8987a2
+      domain: binary_sensor
+      id: jonasMotionOn
+    - platform: time
+      at: "19:00:00"
+      id: jonasCleanTeethOn
+    - platform: state
+      entity_id:
+        - input_boolean.jonas_ist_da
+      from: "off"
+      to: "on"
+      id: jonasHereOn
+      alias: Jonas ist da
+    - platform: state
+      entity_id:
+        - input_boolean.jonas_ist_da
+      from: "on"
+      to: "off"
+      id: jonasHereOff
+      alias: Jonas ist nicht mehr da
+    - platform: state
+      entity_id:
+        - timer.zahneputzen
+      to: active
+      id: jonasCleanToothTimerOn
+      alias: Zähneputzen beginnt
+    - platform: state
+      entity_id:
+        - timer.zahneputzen
+      to: idle
+      id: jonasCleanToothTimerOff
+      alias: Zähneputzen endet
+    - platform: calendar
+      event: start
+      offset: 0:0:0
+      entity_id: calendar.jonas
+      id: jonasCalendaOn
+      alias: Papawochenende beginnt
+    - platform: calendar
+      event: end
+      offset: 0:0:0
+      entity_id: calendar.jonas
+      id: jonasCalendaOff
+      alias: Papawochenende endet
   condition: []
   action:
-  - choose:
-    - conditions:
-      - condition: and
-        conditions:
-        - condition: trigger
-          id:
-          - jonasMotionOn
-        - condition: state
-          entity_id: input_boolean.jonas_ist_da
-          state: 'on'
-      sequence:
-      - service: notify.alexa_media_florians_echo_show_8_2nd_gen
-        data:
-          message: Jonas ist im Büro
-    - conditions:
-      - condition: and
-        conditions:
-        - condition: state
-          entity_id: input_boolean.jonas_ist_da
-          state: 'on'
-        - condition: trigger
-          id:
-          - jonasCleanTeethOn
-        - condition: state
-          entity_id: sensor.people_home
-          state: '1'
-      sequence:
-      - type: turn_off
-        device_id: d60428083cf2206a189453343e1e4bb1
-        entity_id: 0803f2de7bc30e5001fc4688fcfd0185
-        domain: remote
-      - service: notify.alexa_media_florians_echo_show_8_2nd_gen
-        data:
-          message: Lieber Jonas.. Es wird Zeit, ins Bett zu gehen. Bitte geh ins Badezimmer
-            und putz deine Zähne, zieh dir deinen Schlafanzug an und leg dich schonmal
-            ins Bett.
-    - conditions:
-      - condition: trigger
-        id:
-        - jonasHereOn
-      sequence:
-      - service: roborock.vacuum_clean_segment
-        data:
-          segments:
-          - '16'
-          - '18'
-        target:
-          entity_id: vacuum.roborock_s7_maxv
-    - conditions:
-      - condition: trigger
-        id:
-        - jonasHereOff
-      sequence:
-      - service: roborock.vacuum_clean_segment
-        data:
-          segments:
-          - '16'
-          - '18'
-        target:
-          entity_id: vacuum.roborock_s7_maxv
-    - conditions:
-      - condition: trigger
-        id:
-        - jonasCleanToothTimerOn
-      sequence:
-      - service: notify.alexa_media_florians_echo_show_8_2nd_gen
-        data:
-          message: Und los gehts! Putz deine Zähne schön gründlich. Ich sage dir Bescheid,
-            wenn du fertig bist.
-    - conditions:
-      - condition: trigger
-        id:
-        - jonasCleanToothTimerOff
-      sequence:
-      - service: notify.alexa_media_florians_echo_show_8_2nd_gen
-        data:
-          message: Super! Du kannst die Zahnbürste jetzt saubermachen und dich ins
-            Bett legen. Schlaf gut!
-    - conditions:
-      - condition: and
-        conditions:
-        - condition: trigger
-          id:
-          - jonasCalendaOn
-        - condition: template
-          value_template: '{{ is_state_attr(''calendar.jonas'', ''message'', ''Papawochenende'')
-            }}'
-      sequence:
-      - service: input_boolean.turn_on
-        data: {}
-        target:
-          entity_id: input_boolean.jonas_ist_da
-    - conditions:
-      - condition: and
-        conditions:
-        - condition: trigger
-          id:
-          - jonasCalendaOff
-        - condition: template
-          value_template: '{{ is_state_attr(''calendar.jonas'', ''message'', ''Papawochenende'')
-            }}'
-      sequence:
-      - service: input_boolean.turn_off
-        data: {}
-        target:
-          entity_id: input_boolean.jonas_ist_da
+    - choose:
+        - conditions:
+            - condition: and
+              conditions:
+                - condition: trigger
+                  id:
+                    - jonasMotionOn
+                - condition: state
+                  entity_id: input_boolean.jonas_ist_da
+                  state: "on"
+          sequence:
+            - service: notify.alexa_media_florians_echo_show_8_2nd_gen
+              data:
+                message: Jonas ist im Büro
+        - conditions:
+            - condition: and
+              conditions:
+                - condition: state
+                  entity_id: input_boolean.jonas_ist_da
+                  state: "on"
+                - condition: trigger
+                  id:
+                    - jonasCleanTeethOn
+                - condition: state
+                  entity_id: sensor.people_home
+                  state: "1"
+          sequence:
+            - type: turn_off
+              device_id: d60428083cf2206a189453343e1e4bb1
+              entity_id: 0803f2de7bc30e5001fc4688fcfd0185
+              domain: remote
+            - service: notify.alexa_media_florians_echo_show_8_2nd_gen
+              data:
+                message:
+                  Lieber Jonas.. Es wird Zeit, ins Bett zu gehen. Bitte geh ins Badezimmer
+                  und putz deine Zähne, zieh dir deinen Schlafanzug an und leg dich schonmal
+                  ins Bett.
+        - conditions:
+            - condition: trigger
+              id:
+                - jonasHereOn
+          sequence:
+            - service: roborock.vacuum_clean_segment
+              data:
+                segments:
+                  - "16"
+                  - "18"
+              target:
+                entity_id: vacuum.roborock_s7_maxv
+        - conditions:
+            - condition: trigger
+              id:
+                - jonasHereOff
+          sequence:
+            - service: roborock.vacuum_clean_segment
+              data:
+                segments:
+                  - "16"
+                  - "18"
+              target:
+                entity_id: vacuum.roborock_s7_maxv
+        - conditions:
+            - condition: trigger
+              id:
+                - jonasCleanToothTimerOn
+          sequence:
+            - service: notify.alexa_media_florians_echo_show_8_2nd_gen
+              data:
+                message:
+                  Und los gehts! Putz deine Zähne schön gründlich. Ich sage dir Bescheid,
+                  wenn du fertig bist.
+        - conditions:
+            - condition: trigger
+              id:
+                - jonasCleanToothTimerOff
+          sequence:
+            - service: notify.alexa_media_florians_echo_show_8_2nd_gen
+              data:
+                message:
+                  Super! Du kannst die Zahnbürste jetzt saubermachen und dich ins
+                  Bett legen. Schlaf gut!
+        - conditions:
+            - condition: and
+              conditions:
+                - condition: trigger
+                  id:
+                    - jonasCalendaOn
+                - condition: template
+                  value_template:
+                    "{{ is_state_attr('calendar.jonas', 'message', 'Papawochenende')
+                    }}"
+          sequence:
+            - service: input_boolean.turn_on
+              data: {}
+              target:
+                entity_id: input_boolean.jonas_ist_da
+        - conditions:
+            - condition: and
+              conditions:
+                - condition: trigger
+                  id:
+                    - jonasCalendaOff
+                - condition: template
+                  value_template:
+                    "{{ is_state_attr('calendar.jonas', 'message', 'Papawochenende')
+                    }}"
+          sequence:
+            - service: input_boolean.turn_off
+              data: {}
+              target:
+                entity_id: input_boolean.jonas_ist_da
   mode: single
-- id: '1677005798686'
+- id: "1677005798686"
   alias: Bett
-  description: ''
+  description: ""
   trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.bed_sensor_bett_links
-    from: 'off'
-    to: 'on'
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 0
-    id: bettFloOn
-  - platform: state
-    entity_id:
-    - binary_sensor.bed_sensor_bett_links
-    from: 'on'
-    to: 'off'
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 0
-    id: bettFloOff
-  - platform: state
-    entity_id:
-    - timer.3_minuten_bett
-    from: active
-    to: idle
-    id: threeMinuteBedOff
+    - platform: state
+      entity_id:
+        - binary_sensor.bed_sensor_bett_links
+      from: "off"
+      to: "on"
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 0
+      id: bettFloOn
+    - platform: state
+      entity_id:
+        - binary_sensor.bed_sensor_bett_links
+      from: "on"
+      to: "off"
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 0
+      id: bettFloOff
+    - platform: state
+      entity_id:
+        - timer.3_minuten_bett
+      from: active
+      to: idle
+      id: threeMinuteBedOff
   condition: []
   action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - bettFloOn
-      sequence:
-      - service: input_boolean.turn_on
-        data: {}
-        target:
-          entity_id:
-          - input_boolean.florian_im_bett
-    - conditions:
-      - condition: trigger
-        id:
-        - bettFloOff
-      sequence:
-      - service: input_boolean.turn_off
-        data: {}
-        target:
-          entity_id: input_boolean.florian_im_bett
-    - conditions:
-      - condition: trigger
-        id:
-        - threeMinuteBedOff
-      sequence:
-      - type: turn_off
-        device_id: 496f1ee059a80ce3be70b9a32eb69778
-        entity_id: light.bett
-        domain: light
-      - type: turn_off
-        device_id: 58ad2259e60395f647695636a43a16c8
-        entity_id: switch.steckdose_tv_bank_wohnzimmer
-        domain: switch
-      - type: turn_off
-        device_id: aaad1ea70b31b2d4cdd44583712720b2
-        entity_id: switch.steckdose_schreibtisch
-        domain: switch
-      - type: turn_off
-        device_id: 31cea6ff31b5a821a4fa741d0c987b4d
-        entity_id: switch.steckdose_badezimmer
-        domain: switch
-      - type: turn_off
-        device_id: 90c331ab3f9f2e741e5bb1be8bd89c5d
-        entity_id: switch.steckdose_dyson
-        domain: switch
-      - service: switch.turn_off
-        data: {}
-        target:
-          device_id: 8d9991a5dd07654891a5cf3a476cba07
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - bettFloOn
+          sequence:
+            - service: input_boolean.turn_on
+              data: {}
+              target:
+                entity_id:
+                  - input_boolean.florian_im_bett
+        - conditions:
+            - condition: trigger
+              id:
+                - bettFloOff
+          sequence:
+            - service: input_boolean.turn_off
+              data: {}
+              target:
+                entity_id: input_boolean.florian_im_bett
+        - conditions:
+            - condition: trigger
+              id:
+                - threeMinuteBedOff
+          sequence:
+            - type: turn_off
+              device_id: 496f1ee059a80ce3be70b9a32eb69778
+              entity_id: light.bett
+              domain: light
+            - type: turn_off
+              device_id: 58ad2259e60395f647695636a43a16c8
+              entity_id: switch.steckdose_tv_bank_wohnzimmer
+              domain: switch
+            - type: turn_off
+              device_id: aaad1ea70b31b2d4cdd44583712720b2
+              entity_id: switch.steckdose_schreibtisch
+              domain: switch
+            - type: turn_off
+              device_id: 31cea6ff31b5a821a4fa741d0c987b4d
+              entity_id: switch.steckdose_badezimmer
+              domain: switch
+            - type: turn_off
+              device_id: 90c331ab3f9f2e741e5bb1be8bd89c5d
+              entity_id: switch.steckdose_dyson
+              domain: switch
+            - service: switch.turn_off
+              data: {}
+              target:
+                device_id: 8d9991a5dd07654891a5cf3a476cba07
   mode: single
-- id: '1678799484819'
-  alias: 'Boolean: Reset Mitternacht'
+- id: "1678799484819"
+  alias: "Boolean: Reset Mitternacht"
   description: Staubsauger Einmal Täglich
   trigger:
-  - platform: time
-    at: 00:00:00
+    - platform: time
+      at: 00:00:00
   condition: []
   action:
-  - service: input_boolean.turn_on
-    data: {}
-    target:
-      entity_id:
-      - input_boolean.steffi_angst
-      - input_boolean.steffi_herz
-      - input_boolean.steffi_babypille
-      - input_boolean.steffi_migrane
+    - service: input_boolean.turn_on
+      data: {}
+      target:
+        entity_id:
+          - input_boolean.steffi_angst
+          - input_boolean.steffi_herz
+          - input_boolean.steffi_babypille
+          - input_boolean.steffi_migrane
   mode: single
-- id: '1683574762848'
+- id: "1683574762848"
   alias: Schalter Schreibtisch Actions
-  description: ''
+  description: ""
   use_blueprint:
     path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
     input:
       action_sensor: sensor.aqara_taster_schreibtisch_action
       single_action:
-      - type: toggle
-        device_id: 900249bc412782f591b44b1dfbf6784a
-        entity_id: light.hue_go_1
-        domain: light
+        - type: toggle
+          device_id: 900249bc412782f591b44b1dfbf6784a
+          entity_id: light.hue_go_1
+          domain: light
       double_action:
-      - type: toggle
-        device_id: aaad1ea70b31b2d4cdd44583712720b2
-        entity_id: switch.steckdose_schreibtisch
-        domain: switch
-- id: '1683574940325'
+        - type: toggle
+          device_id: aaad1ea70b31b2d4cdd44583712720b2
+          entity_id: switch.steckdose_schreibtisch
+          domain: switch
+- id: "1683574940325"
   alias: Taster Schlafzimmer Actions
-  description: ''
+  description: ""
   use_blueprint:
     path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
     input:
       action_sensor: sensor.aqara_taster_schlafzimmer_action
       double_action:
-      - service: script.turn_on
-        data: {}
-        target:
-          entity_id: script.3_minuten_bettzeit
-- id: '1683577550606'
+        - service: script.turn_on
+          data: {}
+          target:
+            entity_id: script.3_minuten_bettzeit
+- id: "1683577550606"
   alias: Taster Badezimmer Actions
-  description: ''
+  description: ""
   use_blueprint:
     path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
     input:
       action_sensor: sensor.aqara_taster_badezimmer_action
       single_action:
-      - type: turn_on
-        device_id: 31cea6ff31b5a821a4fa741d0c987b4d
-        entity_id: switch.steckdose_badezimmer
-        domain: switch
-      - if:
-        - condition: device
-          type: is_on
+        - type: turn_on
           device_id: 31cea6ff31b5a821a4fa741d0c987b4d
           entity_id: switch.steckdose_badezimmer
           domain: switch
-        then:
-        - delay:
-            hours: 0
-            minutes: 0
-            seconds: 10
-            milliseconds: 0
-        - service: media_player.play_media
-          target:
-            entity_id: media_player.owntone_output_badezimmer
-          data:
-            media_content_id: https://open.spotify.com/playlist/37i9dQZF1DWSWyJydK4fTU?si=d94fdd0a09d24319
-            media_content_type: playlist
-          metadata: {}
+        - if:
+            - condition: device
+              type: is_on
+              device_id: 31cea6ff31b5a821a4fa741d0c987b4d
+              entity_id: switch.steckdose_badezimmer
+              domain: switch
+          then:
+            - delay:
+                hours: 0
+                minutes: 0
+                seconds: 10
+                milliseconds: 0
+            - service: media_player.play_media
+              target:
+                entity_id: media_player.owntone_output_badezimmer
+              data:
+                media_content_id: https://open.spotify.com/playlist/37i9dQZF1DWSWyJydK4fTU?si=d94fdd0a09d24319
+                media_content_type: playlist
+              metadata: {}
       double_action:
-      - type: turn_off
-        device_id: 31cea6ff31b5a821a4fa741d0c987b4d
-        entity_id: switch.steckdose_badezimmer
-        domain: switch
-- id: '1684774987339'
+        - type: turn_off
+          device_id: 31cea6ff31b5a821a4fa741d0c987b4d
+          entity_id: switch.steckdose_badezimmer
+          domain: switch
+- id: "1684774987339"
   alias: Taster Wohnzimmer Rollos Öffnen
-  description: ''
+  description: ""
   trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 82fc44b6345e0bd01175085d8cf4bb9d
-    type: action
-    subtype: open
-    discovery_id: 0xb4e3f9fffe6bf4b5 action_open
+    - platform: device
+      domain: mqtt
+      device_id: 82fc44b6345e0bd01175085d8cf4bb9d
+      type: action
+      subtype: open
+      discovery_id: 0xb4e3f9fffe6bf4b5 action_open
   condition: []
   action:
-  - device_id: b5c99c551f5157c833050ed2a812fa68
-    domain: cover
-    entity_id: cover.ikea_rollo_fensterbank_links_wohnzimmer
-    type: open
-  - device_id: c0238df3821a546d59533f8cea51734b
-    domain: cover
-    entity_id: cover.ikea_rollo_fensterbank_rechts_wohnzimmer
-    type: open
+    - device_id: b5c99c551f5157c833050ed2a812fa68
+      domain: cover
+      entity_id: cover.ikea_rollo_fensterbank_links_wohnzimmer
+      type: open
+    - device_id: c0238df3821a546d59533f8cea51734b
+      domain: cover
+      entity_id: cover.ikea_rollo_fensterbank_rechts_wohnzimmer
+      type: open
   mode: single
-- id: '1684775018765'
+- id: "1684775018765"
   alias: Taster Wohnzimmer Rollos Schließen
-  description: ''
+  description: ""
   trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 82fc44b6345e0bd01175085d8cf4bb9d
-    type: action
-    subtype: close
-    discovery_id: 0xb4e3f9fffe6bf4b5 action_close
+    - platform: device
+      domain: mqtt
+      device_id: 82fc44b6345e0bd01175085d8cf4bb9d
+      type: action
+      subtype: close
+      discovery_id: 0xb4e3f9fffe6bf4b5 action_close
   condition: []
   action:
-  - device_id: b5c99c551f5157c833050ed2a812fa68
-    domain: cover
-    entity_id: cover.ikea_rollo_fensterbank_links_wohnzimmer
-    type: close
-  - device_id: c0238df3821a546d59533f8cea51734b
-    domain: cover
-    entity_id: cover.ikea_rollo_fensterbank_rechts_wohnzimmer
-    type: close
+    - device_id: b5c99c551f5157c833050ed2a812fa68
+      domain: cover
+      entity_id: cover.ikea_rollo_fensterbank_links_wohnzimmer
+      type: close
+    - device_id: c0238df3821a546d59533f8cea51734b
+      domain: cover
+      entity_id: cover.ikea_rollo_fensterbank_rechts_wohnzimmer
+      type: close
   mode: single
-- id: '1684923867295'
+- id: "1684923867295"
   alias: Taster Futterautomat Füttern
-  description: ''
+  description: ""
   trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 6876c829a9ce4b4c7dfc341d657b26ac
-    type: action
-    subtype: open
-    discovery_id: 0x804b50fffe1fb4a3 action_open
+    - platform: device
+      domain: mqtt
+      device_id: 6876c829a9ce4b4c7dfc341d657b26ac
+      type: action
+      subtype: open
+      discovery_id: 0x804b50fffe1fb4a3 action_open
   condition: []
   action:
-  - device_id: a4c274664cb7efe6046fa12adbcc36a2
-    domain: select
-    entity_id: select.aqara_futterautomat_feed
-    type: select_option
-    option: START
+    - device_id: a4c274664cb7efe6046fa12adbcc36a2
+      domain: select
+      entity_id: select.aqara_futterautomat_feed
+      type: select_option
+      option: START
   mode: single
-- id: '1686557247104'
+- id: "1686557247104"
   alias: Ventilator
-  description: 'An: Wenn über 26 Grad
+  description: "An: Wenn über 26 Grad
 
-    Aus: Wenn unter 24 Grad'
+    Aus: Wenn unter 24 Grad"
   trigger:
-  - platform: numeric_state
-    entity_id: sensor.temperatur_wohnzimmer
-    above: 26
-    id: fanOn
-  - platform: numeric_state
-    entity_id: sensor.temperatur_wohnzimmer
-    above: 2
-    id: fanOff
-    below: 24
+    - platform: numeric_state
+      entity_id: sensor.temperatur_wohnzimmer
+      above: 26
+      id: fanOn
+    - platform: numeric_state
+      entity_id: sensor.temperatur_wohnzimmer
+      above: 2
+      id: fanOff
+      below: 24
   condition:
-  - condition: time
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-    - sat
-    - sun
-    before: '22:00:00'
-    after: 07:00:00
-  - condition: state
-    entity_id: input_boolean.ventilator
-    state: 'on'
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+        - sat
+        - sun
+      before: "22:00:00"
+      after: 07:00:00
+    - condition: state
+      entity_id: input_boolean.ventilator
+      state: "on"
   action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - fanOn
-      sequence:
-      - service: fan.turn_on
-        data:
-          percentage: 60
-        target:
-          entity_id: fan.ventilator
-    - conditions:
-      - condition: trigger
-        id:
-        - fanOff
-      sequence:
-      - service: fan.turn_off
-        data: {}
-        target:
-          entity_id: fan.ventilator
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - fanOn
+          sequence:
+            - service: fan.turn_on
+              data:
+                percentage: 60
+              target:
+                entity_id: fan.ventilator
+        - conditions:
+            - condition: trigger
+              id:
+                - fanOff
+          sequence:
+            - service: fan.turn_off
+              data: {}
+              target:
+                entity_id: fan.ventilator
   mode: single
-- id: '1686661353814'
+- id: "1686661353814"
   alias: Rollos runter wenn 26 Grad auf Balkon
-  description: ''
+  description: ""
   trigger:
-  - platform: numeric_state
-    entity_id: sensor.temperatur_balkon
-    above: 26
+    - platform: numeric_state
+      entity_id: sensor.temperatur_balkon
+      above: 26
   condition: []
   action:
-  - service: cover.close_cover
-    data: {}
-    target:
-      entity_id:
-      - cover.rollos_fensterbank_wohnzimmer
-      - cover.rollos_fensterbank_schlafzimmer
+    - service: cover.close_cover
+      data: {}
+      target:
+        entity_id:
+          - cover.rollos_fensterbank_wohnzimmer
+          - cover.rollos_fensterbank_schlafzimmer
   mode: single
-- id: '1687111758411'
-  alias: 'Esstisch: Musik an, wenn jemand erkannt'
-  description: ''
+- id: "1687111758411"
+  alias: "Esstisch: Musik an, wenn jemand erkannt"
+  description: ""
   trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.presence_sensor_fp2_dc10_presence_sensor_5
-    from: 'off'
-    to: 'on'
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 5
+    - platform: state
+      entity_id:
+        - binary_sensor.presence_sensor_fp2_dc10_presence_sensor_5
+      from: "off"
+      to: "on"
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 5
   condition:
-  - condition: state
-    entity_id: input_boolean.guestmode
-    state: 'on'
+    - condition: state
+      entity_id: input_boolean.guestmode
+      state: "on"
   action:
-  - service: media_player.volume_set
-    data:
-      volume_level: 10
-    target:
-      entity_id: media_player.sonos_ray
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.sonos_ray
-    data:
-      media_content_id: spotify://71c55d65e0fb83ea97ebfd495afe5ed5/spotify:playlist:0cxlQu2hr6yFYZXds7HK6h
-      media_content_type: spotify://playlist
-    metadata:
-      title: "Musik zum aufstehen \U0001F31E"
-      thumbnail: https://i.scdn.co/image/ab67706c0000bebb4c8c729ddff49692ef888a62
-      media_class: playlist
-      children_media_class: track
-      navigateIds:
-      - {}
-      - media_content_type: spotify://library
-        media_content_id: spotify://71c55d65e0fb83ea97ebfd495afe5ed5
-      - media_content_type: spotify://current_user_playlists
-        media_content_id: spotify://71c55d65e0fb83ea97ebfd495afe5ed5/current_user_playlists
-      - media_content_type: spotify://playlist
+    - service: media_player.volume_set
+      data:
+        volume_level: 10
+      target:
+        entity_id: media_player.sonos_ray
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.sonos_ray
+      data:
         media_content_id: spotify://71c55d65e0fb83ea97ebfd495afe5ed5/spotify:playlist:0cxlQu2hr6yFYZXds7HK6h
+        media_content_type: spotify://playlist
+      metadata:
+        title: "Musik zum aufstehen \U0001F31E"
+        thumbnail: https://i.scdn.co/image/ab67706c0000bebb4c8c729ddff49692ef888a62
+        media_class: playlist
+        children_media_class: track
+        navigateIds:
+          - {}
+          - media_content_type: spotify://library
+            media_content_id: spotify://71c55d65e0fb83ea97ebfd495afe5ed5
+          - media_content_type: spotify://current_user_playlists
+            media_content_id: spotify://71c55d65e0fb83ea97ebfd495afe5ed5/current_user_playlists
+          - media_content_type: spotify://playlist
+            media_content_id: spotify://71c55d65e0fb83ea97ebfd495afe5ed5/spotify:playlist:0cxlQu2hr6yFYZXds7HK6h
   mode: single
-- id: '1688114539900'
-  alias: 'Meeting: Aus'
-  description: ''
+- id: "1688114539900"
+  alias: "Meeting: Aus"
+  description: ""
   trigger:
-  - platform: state
-    entity_id:
-    - input_boolean.florian_im_meeting
-    from: 'on'
-    to: 'off'
-  condition: []
-  action:
-  - type: turn_off
-    device_id: 1908fc0d3ce48c73492fb9d57e328810
-    entity_id: switch.roborock_s7_maxv_dnd_switch
-    domain: switch
-  mode: single
-- id: '1689600805179'
-  alias: Anni ist da
-  description: ''
-  trigger:
-  - platform: zone
-    entity_id: person.anni
-    zone: zone.home
-    event: enter
-    id: anniOn
-  - platform: zone
-    entity_id: person.anni
-    zone: zone.home
-    event: leave
-    id: anniOff
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - anniOn
-      sequence:
-      - service: input_boolean.turn_on
-        data: {}
-        target:
-          entity_id: input_boolean.anni_ist_da
-    - conditions:
-      - condition: trigger
-        id:
-        - anniOff
-      sequence:
-      - service: input_boolean.turn_off
-        data: {}
-        target:
-          entity_id: input_boolean.anni_ist_da
-  mode: single
-- id: '1689600944267'
-  alias: Lade Anni-Dashboard
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - input_boolean.anni_ist_da
-    from: 'off'
-    to: 'on'
-    id: anni_da
-  condition:
-  - condition: trigger
-    id:
-    - anni_da
-  action:
-  - service: fully_kiosk.load_url
-    data:
-      url: http://10.182.1.240:8123/dashboard-anni
-    target:
-      device_id: 8d9991a5dd07654891a5cf3a476cba07
-  - service: switch.turn_on
-    data: {}
-    target:
-      entity_id: switch.dashboard_screen
-  mode: single
-- id: '1689601002530'
-  alias: Lade Dashboard
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - input_boolean.anni_ist_da
-    from: 'on'
-    to: 'off'
-  - platform: state
-    entity_id:
-    - input_boolean.guestmode
-    from: 'on'
-    to: 'off'
-  - platform: state
-    entity_id:
-    - input_boolean.steffi_ist_da
-    from: 'on'
-    to: 'off'
-  - platform: state
-    entity_id:
-    - sensor.pills_taken
-    to: '0'
-    from:
-  condition: []
-  action:
-  - service: fully_kiosk.load_url
-    data:
-      url: http://10.182.1.240:8123/dashboard-desktop/0?kiosk
-    target:
-      device_id: 8d9991a5dd07654891a5cf3a476cba07
-  - service: switch.turn_on
-    data: {}
-    target:
-      entity_id: switch.dashboard_screen
-  mode: single
-- id: '1689602660317'
-  alias: NFC Tag Putzen
-  description: ''
-  trigger:
-  - platform: tag
-    tag_id: d88c0a66-dfaf-4014-8dc3-dc312a7335dd
-    id: tagBad
-  - platform: tag
-    tag_id: dbd24793-fe8a-4ce8-855f-9a16e1d74fd6
-    id: tagKuche
-  - platform: tag
-    tag_id: d88c0a66-dfaf-4014-8dc3-dc312a7335dd
-    id: tagSchlafzimmer
-  - platform: tag
-    tag_id: 769595c4-a523-47de-b45b-fa514906dcf7
-    id: tagWohnzimmer
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - tagBad
-      sequence:
-      - service: input_boolean.turn_on
-        data: {}
-        target:
-          entity_id: input_boolean.putzen_badezimmer
-    - conditions:
-      - condition: trigger
-        id:
-        - tagKuche
-      sequence:
-      - service: input_boolean.turn_on
-        data: {}
-        target:
-          entity_id:
-          - input_boolean.putzen_kuche
-    - conditions:
-      - condition: trigger
-        id:
-        - tagSchlafzimmer
-      sequence:
-      - service: input_boolean.turn_on
-        data: {}
-        target:
-          entity_id:
-          - input_boolean.putzen_schlafzimmer
-    - conditions:
-      - condition: trigger
-        id:
-        - tagWohnzimmer
-      sequence:
-      - service: input_boolean.turn_on
-        data: {}
-        target:
-          entity_id:
-          - input_boolean.putzen_wohnzimmer
-  mode: single
-- id: '1690625427032'
-  alias: Daily Backup
-  description: ''
-  trigger:
-  - platform: time
-    at: 02:00:00
-  condition: []
-  action:
-  - service: auto_backup.backup_full
-    data:
-      keep_days: 2
-  mode: single
-- id: '1690625584420'
-  alias: Lade Gäste Dashboard
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - input_boolean.guestmode
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - service: fully_kiosk.load_url
-    data:
-      url: http://10.182.1.240:8123/dashboard-gast/0?kiosk
-    target:
-      device_id: 8d9991a5dd07654891a5cf3a476cba07
-  mode: single
-- id: '1690714818053'
-  alias: Rollos hoch wenn jemand nach Hause kommt
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.people_home
-    from: '0'
-    to: '1'
-  condition: []
-  action:
-  - service: cover.open_cover
-    data: {}
-    target:
+    - platform: state
       entity_id:
-      - cover.rollos_fensterbank_wohnzimmer
-  mode: single
-- id: '1691151128778'
-  alias: Nachtlicht Küche
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.hlk_kuche_belegung
-    from: 'off'
-    to: 'on'
-    id: kucheOn
-  - platform: state
-    entity_id:
-    - binary_sensor.hlk_kuche_belegung
-    from: 'on'
-    to: 'off'
-    id: kucheOff
-  condition:
-  - condition: state
-    entity_id: sensor.people_home
-    state: '1'
-  - condition: sun
-    before: sunrise
-    after: sunset
-    after_offset: '1'
-    enabled: true
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - kucheOn
-      sequence:
-      - type: turn_on
-        device_id: e167e2f1f1c6002658c924c970d2853f
-        entity_id: bd86d041fb3a1a9a9292557802d54638
-        domain: light
-        brightness_pct: 30
-    - conditions:
-      - condition: trigger
-        id:
-        - kucheOff
-      sequence:
-      - type: turn_off
-        device_id: e167e2f1f1c6002658c924c970d2853f
-        entity_id: bd86d041fb3a1a9a9292557802d54638
-        domain: light
-  mode: single
-- id: '1691307076110'
-  alias: Steffi Pillen Zeit
-  description: ''
-  trigger:
-  - platform: time
-    at: 07:30:00
-  - platform: state
-    entity_id:
-    - input_boolean.steffi_ist_da
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: input_boolean.steffi_ist_da
-    state: 'on'
-  action:
-  - service: fully_kiosk.load_url
-    data:
-      url: http://10.182.1.240:8123/steffi-pillen/0?kiosk
-    target:
-      device_id: 8d9991a5dd07654891a5cf3a476cba07
-  - service: switch.turn_on
-    data: {}
-    target:
-      entity_id: switch.dashboard_screen
-  mode: single
-- id: '1691320563612'
-  alias: Rollos Wohnzimmer schließen wenn zu hell
-  description: ''
-  trigger:
-  - type: illuminance
-    platform: device
-    device_id: 646ccae94dfa81e70bc4cdbe0ecb396a
-    entity_id: 83b3d1d318c8ea554251f39f8ae576ca
-    domain: sensor
-    above: 10000
-    id: wohnzimmerRollosOn
-  - type: illuminance
-    platform: device
-    device_id: 646ccae94dfa81e70bc4cdbe0ecb396a
-    entity_id: 83b3d1d318c8ea554251f39f8ae576ca
-    domain: sensor
-    id: wohnzimmerRollosOff
-    below: 8500
-    for:
-      hours: 0
-      minutes: 20
-      seconds: 0
+        - input_boolean.florian_im_meeting
+      from: "on"
+      to: "off"
   condition: []
   action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - wohnzimmerRollosOn
-      sequence:
-      - service: cover.close_cover
-        data: {}
-        target:
-          entity_id: cover.rollos_fensterbank_wohnzimmer
-    - conditions:
-      - condition: trigger
-        id:
-        - wohnzimmerRollosOff
-      sequence:
-      - service: cover.open_cover
-        data: {}
-        target:
-          entity_id: cover.rollos_fensterbank_wohnzimmer
+    - type: turn_off
+      device_id: 1908fc0d3ce48c73492fb9d57e328810
+      entity_id: switch.roborock_s7_maxv_dnd_switch
+      domain: switch
   mode: single
-- id: '1691358813636'
+- id: "1689600805179"
+  alias: Anni ist da
+  description: ""
+  trigger:
+    - platform: zone
+      entity_id: person.anni
+      zone: zone.home
+      event: enter
+      id: anniOn
+    - platform: zone
+      entity_id: person.anni
+      zone: zone.home
+      event: leave
+      id: anniOff
+  condition: []
+  action:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - anniOn
+          sequence:
+            - service: input_boolean.turn_on
+              data: {}
+              target:
+                entity_id: input_boolean.anni_ist_da
+        - conditions:
+            - condition: trigger
+              id:
+                - anniOff
+          sequence:
+            - service: input_boolean.turn_off
+              data: {}
+              target:
+                entity_id: input_boolean.anni_ist_da
+  mode: single
+- id: "1689600944267"
+  alias: Lade Anni-Dashboard
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - input_boolean.anni_ist_da
+      from: "off"
+      to: "on"
+      id: anni_da
+  condition:
+    - condition: trigger
+      id:
+        - anni_da
+  action:
+    - service: fully_kiosk.load_url
+      data:
+        url: http://10.182.1.240:8123/dashboard-anni
+      target:
+        device_id: 8d9991a5dd07654891a5cf3a476cba07
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.dashboard_screen
+  mode: single
+- id: "1689601002530"
+  alias: Lade Dashboard
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - input_boolean.anni_ist_da
+      from: "on"
+      to: "off"
+    - platform: state
+      entity_id:
+        - input_boolean.guestmode
+      from: "on"
+      to: "off"
+    - platform: state
+      entity_id:
+        - input_boolean.steffi_ist_da
+      from: "on"
+      to: "off"
+    - platform: state
+      entity_id:
+        - sensor.pills_taken
+      to: "0"
+      from:
+  condition: []
+  action:
+    - service: fully_kiosk.load_url
+      data:
+        url: http://10.182.1.240:8123/dashboard-desktop/0?kiosk
+      target:
+        device_id: 8d9991a5dd07654891a5cf3a476cba07
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.dashboard_screen
+  mode: single
+- id: "1689602660317"
+  alias: NFC Tag Putzen
+  description: ""
+  trigger:
+    - platform: tag
+      tag_id: d88c0a66-dfaf-4014-8dc3-dc312a7335dd
+      id: tagBad
+    - platform: tag
+      tag_id: dbd24793-fe8a-4ce8-855f-9a16e1d74fd6
+      id: tagKuche
+    - platform: tag
+      tag_id: d88c0a66-dfaf-4014-8dc3-dc312a7335dd
+      id: tagSchlafzimmer
+    - platform: tag
+      tag_id: 769595c4-a523-47de-b45b-fa514906dcf7
+      id: tagWohnzimmer
+  condition: []
+  action:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - tagBad
+          sequence:
+            - service: input_boolean.turn_on
+              data: {}
+              target:
+                entity_id: input_boolean.putzen_badezimmer
+        - conditions:
+            - condition: trigger
+              id:
+                - tagKuche
+          sequence:
+            - service: input_boolean.turn_on
+              data: {}
+              target:
+                entity_id:
+                  - input_boolean.putzen_kuche
+        - conditions:
+            - condition: trigger
+              id:
+                - tagSchlafzimmer
+          sequence:
+            - service: input_boolean.turn_on
+              data: {}
+              target:
+                entity_id:
+                  - input_boolean.putzen_schlafzimmer
+        - conditions:
+            - condition: trigger
+              id:
+                - tagWohnzimmer
+          sequence:
+            - service: input_boolean.turn_on
+              data: {}
+              target:
+                entity_id:
+                  - input_boolean.putzen_wohnzimmer
+  mode: single
+- id: "1690625427032"
+  alias: Daily Backup
+  description: ""
+  trigger:
+    - platform: time
+      at: 02:00:00
+  condition: []
+  action:
+    - service: auto_backup.backup_full
+      data:
+        keep_days: 2
+  mode: single
+- id: "1690625584420"
+  alias: Lade Gäste Dashboard
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - input_boolean.guestmode
+      from: "off"
+      to: "on"
+  condition: []
+  action:
+    - service: fully_kiosk.load_url
+      data:
+        url: http://10.182.1.240:8123/dashboard-gast/0?kiosk
+      target:
+        device_id: 8d9991a5dd07654891a5cf3a476cba07
+  mode: single
+- id: "1690714818053"
+  alias: Rollos hoch wenn jemand nach Hause kommt
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - sensor.people_home
+      from: "0"
+      to: "1"
+  condition: []
+  action:
+    - service: cover.open_cover
+      data: {}
+      target:
+        entity_id:
+          - cover.rollos_fensterbank_wohnzimmer
+  mode: single
+- id: "1691151128778"
+  alias: Nachtlicht Küche
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.hlk_kuche_belegung
+      from: "off"
+      to: "on"
+      id: kucheOn
+    - platform: state
+      entity_id:
+        - binary_sensor.hlk_kuche_belegung
+      from: "on"
+      to: "off"
+      id: kucheOff
+  condition:
+    - condition: state
+      entity_id: sensor.people_home
+      state: "1"
+    - condition: sun
+      before: sunrise
+      after: sunset
+      after_offset: "1"
+      enabled: true
+  action:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - kucheOn
+          sequence:
+            - type: turn_on
+              device_id: e167e2f1f1c6002658c924c970d2853f
+              entity_id: bd86d041fb3a1a9a9292557802d54638
+              domain: light
+              brightness_pct: 30
+        - conditions:
+            - condition: trigger
+              id:
+                - kucheOff
+          sequence:
+            - type: turn_off
+              device_id: e167e2f1f1c6002658c924c970d2853f
+              entity_id: bd86d041fb3a1a9a9292557802d54638
+              domain: light
+  mode: single
+- id: "1691307076110"
+  alias: Steffi Pillen Zeit
+  description: ""
+  trigger:
+    - platform: time
+      at: 07:30:00
+    - platform: state
+      entity_id:
+        - input_boolean.steffi_ist_da
+      from: "off"
+      to: "on"
+  condition:
+    - condition: state
+      entity_id: input_boolean.steffi_ist_da
+      state: "on"
+  action:
+    - service: fully_kiosk.load_url
+      data:
+        url: http://10.182.1.240:8123/steffi-pillen/0?kiosk
+      target:
+        device_id: 8d9991a5dd07654891a5cf3a476cba07
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.dashboard_screen
+  mode: single
+- id: "1691320563612"
+  alias: Rollos Wohnzimmer schließen wenn zu hell
+  description: ""
+  trigger:
+    - type: illuminance
+      platform: device
+      device_id: 646ccae94dfa81e70bc4cdbe0ecb396a
+      entity_id: 83b3d1d318c8ea554251f39f8ae576ca
+      domain: sensor
+      above: 10000
+      id: wohnzimmerRollosOn
+    - type: illuminance
+      platform: device
+      device_id: 646ccae94dfa81e70bc4cdbe0ecb396a
+      entity_id: 83b3d1d318c8ea554251f39f8ae576ca
+      domain: sensor
+      id: wohnzimmerRollosOff
+      below: 8500
+      for:
+        hours: 0
+        minutes: 20
+        seconds: 0
+  condition: []
+  action:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - wohnzimmerRollosOn
+          sequence:
+            - service: cover.close_cover
+              data: {}
+              target:
+                entity_id: cover.rollos_fensterbank_wohnzimmer
+        - conditions:
+            - condition: trigger
+              id:
+                - wohnzimmerRollosOff
+          sequence:
+            - service: cover.open_cover
+              data: {}
+              target:
+                entity_id: cover.rollos_fensterbank_wohnzimmer
+  mode: single
+- id: "1691358813636"
   alias: Nachtlicht Flur
   description: 20%
   trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.hlk_ld2410_966f_belegung
-    to: 'on'
-    id: flurOn
-  - platform: state
-    entity_id:
-    - binary_sensor.hlk_ld2410_966f_belegung
-    to: 'off'
-    from: 'on'
-    id: flurOff
+    - platform: state
+      entity_id:
+        - binary_sensor.hlk_ld2410_966f_belegung
+      to: "on"
+      id: flurOn
+    - platform: state
+      entity_id:
+        - binary_sensor.hlk_ld2410_966f_belegung
+      to: "off"
+      from: "on"
+      id: flurOff
   condition:
-  - condition: sun
-    before: sunrise
-    after: sunset
-    after_offset: '1'
-    enabled: true
-  - condition: state
-    entity_id: sensor.people_home
-    state: '1'
+    - condition: sun
+      before: sunrise
+      after: sunset
+      after_offset: "1"
+      enabled: true
+    - condition: state
+      entity_id: sensor.people_home
+      state: "1"
   action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - flurOn
-      sequence:
-      - type: turn_on
-        device_id: b59da74a1ad03e0a6c798def814580fa
-        entity_id: ceaf8ad210dc0faa638375e7524024c1
-        domain: light
-        brightness_pct: 5
-    - conditions:
-      - condition: trigger
-        id:
-        - flurOff
-      sequence:
-      - type: turn_off
-        device_id: b59da74a1ad03e0a6c798def814580fa
-        entity_id: ceaf8ad210dc0faa638375e7524024c1
-        domain: light
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - flurOn
+          sequence:
+            - type: turn_on
+              device_id: b59da74a1ad03e0a6c798def814580fa
+              entity_id: ceaf8ad210dc0faa638375e7524024c1
+              domain: light
+              brightness_pct: 5
+        - conditions:
+            - condition: trigger
+              id:
+                - flurOff
+          sequence:
+            - type: turn_off
+              device_id: b59da74a1ad03e0a6c798def814580fa
+              entity_id: ceaf8ad210dc0faa638375e7524024c1
+              domain: light
   mode: single
-- id: '1691429105737'
+- id: "1691429105737"
   alias: WLED Flur Arbeitszeit
-  description: ''
+  description: ""
   trigger:
-  - type: turned_on
-    platform: device
-    device_id: 66a6f5fa4a209f0d9089ac798a143838
-    entity_id: 2aa74d546a0bdc67e47539fa04b65813
-    domain: binary_sensor
-    id: macbookCameraOn
-  - type: turned_on
-    platform: device
-    device_id: 299c39650758d4769659d21912cb10a6
-    entity_id: 9fc0bd9cfaef246c9b944e1aa17ea255
-    domain: binary_sensor
-    id: macminiCameraOn
-  - type: turned_off
-    platform: device
-    device_id: 66a6f5fa4a209f0d9089ac798a143838
-    entity_id: 2aa74d546a0bdc67e47539fa04b65813
-    domain: binary_sensor
-    id: macbookCameraOff
-  - type: turned_off
-    platform: device
-    device_id: 299c39650758d4769659d21912cb10a6
-    entity_id: 9fc0bd9cfaef246c9b944e1aa17ea255
-    domain: binary_sensor
-    id: macminiCameraOff
-  - platform: time
-    at: 07:30:00
-    id: workOn
-  - platform: time
-    at: '17:30:00'
-    id: workOff
-    enabled: true
+    - type: turned_on
+      platform: device
+      device_id: 66a6f5fa4a209f0d9089ac798a143838
+      entity_id: 2aa74d546a0bdc67e47539fa04b65813
+      domain: binary_sensor
+      id: macbookCameraOn
+    - type: turned_on
+      platform: device
+      device_id: 299c39650758d4769659d21912cb10a6
+      entity_id: 9fc0bd9cfaef246c9b944e1aa17ea255
+      domain: binary_sensor
+      id: macminiCameraOn
+    - type: turned_off
+      platform: device
+      device_id: 66a6f5fa4a209f0d9089ac798a143838
+      entity_id: 2aa74d546a0bdc67e47539fa04b65813
+      domain: binary_sensor
+      id: macbookCameraOff
+    - type: turned_off
+      platform: device
+      device_id: 299c39650758d4769659d21912cb10a6
+      entity_id: 9fc0bd9cfaef246c9b944e1aa17ea255
+      domain: binary_sensor
+      id: macminiCameraOff
+    - platform: time
+      at: 07:30:00
+      id: workOn
+    - platform: time
+      at: "17:30:00"
+      id: workOff
+      enabled: true
   condition:
-  - condition: time
-    after: 07:30:00
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-    before: '17:30:00'
-    enabled: true
-  - condition: state
-    entity_id: input_boolean.urlaubsmodus
-    state: 'off'
+    - condition: time
+      after: 07:30:00
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+      before: "17:30:00"
+      enabled: true
+    - condition: state
+      entity_id: input_boolean.urlaubsmodus
+      state: "off"
   action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - macbookCameraOn
-        - macminiCameraOn
-      sequence:
-      - service: light.turn_on
-        data:
-          color_name: red
-          brightness_pct: 100
-        target:
-          device_id: b242b37d70eea718b06968a7a60789c5
-    - conditions:
-      - condition: trigger
-        id:
-        - macbookCameraOff
-        - macminiCameraOff
-      sequence:
-      - service: light.turn_on
-        data:
-          color_name: white
-          brightness_pct: 100
-        target:
-          device_id: b242b37d70eea718b06968a7a60789c5
-    - conditions:
-      - condition: trigger
-        id:
-        - workOn
-      sequence:
-      - service: light.turn_on
-        data:
-          color_name: white
-          brightness_pct: 100
-        target:
-          device_id: b242b37d70eea718b06968a7a60789c5
-    - conditions:
-      - condition: trigger
-        id:
-        - workOff
-      sequence:
-      - type: turn_off
-        device_id: b242b37d70eea718b06968a7a60789c5
-        entity_id: 51b64cc148eab02c75d1455a2b621fa2
-        domain: light
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - macbookCameraOn
+                - macminiCameraOn
+          sequence:
+            - service: light.turn_on
+              data:
+                color_name: red
+                brightness_pct: 100
+              target:
+                device_id: b242b37d70eea718b06968a7a60789c5
+        - conditions:
+            - condition: trigger
+              id:
+                - macbookCameraOff
+                - macminiCameraOff
+          sequence:
+            - service: light.turn_on
+              data:
+                color_name: white
+                brightness_pct: 100
+              target:
+                device_id: b242b37d70eea718b06968a7a60789c5
+        - conditions:
+            - condition: trigger
+              id:
+                - workOn
+          sequence:
+            - service: light.turn_on
+              data:
+                color_name: white
+                brightness_pct: 100
+              target:
+                device_id: b242b37d70eea718b06968a7a60789c5
+        - conditions:
+            - condition: trigger
+              id:
+                - workOff
+          sequence:
+            - type: turn_off
+              device_id: b242b37d70eea718b06968a7a60789c5
+              entity_id: 51b64cc148eab02c75d1455a2b621fa2
+              domain: light
   mode: single
-- id: '1691489295064'
-  alias: Deaktiviere die Aktualisierung der Staubsauger-Kamera, wenn dieser angedockt
+- id: "1691489295064"
+  alias:
+    Deaktiviere die Aktualisierung der Staubsauger-Kamera, wenn dieser angedockt
     ist
-  description: ''
+  description: ""
   use_blueprint:
     path: PiotrMachowski/disable_vacuum_camera_update_when_docked.yaml
     input:
       vacuum: vacuum.roborock_s7_maxv
       camera: camera.roborock_s7_maxv_map
-- id: '1691499965189'
+- id: "1691499965189"
   alias: Duschen
-  description: ''
+  description: ""
   trigger:
-  - type: moist
-    platform: device
-    device_id: f57e11fe2c1f1f570e8ac1a451700193
-    entity_id: da4dd570201aa966762457445728876e
-    domain: binary_sensor
-    id: badezimmerWaterOn
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 10
-  - type: not_moist
-    platform: device
-    device_id: f57e11fe2c1f1f570e8ac1a451700193
-    entity_id: da4dd570201aa966762457445728876e
-    domain: binary_sensor
-    id: badezimmerWaterOff
+    - type: moist
+      platform: device
+      device_id: f57e11fe2c1f1f570e8ac1a451700193
+      entity_id: da4dd570201aa966762457445728876e
+      domain: binary_sensor
+      id: badezimmerWaterOn
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 10
+    - type: not_moist
+      platform: device
+      device_id: f57e11fe2c1f1f570e8ac1a451700193
+      entity_id: da4dd570201aa966762457445728876e
+      domain: binary_sensor
+      id: badezimmerWaterOff
   condition: []
   action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - badezimmerWaterOn
-      - condition: state
-        entity_id: input_boolean.winter_mode
-        state: 'on'
-      sequence: []
-    - conditions:
-      - condition: trigger
-        id:
-        - badezimmerWaterOn
-      - condition: device
-        type: is_on
-        device_id: 507d523084cd0d287b97a79f906aef8d
-        entity_id: f9898315524e3aee17127ffd4c15b5db
-        domain: light
-      sequence:
-      - service: light.turn_on
-        data:
-          brightness_pct: 30
-        target:
-          device_id: 507d523084cd0d287b97a79f906aef8d
-    - conditions:
-      - condition: trigger
-        id:
-        - badezimmerWaterOn
-      sequence:
-      - service: media_player.volume_set
-        data:
-          volume_level: 0.7
-        target:
-          device_id: e44130d7e1ed3ec3b0a00e119c9f9e64
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - badezimmerWaterOff
-      - condition: state
-        entity_id: input_boolean.winter_mode
-        state: 'on'
-      sequence: []
-    - conditions:
-      - condition: trigger
-        id:
-        - badezimmerWaterOff
-      - condition: device
-        type: is_on
-        device_id: 507d523084cd0d287b97a79f906aef8d
-        entity_id: f9898315524e3aee17127ffd4c15b5db
-        domain: light
-      sequence:
-      - service: light.turn_on
-        data:
-          brightness_pct: 100
-        target:
-          device_id: 507d523084cd0d287b97a79f906aef8d
-    - conditions:
-      - condition: trigger
-        id:
-        - badezimmerWaterOff
-      sequence:
-      - service: media_player.volume_set
-        data:
-          volume_level: 0.36
-        target:
-          device_id: e44130d7e1ed3ec3b0a00e119c9f9e64
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - badezimmerWaterOn
+            - condition: state
+              entity_id: input_boolean.winter_mode
+              state: "on"
+          sequence: []
+        - conditions:
+            - condition: trigger
+              id:
+                - badezimmerWaterOn
+            - condition: device
+              type: is_on
+              device_id: 507d523084cd0d287b97a79f906aef8d
+              entity_id: f9898315524e3aee17127ffd4c15b5db
+              domain: light
+          sequence:
+            - service: light.turn_on
+              data:
+                brightness_pct: 30
+              target:
+                device_id: 507d523084cd0d287b97a79f906aef8d
+        - conditions:
+            - condition: trigger
+              id:
+                - badezimmerWaterOn
+          sequence:
+            - service: media_player.volume_set
+              data:
+                volume_level: 0.7
+              target:
+                device_id: e44130d7e1ed3ec3b0a00e119c9f9e64
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - badezimmerWaterOff
+            - condition: state
+              entity_id: input_boolean.winter_mode
+              state: "on"
+          sequence: []
+        - conditions:
+            - condition: trigger
+              id:
+                - badezimmerWaterOff
+            - condition: device
+              type: is_on
+              device_id: 507d523084cd0d287b97a79f906aef8d
+              entity_id: f9898315524e3aee17127ffd4c15b5db
+              domain: light
+          sequence:
+            - service: light.turn_on
+              data:
+                brightness_pct: 100
+              target:
+                device_id: 507d523084cd0d287b97a79f906aef8d
+        - conditions:
+            - condition: trigger
+              id:
+                - badezimmerWaterOff
+          sequence:
+            - service: media_player.volume_set
+              data:
+                volume_level: 0.36
+              target:
+                device_id: e44130d7e1ed3ec3b0a00e119c9f9e64
   mode: single
-- id: '1691589275176'
+- id: "1691589275176"
   alias: Einkaufen
-  description: ''
+  description: ""
   trigger:
-  - platform: zone
-    entity_id: person.florian
-    zone: zone.rewe_kantstrasse
-    event: enter
-    id: reweOn
-  - platform: conversation
-    command:
-    - Ich gehe jetzt einkaufen
-    - Ich gehe mal einkaufen
-    - Ich gehe einkaufen
-    - Ich bin mal einkaufen
-    id: reweSentence
+    - platform: zone
+      entity_id: person.florian
+      zone: zone.rewe_kantstrasse
+      event: enter
+      id: reweOn
+    - platform: conversation
+      command:
+        - Ich gehe jetzt einkaufen
+        - Ich gehe mal einkaufen
+        - Ich gehe einkaufen
+        - Ich bin mal einkaufen
+      id: reweSentence
   condition: []
   action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - reweOn
-      sequence:
-      - service: notify.mobile_app_florians_iphone
-        data:
-          title: Willkommen bei Rewe
-          message: Hast du was auf deiner Einkaufsliste, was du vielleicht noch besorgen
-            müsstest?
-          data:
-            actions:
-            - action: URI
-              title: Zeige mir die Einkaufsliste
-              uri: /shopping-list
-              icon: sfsymbols:cart
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - reweOn
+          sequence:
+            - service: notify.mobile_app_florians_iphone
+              data:
+                title: Willkommen bei Rewe
+                message:
+                  Hast du was auf deiner Einkaufsliste, was du vielleicht noch besorgen
+                  müsstest?
+                data:
+                  actions:
+                    - action: URI
+                      title: Zeige mir die Einkaufsliste
+                      uri: /shopping-list
+                      icon: sfsymbols:cart
   mode: single
-- id: '1691706563088'
+- id: "1691706563088"
   alias: Update Repo
-  description: ''
+  description: ""
   trigger:
-  - platform: time
-    at: 00:00:00
+    - platform: time
+      at: 00:00:00
   condition: []
   action:
-  - service: shell_command.update_repo
-    data: {}
+    - service: shell_command.update_repo
+      data: {}
   mode: single
-- id: '1691741828322'
+- id: "1691741828322"
   alias: Ankommen
-  description: ''
+  description: ""
   trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.aqara_contact_wohnungstur_contact
-    from: 'on'
-    to: 'off'
-    enabled: true
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 5
-    id: doorOpenOn
-  - platform: state
-    entity_id:
-    - sensor.people_home
-    to: '1'
-    id: anyoneHomeOn
+    - platform: state
+      entity_id:
+        - binary_sensor.aqara_contact_wohnungstur_contact
+      from: "on"
+      to: "off"
+      enabled: true
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 5
+      id: doorOpenOn
+    - platform: state
+      entity_id:
+        - sensor.people_home
+      to: "1"
+      id: anyoneHomeOn
   condition:
-  - condition: and
-    conditions:
+    - condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.guestmode
+          state: "off"
+        - condition: template
+          value_template:
+            "{{ is_state_attr('media_player.spotify_florian', 'source',
+            'iPhone') }}"
+          enabled: true
+        - condition: template
+          value_template:
+            "{{ is_state('media_player.spotify_florian', 'playing')
+            }}"
+          enabled: true
+  action:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - anyoneHomeOn
+          sequence:
+            - service: switch.turn_on
+              data: {}
+              target:
+                device_id: f609651e79fe3f0345670e676f3fedf4
+        - conditions:
+            - condition: trigger
+              id:
+                - doorOpenOn
+          sequence:
+            - service: notify.mobile_app_florians_iphone
+              data:
+                title: "Willkommen Zuhause \U0001F3E0"
+                message: Ich habe die Musik von deinem iPhone auf Sonos Ray gestellt
+            - service: media_player.select_source
+              data:
+                source: Spotify Connect
+              target:
+                entity_id: media_player.sonos_ray
+            - service: media_player.select_source
+              data:
+                source: Sonos Ray
+              target:
+                entity_id: media_player.spotify_florian
+            - service: media_player.media_play
+              data: {}
+              target:
+                entity_id: media_player.sonos_ray
+  mode: single
+- id: "1691747640340"
+  alias: "Sicherheit: Bewegung erkannt"
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.motion_detected
+      from: "off"
+      to: "on"
+  condition:
     - condition: state
-      entity_id: input_boolean.guestmode
-      state: 'off'
-    - condition: template
-      value_template: '{{ is_state_attr(''media_player.spotify_florian'', ''source'',
-        ''iPhone'') }}'
-      enabled: true
-    - condition: template
-      value_template: '{{ is_state(''media_player.spotify_florian'', ''playing'')
-        }}'
-      enabled: true
+      entity_id: sensor.people_home
+      state: "0"
+    - condition: state
+      entity_id: vacuum.roborock_s7_maxv
+      state: docked
   action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - anyoneHomeOn
-      sequence:
-      - service: switch.turn_on
-        data: {}
-        target:
-          device_id: f609651e79fe3f0345670e676f3fedf4
-    - conditions:
-      - condition: trigger
-        id:
-        - doorOpenOn
-      sequence:
-      - service: notify.mobile_app_florians_iphone
-        data:
-          title: "Willkommen Zuhause \U0001F3E0"
-          message: Ich habe die Musik von deinem iPhone auf Sonos Ray gestellt
-      - service: media_player.select_source
-        data:
-          source: Spotify Connect
-        target:
-          entity_id: media_player.sonos_ray
-      - service: media_player.select_source
-        data:
-          source: Sonos Ray
-        target:
-          entity_id: media_player.spotify_florian
-      - service: media_player.media_play
-        data: {}
-        target:
-          entity_id: media_player.sonos_ray
-  mode: single
-- id: '1691747640340'
-  alias: 'Sicherheit: Bewegung erkannt'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.motion_detected
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: sensor.people_home
-    state: '0'
-  - condition: state
-    entity_id: vacuum.roborock_s7_maxv
-    state: docked
-  action:
-  - service: notify.mobile_app_florians_iphone
-    data:
-      title: ALARM ⚠️
-      message: Es wurde Bewegung entdeckt!
+    - service: notify.mobile_app_florians_iphone
       data:
-        push:
-          sound:
-            name: default
-            critical: 1
-            volume: 1
+        title: ALARM ⚠️
+        message: Es wurde Bewegung entdeckt!
+        data:
+          push:
+            sound:
+              name: default
+              critical: 1
+              volume: 1
   mode: single
-- id: '1691769668517'
-  alias: 'Jonas: Zähneputzen Starten'
-  description: ''
+- id: "1691769668517"
+  alias: "Jonas: Zähneputzen Starten"
+  description: ""
   use_blueprint:
     path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
     input:
       action_sensor: sensor.aqara_taster_badezimmer_action
       single_action:
-      - condition: state
-        entity_id: input_boolean.jonas_ist_da
-        state: 'on'
-      - service: script.zahneputzen
-        data: {}
-      - condition: time
-        weekday:
+        - condition: state
+          entity_id: input_boolean.jonas_ist_da
+          state: "on"
+        - service: script.zahneputzen
+          data: {}
+        - condition: time
+          weekday:
+            - fri
+            - sat
+          before: "20:00:00"
+- id: "1691786451171"
+  alias: Nachtlicht Badezimmer
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.mmwave_badezimmer
+      to: "on"
+      id: badezimmerOn
+    - platform: state
+      entity_id:
+        - binary_sensor.mmwave_badezimmer
+      to: "off"
+      id: badezimmerOff
+  condition:
+    - condition: sun
+      before: sunrise
+      after: sunset
+      after_offset: "1"
+  action:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - badezimmerOn
+          sequence:
+            - service: light.turn_on
+              data:
+                brightness_pct: 30
+              target:
+                entity_id: light.decke_badezimmer
+        - conditions:
+            - condition: trigger
+              id:
+                - badezimmerOff
+          sequence:
+            - service: light.turn_off
+              data: {}
+              target:
+                device_id: 507d523084cd0d287b97a79f906aef8d
+  mode: single
+- id: "1691920626298"
+  alias: Futterautomat
+  description: ""
+  trigger:
+    - platform: time_pattern
+      hours: /4
+      id: feedTimeCronOn
+  condition:
+    - condition: time
+      after: 07:30:00
+      before: "22:30:00"
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
         - fri
         - sat
-        before: '20:00:00'
-- id: '1691786451171'
-  alias: Nachtlicht Badezimmer
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.mmwave_badezimmer
-    to: 'on'
-    id: badezimmerOn
-  - platform: state
-    entity_id:
-    - binary_sensor.mmwave_badezimmer
-    to: 'off'
-    id: badezimmerOff
-  condition:
-  - condition: sun
-    before: sunrise
-    after: sunset
-    after_offset: '1'
+        - sun
   action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - badezimmerOn
-      sequence:
-      - service: light.turn_on
-        data:
-          brightness_pct: 30
-        target:
-          entity_id: light.decke_badezimmer
-    - conditions:
-      - condition: trigger
-        id:
-        - badezimmerOff
-      sequence:
-      - service: light.turn_off
-        data: {}
-        target:
-          device_id: 507d523084cd0d287b97a79f906aef8d
-  mode: single
-- id: '1691920626298'
-  alias: Futterautomat
-  description: ''
-  trigger:
-  - platform: time_pattern
-    hours: /4
-    id: feedTimeCronOn
-  condition:
-  - condition: time
-    after: 07:30:00
-    before: '22:30:00'
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-    - sat
-    - sun
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - feedTimeCronOn
-      sequence:
-      - device_id: a4c274664cb7efe6046fa12adbcc36a2
-        domain: select
-        entity_id: select.aqara_futterautomat_feed
-        type: select_option
-        option: START
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - feedTimeCronOn
+          sequence:
+            - device_id: a4c274664cb7efe6046fa12adbcc36a2
+              domain: select
+              entity_id: select.aqara_futterautomat_feed
+              type: select_option
+              option: START
   mode: single

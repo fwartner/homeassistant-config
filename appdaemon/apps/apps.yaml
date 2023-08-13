@@ -7,6 +7,8 @@ battery_monitor:
   hour: 14
   minute: 0
 
-split_automation:
+split_automations:
   module: split_automations
-  class: SplitAutomation
+  class: SplitAutomations
+  split_directory: /config/custom_configs/automations # Optional. Defaults to "/config/custom_configs/automations"
+  automations_file: /config/automations.yaml # Optional. Defaults to "/config/automations.yaml"

@@ -14,7 +14,6 @@ import os
 import yaml
 import unicodedata
 import re
-import datetime
 
 class SplitAutomations(hass.Hass):
 
@@ -26,28 +25,17 @@ class SplitAutomations(hass.Hass):
             self.log("Split directory is empty. Performing initial import...")
             self.initial_import()
 
-        self.initialize_schedule()
-
         self.listen_event(self.new_automation_created, event="automation_reloaded")
+        self.listen_event(self.automation_deleted, event="automation_removed")
 
     def _load_config(self):
         # Get configuration parameters
         self.split_dir = self.args.get("split_directory", "/config/custom_configs/automations")
         self.automations_file = self.args.get("automations_file", "/config/automations.yaml")
-        self.schedule_type = self.args.get("schedule_type", "time")  # "time" or "cron"
-        self.schedule_value = self.args.get("schedule_value", "16:41")  # Time or cron expression
-
-    def initialize_schedule(self):
-        if self.schedule_type == "time":
-            schedule_time = datetime.datetime.strptime(self.schedule_value, "%H:%M").time()
-            self.run_daily(self.split_and_update_automations, schedule_time)
-        elif self.schedule_type == "cron":
-            self.run_daily(self.split_and_update_automations, time=None, constrain_app_enabled=True, cron=self.schedule_value)
 
     def initial_import(self):
         self.log("Performing initial import of automations...")
         automations = self._read_yaml_file(self.automations_file)
-        split_automation_names = []
 
         for automation in automations:
             automation_alias = automation.get("alias", None)
@@ -56,15 +44,24 @@ class SplitAutomations(hass.Hass):
 
             if not os.path.exists(split_filename):
                 self._write_yaml_file(split_filename, automation)
-                split_automation_names.append(automation_name)
 
-        updated_automations = [automation for automation in automations if self._get_normalized_name(automation.get("alias", automation.get("name", "Unnamed_Automation"))) not in split_automation_names]
-        self._write_yaml_file(self.automations_file, updated_automations)
         self.log("Initial import completed.")
 
     def new_automation_created(self, event_name, data, kwargs):
         self.log("New automation created. Splitting and updating automations...")
+        self.split_and_update_automations()
 
+    def automation_deleted(self, event_name, data, kwargs):
+        automation_id = data.get("automation_id", None)
+        if automation_id:
+            automation_name = self._get_normalized_name(self.get_state(automation_id, attribute="friendly_name"))
+            split_filename = os.path.join(self.split_dir, f"{automation_name}.yaml")
+
+            if os.path.exists(split_filename):
+                os.remove(split_filename)
+                self.log(f"Deleted split file: {split_filename}")
+
+    def split_and_update_automations(self):
         automations = self._read_yaml_file(self.automations_file)
         split_automation_names = []
 
@@ -79,8 +76,12 @@ class SplitAutomations(hass.Hass):
                 self._write_yaml_file(split_filename, automation)
                 split_automation_names.append(automation_name)
 
-        updated_automations = [automation for automation in automations if self._get_normalized_name(automation.get("alias", automation.get("name", "Unnamed_Automation"))) not in split_automation_names]
-        self._write_yaml_file(self.automations_file, updated_automations)
+        # Delete split files corresponding to deleted automations
+        for split_file in os.listdir(self.split_dir):
+            if split_file[:-5] not in split_automation_names:  # Remove ".yaml" extension
+                os.remove(os.path.join(self.split_dir, split_file))
+                self.log(f"Deleted split file: {split_file}")
+
         self.log("Automations split and updated successfully.")
 
     def _read_yaml_file(self, file_path):

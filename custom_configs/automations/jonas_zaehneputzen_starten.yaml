@@ -1,0 +1,18 @@
+- id: "1691769668517"
+  alias: "Jonas: Zähneputzen Starten"
+  description: ""
+  use_blueprint:
+    path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
+    input:
+      action_sensor: sensor.aqara_taster_badezimmer_action
+      single_action:
+        - condition: state
+          entity_id: input_boolean.jonas_ist_da
+          state: "on"
+        - service: script.zahneputzen
+          data: {}
+        - condition: time
+          weekday:
+            - fri
+            - sat
+          before: "20:00:00"

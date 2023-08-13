@@ -1,0 +1,27 @@
+- id: "1691747640340"
+  alias: "Sicherheit: Bewegung erkannt"
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.motion_detected
+      from: "off"
+      to: "on"
+  condition:
+    - condition: state
+      entity_id: sensor.people_home
+      state: "0"
+    - condition: state
+      entity_id: vacuum.roborock_s7_maxv
+      state: docked
+  action:
+    - service: notify.mobile_app_florians_iphone
+      data:
+        title: ALARM ⚠️
+        message: Es wurde Bewegung entdeckt!
+        data:
+          push:
+            sound:
+              name: default
+              critical: 1
+              volume: 1

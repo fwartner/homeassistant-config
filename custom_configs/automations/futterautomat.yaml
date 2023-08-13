@@ -1,0 +1,32 @@
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - feedTimeCronOn
+    sequence:
+    - device_id: a4c274664cb7efe6046fa12adbcc36a2
+      domain: select
+      entity_id: select.aqara_futterautomat_feed
+      option: START
+      type: select_option
+alias: Futterautomat
+condition:
+- after: 07:30:00
+  before: '22:30:00'
+  condition: time
+  weekday:
+  - mon
+  - tue
+  - wed
+  - thu
+  - fri
+  - sat
+  - sun
+description: ''
+id: '1691920626298'
+mode: single
+trigger:
+- hours: /4
+  id: feedTimeCronOn
+  platform: time_pattern

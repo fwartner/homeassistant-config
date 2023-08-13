@@ -1,0 +1,16 @@
+action:
+- device_id: 1908fc0d3ce48c73492fb9d57e328810
+  domain: switch
+  entity_id: switch.roborock_s7_maxv_dnd_switch
+  type: turn_off
+alias: 'Meeting: Aus'
+condition: []
+description: ''
+id: '1688114539900'
+mode: single
+trigger:
+- entity_id:
+  - input_boolean.florian_im_meeting
+  from: 'on'
+  platform: state
+  to: 'off'

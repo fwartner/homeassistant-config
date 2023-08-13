@@ -1,0 +1,68 @@
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - anyoneHomeOn
+    sequence:
+    - data: {}
+      service: switch.turn_on
+      target:
+        device_id: f609651e79fe3f0345670e676f3fedf4
+  - conditions:
+    - condition: trigger
+      id:
+      - doorOpenOn
+    sequence:
+    - data:
+        message: Ich habe die Musik von deinem iPhone auf Sonos Ray gestellt
+        title: Willkommen Zuhause 🏠
+      service: notify.mobile_app_florians_iphone
+    - data:
+        source: Spotify Connect
+      service: media_player.select_source
+      target:
+        entity_id: media_player.sonos_ray
+    - data:
+        source: Sonos Ray
+      service: media_player.select_source
+      target:
+        entity_id: media_player.spotify_florian
+    - data: {}
+      service: media_player.media_play
+      target:
+        entity_id: media_player.sonos_ray
+alias: Ankommen
+condition:
+- condition: and
+  conditions:
+  - condition: state
+    entity_id: input_boolean.guestmode
+    state: 'off'
+  - condition: template
+    enabled: true
+    value_template: '{{ is_state_attr(''media_player.spotify_florian'', ''source'',
+      ''iPhone'') }}'
+  - condition: template
+    enabled: true
+    value_template: '{{ is_state(''media_player.spotify_florian'', ''playing'') }}'
+description: ''
+id: '1691741828322'
+mode: single
+trigger:
+- enabled: true
+  entity_id:
+  - binary_sensor.aqara_contact_wohnungstur_contact
+  for:
+    hours: 0
+    minutes: 0
+    seconds: 5
+  from: 'on'
+  id: doorOpenOn
+  platform: state
+  to: 'off'
+- entity_id:
+  - sensor.people_home
+  id: anyoneHomeOn
+  platform: state
+  to: '1'

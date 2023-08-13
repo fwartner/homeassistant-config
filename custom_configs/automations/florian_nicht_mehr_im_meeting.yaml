@@ -1,0 +1,16 @@
+action:
+- data: {}
+  service: input_boolean.turn_off
+  target:
+    entity_id: input_boolean.florian_im_meeting
+alias: Florian nicht mehr im Meeting
+condition: []
+description: ''
+id: '1674722882778'
+mode: single
+trigger:
+- entity_id:
+  - binary_sensor.macbook_pro_camera_in_use
+  from: 'on'
+  platform: state
+  to: 'off'

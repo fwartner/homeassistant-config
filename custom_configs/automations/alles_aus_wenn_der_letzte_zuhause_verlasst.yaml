@@ -1,0 +1,58 @@
+action:
+- data: {}
+  service: light.turn_off
+  target:
+    area_id:
+    - badezimmer
+    - buro
+    - flur
+    - kuche
+    - schlafzimmer
+    - wohnzimmer
+- data: {}
+  service: media_player.turn_off
+  target:
+    area_id:
+    - wohnzimmer
+    - serverschrank
+    - badezimmer
+    - schlafzimmer
+    - kuche
+    - flur
+    - buro
+- data: {}
+  service: cover.close_cover
+  target:
+    area_id: schlafzimmer
+- data: {}
+  service: switch.turn_off
+  target:
+    entity_id:
+    - switch.steckdose_badezimmer
+    - switch.steckdose_bett
+    - switch.steckdose_hlf_socket_1
+    - switch.steckdose_optigrill_socket_1
+    - switch.steckdose_schreibtisch
+    - switch.steckdose_kaffeemaschine
+    - switch.steckdose_tv_schlafzimmer
+    - switch.steckdose_tv_bank_wohnzimmer
+    - switch.steckdose_dyson
+- if:
+  - condition: state
+    entity_id: binary_sensor.aqara_contact_balkontur_wohnzimmer_contact
+    state: 'off'
+  then:
+  - data: {}
+    service: cover.close_cover
+    target:
+      entity_id: cover.ikea_rollo_balkontur_wohnzimmer
+alias: Alles aus wenn der letzte Zuhause verlässt
+condition: []
+description: ''
+id: '1666561975498'
+mode: single
+trigger:
+- entity_id:
+  - sensor.people_home
+  platform: state
+  to: '0'

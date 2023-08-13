@@ -1,0 +1,44 @@
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - wohnzimmerRollosOn
+    sequence:
+    - data: {}
+      service: cover.close_cover
+      target:
+        entity_id: cover.rollos_fensterbank_wohnzimmer
+  - conditions:
+    - condition: trigger
+      id:
+      - wohnzimmerRollosOff
+    sequence:
+    - data: {}
+      service: cover.open_cover
+      target:
+        entity_id: cover.rollos_fensterbank_wohnzimmer
+alias: Rollos Wohnzimmer schließen wenn zu hell
+condition: []
+description: ''
+id: '1691320563612'
+mode: single
+trigger:
+- above: 10000
+  device_id: 646ccae94dfa81e70bc4cdbe0ecb396a
+  domain: sensor
+  entity_id: 83b3d1d318c8ea554251f39f8ae576ca
+  id: wohnzimmerRollosOn
+  platform: device
+  type: illuminance
+- below: 8500
+  device_id: 646ccae94dfa81e70bc4cdbe0ecb396a
+  domain: sensor
+  entity_id: 83b3d1d318c8ea554251f39f8ae576ca
+  for:
+    hours: 0
+    minutes: 20
+    seconds: 0
+  id: wohnzimmerRollosOff
+  platform: device
+  type: illuminance

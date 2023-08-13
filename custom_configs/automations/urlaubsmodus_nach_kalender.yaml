@@ -1,0 +1,36 @@
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - urlaubOn
+    sequence:
+    - data: {}
+      service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.urlaubsmodus
+  - conditions:
+    - condition: trigger
+      id:
+      - urlaubOff
+    sequence:
+    - data: {}
+      service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.urlaubsmodus
+alias: Urlaubsmodus nach Kalender
+condition: []
+description: ''
+id: '1673948568537'
+mode: single
+trigger:
+- entity_id: calendar.personio_cloud37_abwesenheiten_mein_kalender_remote_d_schleswig_holstein_cloud_infrastructure_d
+  event: start
+  id: urlaubOn
+  offset: 0:0:0
+  platform: calendar
+- entity_id: calendar.personio_cloud37_abwesenheiten_mein_kalender_remote_d_schleswig_holstein_cloud_infrastructure_d
+  event: end
+  id: urlaubOff
+  offset: 0:0:0
+  platform: calendar

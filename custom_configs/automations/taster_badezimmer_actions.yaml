@@ -1,0 +1,36 @@
+alias: Taster Badezimmer Actions
+description: ''
+id: '1683577550606'
+use_blueprint:
+  input:
+    action_sensor: sensor.aqara_taster_badezimmer_action
+    double_action:
+    - device_id: 31cea6ff31b5a821a4fa741d0c987b4d
+      domain: switch
+      entity_id: switch.steckdose_badezimmer
+      type: turn_off
+    single_action:
+    - device_id: 31cea6ff31b5a821a4fa741d0c987b4d
+      domain: switch
+      entity_id: switch.steckdose_badezimmer
+      type: turn_on
+    - if:
+      - condition: device
+        device_id: 31cea6ff31b5a821a4fa741d0c987b4d
+        domain: switch
+        entity_id: switch.steckdose_badezimmer
+        type: is_on
+      then:
+      - delay:
+          hours: 0
+          milliseconds: 0
+          minutes: 0
+          seconds: 10
+      - data:
+          media_content_id: https://open.spotify.com/playlist/37i9dQZF1DWSWyJydK4fTU?si=d94fdd0a09d24319
+          media_content_type: playlist
+        metadata: {}
+        service: media_player.play_media
+        target:
+          entity_id: media_player.owntone_output_badezimmer
+  path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml

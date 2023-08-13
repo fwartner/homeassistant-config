@@ -1,0 +1,18 @@
+action:
+- device_id: a4c274664cb7efe6046fa12adbcc36a2
+  domain: select
+  entity_id: select.aqara_futterautomat_feed
+  option: START
+  type: select_option
+alias: Taster Futterautomat Füttern
+condition: []
+description: ''
+id: '1684923867295'
+mode: single
+trigger:
+- device_id: 6876c829a9ce4b4c7dfc341d657b26ac
+  discovery_id: 0x804b50fffe1fb4a3 action_open
+  domain: mqtt
+  platform: device
+  subtype: open
+  type: action

@@ -1,0 +1,59 @@
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - tagBad
+    sequence:
+    - data: {}
+      service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.putzen_badezimmer
+  - conditions:
+    - condition: trigger
+      id:
+      - tagKuche
+    sequence:
+    - data: {}
+      service: input_boolean.turn_on
+      target:
+        entity_id:
+        - input_boolean.putzen_kuche
+  - conditions:
+    - condition: trigger
+      id:
+      - tagSchlafzimmer
+    sequence:
+    - data: {}
+      service: input_boolean.turn_on
+      target:
+        entity_id:
+        - input_boolean.putzen_schlafzimmer
+  - conditions:
+    - condition: trigger
+      id:
+      - tagWohnzimmer
+    sequence:
+    - data: {}
+      service: input_boolean.turn_on
+      target:
+        entity_id:
+        - input_boolean.putzen_wohnzimmer
+alias: NFC Tag Putzen
+condition: []
+description: ''
+id: '1689602660317'
+mode: single
+trigger:
+- id: tagBad
+  platform: tag
+  tag_id: d88c0a66-dfaf-4014-8dc3-dc312a7335dd
+- id: tagKuche
+  platform: tag
+  tag_id: dbd24793-fe8a-4ce8-855f-9a16e1d74fd6
+- id: tagSchlafzimmer
+  platform: tag
+  tag_id: d88c0a66-dfaf-4014-8dc3-dc312a7335dd
+- id: tagWohnzimmer
+  platform: tag
+  tag_id: 769595c4-a523-47de-b45b-fa514906dcf7

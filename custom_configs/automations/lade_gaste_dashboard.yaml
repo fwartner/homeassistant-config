@@ -1,0 +1,17 @@
+action:
+- data:
+    url: http://10.182.1.240:8123/dashboard-gast/0?kiosk
+  service: fully_kiosk.load_url
+  target:
+    device_id: 8d9991a5dd07654891a5cf3a476cba07
+alias: Lade Gäste Dashboard
+condition: []
+description: ''
+id: '1690625584420'
+mode: single
+trigger:
+- entity_id:
+  - input_boolean.guestmode
+  from: 'off'
+  platform: state
+  to: 'on'

@@ -1,0 +1,11 @@
+action:
+- data: {}
+  service: shell_command.update_repo
+alias: Update Repo
+condition: []
+description: ''
+id: '1691706563088'
+mode: single
+trigger:
+- at: 00:00:00
+  platform: time

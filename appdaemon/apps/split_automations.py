@@ -14,33 +14,33 @@ import yaml
 import datetime
 import unicodedata
 
-SPLIT_DIR = "/config/custom_configs/automations"
-AUTOMATION_FILE = "/config/automations.yaml"
-DEFAULT_HOUR = 13
-DEFAULT_MINUTE = 0
-
 class SplitAutomation(hass.Hass):
 
     def initialize(self):
         # Specify the directory where the split automation files should be saved
         split_dir = "/config/custom_configs/automations"
         
-        # Read the automation.yaml file
-        automation_path = "/config/automation.yaml"
-        automations = self._read_yaml_file(AUTOMATION_FILE)
-        h = self.args.get("hour", DEFAULT_HOUR)
-        m = self.args.get("minute", DEFAULT_MINUTE)
+        # Read the automations.yaml file
+        automations = self._read_yaml_file("/config/automations.yaml")
 
-        if not os.path.exists(SPLIT_DIR):
-            os.makedirs(SPLIT_DIR)
+        if not os.path.exists(split_dir):
+            os.makedirs(split_dir)
 
-        self.run_daily(self.start_cb, datetime.time(h, m, 30))
+        # Get the configured hour and minute or use default values
+        hour = self.args.get("hour", 13)
+        minute = self.args.get("minute", 3)
+
+        # Schedule the start_cb method to run daily at the specified time
+        self.run_daily(self.start_cb, datetime.time(hour, minute, 30))
+
+    def start_cb(self, kwargs):
+        # Read the automations.yaml file again inside the callback
+        automations = self._read_yaml_file("/config/automations.yaml")
 
         # Iterate through each automation and save it as a separate file
-    def start_cb(self, kwargs):
         for automation in automations:
             automation_name = self._get_automation_name(automation)
-            automation_filename = os.path.join(SPLIT_DIR, f"{automation_name}.yaml")
+            automation_filename = os.path.join("/config/custom_configs/automations", f"{automation_name}.yaml")
             self._write_yaml_file(automation_filename, automation)
 
         self.log("Automations split and saved successfully.")
@@ -61,5 +61,3 @@ class SplitAutomation(hass.Hass):
     def _normalize_string(self, text):
         normalized_text = unicodedata.normalize("NFKD", text)
         return normalized_text.encode("ascii", "ignore").decode("utf-8")
-
-

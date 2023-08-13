@@ -1,0 +1,9 @@
+alias: Deaktiviere die Aktualisierung der Staubsauger-Kamera, wenn dieser angedockt
+  ist
+description: ''
+id: '1691489295064'
+use_blueprint:
+  input:
+    camera: camera.roborock_s7_maxv_map
+    vacuum: vacuum.roborock_s7_maxv
+  path: PiotrMachowski/disable_vacuum_camera_update_when_docked.yaml

@@ -1,0 +1,36 @@
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - anniOn
+    sequence:
+    - data: {}
+      service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.anni_ist_da
+  - conditions:
+    - condition: trigger
+      id:
+      - anniOff
+    sequence:
+    - data: {}
+      service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.anni_ist_da
+alias: Anni ist da
+condition: []
+description: ''
+id: '1689600805179'
+mode: single
+trigger:
+- entity_id: person.anni
+  event: enter
+  id: anniOn
+  platform: zone
+  zone: zone.home
+- entity_id: person.anni
+  event: leave
+  id: anniOff
+  platform: zone
+  zone: zone.home

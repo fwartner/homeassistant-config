@@ -1,0 +1,16 @@
+action:
+- data: {}
+  service: cover.close_cover
+  target:
+    entity_id:
+    - cover.rollos_fensterbank_wohnzimmer
+    - cover.rollos_fensterbank_schlafzimmer
+alias: Rollos runter wenn 26 Grad auf Balkon
+condition: []
+description: ''
+id: '1686661353814'
+mode: single
+trigger:
+- above: 26
+  entity_id: sensor.temperatur_balkon
+  platform: numeric_state

@@ -1,0 +1,50 @@
+action:
+- parallel:
+  - data: {}
+    service: cover.open_cover
+    target:
+      entity_id: cover.rollos_fensterbank_schlafzimmer
+- enabled: false
+  repeat:
+    sequence:
+    - data:
+        media_content_id: media-source://media_source/local/mixkit-short-rooster-crowing-2470
+          (online-audio-converter.com).mp3
+        media_content_type: audio/mpeg
+      metadata:
+        children_media_class: null
+        media_class: music
+        navigateIds:
+        - {}
+        - media_content_id: media-source://media_source
+          media_content_type: app
+        thumbnail: null
+        title: mixkit-short-rooster-crowing-2470 (online-audio-converter.com).mp3
+      service: media_player.play_media
+      target:
+        entity_id: media_player.hp_schlafzimmer
+    - delay:
+        hours: 0
+        milliseconds: 0
+        minutes: 0
+        seconds: 5
+    until:
+    - condition: state
+      entity_id: input_boolean.wecker_schalter
+      state: 'off'
+- data: {}
+  service: input_boolean.turn_off
+  target:
+    entity_id: input_boolean.wecker_schalter
+alias: Wecker
+condition:
+- condition: state
+  entity_id: input_boolean.wecker_schalter
+  state: 'on'
+description: ''
+id: '1666541360265'
+mode: single
+trigger:
+- platform: template
+  value_template: "{{ states.sensor.time.state + \n':00' == states.input_datetime.wecker.state\
+    \ }}"

@@ -1,0 +1,160 @@
+action:
+- choose:
+  - conditions:
+    - condition: and
+      conditions:
+      - condition: trigger
+        id:
+        - jonasMotionOn
+      - condition: state
+        entity_id: input_boolean.jonas_ist_da
+        state: 'on'
+    sequence:
+    - data:
+        message: Jonas ist im Büro
+      service: notify.alexa_media_florians_echo_show_8_2nd_gen
+  - conditions:
+    - condition: and
+      conditions:
+      - condition: state
+        entity_id: input_boolean.jonas_ist_da
+        state: 'on'
+      - condition: trigger
+        id:
+        - jonasCleanTeethOn
+      - condition: state
+        entity_id: sensor.people_home
+        state: '1'
+    sequence:
+    - device_id: d60428083cf2206a189453343e1e4bb1
+      domain: remote
+      entity_id: 0803f2de7bc30e5001fc4688fcfd0185
+      type: turn_off
+    - data:
+        message: Lieber Jonas.. Es wird Zeit, ins Bett zu gehen. Bitte geh ins Badezimmer
+          und putz deine Zähne, zieh dir deinen Schlafanzug an und leg dich schonmal
+          ins Bett.
+      service: notify.alexa_media_florians_echo_show_8_2nd_gen
+  - conditions:
+    - condition: trigger
+      id:
+      - jonasHereOn
+    sequence:
+    - data:
+        segments:
+        - '16'
+        - '18'
+      service: roborock.vacuum_clean_segment
+      target:
+        entity_id: vacuum.roborock_s7_maxv
+  - conditions:
+    - condition: trigger
+      id:
+      - jonasHereOff
+    sequence:
+    - data:
+        segments:
+        - '16'
+        - '18'
+      service: roborock.vacuum_clean_segment
+      target:
+        entity_id: vacuum.roborock_s7_maxv
+  - conditions:
+    - condition: trigger
+      id:
+      - jonasCleanToothTimerOn
+    sequence:
+    - data:
+        message: Und los gehts! Putz deine Zähne schön gründlich. Ich sage dir Bescheid,
+          wenn du fertig bist.
+      service: notify.alexa_media_florians_echo_show_8_2nd_gen
+  - conditions:
+    - condition: trigger
+      id:
+      - jonasCleanToothTimerOff
+    sequence:
+    - data:
+        message: Super! Du kannst die Zahnbürste jetzt saubermachen und dich ins Bett
+          legen. Schlaf gut!
+      service: notify.alexa_media_florians_echo_show_8_2nd_gen
+  - conditions:
+    - condition: and
+      conditions:
+      - condition: trigger
+        id:
+        - jonasCalendaOn
+      - condition: template
+        value_template: '{{ is_state_attr(''calendar.jonas'', ''message'', ''Papawochenende'')
+          }}'
+    sequence:
+    - data: {}
+      service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.jonas_ist_da
+  - conditions:
+    - condition: and
+      conditions:
+      - condition: trigger
+        id:
+        - jonasCalendaOff
+      - condition: template
+        value_template: '{{ is_state_attr(''calendar.jonas'', ''message'', ''Papawochenende'')
+          }}'
+    sequence:
+    - data: {}
+      service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.jonas_ist_da
+alias: Jonas
+condition: []
+description: Erkennung Büro, Spielzeit, Schlafenszeit, Musik
+id: '1676121630166'
+mode: single
+trigger:
+- device_id: 618fef42fa8e6efc59445fc6314ada4b
+  domain: binary_sensor
+  entity_id: 105a3f210a0d1dd818f80a2e1c8987a2
+  id: jonasMotionOn
+  platform: device
+  type: motion
+- at: '19:00:00'
+  id: jonasCleanTeethOn
+  platform: time
+- alias: Jonas ist da
+  entity_id:
+  - input_boolean.jonas_ist_da
+  from: 'off'
+  id: jonasHereOn
+  platform: state
+  to: 'on'
+- alias: Jonas ist nicht mehr da
+  entity_id:
+  - input_boolean.jonas_ist_da
+  from: 'on'
+  id: jonasHereOff
+  platform: state
+  to: 'off'
+- alias: Zähneputzen beginnt
+  entity_id:
+  - timer.zahneputzen
+  id: jonasCleanToothTimerOn
+  platform: state
+  to: active
+- alias: Zähneputzen endet
+  entity_id:
+  - timer.zahneputzen
+  id: jonasCleanToothTimerOff
+  platform: state
+  to: idle
+- alias: Papawochenende beginnt
+  entity_id: calendar.jonas
+  event: start
+  id: jonasCalendaOn
+  offset: 0:0:0
+  platform: calendar
+- alias: Papawochenende endet
+  entity_id: calendar.jonas
+  event: end
+  id: jonasCalendaOff
+  offset: 0:0:0
+  platform: calendar

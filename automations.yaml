@@ -355,38 +355,6 @@
         entity_id: f9fb56b2246d7619148afe44df6bedcc
         domain: remote
   mode: single
-- id: '1673947899624'
-  alias: 'Futterautomat: Alle 3 Stunden füttern'
-  description: ''
-  trigger:
-  - platform: time_pattern
-    hours: '3'
-    id: feedOn
-  condition:
-  - condition: time
-    after: 07:30:00
-    before: '22:00:00'
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-    - sat
-    - sun
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - feedOn
-      sequence:
-      - service: select.select_option
-        data:
-          option: START
-        target:
-          entity_id: select.aqara_futterautomat_feed
-  mode: restart
 - id: '1673948568537'
   alias: Urlaubsmodus nach Kalender
   description: ''
@@ -509,6 +477,16 @@
     - timer.zahneputzen
     to: idle
     id: jonasCleanToothTimerOff
+  - platform: calendar
+    event: start
+    offset: 0:0:0
+    entity_id: calendar.jonas
+    id: jonasCalendaOn
+  - platform: calendar
+    event: end
+    offset: 0:0:0
+    entity_id: calendar.jonas
+    id: jonasCalendaOff
   condition: []
   action:
   - choose:
@@ -589,6 +567,34 @@
         data:
           message: Super! Du kannst die Zahnbürste jetzt saubermachen und dich ins
             Bett legen. Schlaf gut!
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id:
+          - jonasCalendaOn
+        - condition: template
+          value_template: '{{ is_state_attr(''calendar.jonas'', ''message'', ''Papawochenende'')
+            }}'
+      sequence:
+      - service: input_boolean.turn_on
+        data: {}
+        target:
+          entity_id: input_boolean.jonas_ist_da
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id:
+          - jonasCalendaOff
+        - condition: template
+          value_template: '{{ is_state_attr(''calendar.jonas'', ''message'', ''Papawochenende'')
+            }}'
+      sequence:
+      - service: input_boolean.turn_off
+        data: {}
+        target:
+          entity_id: input_boolean.jonas_ist_da
   mode: single
 - id: '1677005798686'
   alias: 'Bett: Flo im Bett'

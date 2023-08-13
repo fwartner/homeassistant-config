@@ -155,7 +155,7 @@
     domain: switch
   mode: single
 - id: '1667905476778'
-  alias: 'Waschmaschine: Erinnerung Ausräumen'
+  alias: Waschmaschine
   description: ''
   trigger:
   - platform: state
@@ -791,7 +791,7 @@
     option: START
   mode: single
 - id: '1686557247104'
-  alias: Ventilator Steuerung
+  alias: Ventilator
   description: 'An: Wenn über 26 Grad
 
     Aus: Wenn unter 24 Grad'
@@ -1680,4 +1680,36 @@
         data: {}
         target:
           device_id: 507d523084cd0d287b97a79f906aef8d
+  mode: single
+- id: '1691920626298'
+  alias: Futterautomat
+  description: ''
+  trigger:
+  - platform: time_pattern
+    hours: /4
+    id: feedTimeCronOn
+  condition:
+  - condition: time
+    after: 07:30:00
+    before: '22:30:00'
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+    - sun
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - feedTimeCronOn
+      sequence:
+      - device_id: a4c274664cb7efe6046fa12adbcc36a2
+        domain: select
+        entity_id: select.aqara_futterautomat_feed
+        type: select_option
+        option: START
   mode: single

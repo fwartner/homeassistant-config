@@ -1713,12 +1713,3 @@
         type: select_option
         option: START
   mode: single
-- id: '1691921551420'
-  alias: Ich bin ein test
-  description: ''
-  trigger:
-  - platform: conversation
-    command: ich bin ein test
-  condition: []
-  action: []
-  mode: single

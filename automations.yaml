@@ -269,42 +269,6 @@
             data: {}
             target:
               entity_id: cover.rollos_fensterbank_schlafzimmer
-- id: '1670804737458'
-  alias: '3 Minuten Timer Bett: Ende'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - timer.3_minuten_bett
-    from: active
-    to: idle
-  condition: []
-  action:
-  - type: turn_off
-    device_id: 496f1ee059a80ce3be70b9a32eb69778
-    entity_id: light.bett
-    domain: light
-  - type: turn_off
-    device_id: 58ad2259e60395f647695636a43a16c8
-    entity_id: switch.steckdose_tv_bank_wohnzimmer
-    domain: switch
-  - type: turn_off
-    device_id: aaad1ea70b31b2d4cdd44583712720b2
-    entity_id: switch.steckdose_schreibtisch
-    domain: switch
-  - type: turn_off
-    device_id: 31cea6ff31b5a821a4fa741d0c987b4d
-    entity_id: switch.steckdose_badezimmer
-    domain: switch
-  - type: turn_off
-    device_id: 90c331ab3f9f2e741e5bb1be8bd89c5d
-    entity_id: switch.steckdose_dyson
-    domain: switch
-  - service: switch.turn_off
-    data: {}
-    target:
-      device_id: 8d9991a5dd07654891a5cf3a476cba07
-  mode: single
 - id: '1671819328944'
   alias: Fernseher Schlafzimmer
   description: ''
@@ -603,7 +567,7 @@
           entity_id: input_boolean.jonas_ist_da
   mode: single
 - id: '1677005798686'
-  alias: 'Bett: Flo im Bett'
+  alias: Bett
   description: ''
   trigger:
   - platform: state
@@ -626,6 +590,12 @@
       minutes: 0
       seconds: 0
     id: bettFloOff
+  - platform: state
+    entity_id:
+    - timer.3_minuten_bett
+    from: active
+    to: idle
+    id: threeMinuteBedOff
   condition: []
   action:
   - choose:
@@ -648,6 +618,35 @@
         data: {}
         target:
           entity_id: input_boolean.florian_im_bett
+    - conditions:
+      - condition: trigger
+        id:
+        - threeMinuteBedOff
+      sequence:
+      - type: turn_off
+        device_id: 496f1ee059a80ce3be70b9a32eb69778
+        entity_id: light.bett
+        domain: light
+      - type: turn_off
+        device_id: 58ad2259e60395f647695636a43a16c8
+        entity_id: switch.steckdose_tv_bank_wohnzimmer
+        domain: switch
+      - type: turn_off
+        device_id: aaad1ea70b31b2d4cdd44583712720b2
+        entity_id: switch.steckdose_schreibtisch
+        domain: switch
+      - type: turn_off
+        device_id: 31cea6ff31b5a821a4fa741d0c987b4d
+        entity_id: switch.steckdose_badezimmer
+        domain: switch
+      - type: turn_off
+        device_id: 90c331ab3f9f2e741e5bb1be8bd89c5d
+        entity_id: switch.steckdose_dyson
+        domain: switch
+      - service: switch.turn_off
+        data: {}
+        target:
+          device_id: 8d9991a5dd07654891a5cf3a476cba07
   mode: single
 - id: '1678799484819'
   alias: 'Boolean: Reset Mitternacht'
@@ -1527,8 +1526,7 @@
     data: {}
   mode: single
 - id: '1691741828322'
-  alias: 'Ankommen: Schalten Sie die Musik vom iPhone auf die Lautsprecher um, wenn
-    niemand zu Hause ist'
+  alias: Ankommen
   description: ''
   trigger:
   - platform: state
@@ -1541,6 +1539,12 @@
       hours: 0
       minutes: 0
       seconds: 5
+    id: doorOpenOn
+  - platform: state
+    entity_id:
+    - sensor.people_home
+    to: '1'
+    id: anyoneHomeOn
   condition:
   - condition: and
     conditions:
@@ -1556,52 +1560,39 @@
         }}'
       enabled: true
   action:
-  - service: notify.mobile_app_florians_iphone
-    data:
-      title: "Willkommen Zuhause \U0001F3E0"
-      message: Ich habe die Musik von deinem iPhone auf Sonos Ray gestellt
-  - service: media_player.select_source
-    data:
-      source: Spotify Connect
-    target:
-      entity_id: media_player.sonos_ray
-  - service: media_player.select_source
-    data:
-      source: Sonos Ray
-    target:
-      entity_id: media_player.spotify_florian
-  - service: media_player.media_play
-    data: {}
-    target:
-      entity_id: media_player.sonos_ray
-  mode: single
-- id: '1691746906496'
-  alias: 'Ankommen: Steckdosen An'
-  description: ''
-  trigger:
-  - platform: zone
-    entity_id: person.florian
-    zone: zone.home
-    event: enter
-    id: florianHomeOn
-  - platform: state
-    entity_id:
-    - sensor.people_home
-    to: '1'
-    id: anyoneHomeOn
-  condition: []
-  action:
   - choose:
     - conditions:
       - condition: trigger
         id:
-        - florianHomeOn
         - anyoneHomeOn
       sequence:
       - service: switch.turn_on
         data: {}
         target:
           device_id: f609651e79fe3f0345670e676f3fedf4
+    - conditions:
+      - condition: trigger
+        id:
+        - doorOpenOn
+      sequence:
+      - service: notify.mobile_app_florians_iphone
+        data:
+          title: "Willkommen Zuhause \U0001F3E0"
+          message: Ich habe die Musik von deinem iPhone auf Sonos Ray gestellt
+      - service: media_player.select_source
+        data:
+          source: Spotify Connect
+        target:
+          entity_id: media_player.sonos_ray
+      - service: media_player.select_source
+        data:
+          source: Sonos Ray
+        target:
+          entity_id: media_player.spotify_florian
+      - service: media_player.media_play
+        data: {}
+        target:
+          entity_id: media_player.sonos_ray
   mode: single
 - id: '1691747640340'
   alias: 'Sicherheit: Bewegung erkannt'

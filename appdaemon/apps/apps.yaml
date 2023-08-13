@@ -1,0 +1,12 @@
+---
+battery_monitor:
+  module: battery_monitor
+  class: BatteryMonitor
+  service: notify.mobile_app_florians_iphone
+  low_level: 20
+  hour: 14
+  minute: 0
+
+split_automation:
+  module: split_automation
+  class: SplitAutomation

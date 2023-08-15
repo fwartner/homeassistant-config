@@ -1,0 +1,96 @@
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - macbookCameraOn
+      - macminiCameraOn
+    sequence:
+    - data:
+        brightness_pct: 100
+        color_name: red
+      service: light.turn_on
+      target:
+        device_id: b242b37d70eea718b06968a7a60789c5
+  - conditions:
+    - condition: trigger
+      id:
+      - macbookCameraOff
+      - macminiCameraOff
+    sequence:
+    - data:
+        brightness_pct: 100
+        color_name: white
+      service: light.turn_on
+      target:
+        device_id: b242b37d70eea718b06968a7a60789c5
+  - conditions:
+    - condition: trigger
+      id:
+      - workOn
+    sequence:
+    - data:
+        brightness_pct: 100
+        color_name: white
+      service: light.turn_on
+      target:
+        device_id: b242b37d70eea718b06968a7a60789c5
+  - conditions:
+    - condition: trigger
+      id:
+      - workOff
+    sequence:
+    - device_id: b242b37d70eea718b06968a7a60789c5
+      domain: light
+      entity_id: 51b64cc148eab02c75d1455a2b621fa2
+      type: turn_off
+alias: Arbeitszeit
+condition:
+- after: 07:30:00
+  before: '17:30:00'
+  condition: time
+  enabled: true
+  weekday:
+  - mon
+  - tue
+  - wed
+  - thu
+  - fri
+- condition: state
+  entity_id: input_boolean.urlaubsmodus
+  state: 'off'
+description: ''
+id: '1691429105737'
+mode: single
+trigger:
+- device_id: 66a6f5fa4a209f0d9089ac798a143838
+  domain: binary_sensor
+  entity_id: 2aa74d546a0bdc67e47539fa04b65813
+  id: macbookCameraOn
+  platform: device
+  type: turned_on
+- device_id: 299c39650758d4769659d21912cb10a6
+  domain: binary_sensor
+  entity_id: 9fc0bd9cfaef246c9b944e1aa17ea255
+  id: macminiCameraOn
+  platform: device
+  type: turned_on
+- device_id: 66a6f5fa4a209f0d9089ac798a143838
+  domain: binary_sensor
+  entity_id: 2aa74d546a0bdc67e47539fa04b65813
+  id: macbookCameraOff
+  platform: device
+  type: turned_off
+- device_id: 299c39650758d4769659d21912cb10a6
+  domain: binary_sensor
+  entity_id: 9fc0bd9cfaef246c9b944e1aa17ea255
+  id: macminiCameraOff
+  platform: device
+  type: turned_off
+- at: 07:30:00
+  id: workOn
+  platform: time
+- at: '17:30:00'
+  enabled: true
+  id: workOff
+  platform: time

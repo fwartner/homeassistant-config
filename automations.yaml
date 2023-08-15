@@ -1235,40 +1235,24 @@
         domain: light
   mode: single
 - id: '1691429105737'
-  alias: WLED Flur Arbeitszeit
+  alias: Arbeitszeit
   description: ''
   trigger:
-  - type: turned_on
-    platform: device
-    device_id: 66a6f5fa4a209f0d9089ac798a143838
-    entity_id: 2aa74d546a0bdc67e47539fa04b65813
-    domain: binary_sensor
-    id: macbookCameraOn
-  - type: turned_on
-    platform: device
-    device_id: 299c39650758d4769659d21912cb10a6
-    entity_id: 9fc0bd9cfaef246c9b944e1aa17ea255
-    domain: binary_sensor
-    id: macminiCameraOn
-  - type: turned_off
-    platform: device
-    device_id: 66a6f5fa4a209f0d9089ac798a143838
-    entity_id: 2aa74d546a0bdc67e47539fa04b65813
-    domain: binary_sensor
-    id: macbookCameraOff
-  - type: turned_off
-    platform: device
-    device_id: 299c39650758d4769659d21912cb10a6
-    entity_id: 9fc0bd9cfaef246c9b944e1aa17ea255
-    domain: binary_sensor
-    id: macminiCameraOff
-  - platform: time
-    at: 07:30:00
-    id: workOn
+  - platform: state
+    entity_id:
+    - sensor.macs_camera_on
+    from: 'false'
+    to: 'true'
+    id: macCameraOn
+  - platform: state
+    entity_id:
+    - sensor.macs_camera_on
+    from: 'true'
+    to: 'false'
+    id: macCameraOff
   - platform: time
     at: '17:30:00'
-    id: workOff
-    enabled: true
+    id: worktimeOff
   condition:
   - condition: time
     after: 07:30:00
@@ -1288,8 +1272,7 @@
     - conditions:
       - condition: trigger
         id:
-        - macbookCameraOn
-        - macminiCameraOn
+        - macCameraOn
       sequence:
       - service: light.turn_on
         data:
@@ -1300,8 +1283,7 @@
     - conditions:
       - condition: trigger
         id:
-        - macbookCameraOff
-        - macminiCameraOff
+        - macCameraOff
       sequence:
       - service: light.turn_on
         data:
@@ -1312,18 +1294,7 @@
     - conditions:
       - condition: trigger
         id:
-        - workOn
-      sequence:
-      - service: light.turn_on
-        data:
-          color_name: white
-          brightness_pct: 100
-        target:
-          device_id: b242b37d70eea718b06968a7a60789c5
-    - conditions:
-      - condition: trigger
-        id:
-        - workOff
+        - worktimeOff
       sequence:
       - type: turn_off
         device_id: b242b37d70eea718b06968a7a60789c5

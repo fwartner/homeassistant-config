@@ -1636,19 +1636,6 @@
         type: select_option
         option: START
   mode: single
-- id: '1691944102304'
-  alias: Test 123
-  description: ''
-  trigger:
-  - event: start
-    platform: homeassistant
-  condition: []
-  action:
-  - service: scene.turn_on
-    target:
-      entity_id: scene.badezimmer_gedimmt
-    metadata: {}
-  mode: single
 - id: '1692084370120'
   alias: Verlassen
   description: ''

@@ -2,30 +2,6 @@
 # Home Assistant Configuration
 My personal home assistant configuation files.
 
-- Fully featured
-- Always up to date
-- Updated automatically based on an automation
-## Installed AddOns
-- Advaned SSH & Web Terminal
-- AirCast
-- AirSonos
-- chrony
-- ESPHome
-- Glances
-- Home Assistant Stream Deck
-- HomePod Connect
-- librespot player
-- Matter Server
-- Piper
-- PS5 MQTT
-- Samba Share
-- speedtest
-- Silicon Labs Multiprotocol
-- Spotify Connect
-- Studio Code Server
-- VLC
-- Whisper
-
 ## External Tools & Integrations
 - PostgreSQL running on Proxmox
 - InfluxDB running on Proxmox
@@ -46,6 +22,41 @@ My personal home assistant configuation files.
 | 2 | IKEA TREDANSEN | / |
 | 1 | Aqara Pet Feeder C1 | https://amzn.to/3s3DMnv |
 
+
+
+
+## Some statistics about my installation:
+
+Description | value
+-- | --
+Number of entities | {{states | count}}
+Number of sensors | {{states.sensor | count}}
+
+
+## My installed extensions:
+
+### Add-ons
+{%- for addon in addons | sort(attribute='name') %}
+- {{addon.name}}
+{%- endfor %}
+
+### Custom integrations
+{%- for component in hacs_components | selectattr('category', 'equalto', 'integration') | sort(attribute='name') %}
+- [{{component.name}}]({{component.documentation}})
+{%- endfor %}
+
+### Lovelace plugins
+{%- for component in hacs_components | selectattr('category', 'equalto', 'plugin') | sort(attribute='name') %}
+- [{{component.name}}]({{component.documentation}})
+{%- endfor %}
+
+### Themes
+{%- for component in hacs_components | selectattr('category', 'equalto', 'theme') | sort(attribute='name') %}
+- [{{component.name}}]({{component.documentation}})
+{%- endfor %}
+
+
+***
 
 ## Discord
 Check out our german [discord community](https://mee6.xyz/en/smarthome_de) for smarthome fans fro smarthome fans!

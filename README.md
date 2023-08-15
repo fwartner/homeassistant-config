@@ -27,10 +27,10 @@ My personal home assistant configuation files.
 
 Description | value
 -- | --
-Number of entities | 1739
-Number of sensors | 907
-Number of automations | 50
-Number of scripts | 6
+Number of entities | 1291
+Number of sensors | 724
+Number of automations | 46
+Number of scripts | 5
 Number of scenes | 32
 
 ## My installed extensions:

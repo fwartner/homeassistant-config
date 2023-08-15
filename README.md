@@ -25,7 +25,7 @@ My personal home assistant configuation files.
 
 ## Some statistics about my installation:
 
-Description | value
+Description | Count
 -- | --
 Number of entities | 1740
 Number of sensors | 908

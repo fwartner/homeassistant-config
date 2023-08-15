@@ -507,6 +507,26 @@
         data: {}
         target:
           entity_id: input_boolean.jonas_ist_da
+    - conditions:
+      - condition: trigger
+        id:
+        - jonasCalendaOn
+      sequence:
+      - service: shopping_list.add_item
+        data:
+          name: Kekse
+      - service: shopping_list.add_item
+        data:
+          name: Erdbeermilch
+      - service: shopping_list.add_item
+        data:
+          name: Käse
+      - service: shopping_list.add_item
+        data:
+          name: Käse
+      - service: shopping_list.add_item
+        data:
+          name: Toastbrot
   mode: single
 - id: '1677005798686'
   alias: Bett
@@ -1646,4 +1666,48 @@
         target:
           entity_id:
           - switch.alle_steckdosen
+  mode: single
+- id: '1692134639284'
+  alias: Türklingel
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.nuki_haustur_ring_action
+    from: 'off'
+    to: 'on'
+    id: ringOn
+  condition:
+  - condition: state
+    entity_id: sensor.people_away
+    state: '0'
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - ringOn
+      sequence:
+      - service: notify.mobile_app_florians_iphone
+        data:
+          title: Klingeling!
+          message: Es hat geklingelt.
+  mode: single
+- id: '1692135326497'
+  alias: iPhone im WLAN
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.iphone_ssid
+    to: Florians Homebase
+    id: iphoneWLANOn
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - iphoneWLANOn
+      sequence: []
   mode: single

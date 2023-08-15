@@ -298,7 +298,7 @@
           entity_id: input_boolean.urlaubsmodus
   mode: single
 - id: '1674670778068'
-  alias: Kaffeemaschine morgens um 07:30 an
+  alias: Kaffeemaschine
   description: Fü vier Stunden
   trigger:
   - platform: time
@@ -849,22 +849,6 @@
       - media_content_type: spotify://playlist
         media_content_id: spotify://71c55d65e0fb83ea97ebfd495afe5ed5/spotify:playlist:0cxlQu2hr6yFYZXds7HK6h
   mode: single
-- id: '1688114539900'
-  alias: 'Meeting: Aus'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - input_boolean.florian_im_meeting
-    from: 'on'
-    to: 'off'
-  condition: []
-  action:
-  - type: turn_off
-    device_id: 1908fc0d3ce48c73492fb9d57e328810
-    entity_id: switch.roborock_s7_maxv_dnd_switch
-    domain: switch
-  mode: single
 - id: '1689600805179'
   alias: Anni ist da
   description: ''
@@ -954,7 +938,7 @@
   action:
   - service: fully_kiosk.load_url
     data:
-      url: http://10.182.1.240:8123/dashboard-desktop/0?kiosk
+      url: http://10.182.1.240:8123/dashboard-desktop/0
     target:
       device_id: 8d9991a5dd07654891a5cf3a476cba07
   - service: switch.turn_on

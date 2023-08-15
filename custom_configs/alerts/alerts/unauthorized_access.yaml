@@ -7,4 +7,4 @@ unauthorized_access:
   can_acknowledge: false
   skip_first: false
   notifiers:
-    - iphone_von_florian
+    - mobile_app_florians_iphone

@@ -29,7 +29,9 @@ Description | value
 -- | --
 Number of entities | {{states | count}}
 Number of sensors | {{states.sensor | count}}
-
+Number of automations | {{states.automation | count}}
+Number of scripts | {{states.script | count}}
+Number of scenes | {{states.scene | count}}
 
 ## My installed extensions:
 
@@ -52,7 +54,6 @@ Number of sensors | {{states.sensor | count}}
 {%- for component in hacs_components | selectattr('category', 'equalto', 'theme') | sort(attribute='name') %}
 - [{{component.name}}]({{component.documentation}})
 {%- endfor %}
-
 
 ***
 

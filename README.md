@@ -29,7 +29,9 @@ Description | value
 -- | --
 Number of entities | 1739
 Number of sensors | 907
-
+Number of automations | 50
+Number of scripts | 6
+Number of scenes | 32
 
 ## My installed extensions:
 
@@ -186,7 +188,6 @@ Number of sensors | 907
 
 ### Themes
 - [Mushroom Themes](https://github.com/piitaya/lovelace-mushroom-themes)
-
 
 ***
 

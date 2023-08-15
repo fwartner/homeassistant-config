@@ -1,1 +1,5 @@
 powercalc:
+  force_update_frequency: 00:01:00 #Each minute
+  power_sensor_naming: "{} Powersensor"
+  energy_sensor_naming: "{} Energysensor"
+  create_energy_sensors: false

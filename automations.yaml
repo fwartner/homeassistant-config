@@ -65,64 +65,6 @@
     target:
       entity_id: input_boolean.wecker_schalter
   mode: single
-- id: '1666561975498'
-  alias: Alles aus wenn der letzte Zuhause verlässt
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.people_home
-    to: '0'
-  condition: []
-  action:
-  - service: light.turn_off
-    data: {}
-    target:
-      area_id:
-      - badezimmer
-      - buro
-      - flur
-      - kuche
-      - schlafzimmer
-      - wohnzimmer
-  - service: media_player.turn_off
-    data: {}
-    target:
-      area_id:
-      - wohnzimmer
-      - serverschrank
-      - badezimmer
-      - schlafzimmer
-      - kuche
-      - flur
-      - buro
-  - service: cover.close_cover
-    data: {}
-    target:
-      area_id: schlafzimmer
-  - service: switch.turn_off
-    data: {}
-    target:
-      entity_id:
-      - switch.steckdose_badezimmer
-      - switch.steckdose_bett
-      - switch.steckdose_hlf_socket_1
-      - switch.steckdose_optigrill_socket_1
-      - switch.steckdose_schreibtisch
-      - switch.steckdose_kaffeemaschine
-      - switch.steckdose_tv_schlafzimmer
-      - switch.steckdose_tv_bank_wohnzimmer
-      - switch.steckdose_dyson
-  - if:
-    - condition: state
-      entity_id: binary_sensor.aqara_contact_balkontur_wohnzimmer_contact
-      state: 'off'
-    then:
-    - service: cover.close_cover
-      data: {}
-      target:
-        entity_id: cover.ikea_rollo_balkontur_wohnzimmer
-  mode: single
 - id: '1667647447637'
   alias: 'Täglich: Schlafzimmer Steckdosen An'
   description: Luftreiniger Schlafzimmer
@@ -664,6 +606,10 @@
       - input_boolean.steffi_herz
       - input_boolean.steffi_babypille
       - input_boolean.steffi_migrane
+      - input_boolean.putzen_badezimmer
+      - input_boolean.putzen_kuche
+      - input_boolean.putzen_wohnzimmer
+      - input_boolean.putzen_schlafzimmer
   mode: single
 - id: '1683574762848'
   alias: Schalter Schreibtisch Actions
@@ -802,30 +748,32 @@
     id: fanOn
   - platform: numeric_state
     entity_id: sensor.temperatur_wohnzimmer
-    above: 2
     id: fanOff
-    below: 24
+    below: 25
   condition:
-  - condition: time
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-    - sat
-    - sun
-    before: '22:00:00'
-    after: 07:00:00
   - condition: state
     entity_id: input_boolean.ventilator
     state: 'on'
   action:
   - choose:
     - conditions:
-      - condition: trigger
-        id:
-        - fanOn
+      - condition: and
+        conditions:
+        - condition: trigger
+          id:
+          - fanOn
+        - condition: time
+          weekday:
+          - mon
+          - tue
+          - wed
+          - thu
+          - fri
+          - sat
+          - sun
+          before: '22:00:00'
+          after: 07:00:00
+          enabled: false
       sequence:
       - service: fan.turn_on
         data:
@@ -1729,4 +1677,31 @@
     target:
       entity_id: scene.badezimmer_gedimmt
     metadata: {}
+  mode: single
+- id: '1692084370120'
+  alias: Verlassen
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.people_home
+    to: '0'
+    id: anyoneHomeOff
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - anyoneHomeOff
+      sequence:
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id: light.alle_lampen
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id:
+          - switch.alle_steckdosen
   mode: single

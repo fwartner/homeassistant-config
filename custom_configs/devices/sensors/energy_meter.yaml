@@ -1,0 +1,50 @@
+# Template sensor to calculate the date of inverter installation
+- platform: template
+  sensors:
+    fronius_installation_date:
+      friendly_name: "Shelly installation date"
+      value_template: "{{ (as_timestamp(now()) - as_timestamp('2020-08-15')) / 86400 | int }}"
+# Template sensor to calculate the date of smart meter installation
+- platform: template
+  sensors:
+    fronius_smart_meter_installation_date:
+      friendly_name: "fronius smart meter installation date"
+      value_template: "{{ (as_timestamp(now()) - as_timestamp('2022-03-22')) / 86400 | int }}"
+
+# Template sensor to calculate the ongoing daily average solar produced
+- platform: template
+  sensors:
+    fronius_ongoing_daily_average_solar_produced:
+      friendly_name: "Shelly Ongoing Average Daily Solar Produced"
+      unit_of_measurement: "kWh"
+      value_template: >
+        {% if states('sensor.fronius_installation_date') | int > 0 %}
+          {{ (states('sensor.symo_10_0_3_m_1_energy_total') | float / states('sensor.fronius_installation_date') | int) | round(0) }}
+        {% else %}
+          0
+        {% endif %}
+
+# Template sensor to calculate the ongoing daily average energy consumed
+- platform: template
+  sensors:
+    fronius_ongoing_daily_average_energy_consumed:
+      friendly_name: "Shelly Ongoing Average Daily Energy Consumed"
+      unit_of_measurement: "kWh"
+      value_template: >
+        {% if states('sensor.fronius_smart_meter_installation_date') | int > 0 %}
+          {{ (states('sensor.smart_meter_energy_real_consumed') | float / states('sensor.fronius_smart_meter_installation_date') | int) | round(0) }}
+        {% else %}
+          0
+        {% endif %}
+# Template sensor to calculate the ongoing daily average energy produced
+- platform: template
+  sensors:
+    fronius_ongoing_daily_average_energy_produced:
+      friendly_name: "Shelly Ongoing Average Daily Energy Produced"
+      unit_of_measurement: "kWh"
+      value_template: >
+        {% if states('sensor.fronius_smart_meter_installation_date') | int > 0 %}
+          {{ (states('sensor.smart_meter_energy_real_produced') | float / states('sensor.fronius_smart_meter_installation_date') | int) | round(0) }}
+        {% else %}
+          0
+        {% endif %}

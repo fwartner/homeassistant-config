@@ -1,4 +1,3 @@
-
 ![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)
 # Home Assistant Configuration
 My personal home assistant configuation files.
@@ -27,7 +26,6 @@ My personal home assistant configuation files.
 - VLC
 - Whisper
 
-
 ## External Tools & Integrations
 - PostgreSQL running on Proxmox
 - InfluxDB running on Proxmox
@@ -48,9 +46,12 @@ My personal home assistant configuation files.
 | 2 | IKEA TREDANSEN | / |
 | 1 | Aqara Pet Feeder C1 | https://amzn.to/3s3DMnv |
 
+
+## Discord
+Check out our german [discord community](https://mee6.xyz/en/smarthome_de) for smarthome fans fro smarthome fans!
+
 ## Authors
 - [@fwartner](https://www.github.com/fwartner)
-
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

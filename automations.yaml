@@ -1252,19 +1252,21 @@
     at: '17:30:00'
     id: worktimeOff
   condition:
-  - condition: time
-    after: 07:30:00
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-    before: '17:30:00'
-    enabled: true
-  - condition: state
-    entity_id: input_boolean.urlaubsmodus
-    state: 'off'
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.urlaubsmodus
+      state: 'off'
+    - condition: time
+      after: 07:30:00
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+      before: '17:30:00'
+      enabled: true
   action:
   - choose:
     - conditions:

@@ -1690,8 +1690,13 @@
       sequence:
       - service: notify.mobile_app_florians_iphone
         data:
-          title: Klingeling!
-          message: Es hat geklingelt.
+          title: "Klingeling! \U0001F514"
+          message: Jemand hat an der Tür geklingelt..
+          data:
+            actions:
+            - action: ''
+              title: Open Url
+              uri: https://google.com
   mode: single
 - id: '1692135326497'
   alias: iPhone im WLAN

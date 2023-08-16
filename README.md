@@ -27,13 +27,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 1741
-Number of sensors | 907
+Number of entities | 1771
+Number of sensors | 933
 Number of automations | 50
 Number of scripts | 6
 Number of scenes | 32
 Number of zones | 9
-Number of binary sensors | 131
+Number of binary sensors | 132
 
 ## My installed extensions:
 
@@ -99,6 +99,7 @@ Number of binary sensors | 131
 - [Nuki Lock](https://github.com/kvj/hass_nuki_ng)
 - [Office 365 Integration](https://github.com/RogerSelwyn/O365-HomeAssistant)
 - [Openai Response](https://github.com/Hassassistant/openai_response)
+- [Passive Ble Monitor Integration](https://github.com/custom-components/ble_monitor)
 - [Personio](https://github.com/Sese-Schneider/ha-personio)
 - [Philips Hue Play Hdmi Sync Box](https://github.com/mvdwetering/huesyncbox)
 - [Powercalc](https://github.com/bramstroker/homeassistant-powercalc)

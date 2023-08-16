@@ -1,9 +1,9 @@
 substitutions:
   system_name: automatic-plant-water
   friendly_name: Esph Watering D1
-  relay_gpio: D5  #D5=GPIO14
+  relay_gpio: D2 #D5=GPIO14
   #dht22_gpio: D7
-  button_switch_gpio: D2
+  #button_switch_gpio: D2
   soil_moisture_adc: A0
 
 esphome:
@@ -123,19 +123,6 @@ switch:
         data_template:          
           entity_id: "input_datetime.esph_${system_name}_triggered" 
           datetime: !lambda return id(homeassistant_time).now().strftime("%Y-%m-%d %H:%M:%S");
-
-binary_sensor:
-  - platform: gpio
-    id: button_switch
-    pin: 
-      number: $button_switch_gpio
-      mode: INPUT_PULLUP
-      inverted: TRUE
-    filters:
-      - delayed_on_off: 200ms
-    on_press:
-      then:
-        - switch.toggle: relay
 
 sensor:
   - platform: homeassistant

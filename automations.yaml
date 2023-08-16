@@ -1092,9 +1092,6 @@
     to: 'off'
     id: kucheOff
   condition:
-  - condition: state
-    entity_id: sensor.people_home
-    state: '1'
   - condition: sun
     before: sunrise
     after: sunset
@@ -1213,9 +1210,6 @@
     after: sunset
     after_offset: '1'
     enabled: true
-  - condition: state
-    entity_id: sensor.people_home
-    state: '1'
   action:
   - choose:
     - conditions:

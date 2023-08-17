@@ -1712,3 +1712,46 @@
         - iphoneWLANOn
       sequence: []
   mode: single
+- id: '1692270231147'
+  alias: Shapes
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - weather.openweathermap
+    to: rainy
+    id: rainOn
+  - platform: state
+    entity_id:
+    - weather.openweathermap
+    to: sunny
+    id: windOn
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.people_home
+    above: 0
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - rainOn
+      sequence:
+      - service: light.turn_on
+        data:
+          effect: Rain
+          brightness_pct: 100
+        target:
+          device_id: 81a05f4ea38ce123a73f5f66b8e0e3c1
+    - conditions:
+      - condition: trigger
+        id:
+        - windOn
+      sequence:
+      - service: light.turn_on
+        data:
+          effect: Rings Of Power
+          brightness_pct: 100
+        target:
+          device_id: 81a05f4ea38ce123a73f5f66b8e0e3c1
+  mode: single

@@ -1716,16 +1716,15 @@
   alias: Shapes
   description: ''
   trigger:
-  - platform: state
-    entity_id:
-    - weather.openweathermap
-    to: rainy
+  - platform: numeric_state
+    entity_id: sensor.lubeck_rain
+    above: 0
     id: rainOn
   - platform: state
     entity_id:
-    - weather.openweathermap
-    to: sunny
-    id: sunnyOn
+    - sensor.lubeck_rain
+    to: '0.0'
+    id: rainOff
   condition:
   - condition: numeric_state
     entity_id: sensor.people_home
@@ -1746,12 +1745,10 @@
     - conditions:
       - condition: trigger
         id:
-        - sunnyOn
+        - rainOff
       sequence:
-      - service: light.turn_on
-        data:
-          effect: Rings Of Power
-          brightness_pct: 59
+      - service: light.turn_off
+        data: {}
         target:
           device_id: 81a05f4ea38ce123a73f5f66b8e0e3c1
   mode: single

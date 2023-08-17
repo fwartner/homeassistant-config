@@ -1725,6 +1725,9 @@
     - sensor.lubeck_rain
     to: '0.0'
     id: rainOff
+  - platform: time
+    at: '23:30:00'
+    id: offTime
   condition:
   - condition: numeric_state
     entity_id: sensor.people_home
@@ -1746,6 +1749,7 @@
       - condition: trigger
         id:
         - rainOff
+        - offTime
       sequence:
       - service: light.turn_off
         data: {}

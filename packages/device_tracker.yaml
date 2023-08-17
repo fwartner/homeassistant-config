@@ -1,0 +1,14 @@
+device_tracker:
+  - platform: icloud3
+    username: !secret icloud_user
+    password: !secret icloud_pass
+    unit_of_measurement: km
+    distance_method: waze
+    waze_region: EU
+    devices:
+      - device_name: "Florians iPhone "
+        email: !secret icloud_user
+        name: "Florian"
+        picture: /api/image/serve/4905d6fa9f74e7d878419262d54002f8/512x512
+        iosapp_entity: "device_tracker.iphone_von_florian_app"
+        iosapp_suffix: _app

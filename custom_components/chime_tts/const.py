@@ -13,7 +13,6 @@ PAUSE_DURATION_MS = 450
 DATA_STORAGE_KEY = "chime_tts_integration_data"
 AUDIO_PATH_KEY = "audio_path"
 AUDIO_DURATION_KEY = "audio_duration"
-BLANK_MP3_PATH = "custom_components/chime_tts/mp3s/_blank.mp3"
 TEMP_PATH = "/media/sounds/temp/chime_tts/"
 QUEUE = "QUEUE"
 QUEUE_STATUS = "QUEUE_STATUS"
@@ -21,7 +20,7 @@ QUEUE_RUNNING = "QUEUE_RUNNING"
 QUEUE_IDLE = "QUEUE_IDLE"
 QUEUE_CURRENT_ID = "QUEUE_CURRENT_ID"
 QUEUE_LAST_ID = "QUEUE_LAST_ID"
-QUEUE_TIMEOUT_S = 7.5
+QUEUE_TIMEOUT_S = 20
 JOIN_PLAYERS_ID = "media_player.join_players_id"
 
 

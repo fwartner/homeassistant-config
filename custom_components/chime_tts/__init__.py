@@ -44,7 +44,6 @@ from .const import (
     DATA_STORAGE_KEY,
     AUDIO_PATH_KEY,
     AUDIO_DURATION_KEY,
-    BLANK_MP3_PATH,
     TEMP_PATH,
     QUEUE,
     QUEUE_STATUS,
@@ -105,11 +104,11 @@ async def async_setup(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
                     elapsed_time += retry_interval
                     if _data[QUEUE_STATUS] is QUEUE_IDLE:
                         break
-                # Timeout
+                # Status is still 'running' after timeout
                 if _data[QUEUE_STATUS] is QUEUE_RUNNING:
                     _LOGGER.error("Timeout reached on queued job #%s.", str(service_dict["id"]))
                     dequeue_service_call()
-                    return False
+                    break
 
             # Execute the next service call in the queue
             if _data[QUEUE_STATUS] is QUEUE_IDLE:
@@ -185,6 +184,8 @@ async def async_setup(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
         media_players_dict = await async_initialize_media_players(hass, entity_ids, volume_level)
         if media_players_dict is False:
             return False
+        entity_ids = [media_player_dict['entity_id'] for media_player_dict in media_players_dict]
+        params["entity_ids"] = entity_ids
 
         # Create audio file to play on media player
         audio_dict = await async_get_playback_audio_path(params)
@@ -312,14 +313,16 @@ def get_queued_service_call():
 def dequeue_service_call():
     """Remove the oldest service call from the queue."""
     if _data[QUEUE] and len(_data[QUEUE]) > 0:
+        _LOGGER.debug("Removing current queued service call.")
         _data[QUEUE].pop(0)
 
         # All queued jobs completed
         if len(_data[QUEUE]) == 0:
-            _LOGGER.debug("Queue empty. Reinitializing values.")
+            _LOGGER.debug("Queue emptied. Reinitializing values.")
             init_queue()
         else:
             # Move on to the next item (queued or in the future)
+            _LOGGER.debug("Incrementing to next queued service call.")
             _data[QUEUE_CURRENT_ID] += 1
 
 
@@ -615,13 +618,15 @@ async def async_get_playback_audio_path(params: dict):
                                               gender,
                                               tts_playback_speed)
     if tts_audio is not None:
-        output_audio = output_audio + tts_audio
+        if output_audio is not None:
+            output_audio = output_audio + tts_audio
+        else:
+            output_audio = tts_audio
     else:
         _LOGGER.warning("Unable to generate TTS audio")
 
     # Load end chime audio
-    if end_chime_path is None or len(end_chime_path) == 0:
-        end_chime_path = BLANK_MP3_PATH
+    if end_chime_path is not None and len(end_chime_path) > 0:
         output_audio = get_audio_from_path(hass, end_chime_path, delay, output_audio)
 
     # Save generated audio file
@@ -693,23 +698,29 @@ def get_audio_from_path(hass: HomeAssistant,
                         delay=0,
                         audio=None):
     """Add audio from a given file path to existing audio (optional) with delay (optional)."""
-    filepath = str(filepath)
-    if filepath is not BLANK_MP3_PATH:
-        _LOGGER.debug('get_audio_from_path("%s", %s, audio)', filepath, str(delay))
-
-    if (filepath is None) or (filepath == "None") or (len(filepath) <= 5):
+    if filepath is None or filepath == "None" or len(filepath) <= 5:
+        _LOGGER.debug('Invalid audio filepath provided')
         return audio
 
+    filepath = str(filepath)
+    _LOGGER.debug('get_audio_from_path("%s", %s, audio)', filepath, str(delay))
+
     filepath = get_file_path(hass, filepath)
-    _LOGGER.debug(' - Retrieving audio from path: "%s"...', filepath)
-    audio_from_path = AudioSegment.from_file(filepath)
-    if audio_from_path is not None:
-        duration = float(len(audio_from_path) / 1000.0)
-        _LOGGER.debug('   - ...audio with duration %ss retrieved successfully', str(duration))
-        if audio is None:
-            return audio_from_path
-        return (audio + (AudioSegment.silent(duration=delay) + audio_from_path))
-    _LOGGER.warning("   - ...unable to find audio from filepath")
+    if filepath is None:
+        _LOGGER.warning('Unable to find audio file')
+    else:
+        _LOGGER.debug(' - Retrieving audio from path: "%s"...', filepath)
+        try:
+            audio_from_path = AudioSegment.from_file(filepath)
+            if audio_from_path is not None:
+                duration = float(len(audio_from_path) / 1000.0)
+                _LOGGER.debug('   - ...audio with duration %ss retrieved successfully', str(duration))
+                if audio is None:
+                    return audio_from_path
+                return (audio + (AudioSegment.silent(duration=delay) + audio_from_path))
+            _LOGGER.warning("Unable to find audio at filepath: ", filepath)
+        except Exception as error:
+            _LOGGER.warning('Unable to extract audio from file: "%s"', error)
     return audio
 
 async def async_set_volume_level_for_media_players(hass: HomeAssistant,

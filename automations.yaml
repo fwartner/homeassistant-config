@@ -608,7 +608,7 @@
       - service: switch.turn_off
         data: {}
         target:
-          device_id: 8d9991a5dd07654891a5cf3a476cba07
+          entity_id: switch.dashboard_screen
   mode: single
 - id: '1678799484819'
   alias: 'Boolean: Reset Mitternacht'
@@ -1755,4 +1755,27 @@
         data: {}
         target:
           device_id: 81a05f4ea38ce123a73f5f66b8e0e3c1
+  mode: single
+- id: '1692310400644'
+  alias: Aufstehen
+  description: ''
+  trigger:
+  - platform: time
+    at: 07:30:00
+    id: timeOn
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.people_home
+    above: 0
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - timeOn
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id: switch.dashboard_screen
   mode: single

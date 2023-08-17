@@ -1725,7 +1725,7 @@
     entity_id:
     - weather.openweathermap
     to: sunny
-    id: windOn
+    id: sunnyOn
   condition:
   - condition: numeric_state
     entity_id: sensor.people_home
@@ -1740,18 +1740,18 @@
       - service: light.turn_on
         data:
           effect: Rain
-          brightness_pct: 100
+          brightness_pct: 60
         target:
           device_id: 81a05f4ea38ce123a73f5f66b8e0e3c1
     - conditions:
       - condition: trigger
         id:
-        - windOn
+        - sunnyOn
       sequence:
       - service: light.turn_on
         data:
           effect: Rings Of Power
-          brightness_pct: 100
+          brightness_pct: 59
         target:
           device_id: 81a05f4ea38ce123a73f5f66b8e0e3c1
   mode: single

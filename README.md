@@ -27,13 +27,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 1778
-Number of sensors | 943
-Number of automations | 51
-Number of scripts | 6
+Number of entities | 1454
+Number of sensors | 761
+Number of automations | 47
+Number of scripts | 5
 Number of scenes | 32
 Number of zones | 9
-Number of binary sensors | 132
+Number of binary sensors | 109
 
 ## My installed extensions:
 
@@ -85,7 +85,6 @@ Number of binary sensors | 132
 - [Grocy Custom Component](https://github.com/custom-components/grocy)
 - [HACS](https://github.com/hacs/integration)
 - [Hass.Agent](https://github.com/LAB02-Research/HASS.Agent-Integration)
-- [Icloud3](https://github.com/gcobb321/icloud3)
 - [Iphone Device Tracker](https://github.com/mudape/iphonedetect)
 - [Irrigationprogram Custom Component](https://github.com/petergridge/Irrigation-V5)
 - [Local Tuya](https://github.com/rospogrigio/localtuya)
@@ -160,6 +159,7 @@ Number of binary sensors | 132
 - [Mini Media Player](https://github.com/kalkih/mini-media-player)
 - [Multiple Entity Row](https://github.com/benct/lovelace-multiple-entity-row)
 - [Mushroom](https://github.com/piitaya/lovelace-mushroom)
+- [Mushroom   Better Sliders](https://github.com/phischdev/lovelace-mushroom-better-sliders)
 - [Power Flow Card Plus](https://github.com/flixlix/power-flow-card-plus)
 - [Power Usage Card With Regular Expressions](https://github.com/DBa2016/power-usage-card-regex)
 - [Power Wheel Card](https://github.com/gurbyz/power-wheel-card)

@@ -60,7 +60,8 @@ from .const import (
     IBM_WATSON_TTS,
     # MARYTTS,
     # MICROSOFT_TTS,
-    NABU_CASA,
+    NABU_CASA_CLOUD_TTS,
+    NABU_CASA_CLOUD_TTS_OLD,
     # PICOTTS,
     # PIPER,
     # VOICE_RSS,
@@ -483,19 +484,21 @@ async def async_request_tts_audio(hass: HomeAssistant,
     if tts_platform is False or tts_platform == "":
         _LOGGER.warning("No TTS platform selected")
         return None
+    if tts_platform == NABU_CASA_CLOUD_TTS_OLD:
+        tts_platform = NABU_CASA_CLOUD_TTS
 
     # Add & validate additional parameters
     options = {}
 
     # Language
-    if language is not None and tts_platform in [GOOGLE_TRANSLATE, NABU_CASA, IBM_WATSON_TTS]:
+    if language is not None and tts_platform in [GOOGLE_TRANSLATE, NABU_CASA_CLOUD_TTS, IBM_WATSON_TTS]:
         if tts_platform is IBM_WATSON_TTS:
             options["voice"] = language
     else:
         language = None
 
     # Cache
-    if cache is not None and tts_platform not in [GOOGLE_TRANSLATE, NABU_CASA]:
+    if cache is not None and tts_platform not in [GOOGLE_TRANSLATE, NABU_CASA_CLOUD_TTS]:
         cache = None
 
     # tld
@@ -505,7 +508,7 @@ async def async_request_tts_audio(hass: HomeAssistant,
         tld = None
 
     # Gender
-    if gender is not None and tts_platform in [NABU_CASA]:
+    if gender is not None and tts_platform in [NABU_CASA_CLOUD_TTS]:
         options["gender"] = gender
     else:
         gender = None
@@ -619,7 +622,7 @@ async def async_get_playback_audio_path(params: dict):
                                               tts_playback_speed)
     if tts_audio is not None:
         if output_audio is not None:
-            output_audio = output_audio + tts_audio
+            output_audio = output_audio + (AudioSegment.silent(duration=delay)) + tts_audio
         else:
             output_audio = tts_audio
     else:
@@ -718,7 +721,7 @@ def get_audio_from_path(hass: HomeAssistant,
                 if audio is None:
                     return audio_from_path
                 return (audio + (AudioSegment.silent(duration=delay) + audio_from_path))
-            _LOGGER.warning("Unable to find audio at filepath: ", filepath)
+            _LOGGER.warning("Unable to find audio at filepath: %s", filepath)
         except Exception as error:
             _LOGGER.warning('Unable to extract audio from file: "%s"', error)
     return audio

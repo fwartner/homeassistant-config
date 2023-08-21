@@ -18,7 +18,7 @@ proximity: !include_dir_merge_list custom_configs/proximity/
 rest: !include_dir_merge_list custom_configs/rest/
 switch: !include_dir_merge_list custom_configs/devices/switches/
 conversation: !include_dir_merge_list custom_configs/conversation/
-alert: !include_dir_merge_named custom_configs/alerts/
+#alert: !include_dir_merge_named custom_configs/alerts/
 intent_script: !include_dir_merge_list custom_configs/intents/
 shell_command: !include_dir_merge_list custom_configs/shell_commands/
 automation: !include automations.yaml

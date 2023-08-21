@@ -10,12 +10,12 @@
     "@nimroddolev"
   ],
   "config_flow": true,
-  "documentation": "https://www.github.com/nimroddolev/chime_tts",
+  "documentation": "https://www.github.com/nimroddolev/chime_tts/wiki",
   "integration_type": "service",
   "iot_class": "local_push",
   "issue_tracker": "https://github.com/nimroddolev/chime_tts/issues",
   "requirements": [
     "pydub"
   ],
-  "version": "v0.7.1"
+  "version": "v0.7.2"
 }

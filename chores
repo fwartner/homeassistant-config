@@ -1,0 +1,5 @@
+#!/bin/bash
+
+./bin/yamllint.sh
+./bin/make_fake_secrets.sh
+python3 bin/commit_updates.py

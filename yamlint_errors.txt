@@ -526,7 +526,6 @@
 
 ./packages/shell_command.yaml
   1:1       warning  missing document start "---"  (document-start)
-  2:81      error    line too long (101 > 80 characters)  (line-length)
 
 ./packages/logger.yaml
   1:1       warning  missing document start "---"  (document-start)

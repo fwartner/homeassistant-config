@@ -27,13 +27,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 1777
-Number of sensors | 942
+Number of entities | 1846
+Number of sensors | 1005
 Number of automations | 52
 Number of scripts | 6
 Number of scenes | 32
 Number of zones | 9
-Number of binary sensors | 132
+Number of binary sensors | 135
 
 ## My installed extensions:
 
@@ -46,16 +46,13 @@ Number of binary sensors | 132
 - ESPHome
 - Glances
 - Home Assistant Stream Deck
-- HomePod Connect
 - librespot player
 - Matter Server
 - Piper
 - PS5 MQTT
-- room-assistant
 - Samba share
 - Silicon Labs Multiprotocol
 - speedtest
-- Spotify Connect
 - Studio Code Server
 - VLC
 - Whisper
@@ -111,6 +108,7 @@ Number of binary sensors | 132
 - [Samsungtv Smart](https://github.com/ollo69/ha-samsungtv-smart)
 - [Samsungtv Tizen](https://github.com/jaruba/ha-samsungtv-tizen)
 - [Scheduler Component](https://github.com/nielsfaber/scheduler-component)
+- [Simpleicons](https://github.com/vigonotion/hass-simpleicons)
 - [Spotcast](https://github.com/fondberg/spotcast)
 - [Thermal Comfort](https://github.com/dolezsa/thermal_comfort)
 - [Twitch Helix](https://github.com/Radioh/ha_twitch_helix)
@@ -126,6 +124,7 @@ Number of binary sensors | 132
 - [Apexcharts Card](https://github.com/RomRider/apexcharts-card)
 - [Auto Entities](https://github.com/thomasloven/lovelace-auto-entities)
 - [Banner Card](https://github.com/nervetattoo/banner-card)
+- [Bar Card](https://github.com/custom-cards/bar-card)
 - [Battery State Card / Entity Row](https://github.com/maxwroc/battery-state-card)
 - [Better Thermostat Ui](https://github.com/KartoffelToby/better-thermostat-ui-card)
 - [Blind Card](https://github.com/tungmeister/hass-blind-card)
@@ -159,7 +158,6 @@ Number of binary sensors | 132
 - [Mini Media Player](https://github.com/kalkih/mini-media-player)
 - [Multiple Entity Row](https://github.com/benct/lovelace-multiple-entity-row)
 - [Mushroom](https://github.com/piitaya/lovelace-mushroom)
-- [Mushroom   Better Sliders](https://github.com/phischdev/lovelace-mushroom-better-sliders)
 - [Power Flow Card Plus](https://github.com/flixlix/power-flow-card-plus)
 - [Power Usage Card With Regular Expressions](https://github.com/DBa2016/power-usage-card-regex)
 - [Power Wheel Card](https://github.com/gurbyz/power-wheel-card)
@@ -188,7 +186,6 @@ Number of binary sensors | 132
 - [Xiaomi Vacuum Map Card](https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card)
 
 ### Themes
-- [Mushroom Themes](https://github.com/piitaya/lovelace-mushroom-themes)
 
 ***
 

@@ -1,2 +1,4 @@
 shell_command:
-  update_repo: 'cd /config && git add . && git commit -am "Automatic Commit" && git pull && git push'
+  gen_fakesecrets: "bash /config/bin/make_fake_secrets.sh"
+  push_to_github: "bash /config/bin/ha_gitpush.sh"
+  run_chores: "bash /config/chores"

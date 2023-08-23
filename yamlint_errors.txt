@@ -404,6 +404,10 @@
   1:1       warning  missing document start "---"  (document-start)
   21:2      warning  missing starting space in comment  (comments)
 
+./fake_secrets.yaml
+  2:81      error    line too long (82 > 80 characters)  (line-length)
+  5:1       warning  missing document start "---"  (document-start)
+
 ./scenes.yaml
   1:1       warning  missing document start "---"  (document-start)
 

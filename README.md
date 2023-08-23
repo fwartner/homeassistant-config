@@ -186,6 +186,8 @@ Number of binary sensors | 135
 - [Xiaomi Vacuum Map Card](https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card)
 
 ### Themes
+- [Metrology   Metro + Fluent + Windows Themes   By Mmak.Es](https://github.com/Madelena/Metrology-for-Hass)
+- [Mushroom Themes](https://github.com/piitaya/lovelace-mushroom-themes)
 
 ***
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ssh-keygen -F github.com || ssh-keyscan github.com >> ~/.ssh/known_hosts > file.log 2>&1
+#ssh-keygen -F github.com || ssh-keyscan github.com >> ~/.ssh/known_hosts > file.log 2>&1
 
 git config user.name "Florian Wartner" > file.log 2>&1
 

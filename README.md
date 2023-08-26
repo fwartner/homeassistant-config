@@ -27,7 +27,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 1856
+Number of entities | 1862
 Number of sensors | 1015
 Number of automations | 52
 Number of scripts | 6
@@ -142,7 +142,6 @@ Number of binary sensors | 135
 - [Firemote Card](https://github.com/PRProd/HA-Firemote)
 - [Flex Table   Highly Customizable, Data Visualization](https://github.com/custom-cards/flex-table-card)
 - [Fold Entity Row](https://github.com/thomasloven/lovelace-fold-entity-row)
-- [Ha Floorplan](https://github.com/ExperienceLovelace/ha-floorplan)
 - [Hass Hue Icons](https://github.com/arallsopp/hass-hue-icons)
 - [Header Cards](https://github.com/gadgetchnnel/lovelace-header-cards)
 - [History Explorer Card](https://github.com/alexarch21/history-explorer-card)

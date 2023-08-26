@@ -1772,7 +1772,10 @@
   alias: Git
   description: ''
   trigger:
-  - at: 06:00:00
-    platform: time
+  - platform: time_pattern
+    hours: /1
   action:
+  - service: readme.generate
+    data: {}
   - service: shell_command.push_to_github
+    data: {}

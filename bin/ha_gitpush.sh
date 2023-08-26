@@ -17,6 +17,6 @@ NOW=$(date +"%d/%m/%Y %H:%M") > file.log 2>&1
 git commit -m "Automated: HA Config as at $NOW" > file.log 2>&1
 echo "-----> git commit done"
 
-git push -u origin master > file.log 2>&1
+git push -u origin main > file.log 2>&1
 echo "-----> git push done"
 echo "-----> all done"

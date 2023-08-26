@@ -1437,17 +1437,6 @@
               uri: /shopping-list
               icon: sfsymbols:cart
   mode: single
-- id: '1691706563088'
-  alias: Update Repo
-  description: ''
-  trigger:
-  - platform: time
-    at: 00:00:00
-  condition: []
-  action:
-  - service: shell_command.update_repo
-    data: {}
-  mode: single
 - id: '1691741828322'
   alias: Ankommen
   description: ''
@@ -1779,3 +1768,11 @@
         target:
           entity_id: switch.dashboard_screen
   mode: single
+- id: github_push
+  alias: Git
+  description: ''
+  trigger:
+  - at: 06:00:00
+    platform: time
+  action:
+  - service: shell_command.push_to_github

@@ -1,0 +1,53 @@
+# yamllint configuration for use with Home Assistant YAML-files. All formatting
+# related rules are disabled – this is left to Prettier instead.
+#
+# This configuration is explicitly scoped to *only* include YAML-files that
+# belong to Home Assistant (i.e. non-HA files are intentionally excluded).
+
+yaml-files:
+  - "*.yaml"
+
+ignore: |
+  /.*
+  /.cloud
+  /.github
+  /.storage
+  /blueprints
+  /custom_components
+  /known_devices.yaml
+
+extends: default
+
+rules:
+  braces:
+    forbid: non-empty
+  brackets:
+    forbid: non-empty
+  colons: disable
+  commas: disable
+  comments: disable
+  comments-indentation: disable
+  document-end: disable
+  document-start: disable
+  empty-lines: disable
+  empty-values:
+    forbid-in-block-mappings: true
+    forbid-in-flow-mappings: true
+  hyphens: disable
+  indentation: disable
+  key-duplicates: enable
+  key-ordering: disable
+  line-length: disable
+  new-line-at-end-of-file: disable
+  new-lines: disable
+  octal-values:
+    forbid-implicit-octal: true
+    forbid-explicit-octal: true
+  quoted-strings:
+    required: only-when-needed
+    extra-required:
+      # Force the 24-hour clock format (e.g. 09:30:00) to be quoted even though
+      # it's not strictly necessary from a YAML perspective.
+      - ^[0-9]{2}:[0-9]{2}(:[0-9]{2})?$
+  trailing-spaces: disable
+  truthy: enable

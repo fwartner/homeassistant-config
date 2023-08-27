@@ -1721,6 +1721,7 @@
   - condition: numeric_state
     entity_id: sensor.people_home
     above: 0
+    enabled: true
   action:
   - choose:
     - conditions:

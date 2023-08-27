@@ -27,7 +27,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 1862
+Number of entities | 1863
 Number of sensors | 1015
 Number of automations | 52
 Number of scripts | 6
@@ -45,6 +45,7 @@ Number of binary sensors | 135
 - chrony
 - ESPHome
 - Glances
+- go2rtc
 - Home Assistant Stream Deck
 - librespot player
 - Matter Server

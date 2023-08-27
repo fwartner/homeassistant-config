@@ -6,6 +6,8 @@ git config user.name "Florian Wartner" > file.log 2>&1
 
 git config user.email "florian@wartner.io" > file.log 2>&1
 
+cd /root/config
+
 git add . > file.log 2>&1
 echo "-----> git add done"
 

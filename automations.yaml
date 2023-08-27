@@ -1669,9 +1669,14 @@
   action:
   - choose:
     - conditions:
-      - condition: trigger
-        id:
-        - ringOn
+      - condition: and
+        conditions:
+        - condition: trigger
+          id:
+          - ringOn
+        - condition: numeric_state
+          entity_id: sensor.people_home
+          below: 1
       sequence:
       - service: notify.mobile_app_florians_iphone
         data:
@@ -1682,6 +1687,42 @@
             - action: ''
               title: Open Url
               uri: https://google.com
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id:
+          - ringOn
+        - condition: numeric_state
+          entity_id: sensor.people_home
+          above: 0
+      sequence:
+      - parallel:
+        - repeat:
+            count: '3'
+            sequence:
+            - service: light.turn_on
+              data:
+                color_name: gold
+              target:
+                device_id: 81a05f4ea38ce123a73f5f66b8e0e3c1
+            - delay:
+                hours: 0
+                minutes: 0
+                seconds: 1
+                milliseconds: 0
+            - service: light.turn_off
+              data: {}
+              target:
+                device_id: 81a05f4ea38ce123a73f5f66b8e0e3c1
+            - delay:
+                hours: 0
+                minutes: 0
+                seconds: 1
+                milliseconds: 0
+        - service: notify.alexa_media_echo_show_wohnzimmer
+          data:
+            message: Jemand hat an der Tür geklingelt
   mode: single
 - id: '1692135326497'
   alias: iPhone im WLAN

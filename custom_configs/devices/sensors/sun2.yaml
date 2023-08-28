@@ -1,0 +1,30 @@
+- platform: sun2
+  monitored_conditions:
+    - solar_midnight
+    - astronomical_dawn
+    - nautical_dawn
+    - dawn
+    - sunrise
+    - solar_noon
+    - sunset
+    - dusk
+    - nautical_dusk
+    - astronomical_dusk
+    - daylight
+    - civil_daylight
+    - nautical_daylight
+    - astronomical_daylight
+    - night
+    - civil_night
+    - nautical_night
+    - astronomical_night
+    - elevation
+    - min_elevation
+    - max_elevation
+    - sun_phase
+    - deconz_daylight
+    - time_at_elevation: 10
+    - time_at_elevation: -10
+      direction: setting
+      icon: mdi:weather-sunset-down
+      name: Setting past 10 deg below horizon

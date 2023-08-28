@@ -1,0 +1,3 @@
+- platform: illuminance
+  name: Home Outdoor Illuminance
+  entity_id: weather.zuhause

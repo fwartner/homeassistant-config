@@ -27,13 +27,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 1288
-Number of sensors | 781
-Number of automations | 48
-Number of scripts | 5
+Number of entities | 2093
+Number of sensors | 1199
+Number of automations | 51
+Number of scripts | 6
 Number of scenes | 32
 Number of zones | 9
-Number of binary sensors | 104
+Number of binary sensors | 158
 
 ## My installed extensions:
 

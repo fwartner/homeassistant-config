@@ -332,22 +332,6 @@
         entity_id: switch.steckdose_kaffeemaschine
         domain: switch
   mode: single
-- id: '1674722882778'
-  alias: Florian nicht mehr im Meeting
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.macbook_pro_camera_in_use
-    from: 'on'
-    to: 'off'
-  condition: []
-  action:
-  - service: input_boolean.turn_off
-    data: {}
-    target:
-      entity_id: input_boolean.florian_im_meeting
-  mode: single
 - id: '1676121630166'
   alias: Jonas
   description: Erkennung Büro, Spielzeit, Schlafenszeit, Musik
@@ -1506,34 +1490,6 @@
         target:
           entity_id: media_player.sonos_ray
   mode: single
-- id: '1691747640340'
-  alias: 'Sicherheit: Bewegung erkannt'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.motion_detected
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: sensor.people_home
-    state: '0'
-  - condition: state
-    entity_id: vacuum.roborock_s7_maxv
-    state: docked
-  action:
-  - service: notify.mobile_app_florians_iphone
-    data:
-      title: ALARM ⚠️
-      message: Es wurde Bewegung entdeckt!
-      data:
-        push:
-          sound:
-            name: default
-            critical: 1
-            volume: 1
-  mode: single
 - id: '1691769668517'
   alias: 'Jonas: Zähneputzen Starten'
   description: ''
@@ -1659,7 +1615,6 @@
   - platform: state
     entity_id:
     - binary_sensor.nuki_haustur_ring_action
-    from: 'off'
     to: 'on'
     id: ringOn
   condition:
@@ -1821,3 +1776,30 @@
     data: {}
   - service: shell_command.push_to_github
     data: {}
+- id: '1693261615102'
+  alias: Prusa
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.prusalink_mini
+    to: idle
+    for:
+      hours: 0
+      minutes: 20
+      seconds: 0
+    from: printing
+    id: printFinished
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - printFinished
+      sequence:
+      - type: turn_off
+        device_id: d59c7f4a6655adb40f460f65613c323f
+        entity_id: 3e254c62e11a6d53e8ea28bf70f139d5
+        domain: switch
+  mode: single

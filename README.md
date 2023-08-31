@@ -27,13 +27,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2102
-Number of sensors | 1204
+Number of entities | 2108
+Number of sensors | 1206
 Number of automations | 51
 Number of scripts | 6
 Number of scenes | 32
 Number of zones | 9
-Number of binary sensors | 161
+Number of binary sensors | 158
 
 ## My installed extensions:
 
@@ -49,6 +49,7 @@ Number of binary sensors | 161
 - Home Assistant Stream Deck
 - librespot player
 - Matter Server
+- OpenThread Border Router
 - Piper
 - PS5 MQTT
 - Samba share

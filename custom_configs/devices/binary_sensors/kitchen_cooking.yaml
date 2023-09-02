@@ -1,6 +1,6 @@
 - platform: bayesian
   name: Kochen
-  prior: 0.1
+  prior: 0
   probability_threshold: 0.7
   observations:
     - platform: template

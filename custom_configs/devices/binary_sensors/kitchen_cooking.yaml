@@ -1,0 +1,30 @@
+- platform: bayesian
+  name: Kochen
+  prior: 0.1
+  probability_threshold: 0.7
+  observations:
+    - platform: template
+      prob_given_true: 0.3
+      prob_given_false: 0
+      value_template: >
+        {{ states('sensor.temperatur_kueche') | int > states('sensor.temperatur_flur') | int + 3 }}
+    - platform: state
+      prob_given_true: 0.2
+      prob_given_false: 0
+      to_state: on
+      entity_id: binary_sensor.hlk_kuche_belegung
+    - platform: state
+      prob_given_true: 0.2
+      prob_given_false: 0
+      to_state: on
+      entity_id: switch.steckdose_optigrill_socket_1
+    - platform: state
+      prob_given_true: 0.2
+      prob_given_false: 0
+      to_state: on
+      entity_id: switch.steckdose_hlf_socket_1
+    - platform: template
+      prob_given_true: 0.2
+      prob_given_false: 0
+      value_template: >
+        {{ (as_timestamp(now()) - as_timestamp(states.binary_sensor.aqara_contact_kuhlschrank_contact.last_changed)) < 900 }}

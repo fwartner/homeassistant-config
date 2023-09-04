@@ -34,3 +34,39 @@ intent_script:
     speech:
       type: plain
       text: OK
+
+  CloseCoverBalkonWohnzimmer:
+    action:
+      service: cover.close_cover
+      target:
+        entity_id: cover.ikea_rollo_balkontur_wohnzimmer
+    speech:
+      type: plain
+      text: OK
+
+  CloseCoverFensterbankWohnzimmer:
+    action:
+      service: cover.close_cover
+      target:
+        entity_id: cover.rollos_fensterbank_wohnzimmer
+    speech:
+      type: plain
+      text: OK
+
+  CloseCoverFensterbankSchlafzimmer:
+    action:
+      service: cover.close_cover
+      target:
+        entity_id: cover.rollos_fensterbank_schlafzimmer
+    speech:
+      type: plain
+      text: OK
+
+  CloseCoverKuche:
+    action:
+      service: cover.close_cover
+      target:
+        entity_id: cover.aqara_rollo_kuche
+    speech:
+      type: plain
+      text: OK

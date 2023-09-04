@@ -1,21 +1,51 @@
 intent_script:
-  OpenCoverBalkonWohnzimmer:
+  OpenCoverBalkonWohnzimmerIntent:
     action:
       service: cover.open_cover
       target:
         entity_id: cover.ikea_rollo_balkontur_wohnzimmer
     speech:
       type: plain
-      text: OK
+      ext: >
+        {{ [
+          "In Ordnung"
+          "Sicher"
+          "Wenn du darauf bestehst"
+          "Erledigt"
+          "Keine Sorge"
+          "Ich kann das tun"
+          "Überlass es mir"
+          "Betrachte es als erledigt"
+          "Wie du wünschst"
+          "Nach deinem Befehl"
+          "Ich werde"
+          "Wie du befielst, so sei es"
+          "Kein Problem"
+        ] | random }}
 
-  OpenCoverFensterbankWohnzimmer:
+  OpenCoverFensterbankWohnzimmerIntent:
     action:
       service: cover.open_cover
       target:
         entity_id: cover.rollos_fensterbank_wohnzimmer
     speech:
       type: plain
-      text: OK
+      ext: >
+        {{ [
+          "In Ordnung"
+          "Sicher"
+          "Wenn du darauf bestehst"
+          "Erledigt"
+          "Keine Sorge"
+          "Ich kann das tun"
+          "Überlass es mir"
+          "Betrachte es als erledigt"
+          "Wie du wünschst"
+          "Nach deinem Befehl"
+          "Ich werde"
+          "Wie du befielst, so sei es"
+          "Kein Problem"
+        ] | random }}
 
   OpenCoverFensterbankSchlafzimmer:
     action:
@@ -24,49 +54,139 @@ intent_script:
         entity_id: cover.rollos_fensterbank_schlafzimmer
     speech:
       type: plain
-      text: OK
+      text: >
+        {{ [
+          "In Ordnung"
+          "Sicher"
+          "Wenn du darauf bestehst"
+          "Erledigt"
+          "Keine Sorge"
+          "Ich kann das tun"
+          "Überlass es mir"
+          "Betrachte es als erledigt"
+          "Wie du wünschst"
+          "Nach deinem Befehl"
+          "Ich werde"
+          "Wie du befielst, so sei es"
+          "Kein Problem"
+        ] | random }}
 
-  OpenCoverKuche:
+  OpenCoverKucheIntent:
     action:
       service: cover.open_cover
       target:
         entity_id: cover.aqara_rollo_kuche
     speech:
       type: plain
-      text: OK
+      ext: >
+        {{ [
+          "In Ordnung"
+          "Sicher"
+          "Wenn du darauf bestehst"
+          "Erledigt"
+          "Keine Sorge"
+          "Ich kann das tun"
+          "Überlass es mir"
+          "Betrachte es als erledigt"
+          "Wie du wünschst"
+          "Nach deinem Befehl"
+          "Ich werde"
+          "Wie du befielst, so sei es"
+          "Kein Problem"
+        ] | random }}
 
-  CloseCoverBalkonWohnzimmer:
+  CloseCoverBalkonWohnzimmerIntent:
     action:
       service: cover.close_cover
       target:
         entity_id: cover.ikea_rollo_balkontur_wohnzimmer
     speech:
       type: plain
-      text: OK
+      ext: >
+        {{ [
+          "In Ordnung"
+          "Sicher"
+          "Wenn du darauf bestehst"
+          "Erledigt"
+          "Keine Sorge"
+          "Ich kann das tun"
+          "Überlass es mir"
+          "Betrachte es als erledigt"
+          "Wie du wünschst"
+          "Nach deinem Befehl"
+          "Ich werde"
+          "Wie du befielst, so sei es"
+          "Kein Problem"
+        ] | random }}
 
-  CloseCoverFensterbankWohnzimmer:
+  CloseCoverFensterbankWohnzimmerIntent:
     action:
       service: cover.close_cover
       target:
         entity_id: cover.rollos_fensterbank_wohnzimmer
     speech:
       type: plain
-      text: OK
+      ext: >
+        {{ [
+          "In Ordnung"
+          "Sicher"
+          "Wenn du darauf bestehst"
+          "Erledigt"
+          "Keine Sorge"
+          "Ich kann das tun"
+          "Überlass es mir"
+          "Betrachte es als erledigt"
+          "Wie du wünschst"
+          "Nach deinem Befehl"
+          "Ich werde"
+          "Wie du befielst, so sei es"
+          "Kein Problem"
+        ] | random }}
 
-  CloseCoverFensterbankSchlafzimmer:
+  CloseCoverFensterbankSchlafzimmerIntent:
     action:
       service: cover.close_cover
       target:
         entity_id: cover.rollos_fensterbank_schlafzimmer
     speech:
       type: plain
-      text: OK
+      ext: >
+        {{ [
+          "In Ordnung"
+          "Sicher"
+          "Wenn du darauf bestehst"
+          "Erledigt"
+          "Keine Sorge"
+          "Ich kann das tun"
+          "Überlass es mir"
+          "Betrachte es als erledigt"
+          "Wie du wünschst"
+          "Nach deinem Befehl"
+          "Ich werde"
+          "Wie du befielst, so sei es"
+          "Kein Problem"
+        ] | random }}
 
-  CloseCoverKuche:
+  CloseCoverKucheIntent:
     action:
       service: cover.close_cover
       target:
         entity_id: cover.aqara_rollo_kuche
     speech:
       type: plain
-      text: OK
+      ext: >
+        {{ [
+          "In Ordnung"
+          "Sicher"
+          "Wenn du darauf bestehst"
+          "Erledigt"
+          "Keine Sorge"
+          "Ich kann das tun"
+          "Überlass es mir"
+          "Betrachte es als erledigt"
+          "Wie du wünschst"
+          "Nach deinem Befehl"
+          "Ich werde"
+          "Wie du befielst, so sei es"
+          "Kein Problem"
+        ] | random }}

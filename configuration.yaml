@@ -22,3 +22,4 @@ conversation: !include_dir_merge_list custom_configs/conversation/
 intent_script: !include_dir_merge_list custom_configs/intents/
 shell_command: !include_dir_merge_list custom_configs/shell_commands/
 automation: !include automations.yaml
+text: !include alexa_confirm.yaml

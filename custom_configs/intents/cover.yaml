@@ -1,0 +1,36 @@
+intent_script:
+  OpenCoverBalkonWohnzimmer:
+    action:
+      service: cover.open_cover
+      target:
+        entity_id: cover.ikea_rollo_balkontur_wohnzimmer
+    speech:
+      type: plain
+      text: OK
+
+  OpenCoverFensterbankWohnzimmer:
+    action:
+      service: cover.open_cover
+      target:
+        entity_id: cover.rollos_fensterbank_wohnzimmer
+    speech:
+      type: plain
+      text: OK
+
+  OpenCoverFensterbankSchlafzimmer:
+    action:
+      service: cover.open_cover
+      target:
+        entity_id: cover.rollos_fensterbank_schlafzimmer
+    speech:
+      type: plain
+      text: OK
+
+  OpenCoverKuche:
+    action:
+      service: cover.open_cover
+      target:
+        entity_id: cover.aqara_rollo_kuche
+    speech:
+      type: plain
+      text: OK

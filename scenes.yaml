@@ -45,3 +45,17 @@
       state: 'on'
   icon: fas:tv
   metadata: {}
+- id: '1693826667643'
+  name: 3 Minuten Bettzeit
+  entities:
+    script.3_minuten_bettzeit:
+      last_triggered: '2023-09-04T08:21:32.786654+00:00'
+      mode: single
+      current: 0
+      icon: mdi:bed-clock
+      friendly_name: 3 Minuten Bettzeit
+      state: 'off'
+  icon: mdi:bed
+  metadata:
+    script.3_minuten_bettzeit:
+      entity_only: true

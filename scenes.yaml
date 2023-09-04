@@ -1,1 +1,47 @@
-[]
+- id: '1693819504473'
+  name: Fernsehen im Wohnzimmer
+  entities:
+    number.sync_box_brightness:
+      min: 1
+      max: 100
+      step: 1
+      mode: auto
+      unit_of_measurement: '%'
+      icon: mdi:brightness-5
+      friendly_name: Sync Box Brightness
+      state: '68'
+    select.sync_box_hdmi_input:
+      options:
+      - 'Apple TV '
+      - PlayStation 5
+      - Nintendo Switch
+      - Vodafone
+      icon: mdi:hdmi-port
+      friendly_name: Sync Box HDMI Input
+      state: 'Apple TV '
+    select.sync_box_intensity:
+      options:
+      - subtle
+      - moderate
+      - high
+      - intense
+      icon: mdi:sine-wave
+      friendly_name: Sync Box Intensity
+      state: high
+    select.sync_box_sync_mode:
+      options:
+      - video
+      - music
+      - game
+      friendly_name: Sync Box Sync mode
+      state: video
+    switch.sync_box_power:
+      icon: mdi:power
+      friendly_name: Sync Box Power
+      state: 'on'
+    switch.sync_box_light_sync:
+      icon: mdi:television-ambient-light
+      friendly_name: Sync Box Light Sync
+      state: 'on'
+  icon: fas:tv
+  metadata: {}

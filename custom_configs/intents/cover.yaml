@@ -6,22 +6,7 @@ intent_script:
         entity_id: cover.ikea_rollo_balkontur_wohnzimmer
     speech:
       type: plain
-      ext: >
-        {{ [
-          "In Ordnung"
-          "Sicher"
-          "Wenn du darauf bestehst"
-          "Erledigt"
-          "Keine Sorge"
-          "Ich kann das tun"
-          "Überlass es mir"
-          "Betrachte es als erledigt"
-          "Wie du wünschst"
-          "Nach deinem Befehl"
-          "Ich werde"
-          "Wie du befielst, so sei es"
-          "Kein Problem"
-        ] | random }}
+      text: !include alexa_confirm.yaml
 
   OpenCoverFensterbankWohnzimmerIntent:
     action:
@@ -30,22 +15,7 @@ intent_script:
         entity_id: cover.rollos_fensterbank_wohnzimmer
     speech:
       type: plain
-      ext: >
-        {{ [
-          "In Ordnung"
-          "Sicher"
-          "Wenn du darauf bestehst"
-          "Erledigt"
-          "Keine Sorge"
-          "Ich kann das tun"
-          "Überlass es mir"
-          "Betrachte es als erledigt"
-          "Wie du wünschst"
-          "Nach deinem Befehl"
-          "Ich werde"
-          "Wie du befielst, so sei es"
-          "Kein Problem"
-        ] | random }}
+      text: !include alexa_confirm.yaml
 
   OpenCoverFensterbankSchlafzimmer:
     action:
@@ -54,22 +24,7 @@ intent_script:
         entity_id: cover.rollos_fensterbank_schlafzimmer
     speech:
       type: plain
-      text: >
-        {{ [
-          "In Ordnung"
-          "Sicher"
-          "Wenn du darauf bestehst"
-          "Erledigt"
-          "Keine Sorge"
-          "Ich kann das tun"
-          "Überlass es mir"
-          "Betrachte es als erledigt"
-          "Wie du wünschst"
-          "Nach deinem Befehl"
-          "Ich werde"
-          "Wie du befielst, so sei es"
-          "Kein Problem"
-        ] | random }}
+      text: !include alexa_confirm.yaml
 
   OpenCoverKucheIntent:
     action:
@@ -78,22 +33,7 @@ intent_script:
         entity_id: cover.aqara_rollo_kuche
     speech:
       type: plain
-      ext: >
-        {{ [
-          "In Ordnung"
-          "Sicher"
-          "Wenn du darauf bestehst"
-          "Erledigt"
-          "Keine Sorge"
-          "Ich kann das tun"
-          "Überlass es mir"
-          "Betrachte es als erledigt"
-          "Wie du wünschst"
-          "Nach deinem Befehl"
-          "Ich werde"
-          "Wie du befielst, so sei es"
-          "Kein Problem"
-        ] | random }}
+      text: !include alexa_confirm.yaml
 
   CloseCoverBalkonWohnzimmerIntent:
     action:
@@ -102,22 +42,7 @@ intent_script:
         entity_id: cover.ikea_rollo_balkontur_wohnzimmer
     speech:
       type: plain
-      ext: >
-        {{ [
-          "In Ordnung"
-          "Sicher"
-          "Wenn du darauf bestehst"
-          "Erledigt"
-          "Keine Sorge"
-          "Ich kann das tun"
-          "Überlass es mir"
-          "Betrachte es als erledigt"
-          "Wie du wünschst"
-          "Nach deinem Befehl"
-          "Ich werde"
-          "Wie du befielst, so sei es"
-          "Kein Problem"
-        ] | random }}
+      text: !include alexa_confirm.yaml
 
   CloseCoverFensterbankWohnzimmerIntent:
     action:
@@ -126,22 +51,7 @@ intent_script:
         entity_id: cover.rollos_fensterbank_wohnzimmer
     speech:
       type: plain
-      ext: >
-        {{ [
-          "In Ordnung"
-          "Sicher"
-          "Wenn du darauf bestehst"
-          "Erledigt"
-          "Keine Sorge"
-          "Ich kann das tun"
-          "Überlass es mir"
-          "Betrachte es als erledigt"
-          "Wie du wünschst"
-          "Nach deinem Befehl"
-          "Ich werde"
-          "Wie du befielst, so sei es"
-          "Kein Problem"
-        ] | random }}
+      text: !include alexa_confirm.yaml
 
   CloseCoverFensterbankSchlafzimmerIntent:
     action:
@@ -150,22 +60,7 @@ intent_script:
         entity_id: cover.rollos_fensterbank_schlafzimmer
     speech:
       type: plain
-      ext: >
-        {{ [
-          "In Ordnung"
-          "Sicher"
-          "Wenn du darauf bestehst"
-          "Erledigt"
-          "Keine Sorge"
-          "Ich kann das tun"
-          "Überlass es mir"
-          "Betrachte es als erledigt"
-          "Wie du wünschst"
-          "Nach deinem Befehl"
-          "Ich werde"
-          "Wie du befielst, so sei es"
-          "Kein Problem"
-        ] | random }}
+      text: !include alexa_confirm.yaml
 
   CloseCoverKucheIntent:
     action:
@@ -174,19 +69,4 @@ intent_script:
         entity_id: cover.aqara_rollo_kuche
     speech:
       type: plain
-      ext: >
-        {{ [
-          "In Ordnung"
-          "Sicher"
-          "Wenn du darauf bestehst"
-          "Erledigt"
-          "Keine Sorge"
-          "Ich kann das tun"
-          "Überlass es mir"
-          "Betrachte es als erledigt"
-          "Wie du wünschst"
-          "Nach deinem Befehl"
-          "Ich werde"
-          "Wie du befielst, so sei es"
-          "Kein Problem"
-        ] | random }}
+      text: !include alexa_confirm.yaml

@@ -1,0 +1,8 @@
+amzn1.ask.skill.51c66eec-feea-4b46-b44c-f2d1f4e1ccc8:
+  action:
+    service: script.turn_on
+    target:
+      entity_id: script.red_alert
+  speech:
+    type: plain
+    text: OK

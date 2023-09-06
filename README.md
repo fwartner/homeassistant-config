@@ -121,6 +121,7 @@ Number of binary sensors | 147
 - [Sun2](https://github.com/pnbruckner/ha-sun2)
 - [Temperature Feels Like](https://github.com/Limych/ha-temperature-feels-like)
 - [Thermal Comfort](https://github.com/dolezsa/thermal_comfort)
+- [Toogoodtogo](https://github.com/Chouffy/home_assistant_tgtg)
 - [Twitch Helix](https://github.com/Radioh/ha_twitch_helix)
 - [Ui Lovelace Minimalist](https://github.com/UI-Lovelace-Minimalist/UI)
 - [Uptime Kuma](https://github.com/meichthys/uptime_kuma)

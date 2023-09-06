@@ -8,5 +8,4 @@
 #
 #- from github.com/basnijholt/home-assistant-config
 streams:
-    roborock: roborock://mqtt-eu-2.roborock.com:8883?u=2I9mZWOH7LgxmGcIQG2S0E&s=zw1GCz&k=mqn80jZh&did=6QgbdHTMkm6MDs6IMS5FFr&key=33hUNQyE9pnhsYcw&pin=
-
+  roborock: !secret roborock_mqtt

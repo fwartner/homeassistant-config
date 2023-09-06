@@ -1,7 +1,7 @@
 - platform: tgtg
-  email: 'florian@wartner.io'
-  access_token: 'e30.eyJzdWIiOiIxMTQwNDc0NDIiLCJleHAiOjE2OTQxNjE1NTYsInQiOiJXNmdWRnU5eVF3dXQ3YjVOQzdYUmdROjA6MSJ9.qmfHmS9Q-a0UtXFLoowDwVqfGlZ6JLfuMfUScPF-CZ8'
-  refresh_token: 'e30.eyJzdWIiOiIxMTQwNDc0NDIiLCJleHAiOjE3MjU2MTExNTYsInQiOiJtdmtrbzVOV1E4MkdPMEZWbWgtakVROjA6MCJ9.l4QX2lSigV8BjPzZVXhJ4KRPjeMxBV83qBKxvIDRGuM'
-  user_id: '114047442'
-  cookie: 'datadome=4hJmgFE2uLOfNONkfyCCgtQe4vBVGcD8Uhkz7I0brVSOxJk~L3eEg2ikx0UeONZdqu6Ko5AHG~fAJ5spBYbz_ySebEIL9yf9R8iAoFStwudYrvDID0StzvlvH75EG5nE; Max-Age=5184000; Domain=.apptoogoodtogo.com; Path=/; Secure; SameSite=Lax'
+  email: "florian@wartner.io"
+  access_token: !secret tgtg_access_token
+  refresh_token: !secret tgtg_refresh_token
+  user_id: !secret tgtg_user_id
+  cookie: !secret tgtg_cookie
   scan_interval: 900

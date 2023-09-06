@@ -101,6 +101,7 @@ Number of binary sensors | 147
 - [Nuki Lock](https://github.com/kvj/hass_nuki_ng)
 - [Office 365 Integration](https://github.com/RogerSelwyn/O365-HomeAssistant)
 - [Openai Response](https://github.com/Hassassistant/openai_response)
+- [Openweathermaphistory](https://github.com/petergridge/openweathermaphistory)
 - [Passive Ble Monitor Integration](https://github.com/custom-components/ble_monitor)
 - [Personio](https://github.com/Sese-Schneider/ha-personio)
 - [Philips Hue Play Hdmi Sync Box](https://github.com/mvdwetering/huesyncbox)

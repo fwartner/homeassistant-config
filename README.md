@@ -27,13 +27,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 1912
-Number of sensors | 1120
-Number of automations | 51
+Number of entities | 1908
+Number of sensors | 1113
+Number of automations | 53
 Number of scripts | 7
 Number of scenes | 26
 Number of zones | 9
-Number of binary sensors | 147
+Number of binary sensors | 148
 
 ## My installed extensions:
 
@@ -196,7 +196,7 @@ Number of binary sensors | 147
 - [Team Tracker Card](https://github.com/vasqued2/ha-teamtracker-card)
 - [Thermal Comfort Icons](https://github.com/rautesamtr/thermal_comfort_icons)
 - [Timer Bar Card](https://github.com/rianadon/timer-bar-card)
-- [Ultimate Tv Remote Card With Touchpad And More](https://github.com/iablon/HomeAssistant-Touchpad-Card)
+- [Tv Touchpad Remote Card](https://github.com/iablon/HomeAssistant-Touchpad-Card)
 - [Vacuum Card](https://github.com/denysdovhan/vacuum-card)
 - [Vertical Stack In Card](https://github.com/ofekashery/vertical-stack-in-card)
 - [Wallpanel](https://github.com/j-a-n/lovelace-wallpanel)

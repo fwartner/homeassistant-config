@@ -35,6 +35,12 @@
     domain: lock
     entity_id: 13e37e246a79f46bf7937aca860f9ba2
     type: lock
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.awtrix_wohnzimmer_matrix
+      - light.awtrix_buro_matrix
   mode: single
   icon: mdi:bed-clock
 polly_futtern:
@@ -105,3 +111,29 @@ offne_wohnungstur:
     type: unlock
   mode: single
   icon: mdi:lock-open
+alexa_lautstarke:
+  alias: Alexa Lautstärke
+  sequence:
+  - service: media_player.volume_set
+    target:
+      entity_id: '{{ states(''sensor.last_alexa'') }}'
+    data:
+      volume_level: "{% if is_state(\"sensor.last_alexa\", \"media_player.echo_dot_second_gen\")
+        %}\n  0.5\n{% else %}\n  0.3\n{% endif %}\n"
+  mode: single
+  icon: phu:alexa-logo
+speedtest_awtrix_wohnzimmer:
+  alias: SpeedTest (Awtrix Wohnzimmer)
+  sequence:
+  - service: mqtt.publish
+    data:
+      topic: awtrix_wohnzimmer/custom/speeds_d
+      payload_template:
+        text: Download speed is {{ states.sensor.speedtest_download.state}}      Mbp/s
+        icon: download
+        pushIcon: 0
+        repeat: 1
+        textCase: 2
+        textOffset: 33
+  mode: single
+  icon: mdi:speedometer

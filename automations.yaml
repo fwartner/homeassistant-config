@@ -70,7 +70,7 @@
   description: Luftreiniger Schlafzimmer
   trigger:
   - platform: time
-    at: 09:00:00
+    at: 08:00:00
   condition: []
   action:
   - parallel:
@@ -343,7 +343,7 @@
     domain: binary_sensor
     id: jonasMotionOn
   - platform: time
-    at: '19:00:00'
+    at: '18:30:00'
     id: jonasCleanTeethOn
   - platform: state
     entity_id:
@@ -450,7 +450,7 @@
         id:
         - jonasCleanToothTimerOn
       sequence:
-      - service: notify.alexa_media_florians_echo_show_8_2nd_gen
+      - service: notify.alexa_media_florians_4_echo_dot
         data:
           message: Und los gehts! Putz deine Zähne schön gründlich. Ich sage dir Bescheid,
             wenn du fertig bist.
@@ -459,7 +459,7 @@
         id:
         - jonasCleanToothTimerOff
       sequence:
-      - service: notify.alexa_media_florians_echo_show_8_2nd_gen
+      - service: notify.alexa_media_florians_4_echo_dot
         data:
           message: Super! Du kannst die Zahnbürste jetzt saubermachen und dich ins
             Bett legen. Schlaf gut!
@@ -928,16 +928,6 @@
     - input_boolean.guestmode
     from: 'on'
     to: 'off'
-  - platform: state
-    entity_id:
-    - input_boolean.steffi_ist_da
-    from: 'on'
-    to: 'off'
-  - platform: state
-    entity_id:
-    - sensor.pills_taken
-    to: '0'
-    from:
   condition: []
   action:
   - service: fully_kiosk.load_url
@@ -1102,32 +1092,6 @@
         device_id: e167e2f1f1c6002658c924c970d2853f
         entity_id: bd86d041fb3a1a9a9292557802d54638
         domain: light
-  mode: single
-- id: '1691307076110'
-  alias: Steffi Pillen Zeit
-  description: ''
-  trigger:
-  - platform: time
-    at: 07:30:00
-  - platform: state
-    entity_id:
-    - input_boolean.steffi_ist_da
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: input_boolean.steffi_ist_da
-    state: 'on'
-  action:
-  - service: fully_kiosk.load_url
-    data:
-      url: http://10.182.1.240:8123/steffi-pillen/0?kiosk
-    target:
-      device_id: 8d9991a5dd07654891a5cf3a476cba07
-  - service: switch.turn_on
-    data: {}
-    target:
-      entity_id: switch.dashboard_screen
   mode: single
 - id: '1691320563612'
   alias: Rollos schließen wenn zu hell
@@ -1903,4 +1867,70 @@
     entity_id: 4910b9f1c61f74bbd8caeda2e60701dd
     domain: light
     brightness_pct: 100
+  mode: single
+- id: '1694279250811'
+  alias: Awtrix Notification Spotify
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.spotify_florian
+    attribute: media_title
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: media_player.spotify_florian
+      state: idle
+    enabled: true
+  action:
+  - service: mqtt.publish
+    data:
+      topic: awtrix_wohnzimmer/notify
+      payload: "{\"icon\": 647,\n \"repeat\": 1,\n \"text\": \"{{states.media_player.spotify_florian.attributes.media_artist}}
+        - {{states.media_player.spotify_florian.attributes.media_title}}\"\n}"
+  - service: mqtt.publish
+    data:
+      topic: awtrix_buro/notify
+      payload: "{\"icon\": 647,\n \"repeat\": 1,\n \"text\": \"{{states.media_player.spotify_florian.attributes.media_artist}}
+        - {{states.media_player.spotify_florian.attributes.media_title}}\"\n}"
+  mode: single
+- id: '1694281651442'
+  alias: 'Awtrix: Wohnzimmer Balkon Temperatur'
+  description: ''
+  use_blueprint:
+    path: smarthomejunkie/awtrix_create_sensor_app.yaml
+    input:
+      awtrix_displays:
+      - 223c2407647b4142c2a2b1f5054f9a42
+      toggle_helper: input_boolean.awtrix_wohnzimmer_balkon_temperatur
+      my_sensor: sensor.temperatur_balkon_combined
+      my_icon: '2056'
+      repeat: '1'
+      duration: '5'
+      lifetime: '5'
+- id: '1694282954348'
+  alias: Awtrix Time
+  description: ''
+  use_blueprint:
+    path: smarthomejunkie/awtrix_toggle_stock_app.yaml
+    input:
+      stock_app: Time
+      awtrix_displays:
+      - 223c2407647b4142c2a2b1f5054f9a42
+      toggle_helper: input_boolean.awtrix_wohnzimmer_time
+- id: '1694284461266'
+  alias: 'Awtrix: Matrix An'
+  description: ''
+  trigger:
+  - platform: time
+    at: 08:00:00
+  condition: []
+  action:
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id:
+      - light.awtrix_buro_matrix
+      - light.awtrix_wohnzimmer_matrix
   mode: single

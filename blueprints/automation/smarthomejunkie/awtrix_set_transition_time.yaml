@@ -1,0 +1,62 @@
+##########
+# This Blueprint is created by Smart Home Junkie
+# (c) copyright 2023 by Smart Home Junkie. You may not copy, reproduce, distribute, transmit, modify, create derivative works,
+# or in any other way exploit any part of copyrighted material without the prior written permission from Smart Home Junkie
+##########
+
+blueprint:
+  name: Awtrix Set App Time
+  description: Set the app time of the Ulanzi Clock
+  domain: automation
+  author: Smart Home Junkie
+  input:
+    awtrix_displays:
+      name: Awtrix Displays
+      description: Select the target Awtrix displays.
+      selector:
+        device:
+          integration: mqtt
+          model: "AWTRIX Light"
+          manufacturer: Blueforcer
+          multiple: true
+    apptime_helper:
+      name: App Time Number Helper
+      description: Select the App Time Number Helper that stores the App time.
+      selector:
+        entity:
+          domain: input_number
+
+mode: queued
+
+trigger:
+  - platform: state
+    entity_id: !input apptime_helper
+
+variables:
+  device_ids: !input awtrix_displays
+  devices: >-
+    {% macro get_device(device_id) %}
+      {{ states((device_entities(device_id) | select('search','device_topic') | list)[0]) }}
+    {% endmacro %}
+
+    {% set ns = namespace(devices=[]) %}
+    {% for device_id in device_ids %}
+      {% set device=get_device(device_id)|replace(' ','')|replace('\n','') %}
+      {% set ns.devices = ns.devices + [ device ] %}
+    {% endfor %}
+    {{ ns.devices | reject('match','unavailable') | list }}
+  apptime_value: !input apptime_helper
+
+action:
+  - repeat:
+      for_each: "{{ devices }}"
+      sequence:
+        - service: mqtt.publish
+          data:
+            qos: 0
+            retain: false
+            topic: "{{repeat.item}}/settings"
+            payload: |-
+              {   
+                "ATIME": "{{ states(apptime_value) }}"
+              }

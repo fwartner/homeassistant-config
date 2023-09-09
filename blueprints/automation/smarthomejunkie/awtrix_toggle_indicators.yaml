@@ -1,0 +1,283 @@
+##########
+# This Blueprint is created by Smart Home Junkie
+# (c) copyright 2023 by Smart Home Junkie. You may not copy, reproduce, distribute, transmit, modify, create derivative works,
+# or in any other way exploit any part of copyrighted material without the prior written permission from Smart Home Junkie
+##########
+
+blueprint:
+  name: Awtrix Toggle Indicators
+  description: Toggle the Indicators on the Ulanzi Clock
+  domain: automation
+  author: Smart Home Junkie
+  input:
+    awtrix_displays:
+      name: Awtrix Displays
+      description: Select the target Awtrix displays.
+      selector:
+        device:
+          integration: mqtt
+          model: "AWTRIX Light"
+          manufacturer: Blueforcer
+          multiple: true
+    toggle_helper_indicator_1:
+      name: Right Top Indicator Toggle Helper
+      description: Select the Toggle Helper that will toggle the right top indicator.
+      selector:
+        entity:
+          domain: input_boolean
+      default: "input_boolean.awtrix_display_indicator_1"
+    indicator_1_color:
+      name: Right Top Indicator color
+      description: Select the Right Top Indicator color
+      selector:
+        color_rgb:
+      default: [255, 255, 255]
+    indicator_1_blink_speed:
+      name: Blink Speed Top Indicator
+      description: Select the blink speed in milliseconds. (0 = no blinking)
+      selector:
+        number:
+          min: 0
+          max: 5000
+      default: 0
+    indicator_1_play_alert_tone:
+      name: Play Alert Tone Right Top Indicator
+      description: Should an alert tone be played for the Right Top Indicator?
+      selector:
+        boolean:
+      default: false
+    toggle_helper_indicator_2:
+      name: Right Middle Indicator Toggle Helper
+      description: Select the Toggle Helper that will toggle the right middle indicator.
+      selector:
+        entity:
+          domain: input_boolean
+      default: "input_boolean.awtrix_display_indicator_2"
+    indicator_2_color:
+      name: Right Middle Indicator color
+      description: Select the Right Middle Indicator color
+      selector:
+        color_rgb:
+      default: [255, 255, 255]
+    indicator_2_blink_speed:
+      name: Blink Speed Middle Indicator
+      description: Select the blink speed in milliseconds. (0 = no blinking)
+      selector:
+        number:
+          min: 0
+          max: 5000
+      default: 0
+    indicator_2_play_alert_tone:
+      name: Play Alert Tone Right Middle Indicator
+      description: Should an alert tone be played for the Right Middle Indicator?
+      selector:
+        boolean:
+      default: false
+    toggle_helper_indicator_3:
+      name: Right Bottom Indicator Toggle Helper
+      description: Select the Toggle Helper that will toggle the right bottom indicator.
+      selector:
+        entity:
+          domain: input_boolean
+      default: "input_boolean.awtrix_display_indicator_3"
+    indicator_3_color:
+      name: Right Bottom Indicator color
+      description: Select the Right Bottom Indicator color
+      selector:
+        color_rgb:
+      default: [255, 255, 255]
+    indicator_3_blink_speed:
+      name: Blink Speed Bottom Indicator
+      description: Select the blink speed in milliseconds. (0 = no blinking)
+      selector:
+        number:
+          min: 0
+          max: 5000
+      default: 0
+    indicator_3_play_alert_tone:
+      name: Play Alert Tone Right Bottom Indicator
+      description: Should an alert tone be played for the Right Bottom Indicator?
+      selector:
+        boolean:
+      default: false
+
+mode: queued
+
+trigger:
+  - platform: state
+    entity_id: !input toggle_helper_indicator_1
+    to: "on"
+    id: indicator 1 on
+  - platform: state
+    entity_id: !input toggle_helper_indicator_1
+    to: "off"
+    id: indicator 1 off
+  - platform: state
+    entity_id: !input toggle_helper_indicator_2
+    to: "on"
+    id: indicator 2 on
+  - platform: state
+    entity_id: !input toggle_helper_indicator_2
+    to: "off"
+    id: indicator 2 off
+  - platform: state
+    entity_id: !input toggle_helper_indicator_3
+    to: "on"
+    id: indicator 3 on
+  - platform: state
+    entity_id: !input toggle_helper_indicator_3
+    to: "off"
+    id: indicator 3 off
+
+variables:
+  device_ids: !input awtrix_displays
+  devices: >-
+    {% macro get_device(device_id) %}
+      {{ states((device_entities(device_id) | select('search','device_topic') | list)[0]) }}
+    {% endmacro %}
+
+    {% set ns = namespace(devices=[]) %}
+    {% for device_id in device_ids %}
+      {% set device=get_device(device_id)|replace(' ','')|replace('\n','') %}
+      {% set ns.devices = ns.devices + [ device ] %}
+    {% endfor %}
+    {{ ns.devices | reject('match','unavailable') | list }}
+  my_toggle_helper_1: toggle_helper_indicator_1
+  my_toggle_helper_2: toggle_helper_indicator_2
+  my_toggle_helper_3: toggle_helper_indicator_3
+  my_toggle_helper: toggle_helper
+  indicator_1_color: !input indicator_1_color
+  indicator_2_color: !input indicator_2_color
+  indicator_3_color: !input indicator_3_color
+  indicator_1_blink_speed: !input indicator_1_blink_speed
+  indicator_2_blink_speed: !input indicator_2_blink_speed
+  indicator_3_blink_speed: !input indicator_3_blink_speed
+  indicator_1_alert: !input indicator_1_play_alert_tone
+  indicator_2_alert: !input indicator_2_play_alert_tone
+  indicator_3_alert: !input indicator_3_play_alert_tone
+
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: indicator 1 on
+        sequence:
+          - repeat:
+              for_each: "{{ devices }}"
+              sequence:
+                - service: mqtt.publish
+                  data:
+                    qos: 0
+                    retain: false
+                    topic: "{{repeat.item}}/indicator1"
+                    payload: |-
+                      {   
+                        "color": {{ indicator_1_color }},
+                        "blink": {{ indicator_1_blink_speed }}
+                      }
+                - condition: template
+                  value_template: "{{ indicator_1_alert == true }}"
+                - service: mqtt.publish
+                  data:
+                    qos: 0
+                    retain: false
+                    topic: "{{repeat.item}}/sound"
+                    payload: "alert"
+      - conditions:
+          - condition: trigger
+            id: indicator 1 off
+        sequence:
+          - repeat:
+              for_each: "{{ devices }}"
+              sequence:
+                - service: mqtt.publish
+                  data:
+                    qos: 0
+                    retain: false
+                    topic: "{{repeat.item}}/indicator1"
+                    payload: |-
+                      {   
+                        "color": "0"
+                      }
+      - conditions:
+          - condition: trigger
+            id: indicator 2 on
+        sequence:
+          - repeat:
+              for_each: "{{ devices }}"
+              sequence:
+                - service: mqtt.publish
+                  data:
+                    qos: 0
+                    retain: false
+                    topic: "{{repeat.item}}/indicator2"
+                    payload: |-
+                      {   
+                        "color": {{ indicator_2_color }},
+                        "blink": {{ indicator_2_blink_speed }}
+                      }
+                - condition: template
+                  value_template: "{{ indicator_2_alert == true }}"
+                - service: mqtt.publish
+                  data:
+                    qos: 0
+                    retain: false
+                    topic: "{{repeat.item}}/sound"
+                    payload: "alert"
+      - conditions:
+          - condition: trigger
+            id: indicator 2 off
+        sequence:
+          - repeat:
+              for_each: "{{ devices }}"
+              sequence:
+                - service: mqtt.publish
+                  data:
+                    qos: 0
+                    retain: false
+                    topic: "{{repeat.item}}/indicator2"
+                    payload: |-
+                      {   
+                        "color": "0"
+                      }
+      - conditions:
+          - condition: trigger
+            id: indicator 3 on
+        sequence:
+          - repeat:
+              for_each: "{{ devices }}"
+              sequence:
+                - service: mqtt.publish
+                  data:
+                    qos: 0
+                    retain: false
+                    topic: "{{repeat.item}}/indicator3"
+                    payload: |-
+                      {   
+                        "color": {{ indicator_3_color }},
+                        "blink": {{ indicator_3_blink_speed }}
+                      }
+                - condition: template
+                  value_template: "{{ indicator_3_alert == true }}"
+                - service: mqtt.publish
+                  data:
+                    qos: 0
+                    retain: false
+                    topic: "{{repeat.item}}/sound"
+                    payload: "alert"
+      - conditions:
+          - condition: trigger
+            id: indicator 3 off
+        sequence:
+          - repeat:
+              for_each: "{{ devices }}"
+              sequence:
+                - service: mqtt.publish
+                  data:
+                    qos: 0
+                    retain: false
+                    topic: "{{repeat.item}}/indicator3"
+                    payload: |-
+                      {   
+                        "color": "0"
+                      }

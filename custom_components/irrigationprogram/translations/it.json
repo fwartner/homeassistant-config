@@ -1,4 +1,113 @@
 {
+    "services":{
+		"stop_programs":{
+			"name": "Stop programs",
+			"description": "Stop any running programs and zones."
+		},
+		"run_zone":{
+			"name": "Run zone",
+			"description": "Run a specific zone.",
+			"fields": {
+				"entity_id": {
+					"name": "Irrigation Program",
+					"description": "The irrigation program to run"
+				},
+				"zone": {
+					"name": "Zone",
+					"description": "Zones to run"
+				}
+			}
+		},
+		"toggle_zone":{
+			"name": "Toggle zone",
+			"description": "Run a specific zone.",
+			"fields": {
+				"entity_id": {
+					"name": "Irrigation Program",
+					"description": "The irrigation program to run"
+				},
+				"zone": {
+					"name": "Zone",
+					"description": "Zones to run"
+				}
+			}
+		},
+		"reset_runtime":{
+			"name": "Reset runtimes",
+			"description": "Reset the runtime back to none for the program supports testing.",
+			"fields": {
+				"entity_id": {
+					"name": "Irrigation Program",
+					"description": "The irrigation program to run"
+				}
+			}
+		},
+		"run_simulation":{
+			"name": "Run Simulation",
+			"description": "Simulate running a program. The results are shown in the log.",
+			"fields": {
+				"entity_id": {
+					"name": "Irrigation Program",
+					"description": "The irrigation program to run"
+				},
+				"scheduled": {
+					"name": "Scheduled",
+					"description": "Scheduled (true) or manual (false) execution simulation"
+				}
+			}
+		},
+		"set_zone_status":{
+			"name": "Set zone status",
+			"description": "Set the zone status",
+			"fields": {
+				"entity_id": {
+					"name": "Irrigation zone status sensor",
+					"description": "The zone sensor to set"
+				}
+			}
+		},
+		"toggle":{
+			"name": "Toggle config sensor",
+			"description": "Toggle configuration",
+			"fields": {
+				"entity_id": {
+					"name": "Irrigation zone config sensor",
+					"description": "The zone config sensor to toggle"
+				}
+			}
+		}
+    },
+	"selector": {
+		"status": {
+			"options": {
+				"off": "Off",
+				"on": "On",
+				"disable": "Disabled",
+				"pending": "Pending",
+				"eco": "ECO"
+			}
+		},
+		"device_type": {
+			"options": {
+				"generic": "Generic",
+				"rainbird": "RainBird"
+			}
+		}
+
+	},
+	"entity": {
+		"sensor": {
+			"zonestatus": {
+				"state": {
+					"off": "Off",
+					"on": "On",
+					"disable": "Disabled",
+					"pending": "Pending",
+					"eco": "ECO"
+				}
+			}
+		}
+	},
 	"config": {
 		"error": {
 			"zone_defined": "La zona specificata è già stata definita in questo programma di irrigazione",
@@ -16,6 +125,7 @@
 					"start_time": "Entità orario inizio",
 					"irrigation_on": "Entità attivazione programma irrigazione",
 					"show_config": "Entità mostra configurazione",
+					"device_type": "Controller type",
 					"inter_zone_delay": "Entità ritardo inter-zona",
 					"interlock": "Impedisce l'esecuzione simultanea dei programmi"
 				}
@@ -35,7 +145,8 @@
 					"wait": "Entità tempo attesa tra ripetizioni",
 					"repeat": "Entità contatore ripetizioni",
 					"ignore_rain_sensor": "Entità ignora sensore pioggia",
-					"enable_zone": "Entità attivazione zona"
+					"enable_zone": "Entità attivazione zona",
+					"show_config": "Entità mostra configurazione"
 				}
 			},
 			"menu": {
@@ -86,6 +197,7 @@
 						"start_time": "Entità orario inizio",
 						"irrigation_on": "Entità attivazione programma irrigazione",
 						"show_config": "Entità mostra configurazione",
+						"device_type": "Controller type",
 						"inter_zone_delay": "Entità ritardo inter-zona",
 						"interlock": "Impedisce l'esecuzione simultanea dei programmi"
 				}
@@ -105,7 +217,8 @@
 					"wait": "Entità tempo attesa tra ripetizioni",
 					"repeat": "Entità contatore ripetizioni",
 					"ignore_rain_sensor": "Entità ignora sensore pioggia",
-					"enable_zone": "Entità attivazione zona"
+					"enable_zone": "Entità attivazione zona",
+					"show_config": "Entità mostra configurazione"
 				}
 			},
 			"update_zone_data": {
@@ -123,7 +236,8 @@
 					"wait": "Entità tempo attesa tra ripetizioni",
 					"repeat": "Entità contatore ripetizioni",
 					"ignore_rain_sensor": "Entità ignora sensore pioggia",
-					"enable_zone": "Entità attivazione zona"
+					"enable_zone": "Entità attivazione zona",
+					"show_config": "Entità mostra configurazione"
 				}
 			},
 			"delete_zone": {

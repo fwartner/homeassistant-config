@@ -684,12 +684,10 @@
   alias: Taster Wohnzimmer Rollos Öffnen
   description: ''
   trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 82fc44b6345e0bd01175085d8cf4bb9d
-    type: action
-    subtype: open
-    discovery_id: 0xb4e3f9fffe6bf4b5 action_open
+  - platform: state
+    entity_id:
+    - sensor.ikea_taster_rollos_wohnzimmer_action
+    to: open
   condition: []
   action:
   - device_id: b5c99c551f5157c833050ed2a812fa68
@@ -705,12 +703,10 @@
   alias: Taster Wohnzimmer Rollos Schließen
   description: ''
   trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 82fc44b6345e0bd01175085d8cf4bb9d
-    type: action
-    subtype: close
-    discovery_id: 0xb4e3f9fffe6bf4b5 action_close
+  - platform: state
+    entity_id:
+    - sensor.ikea_taster_rollos_wohnzimmer_action
+    to: close
   condition: []
   action:
   - device_id: b5c99c551f5157c833050ed2a812fa68
@@ -726,12 +722,9 @@
   alias: Taster Futterautomat Füttern
   description: ''
   trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 6876c829a9ce4b4c7dfc341d657b26ac
-    type: action
-    subtype: open
-    discovery_id: 0x804b50fffe1fb4a3 action_open
+  - platform: state
+    entity_id:
+    - sensor.ikea_taster_futterautomat_action
   condition: []
   action:
   - device_id: a4c274664cb7efe6046fa12adbcc36a2

@@ -1,7 +1,7 @@
 - platform: bayesian
   name: Kochen
   prior: 0
-  probability_threshold: 7
+  probability_threshold: 6
   observations:
     - platform: template
       prob_given_true: 2
@@ -32,9 +32,9 @@
       prob_given_true: 3
       prob_given_false: 0
       value_template: >
-        {{ states('sensor.shelly_verbrauch') > states('input_number.durchschnittlicher_verbrauch_herd') }}
+        {{ states('sensor.shelly_verbrauch') | int > 1650 }}
     - platform: template
       prob_given_true: 3
       prob_given_false: 0
       value_template: >
-        {{ states('sensor.shelly_verbrauch') > states('input_number.durchschnittlicher_verbrauch_ofen') }}
+        {{ states('sensor.shelly_verbrauch') | int > 2700 }}

@@ -1576,10 +1576,7 @@
     - binary_sensor.nuki_haustur_ring_action
     to: 'on'
     id: ringOn
-  condition:
-  - condition: state
-    entity_id: sensor.people_away
-    state: '0'
+  condition: []
   action:
   - choose:
     - conditions:
@@ -1966,4 +1963,46 @@
       - service: notify.alexa_media_florians_4_echo_dot
         data:
           message: Oh je! Du solltest was gegen dein Gewicht machen.
+  mode: single
+- id: '1694421934176'
+  alias: Wohnungstür
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 550bae071fb4da6e0ea24dddfeec94e8
+    domain: lock
+    entity_id: 13e37e246a79f46bf7937aca860f9ba2
+    type: locking
+    id: lockingStarted
+  - platform: device
+    device_id: 550bae071fb4da6e0ea24dddfeec94e8
+    domain: lock
+    entity_id: 13e37e246a79f46bf7937aca860f9ba2
+    type: locked
+    id: lockingDone
+  - platform: device
+    device_id: 550bae071fb4da6e0ea24dddfeec94e8
+    domain: lock
+    entity_id: 13e37e246a79f46bf7937aca860f9ba2
+    type: unlocked
+    id: unlockDone
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - lockingStarted
+      sequence:
+      - service: notify.alexa_media_echo_dot_flur
+        data:
+          message: Ich schließe die Wohnungstür jetzt ab.
+    - conditions:
+      - condition: trigger
+        id:
+        - lockingDone
+      sequence:
+      - service: notify.alexa_media_echo_dot_flur
+        data:
+          message: Die Wohnungstür ist abgeschlossen.
   mode: single

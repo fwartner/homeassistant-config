@@ -28,3 +28,13 @@
       prob_given_false: 0
       value_template: >
         {{ (as_timestamp(now()) - as_timestamp(states.binary_sensor.aqara_contact_kuhlschrank_contact.last_changed)) < 900 }}
+    - platform: template
+      prob_given_true: 0.3
+      prob_given_false: 0
+      value_template: >
+        {{ states('sensor.shelly_verbrauch') > states('input_number.durchschnittlicher_verbrauch_herd') }}
+    - platform: template
+      prob_given_true: 0.3
+      prob_given_false: 0
+      value_template: >
+        {{ states('sensor.shelly_verbrauch') > states('input_number.durchschnittlicher_verbrauch_ofen') }}

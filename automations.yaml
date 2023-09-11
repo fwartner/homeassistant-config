@@ -680,44 +680,6 @@
         device_id: 31cea6ff31b5a821a4fa741d0c987b4d
         entity_id: switch.steckdose_badezimmer
         domain: switch
-- id: '1684774987339'
-  alias: Taster Wohnzimmer Rollos Öffnen
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.ikea_taster_rollos_wohnzimmer_action
-    to: open
-  condition: []
-  action:
-  - device_id: b5c99c551f5157c833050ed2a812fa68
-    domain: cover
-    entity_id: cover.ikea_rollo_fensterbank_links_wohnzimmer
-    type: open
-  - device_id: c0238df3821a546d59533f8cea51734b
-    domain: cover
-    entity_id: cover.ikea_rollo_fensterbank_rechts_wohnzimmer
-    type: open
-  mode: single
-- id: '1684775018765'
-  alias: Taster Wohnzimmer Rollos Schließen
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.ikea_taster_rollos_wohnzimmer_action
-    to: close
-  condition: []
-  action:
-  - device_id: b5c99c551f5157c833050ed2a812fa68
-    domain: cover
-    entity_id: cover.ikea_rollo_fensterbank_links_wohnzimmer
-    type: close
-  - device_id: c0238df3821a546d59533f8cea51734b
-    domain: cover
-    entity_id: cover.ikea_rollo_fensterbank_rechts_wohnzimmer
-    type: close
-  mode: single
 - id: '1684923867295'
   alias: Taster Futterautomat Füttern
   description: ''
@@ -1215,13 +1177,13 @@
   trigger:
   - platform: state
     entity_id:
-    - sensor.macs_camera_on
+    - binary_sensor.macbook_camera_in_use
     from: 'false'
     to: 'true'
     id: macCameraOn
   - platform: state
     entity_id:
-    - sensor.macs_camera_on
+    - binary_sensor.macbook_camera_in_use
     from: 'true'
     to: 'false'
     id: macCameraOff
@@ -1926,4 +1888,82 @@
       entity_id:
       - light.awtrix_buro_matrix
       - light.awtrix_wohnzimmer_matrix
+  mode: single
+- id: '1694417280204'
+  alias: IKEA Rollos Wohnzimmer Taster
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.ikea_taster_rollos_wohnzimmer_action
+    to: open
+    id: ikeaWohnzimmerOpen
+  - platform: state
+    entity_id:
+    - sensor.ikea_taster_rollos_wohnzimmer_action
+    to: close
+    id: ikeaWohnzimmerClose
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - ikeaWohnzimmerOpen
+      sequence:
+      - service: cover.open_cover
+        data: {}
+        target:
+          entity_id:
+          - cover.ikea_rollo_fensterbank_rechts_wohnzimmer
+          - cover.ikea_rollo_fensterbank_links_wohnzimmer
+    - conditions:
+      - condition: trigger
+        id:
+        - ikeaWohnzimmerClose
+      sequence:
+      - service: cover.close_cover
+        data: {}
+        target:
+          entity_id:
+          - cover.ikea_rollo_fensterbank_links_wohnzimmer
+          - cover.ikea_rollo_fensterbank_rechts_wohnzimmer
+  mode: single
+- id: '1694421387828'
+  alias: Gewicht Motivation
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.withings_weight_kg_florian
+    id: weightChangeFlorian
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id:
+          - weightChangeFlorian
+        - condition: numeric_state
+          entity_id: sensor.withings_weight_kg_florian
+          above: 95
+      sequence:
+      - service: notify.alexa_media_florians_4_echo_dot
+        data:
+          message: Oh je! Du solltest was gegen dein Gewicht machen.
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id:
+          - weightChangeFlorian
+        - condition: numeric_state
+          entity_id: sensor.withings_weight_kg_florian
+          below: 95
+      sequence:
+      - service: notify.alexa_media_florians_4_echo_dot
+        data:
+          message: Oh je! Du solltest was gegen dein Gewicht machen.
   mode: single

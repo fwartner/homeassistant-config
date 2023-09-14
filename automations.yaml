@@ -1667,7 +1667,7 @@
   trigger:
   - platform: state
     entity_id:
-    - sensor.iphone_ssid
+    - sensor.florians_iphone_ssid
     to: Florians Homebase
     id: iphoneWLANOn
   condition: []

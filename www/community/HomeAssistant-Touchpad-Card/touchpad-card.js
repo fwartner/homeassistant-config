@@ -393,7 +393,7 @@ touchpad (){
           }
           break;
         case 'dblclick':
-          if (act.source === 'touchpad')
+          if (act.src === 'touchpad')
             if(this._hass.entities[this.config[this._current_entity].entity].platform.includes('samsungtv_smart'))
               this._hass.callService('media_player','play_media',{media_content_id: 'KEY_RETURN',media_content_type: 'send_key'},{entity_id: this.config[this._current_entity].entity});
             else
@@ -563,7 +563,7 @@ class ContentCardEditor extends s {
   constructor (){
     super();
     this.updateIt();
-    this.tabs = { power: false, source: false, mute: false, otherIcon: false, settings: true, icon: false, click: false, dblclick: false, hold: false, volume: false, channel: false };
+    this.tabs = { power: false, source: false, mute: false, otherIcon: false, touchpad: false, settings: true, icon: false, click: false, dblclick: false, hold: false, volume: false, channel: false };
     this.entityTabs = {};
     this.newEnt = true;
     this.moveHint = true;
@@ -606,7 +606,8 @@ class ContentCardEditor extends s {
             <div class="power tab ${this.tabs.power ? 'selected' : ''}" @click="${()=>{this.changeTab('power')}}"><ha-icon icon="mdi:power"></ha-icon></div>
             <div class="source tab ${this.tabs.source ? 'selected' : ''}" @click="${()=>{this.changeTab('source')}}"><ha-icon icon="mdi:logout-variant"></ha-icon></div>
             <div class="mute tab ${this.tabs.mute ? 'selected' : ''}" @click="${()=>{this.changeTab('mute')}}"><ha-icon icon="mdi:volume-mute"></ha-icon></div>
-            <div class="otherIcon tab ${this.tabs.otherIcon ? 'selected' : ''}" @click="${()=>{this.changeTab('otherIcon')}}"><ha-icon icon="mdi:plus-minus-variant"></ha-icon></div>
+            <div class="otherIcon tab ${this.tabs.otherIcon ? 'selected' : ''}" @click="${() => { this.changeTab('otherIcon') }}"><ha-icon icon="mdi:plus-minus-variant"></ha-icon></div>
+            <div class="touchpad tab ${this.tabs.touchpad ? 'selected' : ''}" @click="${()=>{this.changeTab('touchpad')}}"><ha-icon icon="mdi:gesture-tap"></ha-icon></div>
             <div class="settings tab ${this.tabs.settings ? 'selected' : ''}" @click="${()=>{this.changeTab('settings')}}"><ha-icon icon="mdi:tune"></ha-icon></div>
           </div>
           <div class="sub-tabs">
@@ -635,8 +636,22 @@ class ContentCardEditor extends s {
         <div class="content">
           ${this.putUpConfig()}
         </div>`;
-    if(Object.keys(this.tabs).filter(e => this.tabs[e] === true)[0] !== 'otherIcon')
-      return normalCase;
+
+    let touchpad =  y`
+        <div class="sub-tabs-row ${this.tabs.settings ? 'hide' : 'show'}" >
+          <div class="click tab ${this.tabs.click ? 'sub-selected' : ''}" @click="${()=>{this.changeTab('click')}}">Click</div>
+          <div class="dblclick tab ${this.tabs.dblclick ? 'sub-selected' : ''}" @click="${()=>{this.changeTab('dblclick')}}">Double click</div>
+          <div class="hold tab ${this.tabs.hold ? 'sub-selected' : ''}" @click="${()=>{this.changeTab('hold')}}">Hold</div>
+        </div>
+        <div class="content">
+          ${this.putUpConfig()}
+        </div>`;
+
+    if (Object.keys(this.tabs).filter(e => this.tabs[e] === true)[0] !== 'otherIcon')
+      if (Object.keys(this.tabs).filter(e => this.tabs[e] === true)[0] == 'touchpad')
+        return touchpad;
+      else
+        return normalCase;
     else
       return otherIcon;
   }
@@ -711,8 +726,8 @@ clickConfig(a,double=false){
 
 dblclickConfig(a){
     let directSelector = y`
-      <ha-select id="dblclick-service-selector" allow-custom-value .value="${ this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[a].dblclick.type === 'no-action' ? 'no-action' : this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[a].dblclick.entity }" label="What to do on ${a} double click" @selected="${this.updateIt }" @closed="${ev => ev.stopPropagation()}"  >
-        <mwc-list-item .value="${'no-action'}">Nothing</mwc-list-item>
+      <ha-select id="dblclick-service-selector" allow-custom-value .value="${ this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[a].dblclick.type.match(/default|no-action/) ? a === 'touchpad' ? 'default' : 'no-action' : this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[a].dblclick.entity }" label="What to do on ${a} double click" @selected="${this.updateIt }" @closed="${ev => ev.stopPropagation()}"  >
+        <mwc-list-item .value="${a === 'touchpad' ? 'default' : 'no-action'}">${a === 'touchpad' ? 'Default' : 'Nothing'}</mwc-list-item>
         <mwc-list-item .value="${'toggle'}"> Toggle</mwc-list-item>
         <mwc-list-item .value="${'turn-on'}"> Turn on</mwc-list-item>
         <mwc-list-item .value="${'turn-off'}"> Turn off</mwc-list-item>
@@ -723,7 +738,7 @@ dblclickConfig(a){
 
     let advancedSelector = y `
       <ha-select id="dblclick-service-selector"  .value="${ this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[a].dblclick.type }" label="What to do on ${a} double click" @selected="${this.updateIt }" @closed="${ev => ev.stopPropagation()}"  >
-        <mwc-list-item .value="${'no-action'}">Nothing</mwc-list-item>
+        <mwc-list-item .value="${a === 'touchpad' ? 'default' : 'no-action'}">${a === 'touchpad' ? 'Default' : 'Nothing'}</mwc-list-item>
         <mwc-list-item .value="${'toggle'}"> Toggle</mwc-list-item>
         <mwc-list-item .value="${'turn-on'}"> Turn on</mwc-list-item>
         <mwc-list-item .value="${'turn-off'}"> Turn off</mwc-list-item>
@@ -745,8 +760,8 @@ dblclickConfig(a){
   }
 holdConfig(a){
     let directSelector = y`
-      <ha-select id="hold-service-selector"  .value="${ this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[a].hold.type === 'no-action' ? 'no-action' : this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[a].hold.entity }" label="What to do on ${a} hold" @selected="${this.updateIt }" @closed="${ev => ev.stopPropagation()}"  >
-        <mwc-list-item .value="${'no-action'}">Nothing</mwc-list-item>
+      <ha-select id="hold-service-selector"  .value="${ this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[a].hold.type.match(/default|no-action/) ? a === 'touchpad' ? 'default' : 'no-action' : this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[a].hold.entity }" label="What to do on ${a} hold" @selected="${this.updateIt }" @closed="${ev => ev.stopPropagation()}"  >
+        <mwc-list-item .value="${a === 'touchpad' ? 'default' : 'no-action'}">${a === 'touchpad' ? 'Default' : 'Nothing'}</mwc-list-item>
         <mwc-list-item .value="${'toggle'}"> Toggle</mwc-list-item>
         <mwc-list-item .value="${'turn-on'}"> Turn on</mwc-list-item>
         <mwc-list-item .value="${'turn-off'}"> Turn off</mwc-list-item>
@@ -757,7 +772,7 @@ holdConfig(a){
 
     let advancedSelector = y `
       <ha-select id="hold-service-selector"  .value="${ this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[a].hold.type }" label="What to do on ${a} hold" @selected="${this.updateIt }" @closed="${ev => ev.stopPropagation()}"  >
-        <mwc-list-item .value="${'no-action'}">Nothing</mwc-list-item>
+        <mwc-list-item .value="${a === 'touchpad' ? 'default' : 'no-action'}">${a === 'touchpad' ? 'Default' : 'Nothing'}</mwc-list-item>
         <mwc-list-item .value="${'toggle'}"> Toggle</mwc-list-item>
         <mwc-list-item .value="${'turn-on'}"> Turn on</mwc-list-item>
         <mwc-list-item .value="${'turn-off'}"> Turn off</mwc-list-item>
@@ -787,13 +802,13 @@ generalConfig() {
     }
   }
 changeTab(e) {
-    if(Object.keys(this.tabs).filter(e => this.tabs[e] == true)[0].match(/power|source|mute/) )
+    if(Object.keys(this.tabs).filter(e => this.tabs[e] == true)[0].match(/power|source|mute|touchpad/) )
       if(Object.keys(this.tabs).filter(e => this.tabs[e] == true)[1].match(/click|dblclick|hold/))
         if(this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[Object.keys(this.tabs).filter(e => this.tabs[e] == true)[0]][Object.keys(this.tabs).filter(e => this.tabs[e] == true)[1]].type.match(/toggle|turn-on|turn-off/) && this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[Object.keys(this.tabs).filter(e => this.tabs[e] == true)[0]][Object.keys(this.tabs).filter(e => this.tabs[e] == true)[1]].entity === null)
           this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[Object.keys(this.tabs).filter(e => this.tabs[e] == true)[0]][Object.keys(this.tabs).filter(e => this.tabs[e] == true)[1]].type = 'no-action';
     if(e.match(/^(click|dblclick|hold|icon|volume|channel)$/))
         Object.keys(this.tabs).filter(val => val.match(/^(click|dblclick|hold|icon|volume|channel)$/)).forEach(va => this.tabs[va] = false);
-      else if (e.match(/^(power|mute|source|otherIcon|settings)$/)){
+      else if (e.match(/^(power|mute|source|otherIcon|touchpad|settings)$/)){
         Object.keys(this.tabs).forEach(e => this.tabs[e] = false);
         if(e != 'settings' )
           if(e === 'otherIcon')
@@ -1055,9 +1070,8 @@ updateIt(e, ha = this.hass) {
         if(e?.target.id === 'click-service-selector')
           if(e.target.value.match(/toggle|turn-on|turn-off|default/)){
             this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[Object.keys(this.tabs).filter(e => this.tabs[e] === true)[0]].click.type = e.target.value;
-            if(e.target.value === 'default'){
-              this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[Object.keys(this.tabs).filter(e => this.tabs[e] === true)[0]].click.type = 'default';
-              this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[Object.keys(this.tabs).filter(e => this.tabs[e] === true)[0]].click.entity = null;}
+            if(e.target.value === 'default')
+              this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[Object.keys(this.tabs).filter(e => this.tabs[e] === true)[0]].click.entity = null;
             this.putUpConfig();
             this.requestUpdate();
           }
@@ -1073,11 +1087,10 @@ updateIt(e, ha = this.hass) {
       if(e?.target.id === 'hold-service-selector' || e?.target.id === 'hold-entity-selector'){
         if(this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[Object.keys(this.tabs).filter(e => this.tabs[e] === true)[0]].hold.type !== e.target.value || this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[Object.keys(this.tabs).filter(e => this.tabs[e] === true)[0]].hold.entity !== e.target.value)
           if(e?.target.id === 'hold-service-selector')
-            if(e.target.value.match(/toggle|turn-on|turn-off|no-action/)){
+            if(e.target.value.match(/toggle|turn-on|turn-off|no-action|default/)){
               this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[Object.keys(this.tabs).filter(e => this.tabs[e] === true)[0]].hold.type = e.target.value;
-              if(e.target.value === 'no-action'){
-                this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[Object.keys(this.tabs).filter(e => this.tabs[e] === true)[0]].hold.type = 'no-action';
-                this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[Object.keys(this.tabs).filter(e => this.tabs[e] === true)[0]].hold.entity = null;}
+              if(e.target.value.match(/no-action|default/))
+                this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[Object.keys(this.tabs).filter(e => this.tabs[e] === true)[0]].hold.entity = null;
               this.putUpConfig();
               this.requestUpdate();
             }
@@ -1093,9 +1106,9 @@ updateIt(e, ha = this.hass) {
       if(e?.target.id === 'dblclick-service-selector' || e?.target.id === 'dblclick-entity-selector'){
         if(this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[Object.keys(this.tabs).filter(e => this.tabs[e] === true)[0]].dblclick.type != e.target.value || this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[Object.keys(this.tabs).filter(e => this.tabs[e] === true)[0]].dblclick.entity !== e.target.value)
           if(e?.target.id === 'dblclick-service-selector')
-            if(e.target.value.match(/toggle|turn-on|turn-off|no-action/)){
+            if(e.target.value.match(/toggle|turn-on|turn-off|no-action|default/)){
               this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[Object.keys(this.tabs).filter(e => this.tabs[e] === true)[0]].dblclick.type = e.target.value;
-              if(e.target.value === 'no-action')
+              if(e.target.value.match(/no-action|default/))
                 this._config[Object.keys(this.entityTabs).filter(e => this.entityTabs[e] === true)].actions[Object.keys(this.tabs).filter(e => this.tabs[e] === true)[0]].dblclick.entity = null;
               this.putUpConfig();
               this.requestUpdate();

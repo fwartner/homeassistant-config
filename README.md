@@ -165,6 +165,7 @@ Number of binary sensors | 157
 - [Layout Card](https://github.com/thomasloven/lovelace-layout-card)
 - [Light Entity Card](https://github.com/ljmerza/light-entity-card)
 - [Light Popup Card (Homekit Style)](https://github.com/DBuit/light-popup-card)
+- [Logbook Card](https://github.com/royto/logbook-card)
 - [Lovelace Card Templater](https://github.com/gadgetchnnel/lovelace-card-templater)
 - [Lovelace Grocy Chores Card](https://github.com/isabellaalstrom/lovelace-grocy-chores-card)
 - [Lovelace Home Feed Card](https://github.com/gadgetchnnel/lovelace-home-feed-card)

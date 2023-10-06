@@ -7,6 +7,7 @@ from operator import itemgetter
 
 from homeassistant.const import CONF_ENABLED, CONF_NAME
 from homeassistant.helpers import entity_platform
+from homeassistant.helpers.entity import async_generate_entity_id
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.util import dt
 from requests.exceptions import HTTPError
@@ -37,10 +38,10 @@ from .const import (
     CONF_ACCOUNT_NAME,
     CONF_AUTO_REPLY_SENSORS,
     CONF_CHAT_SENSORS,
-    CONF_CONFIG_TYPE,
     CONF_EMAIL_SENSORS,
     CONF_ENABLE_UPDATE,
     CONF_MAIL_FOLDER,
+    CONF_PERMISSIONS,
     CONF_QUERY_SENSORS,
     CONF_STATUS_SENSORS,
     CONF_TASK_LIST_ID,
@@ -56,6 +57,7 @@ from .const import (
     PERM_MINIMUM_MAILBOX_SETTINGS,
     PERM_MINIMUM_TASKS_WRITE,
     SENSOR_AUTO_REPLY,
+    SENSOR_ENTITY_ID_FORMAT,
     SENSOR_MAIL,
     SENSOR_TEAMS_CHAT,
     SENSOR_TEAMS_STATUS,
@@ -74,13 +76,11 @@ from .schema import (
 )
 from .utils.filemgmt import (
     build_config_file_path,
-    build_token_filename,
     build_yaml_filename,
     load_yaml_file,
     update_task_list_file,
 )
-from .utils.permissions import get_permissions, validate_minimum_permission
-from .utils.utils import build_entity_id, get_email_attributes
+from .utils.utils import get_email_attributes
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -162,7 +162,7 @@ class O365SensorCordinator(DataUpdateCoordinator):
             if mail_folder := await self._async_get_mail_folder(
                 sensor_conf, CONF_EMAIL_SENSORS
             ):
-                entity_id = build_entity_id(self.hass, name)
+                entity_id = self._build_entity_id(name)
                 unique_id = f"{mail_folder.folder_id}_{self._account_name}"
                 emailsensor = O365EmailSensor(
                     self,
@@ -189,7 +189,7 @@ class O365SensorCordinator(DataUpdateCoordinator):
                 sensor_conf, CONF_QUERY_SENSORS
             ):
                 name = sensor_conf.get(CONF_NAME)
-                entity_id = build_entity_id(self.hass, name)
+                entity_id = self._build_entity_id(name)
                 unique_id = f"{mail_folder.folder_id}_{self._account_name}"
                 querysensor = O365QuerySensor(
                     self,
@@ -208,7 +208,7 @@ class O365SensorCordinator(DataUpdateCoordinator):
         entities = []
         for sensor_conf in status_sensors:
             name = sensor_conf.get(CONF_NAME)
-            entity_id = build_entity_id(self.hass, name)
+            entity_id = self._build_entity_id(name)
             unique_id = f"{name}_{self._account_name}"
             teams_status_sensor = O365TeamsStatusSensor(
                 self, self._account, name, entity_id, self._config, unique_id
@@ -222,7 +222,7 @@ class O365SensorCordinator(DataUpdateCoordinator):
         for sensor_conf in chat_sensors:
             name = sensor_conf.get(CONF_NAME)
             enable_update = sensor_conf.get(CONF_ENABLE_UPDATE)
-            entity_id = build_entity_id(self.hass, name)
+            entity_id = self._build_entity_id(name)
             unique_id = f"{name}_{self._account_name}"
             teams_chat_sensor = O365TeamsChatSensor(
                 self,
@@ -275,7 +275,7 @@ class O365SensorCordinator(DataUpdateCoordinator):
                         )
                     )
                 )
-                entity_id = build_entity_id(self.hass, name)
+                entity_id = self._build_entity_id(name)
                 unique_id = f"{task_list_id}_{self._account_name}"
                 todo_sensor = O365TasksSensor(
                     self, todo, name, task, config, entity_id, unique_id
@@ -294,7 +294,7 @@ class O365SensorCordinator(DataUpdateCoordinator):
         entities = []
         for sensor_conf in auto_reply_sensors:
             name = sensor_conf.get(CONF_NAME)
-            entity_id = build_entity_id(self.hass, name)
+            entity_id = self._build_entity_id(name)
             unique_id = f"{name}_{self._account_name}"
             auto_reply_sensor = O365AutoReplySensor(
                 self, name, entity_id, self._config, unique_id
@@ -521,6 +521,14 @@ class O365SensorCordinator(DataUpdateCoordinator):
                 ATTR_AUTOREPLIESSETTINGS: data.automaticrepliessettings,
             }
 
+    def _build_entity_id(self, name):
+        """Build and entity ID."""
+        return async_generate_entity_id(
+            SENSOR_ENTITY_ID_FORMAT,
+            name,
+            hass=self.hass,
+        )
+
     def _raise_event(self, event_type, task_id, time_type, task_datetime):
         self.hass.bus.fire(
             f"{DOMAIN}_{event_type}",
@@ -530,12 +538,13 @@ class O365SensorCordinator(DataUpdateCoordinator):
 
 
 async def _async_setup_register_services(hass, config):
-    await _async_setup_task_services(hass, config)
-    await _async_setup_chat_services(hass, config)
-    await _async_setup_mailbox_services(hass, config)
+    perms = config[CONF_PERMISSIONS]
+    await _async_setup_task_services(hass, config, perms)
+    await _async_setup_chat_services(config, perms)
+    await _async_setup_mailbox_services(config, perms)
 
 
-async def _async_setup_task_services(hass, config):
+async def _async_setup_task_services(hass, config, perms):
     todo_sensors = config.get(CONF_TODO_SENSORS)
     if (
         not todo_sensors
@@ -549,12 +558,8 @@ async def _async_setup_task_services(hass, config):
         DOMAIN, "scan_for_task_lists", sensor_services.async_scan_for_task_lists
     )
 
-    permissions = get_permissions(
-        hass,
-        filename=build_token_filename(config, config.get(CONF_CONFIG_TYPE)),
-    )
     platform = entity_platform.async_get_current_platform()
-    if validate_minimum_permission(PERM_MINIMUM_TASKS_WRITE, permissions):
+    if perms.validate_minimum_permission(PERM_MINIMUM_TASKS_WRITE):
         platform.async_register_entity_service(
             "new_task",
             TASK_SERVICE_NEW_SCHEMA,
@@ -577,7 +582,7 @@ async def _async_setup_task_services(hass, config):
         )
 
 
-async def _async_setup_chat_services(hass, config):
+async def _async_setup_chat_services(config, perms):
     chat_sensors = config.get(CONF_CHAT_SENSORS)
     if not chat_sensors:
         return
@@ -585,12 +590,8 @@ async def _async_setup_chat_services(hass, config):
     if not chat_sensor or not chat_sensor.get(CONF_ENABLE_UPDATE):
         return
 
-    permissions = get_permissions(
-        hass,
-        filename=build_token_filename(config, config.get(CONF_CONFIG_TYPE)),
-    )
     platform = entity_platform.async_get_current_platform()
-    if validate_minimum_permission(PERM_MINIMUM_CHAT_WRITE, permissions):
+    if perms.validate_minimum_permission(PERM_MINIMUM_CHAT_WRITE):
         platform.async_register_entity_service(
             "send_chat_message",
             CHAT_SERVICE_SEND_MESSAGE_SCHEMA,
@@ -598,19 +599,15 @@ async def _async_setup_chat_services(hass, config):
         )
 
 
-async def _async_setup_mailbox_services(hass, config):
+async def _async_setup_mailbox_services(config, perms):
     if not config.get(CONF_ENABLE_UPDATE):
         return
 
     if not config.get(CONF_AUTO_REPLY_SENSORS):
         return
 
-    permissions = get_permissions(
-        hass,
-        filename=build_token_filename(config, config.get(CONF_CONFIG_TYPE)),
-    )
     platform = entity_platform.async_get_current_platform()
-    if validate_minimum_permission(PERM_MINIMUM_MAILBOX_SETTINGS, permissions):
+    if perms.validate_minimum_permission(PERM_MINIMUM_MAILBOX_SETTINGS):
         platform.async_register_entity_service(
             "auto_reply_enable",
             AUTO_REPLY_SERVICE_ENABLE_SCHEMA,
@@ -642,7 +639,7 @@ class SensorServices:
                 track = todo_sensor.get(CONF_TRACK_NEW)
                 for todo in todolists:
                     update_task_list_file(
-                        build_yaml_filename(config, YAML_TASK_LISTS),
+                        config,
                         todo,
                         self._hass,
                         track,

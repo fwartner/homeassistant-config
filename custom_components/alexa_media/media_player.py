@@ -45,6 +45,7 @@ from homeassistant.const import (
     STATE_STANDBY,
     STATE_UNAVAILABLE,
 )
+from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.discovery import async_load_platform
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
@@ -98,12 +99,29 @@ _LOGGER = logging.getLogger(__name__)
 DEPENDENCIES = [ALEXA_DOMAIN]
 
 
+async def create_www_directory(hass: HomeAssistant):
+    """Create www directory."""
+    paths = [
+        hass.config.path("www"),  # http://homeassistant.local:8123/local
+        hass.config.path(
+            UPLOAD_PATH
+        ),  # http://homeassistant.local:8123/local/alexa_tts
+    ]
+
+    def mkdir() -> None:
+        """Create a directory."""
+        for path in paths:
+            if not os.path.exists(path):
+                _LOGGER.debug("Creating directory: %s", path)
+                os.makedirs(path, exist_ok=True)
+
+    await hass.async_add_executor_job(mkdir)
+
+
 # @retry_async(limit=5, delay=2, catch_exceptions=True)
 async def async_setup_platform(hass, config, add_devices_callback, discovery_info=None):
     """Set up the Alexa media player platform."""
-    upload_path = hass.config.path(UPLOAD_PATH)
-    if not os.path.exists(upload_path):
-        os.mkdir(upload_path)
+    await create_www_directory(hass)
 
     devices = []  # type: List[AlexaClient]
     account = None
@@ -414,7 +432,7 @@ class AlexaClient(MediaPlayerDevice, AlexaMedia):
             if self.hass and self.async_schedule_update_ha_state:
                 email = self._login.email
                 force_refresh = not (
-                    self.hass.data[DATA_ALEXAMEDIA]["accounts"][email]["websocket"]
+                    self.hass.data[DATA_ALEXAMEDIA]["accounts"][email]["http2"]
                 )
                 self.async_schedule_update_ha_state(force_refresh=force_refresh)
         elif "bluetooth_change" in event:
@@ -763,7 +781,7 @@ class AlexaClient(MediaPlayerDevice, AlexaMedia):
                         await self.alexa_api.set_bluetooth(devices["address"])
                     self._source = source
         if not (
-            self.hass.data[DATA_ALEXAMEDIA]["accounts"][self._login.email]["websocket"]
+            self.hass.data[DATA_ALEXAMEDIA]["accounts"][self._login.email]["http2"]
         ):
             await self.async_update()
 
@@ -930,15 +948,15 @@ class AlexaClient(MediaPlayerDevice, AlexaMedia):
         await self.refresh(  # pylint: disable=unexpected-keyword-arg
             device, no_throttle=True
         )
-        websocket_enabled = (
-            self.hass.data[DATA_ALEXAMEDIA]["accounts"].get(email, {}).get("websocket")
+        push_enabled = (
+            self.hass.data[DATA_ALEXAMEDIA]["accounts"].get(email, {}).get("http2")
         )
         if (
             self.state in [STATE_PLAYING]
             and
             #  only enable polling if websocket not connected
             (
-                not websocket_enabled
+                not push_enabled
                 or not seen_commands
                 or not (
                     "PUSH_AUDIO_PLAYER_STATE" in seen_commands
@@ -963,11 +981,11 @@ class AlexaClient(MediaPlayerDevice, AlexaMedia):
                 async_call_later(
                     self.hass,
                     PLAY_SCAN_INTERVAL,
-                    lambda _: self.async_schedule_update_ha_state(force_refresh=True),
+                    self.async_schedule_update_ha_state,
                 )
         elif self._should_poll:  # Not playing, one last poll
             self._should_poll = False
-            if not websocket_enabled:
+            if not push_enabled:
                 _LOGGER.debug(
                     "%s: Disabling polling and scheduling last update in"
                     " 300 seconds for %s",
@@ -977,7 +995,7 @@ class AlexaClient(MediaPlayerDevice, AlexaMedia):
                 async_call_later(
                     self.hass,
                     300,
-                    lambda _: self.async_schedule_update_ha_state(force_refresh=True),
+                    self.async_schedule_update_ha_state,
                 )
             else:
                 _LOGGER.debug(
@@ -1100,7 +1118,7 @@ class AlexaClient(MediaPlayerDevice, AlexaMedia):
             await self.alexa_api.set_volume(volume)
         self._media_vol_level = volume
         if not (
-            self.hass.data[DATA_ALEXAMEDIA]["accounts"][self._login.email]["websocket"]
+            self.hass.data[DATA_ALEXAMEDIA]["accounts"][self._login.email]["http2"]
         ):
             await self.async_update()
 
@@ -1148,7 +1166,7 @@ class AlexaClient(MediaPlayerDevice, AlexaMedia):
                 else:
                     await self.alexa_api.set_volume(50)
         if not (
-            self.hass.data[DATA_ALEXAMEDIA]["accounts"][self._login.email]["websocket"]
+            self.hass.data[DATA_ALEXAMEDIA]["accounts"][self._login.email]["http2"]
         ):
             await self.async_update()
 
@@ -1165,7 +1183,7 @@ class AlexaClient(MediaPlayerDevice, AlexaMedia):
             else:
                 await self.alexa_api.play()
         if not (
-            self.hass.data[DATA_ALEXAMEDIA]["accounts"][self._login.email]["websocket"]
+            self.hass.data[DATA_ALEXAMEDIA]["accounts"][self._login.email]["http2"]
         ):
             await self.async_update()
 
@@ -1182,7 +1200,7 @@ class AlexaClient(MediaPlayerDevice, AlexaMedia):
             else:
                 await self.alexa_api.pause()
         if not (
-            self.hass.data[DATA_ALEXAMEDIA]["accounts"][self._login.email]["websocket"]
+            self.hass.data[DATA_ALEXAMEDIA]["accounts"][self._login.email]["http2"]
         ):
             await self.async_update()
 
@@ -1211,7 +1229,7 @@ class AlexaClient(MediaPlayerDevice, AlexaMedia):
                     ][CONF_QUEUE_DELAY],
                 )
         if not (
-            self.hass.data[DATA_ALEXAMEDIA]["accounts"][self._login.email]["websocket"]
+            self.hass.data[DATA_ALEXAMEDIA]["accounts"][self._login.email]["http2"]
         ):
             await self.async_update()
 
@@ -1249,7 +1267,7 @@ class AlexaClient(MediaPlayerDevice, AlexaMedia):
             else:
                 await self.alexa_api.next()
         if not (
-            self.hass.data[DATA_ALEXAMEDIA]["accounts"][self._login.email]["websocket"]
+            self.hass.data[DATA_ALEXAMEDIA]["accounts"][self._login.email]["http2"]
         ):
             await self.async_update()
 
@@ -1266,7 +1284,7 @@ class AlexaClient(MediaPlayerDevice, AlexaMedia):
             else:
                 await self.alexa_api.previous()
         if not (
-            self.hass.data[DATA_ALEXAMEDIA]["accounts"][self._login.email]["websocket"]
+            self.hass.data[DATA_ALEXAMEDIA]["accounts"][self._login.email]["http2"]
         ):
             await self.async_update()
 
@@ -1567,7 +1585,7 @@ class AlexaClient(MediaPlayerDevice, AlexaMedia):
                     **kwargs,
                 )
         if not (
-            self.hass.data[DATA_ALEXAMEDIA]["accounts"][self._login.email]["websocket"]
+            self.hass.data[DATA_ALEXAMEDIA]["accounts"][self._login.email]["http2"]
         ):
             await self.async_update()
 

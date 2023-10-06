@@ -11,6 +11,7 @@ from homeassistant.helpers.issue_registry import IssueSeverity, async_create_iss
 from O365 import Account, FileSystemTokenBackend
 from oauthlib.oauth2.rfc6749.errors import InvalidClientError
 
+from .classes.permissions import Permissions
 from .const import (
     CONF_ACCOUNT,
     CONF_ACCOUNT_CONF,
@@ -32,21 +33,16 @@ from .const import (
     CONST_CONFIG_TYPE_LIST,
     CONST_PRIMARY,
     CONST_UTC_TIMEZONE,
-    DEFAULT_CACHE_PATH,
     DOMAIN,
     LEGACY_ACCOUNT_NAME,
+    O365_STORAGE_TOKEN,
     TOKEN_FILE_MISSING,
     TOKEN_FILENAME,
     YAML_CALENDARS,
 )
 from .schema import LEGACY_SCHEMA, MULTI_ACCOUNT_SCHEMA
 from .setup import do_setup
-from .utils.filemgmt import (
-    build_config_file_path,
-    build_token_filename,
-    check_file_location,
-)
-from .utils.permissions import build_minimum_permissions, validate_permissions
+from .utils.filemgmt import build_config_file_path
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -73,7 +69,7 @@ async def _async_legacy_migration_repair(hass):
     url = "https://rogerselwyn.github.io/O365-HomeAssistant/legacy_migration.html"
     message = (
         "Secondary/Legacy configuration method is now deprecated and will be "
-        + "removed in a future release. Please migrate to the Primary configuration "
+        + "removed in first release in 2024. Please migrate to the Primary configuration "
         + "method documented here - "
         + f"{url}"
     )
@@ -92,6 +88,7 @@ async def _async_legacy_migration_repair(hass):
 
 
 def _write_out_config(hass, accounts):
+    """Remove when legacy is removed in first release 2024."""
     yaml_filepath = build_config_file_path(hass, "o365_converted_configuration.yaml")
     account_name = LEGACY_ACCOUNT_NAME
     account = copy.deepcopy(accounts[0])
@@ -136,12 +133,12 @@ async def _async_setup_account(hass, account_conf, conf_type):
     if not _validate_shared_schema(account_name, main_resource, account_conf):
         return
 
-    token_path = build_config_file_path(hass, DEFAULT_CACHE_PATH)
-    token_file = build_token_filename(account_conf, conf_type)
-    check_file_location(hass, DEFAULT_CACHE_PATH, token_path)
+    perms = Permissions(hass, account_conf, conf_type)
     token_backend = await hass.async_add_executor_job(
         ft.partial(
-            FileSystemTokenBackend, token_path=token_path, token_filename=token_file
+            FileSystemTokenBackend,
+            token_path=perms.token_path,
+            token_filename=perms.token_filename,
         )
     )
     account = await hass.async_add_executor_job(
@@ -154,15 +151,13 @@ async def _async_setup_account(hass, account_conf, conf_type):
         )
     )
     is_authenticated = account.is_authenticated
-    minimum_permissions = build_minimum_permissions(hass, account_conf, conf_type)
-    permissions, failed_permissions = validate_permissions(
-        hass, minimum_permissions, filename=token_file
-    )
+
+    permissions, failed_permissions = perms.validate_permissions()
     check_token = None
     if is_authenticated and permissions and permissions != TOKEN_FILE_MISSING:
         check_token = await _async_check_token(hass, account, account_name)
         if check_token:
-            do_setup(hass, account_conf, account, account_name, conf_type)
+            do_setup(hass, account_conf, account, account_name, conf_type, perms)
     else:
         await _async_authorization_repair(
             hass,
@@ -224,8 +219,8 @@ def _validate_shared_schema(account_name, main_account, config):
 def _copy_token_file(hass, account_name):
     old_file = TOKEN_FILENAME.format("")
     new_file = TOKEN_FILENAME.format(f"_{account_name}")
-    old_filepath = build_config_file_path(hass, f"{DEFAULT_CACHE_PATH}/{old_file}")
-    new_filepath = build_config_file_path(hass, f"{DEFAULT_CACHE_PATH}/{new_file}")
+    old_filepath = build_config_file_path(hass, f"{O365_STORAGE_TOKEN}/{old_file}")
+    new_filepath = build_config_file_path(hass, f"{O365_STORAGE_TOKEN}/{new_file}")
     if os.path.exists(old_filepath):
         shutil.copy(src=old_filepath, dst=new_filepath)
 

@@ -45,6 +45,7 @@ from .const import (
     CONF_HOURS_BACKWARD_TO_GET,
     CONF_HOURS_FORWARD_TO_GET,
     CONF_MAX_RESULTS,
+    CONF_PERMISSIONS,
     CONF_SEARCH,
     CONF_TRACK,
     CONF_TRACK_NEW_CALENDAR,
@@ -71,23 +72,20 @@ from .schema import (
     CALENDAR_SERVICE_REMOVE_SCHEMA,
     CALENDAR_SERVICE_RESPOND_SCHEMA,
 )
-from .utils.filemgmt import (
-    build_config_file_path,
-    build_token_filename,
-    build_yaml_filename,
-    check_file_location,
-    load_yaml_file,
-    update_calendar_file,
-)
-from .utils.permissions import get_permissions, validate_minimum_permission
-from .utils.utils import (
+from .utils.calendar_utils import (
     add_call_data_to_event,
-    clean_html,
     format_event_data,
     get_end_date,
     get_hass_date,
     get_start_date,
 )
+from .utils.filemgmt import (
+    build_config_file_path,
+    build_yaml_filename,
+    load_yaml_file,
+    update_calendar_file,
+)
+from .utils.utils import clean_html
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -105,13 +103,11 @@ async def async_setup_platform(
     if not account.is_authenticated:
         return False
 
-    permissions = get_permissions(
-        hass,
-        filename=build_token_filename(conf, conf.get(CONF_CONFIG_TYPE)),
-    )
     update_supported = bool(
         conf[CONF_ENABLE_UPDATE]
-        and validate_minimum_permission(PERM_MINIMUM_CALENDAR_WRITE, permissions)
+        and conf[CONF_PERMISSIONS].validate_minimum_permission(
+            PERM_MINIMUM_CALENDAR_WRITE
+        )
     )
     cal_ids = _setup_add_entities(hass, account, add_entities, conf, update_supported)
     hass.data[DOMAIN][account_name][CONF_CAL_IDS] = cal_ids
@@ -123,7 +119,6 @@ async def async_setup_platform(
 def _setup_add_entities(hass, account, add_entities, conf, update_supported):
     yaml_filename = build_yaml_filename(conf, YAML_CALENDARS)
     yaml_filepath = build_config_file_path(hass, yaml_filename)
-    check_file_location(hass, yaml_filename, yaml_filepath)
     calendars = load_yaml_file(yaml_filepath, CONF_CAL_ID, CALENDAR_DEVICE_SCHEMA)
     cal_ids = {}
 
@@ -184,22 +179,22 @@ async def _async_setup_register_services(hass, update_supported):
         platform.async_register_entity_service(
             "create_calendar_event",
             CALENDAR_SERVICE_CREATE_SCHEMA,
-            "create_calendar_event",
+            "async_create_calendar_event",
         )
         platform.async_register_entity_service(
             "modify_calendar_event",
             CALENDAR_SERVICE_MODIFY_SCHEMA,
-            "modify_calendar_event",
+            "async_modify_calendar_event",
         )
         platform.async_register_entity_service(
             "remove_calendar_event",
             CALENDAR_SERVICE_REMOVE_SCHEMA,
-            "remove_calendar_event",
+            "async_remove_calendar_event",
         )
         platform.async_register_entity_service(
             "respond_calendar_event",
             CALENDAR_SERVICE_RESPOND_SCHEMA,
-            "respond_calendar_event",
+            "async_respond_calendar_event",
         )
 
     hass.services.async_register(
@@ -289,7 +284,7 @@ class O365CalendarEntity(CalendarEntity):
             self._check_unique_id(unique_id)
         return unique_id
 
-    # Can be removed by start of 2024 at latest, temporary fudge to correct wrong UIDs
+    # To be removed at start of 2024, temporary fudge to correct wrong UIDs
     def _check_unique_id(self, unique_id):
         ent_reg = entity_registry.async_get(self.hass)
         entry = ent_reg.async_get(self.entity_id)
@@ -315,9 +310,6 @@ class O365CalendarEntity(CalendarEntity):
             dt.utcnow() + timedelta(hours=self._end_offset),
         )
 
-        if not results and self._event:
-            return
-
         self._data_attribute = [format_event_data(x) for x in results]
         self._event = event
 
@@ -329,16 +321,13 @@ class O365CalendarEntity(CalendarEntity):
         subject = kwargs[EVENT_SUMMARY]
         body = kwargs.get(EVENT_DESCRIPTION)
         rrule = kwargs.get(EVENT_RRULE)
-        await self.hass.async_add_executor_job(
-            ft.partial(
-                self.create_calendar_event,
-                subject,
-                start,
-                end,
-                body=body,
-                is_all_day=is_all_day,
-                rrule=rrule,
-            )
+        await self.async_create_calendar_event(
+            subject,
+            start,
+            end,
+            body=body,
+            is_all_day=is_all_day,
+            rrule=rrule,
         )
 
     async def async_delete_event(
@@ -348,11 +337,9 @@ class O365CalendarEntity(CalendarEntity):
         recurrence_range: str | None = None,
     ) -> None:
         """Delete an event on the calendar."""
-        await self.hass.async_add_executor_job(
-            self.remove_calendar_event, uid, recurrence_id, recurrence_range
-        )
+        await self.async_remove_calendar_event(uid, recurrence_id, recurrence_range)
 
-    def create_calendar_event(self, subject, start, end, **kwargs):
+    async def async_create_calendar_event(self, subject, start, end, **kwargs):
         """Create the event."""
 
         if not self._validate_permissions("create"):
@@ -362,10 +349,11 @@ class O365CalendarEntity(CalendarEntity):
 
         event = calendar.new_event()
         event = add_call_data_to_event(event, subject, start, end, **kwargs)
-        event.save()
+        await self.hass.async_add_executor_job(event.save)
         self._raise_event(EVENT_CREATE_CALENDAR_EVENT, event.object_id)
+        self.async_schedule_update_ha_state(True)
 
-    def modify_calendar_event(
+    async def async_modify_calendar_event(
         self, event_id, subject=None, start=None, end=None, **kwargs
     ):
         """Modify the event."""
@@ -377,12 +365,18 @@ class O365CalendarEntity(CalendarEntity):
             _group_calendar_log(self.entity_id)
             return
 
-        event = self._get_event_from_calendar(event_id)
+        event = await self._async_get_event_from_calendar(event_id)
         event = add_call_data_to_event(event, subject, start, end, **kwargs)
-        event.save()
+        await self.hass.async_add_executor_job(event.save)
         self._raise_event(EVENT_MODIFY_CALENDAR_EVENT, event_id)
+        self.async_schedule_update_ha_state(True)
 
-    def remove_calendar_event(self, event_id, recurrence_id, recurrence_range):
+    async def async_remove_calendar_event(
+        self,
+        event_id,
+        recurrence_id: str | None = None,
+        recurrence_range: str | None = None,
+    ):
         """Remove the event."""
         if not self._validate_permissions("delete"):
             return
@@ -392,18 +386,23 @@ class O365CalendarEntity(CalendarEntity):
             return
 
         if recurrence_range:
-            self._delete_calendar_event(
+            await self._async_delete_calendar_event(
                 recurrence_id, EVENT_REMOVE_CALENDAR_RECURRENCES
             )
         else:
-            self._delete_calendar_event(event_id, EVENT_REMOVE_CALENDAR_EVENT)
+            await self._async_delete_calendar_event(
+                event_id, EVENT_REMOVE_CALENDAR_EVENT
+            )
 
-    def _delete_calendar_event(self, event_id, ha_event):
-        event = self._get_event_from_calendar(event_id)
-        event.delete()
+    async def _async_delete_calendar_event(self, event_id, ha_event):
+        event = await self._async_get_event_from_calendar(event_id)
+        await self.hass.async_add_executor_job(
+            event.delete,
+        )
         self._raise_event(ha_event, event_id)
+        self.async_schedule_update_ha_state(True)
 
-    def respond_calendar_event(
+    async def async_respond_calendar_event(
         self, event_id, response, send_response=True, message=None
     ):
         """Respond to calendar event."""
@@ -414,32 +413,40 @@ class O365CalendarEntity(CalendarEntity):
             _group_calendar_log(self.entity_id)
             return
 
-        self._send_response(event_id, response, send_response, message)
+        await self._async_send_response(event_id, response, send_response, message)
         self._raise_event(EVENT_RESPOND_CALENDAR_EVENT, event_id)
+        self.async_schedule_update_ha_state(True)
 
-    def _send_response(self, event_id, response, send_response, message):
-        event = self._get_event_from_calendar(event_id)
+    async def _async_send_response(self, event_id, response, send_response, message):
+        event = await self._async_get_event_from_calendar(event_id)
         if response == EventResponse.Accept:
-            event.accept_event(message, send_response=send_response)
+            await self.hass.async_add_executor_job(
+                ft.partial(event.accept_event, message, send_response=send_response)
+            )
 
         elif response == EventResponse.Tentative:
-            event.accept_event(message, tentatively=True, send_response=send_response)
+            await self.hass.async_add_executor_job(
+                ft.partial(
+                    event.accept_event,
+                    message,
+                    tentatively=True,
+                    send_response=send_response,
+                )
+            )
 
         elif response == EventResponse.Decline:
-            event.decline_event(message, send_response=send_response)
+            await self.hass.async_add_executor_job(
+                ft.partial(event.decline_event, message, send_response=send_response)
+            )
 
-    def _get_event_from_calendar(self, event_id):
+    async def _async_get_event_from_calendar(self, event_id):
         calendar = self.data.calendar
-        return calendar.get_event(event_id)
+        return await self.hass.async_add_executor_job(calendar.get_event, event_id)
 
     def _validate_permissions(self, error_message):
-        permissions = get_permissions(
-            self.hass,
-            filename=build_token_filename(
-                self._config, self._config.get(CONF_CONFIG_TYPE)
-            ),
-        )
-        if not validate_minimum_permission(PERM_MINIMUM_CALENDAR_WRITE, permissions):
+        if not self._config[CONF_PERMISSIONS].validate_minimum_permission(
+            PERM_MINIMUM_CALENDAR_WRITE
+        ):
             raise vol.Invalid(
                 f"Not authorisied to {PERM_CALENDARS_READWRITE} calendar event "
                 + f"- requires permission: {error_message}"
@@ -602,6 +609,11 @@ class O365CalendarData:
             start_of_day_utc + timedelta(days=1),
         )
         if not results:
+            _LOGGER.debug(
+                "No current event found for %s",
+                self._entity_id,
+            )
+            self.event = None
             return
 
         vevent = self._get_root_event(results)
@@ -715,7 +727,7 @@ class CalendarServices:
                 track = config.get(CONF_TRACK_NEW_CALENDAR, True)
                 for calendar in calendars:
                     update_calendar_file(
-                        build_yaml_filename(config, YAML_CALENDARS),
+                        config,
                         calendar,
                         self._hass,
                         track,

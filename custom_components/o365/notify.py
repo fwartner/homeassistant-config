@@ -1,6 +1,8 @@
 """Notification processing."""
 import logging
 import os
+import zipfile
+from pathlib import Path
 
 from homeassistant.components.notify import (
     ATTR_DATA,
@@ -19,15 +21,13 @@ from .const import (
     ATTR_ZIP_NAME,
     CONF_ACCOUNT,
     CONF_ACCOUNT_NAME,
-    CONF_CONFIG_TYPE,
+    CONF_PERMISSIONS,
     DOMAIN,
     LEGACY_ACCOUNT_NAME,
     PERM_MAIL_SEND,
     PERM_MINIMUM_SEND,
 )
 from .schema import NOTIFY_SERVICE_BASE_SCHEMA
-from .utils.filemgmt import build_token_filename, get_ha_filepath, zip_files
-from .utils.permissions import get_permissions, validate_minimum_permission
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -41,12 +41,8 @@ async def async_get_service(
     account_name = discovery_info[CONF_ACCOUNT_NAME]
     conf = hass.data[DOMAIN][account_name]
     account = conf[CONF_ACCOUNT]
-    permissions = get_permissions(
-        hass,
-        filename=build_token_filename(conf, conf.get(CONF_CONFIG_TYPE)),
-    )
-    if account.is_authenticated and validate_minimum_permission(
-        PERM_MINIMUM_SEND, permissions
+    if account.is_authenticated and conf[CONF_PERMISSIONS].validate_minimum_permission(
+        PERM_MINIMUM_SEND
     ):
         return O365EmailService(account, hass, conf)
 
@@ -59,9 +55,7 @@ class O365EmailService(BaseNotificationService):
     def __init__(self, account, hass, config):
         """Initialize the service."""
         self.account = account
-        self._permissions = get_permissions(
-            hass, filename=build_token_filename(config, config.get(CONF_CONFIG_TYPE))
-        )
+        self._config = config
         self._cleanup_files = []
         self._hass = hass
         self._account_name = config.get(CONF_ACCOUNT_NAME, None)
@@ -82,7 +76,9 @@ class O365EmailService(BaseNotificationService):
 
     async def async_send_message(self, message="", **kwargs):
         """Send an async message to a user."""
-        if not validate_minimum_permission(PERM_MINIMUM_SEND, self._permissions):
+        if not self._config[CONF_PERMISSIONS].validate_minimum_permission(
+            PERM_MINIMUM_SEND
+        ):
             _LOGGER.error(
                 "Not authorisied to send mail - requires permission: %s", PERM_MAIL_SEND
             )
@@ -143,7 +139,7 @@ class O365EmailService(BaseNotificationService):
             if photo.startswith("http"):
                 photos_content += f'<br><img src="{photo}">'
             else:
-                photo = get_ha_filepath(self._hass, photo)
+                photo = self._get_ha_filepath(photo)
                 new_message_attachments.add(photo)
                 att = new_message_attachments[-1]
                 att.is_inline = True
@@ -161,7 +157,7 @@ class O365EmailService(BaseNotificationService):
             zip_attachments = data.get(ATTR_ZIP_ATTACHMENTS, False)
             zip_name = data.get(ATTR_ZIP_NAME, None)
 
-        attachments = [get_ha_filepath(self._hass, x) for x in attachments]
+        attachments = [self._get_ha_filepath(x) for x in attachments]
         if attachments and zip_attachments:
             z_file = zip_files(attachments, zip_name)
             new_message_attachments.add(z_file)
@@ -174,3 +170,28 @@ class O365EmailService(BaseNotificationService):
     def _cleanup(self):
         for filename in self._cleanup_files:
             os.remove(filename)
+
+    def _get_ha_filepath(self, filepath):
+        """Get the file path."""
+        _filepath = Path(filepath)
+        if _filepath.parts[0] == "/" and _filepath.parts[1] == "config":
+            _filepath = os.path.join(self._hass.config.config_dir, *_filepath.parts[2:])
+
+        if not os.path.isfile(_filepath):
+            if not os.path.isfile(filepath):
+                raise ValueError(f"Could not access file {filepath} at {_filepath}")
+            return filepath
+        return _filepath
+
+
+def zip_files(filespaths, zip_name):
+    """Zip the files."""
+    if not zip_name:
+        zip_name = "archive.zip"
+    if Path(zip_name).suffix != ".zip":
+        zip_name += ".zip"
+
+    with zipfile.ZipFile(zip_name, mode="w") as zip_file:
+        for file_path in filespaths:
+            zip_file.write(file_path, os.path.basename(file_path))
+    return zip_name

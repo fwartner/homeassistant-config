@@ -64,8 +64,7 @@ AUTH_CALLBACK_PATH_ALT = "/api/o365"
 AUTH_CALLBACK_PATH_DEFAULT = (
     "https://login.microsoftonline.com/common/oauth2/nativeclient"
 )
-CALENDAR_DOMAIN = "calendar"
-CALENDAR_ENTITY_ID_FORMAT = CALENDAR_DOMAIN + ".{}"
+CALENDAR_ENTITY_ID_FORMAT = "calendar.{}"
 CONF_ACCOUNT = "account"
 CONF_ACCOUNTS = "accounts"
 CONF_ACCOUNT_CONF = "account_conf"
@@ -73,6 +72,7 @@ CONF_ACCOUNT_NAME = "account_name"
 CONF_ALT_AUTH_METHOD = "alt_auth_method"
 CONF_AUTH_URL = "auth_url"
 CONF_AUTO_REPLY_SENSORS = "auto_reply_sensors"
+CONF_BASIC_CALENDAR = "basic_calendar"
 CONF_BODY_CONTAINS = "body_contains"
 CONF_CAL_ID = "cal_id"
 CONF_CAL_IDS = "cal_ids"
@@ -100,6 +100,7 @@ CONF_MAIL_FOLDER = "folder"
 CONF_MAIL_FROM = "from"
 CONF_MAX_ITEMS = "max_items"
 CONF_MAX_RESULTS = "max_results"
+CONF_PERMISSIONS = "permissions"
 CONF_QUERY_SENSORS = "query_sensors"
 CONF_SEARCH = "search"
 CONF_SHARED_MAILBOX = "shared_mailbox"
@@ -119,8 +120,6 @@ CONST_GROUP = "group:"
 CONST_PRIMARY = "$o365-primary$"
 CONST_UTC_TIMEZONE = "UTC"
 DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S%z"
-DEFAULT_CACHE_PATH = ".O365-token-cache"
-DEFAULT_NAME = "O365"
 DEFAULT_OFFSET = "!!"
 DOMAIN = "o365"
 
@@ -140,13 +139,14 @@ EVENT_SEND_CHAT_MESSAGE = "send_chat_message"
 
 LEGACY_ACCOUNT_NAME = "converted"
 O365_STORAGE = "o365_storage"
+O365_STORAGE_TOKEN = ".O365-token-cache"
 PERM_CALENDARS_READ = "Calendars.Read"
+PERM_CALENDARS_READBASIC = "Calendars.ReadBasic"
 PERM_CALENDARS_READ_SHARED = "Calendars.Read.Shared"
 PERM_CALENDARS_READWRITE = "Calendars.ReadWrite"
 PERM_CALENDARS_READWRITE_SHARED = "Calendars.ReadWrite.Shared"
 PERM_CHAT_READ = "Chat.Read"
 PERM_CHAT_READWRITE = "Chat.ReadWrite"
-PERM_CHAT_READ = "Chat.Read"
 PERM_GROUP_READ_ALL = "Group.Read.All"
 PERM_GROUP_READWRITE_ALL = "Group.ReadWrite.All"
 PERM_MAILBOX_SETTINGS = "MailboxSettings.ReadWrite"
@@ -174,8 +174,9 @@ PERM_MINIMUM_MAIL = [
     [PERM_MAIL_READ_SHARED, PERM_MAIL_READWRITE, PERM_MAIL_READWRITE_SHARED],
 ]
 PERM_MINIMUM_CALENDAR = [
-    PERM_CALENDARS_READ,
+    PERM_CALENDARS_READBASIC,
     [
+        PERM_CALENDARS_READ,
         PERM_CALENDARS_READ_SHARED,
         PERM_CALENDARS_READWRITE,
         PERM_CALENDARS_READWRITE_SHARED,
@@ -194,8 +195,7 @@ PERM_MINIMUM_SEND = [
 PERM_SHARED = ".Shared"
 
 SENSOR_AUTO_REPLY = "auto_reply"
-SENSOR_DOMAIN = "sensor"
-SENSOR_ENTITY_ID_FORMAT = SENSOR_DOMAIN + ".{}"
+SENSOR_ENTITY_ID_FORMAT = "sensor.{}"
 SENSOR_MAIL = "inbox"
 SENSOR_TEAMS_STATUS = "teams_status"
 SENSOR_TEAMS_CHAT = "teams_chat"

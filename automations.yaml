@@ -1973,7 +1973,7 @@
           entity_id: sensor.withings_weight_kg_florian
           above: 95
       sequence:
-      - service: notify.alexa_media_florians_4_echo_dot
+      - service: notify.alexa_media_echo_badezimmer
         data:
           message: Oh je! Du solltest was gegen dein Gewicht machen.
     - conditions:
@@ -1986,7 +1986,7 @@
           entity_id: sensor.withings_weight_kg_florian
           below: 95
       sequence:
-      - service: notify.alexa_media_florians_4_echo_dot
+      - service: notify.alexa_media_echo_badezimmer
         data:
           message: Oh je! Du solltest was gegen dein Gewicht machen.
   mode: single
@@ -2020,7 +2020,7 @@
         id:
         - lockingStarted
       sequence:
-      - service: notify.alexa_media_echo_dot_flur
+      - service: notify.alexa_media_echo_flur
         data:
           message: Ich schließe die Wohnungstür jetzt ab.
     - conditions:
@@ -2028,7 +2028,7 @@
         id:
         - lockingDone
       sequence:
-      - service: notify.alexa_media_echo_dot_flur
+      - service: notify.alexa_media_echo_flur
         data:
           message: Die Wohnungstür ist abgeschlossen.
   mode: single

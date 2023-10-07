@@ -45,6 +45,8 @@ from .const import (
     AUDIO_PATH_KEY,
     AUDIO_DURATION_KEY,
     TEMP_PATH,
+    MP3_PRESET_PATH,
+    MP3_PRESET_PATH_PLACEHOLDER,
     QUEUE,
     QUEUE_STATUS,
     QUEUE_IDLE,
@@ -52,7 +54,6 @@ from .const import (
     QUEUE_CURRENT_ID,
     QUEUE_LAST_ID,
     QUEUE_TIMEOUT_S,
-    JOIN_PLAYERS_ID,
     # AMAZON_POLLY,
     # BAIDU,
     # GOOGLE_CLOUD,
@@ -136,12 +137,26 @@ async def async_setup(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
         _LOGGER.debug('----- Chime TTS Say Called -----')
         start_time = datetime.now()
 
+        # Parse entity_id/s
         entity_ids = service.data.get(CONF_ENTITY_ID, [])
         if isinstance(entity_ids, str):
             entity_ids = entity_ids.split(',')
 
-        chime_path = str(service.data.get("chime_path", ""))
-        end_chime_path = str(service.data.get("end_chime_path", ""))
+        # Find all media_player entities associated with device/s specified
+        device_ids = service.data.get("device_id", [])
+        if isinstance(device_ids, str):
+            device_ids = device_ids.split(',')
+        entity_registry = hass.data['entity_registry']
+        for device_id in device_ids:
+            matching_entity_ids = [
+                entity.entity_id
+                for entity in entity_registry.entities.values()
+                if entity.device_id == device_id and entity.entity_id.startswith("media_player.")
+            ]
+            entity_ids.extend(matching_entity_ids)
+
+        chime_path = get_chime_path(str(service.data.get("chime_path", "")))
+        end_chime_path = get_chime_path(str(service.data.get("end_chime_path", "")))
 
         delay = float(service.data.get("delay", PAUSE_DURATION_MS))
         final_delay = float(service.data.get("final_delay", 0))
@@ -152,6 +167,7 @@ async def async_setup(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
 
         volume_level = float(service.data.get(ATTR_MEDIA_VOLUME_LEVEL, -1))
         join_players = service.data.get("join_players", False)
+        unjoin_players = service.data.get("unjoin_players", False)
         cache = service.data.get("cache", False)
         announce = service.data.get("announce", False)
 
@@ -170,6 +186,7 @@ async def async_setup(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
             "tts_playback_speed": tts_playback_speed,
             "volume_level": volume_level,
             "join_players": join_players,
+            "unjoin_players": unjoin_players,
             "cache": cache,
             "announce": announce,
             "language": language,
@@ -216,7 +233,7 @@ async def async_setup(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
             await hass.async_add_executor_job(sleep, final_delay_s)
 
         # Reset media player volume levels once finish playing
-        await async_reset_media_players(hass, media_players_dict, volume_level, join_players)
+        await async_reset_media_players(hass, media_players_dict, volume_level, unjoin_players)
 
         # Save generated temp mp3 file to cache
         if cache is True:
@@ -391,7 +408,7 @@ async def async_initialize_media_players(hass: HomeAssistant, entity_ids, volume
 async def async_reset_media_players(hass: HomeAssistant,
                                     media_players_dict,
                                     volume_level: float,
-                                    join_players: bool):
+                                    unjoin_players: bool):
     """Reset media players back to their original states."""
     entity_ids = []
 
@@ -406,13 +423,12 @@ async def async_reset_media_players(hass: HomeAssistant,
             await async_set_volume_level(hass, entity_id, initial_volume_level, volume_level)
 
     # Unjoin entity_ids
-    if join_players is True and _data["group_members_supported"] > 1:
-        _LOGGER.debug(" - Calling media_player.unjoin service for %s media_player entities...",
-                      len(entity_ids))
-        for entity_id in entity_ids:
-            entity = hass.states.get(entity_id)
-            if get_supported_feature(entity, ATTR_GROUP_MEMBERS):
-                _LOGGER.debug(" - Unjoining media plater entity: %s...", entity_id)
+    if unjoin_players is True and "joint_media_player_entity_id" in _data and _data["joint_media_player_entity_id"] is not None:
+        _LOGGER.debug(" - Calling media_player.unjoin service...")
+        for media_player_dict in media_players_dict:
+            if media_player_dict["group_members_supported"] is True:
+                entity_id = media_player_dict["entity_id"]
+                _LOGGER.debug("   - media_player.unjoin: %s", entity_id)
                 try:
                     await hass.services.async_call(
                         domain="media_player",
@@ -420,36 +436,43 @@ async def async_reset_media_players(hass: HomeAssistant,
                         service_data={CONF_ENTITY_ID: entity_id},
                         blocking=True
                     )
-                    _LOGGER.debug(" - ...done")
+                    _LOGGER.debug("   ...done")
                 except Exception as error:
-                    _LOGGER.warning("   - Error calling media_player.%s: %s",
-                                    SERVICE_UNJOIN, error)
+                    _LOGGER.warning(" - Error calling unjoin service for %s: %s", entity_id, error)
 
 
 async def async_join_media_players(hass, entity_ids):
     """Join media players."""
-    # Call the join/unjoin service
     _LOGGER.debug(" - Calling media_player.join service for %s media_player entities...",
                   len(entity_ids))
 
+    supported_entity_ids = []
     for entity_id in entity_ids:
         entity = hass.states.get(entity_id)
         if get_supported_feature(entity, ATTR_GROUP_MEMBERS):
-            _LOGGER.debug(" - Joining media_player entity: '%s'...", entity_id)
-            try:
-                await hass.services.async_call(
-                    domain="media_player",
-                    service=SERVICE_JOIN,
-                    service_data={
-                        CONF_ENTITY_ID: JOIN_PLAYERS_ID,
-                        ATTR_GROUP_MEMBERS: [entity_id]
-                    },
-                    blocking=True
-                )
-                _LOGGER.debug(" - ...done")
-            except Exception as error:
-                _LOGGER.warning("   - Error calling media_player.%s: %s",
-                                SERVICE_JOIN, error)
+            supported_entity_ids.append(entity_id)
+
+    if len(supported_entity_ids) > 1:
+        _LOGGER.debug(" - Joining %s media_player entities...", str(len(supported_entity_ids)))
+        try:
+            _data["joint_media_player_entity_id"] = supported_entity_ids[0]
+            await hass.services.async_call(
+                domain="media_player",
+                service=SERVICE_JOIN,
+                service_data={
+                    CONF_ENTITY_ID: _data["joint_media_player_entity_id"],
+                    ATTR_GROUP_MEMBERS: supported_entity_ids
+                },
+                blocking=True
+            )
+            _LOGGER.debug(" - ...done")
+            return _data["joint_media_player_entity_id"]
+        except Exception as error:
+            _LOGGER.warning("   - Error joining media_player entities: %s", error)
+    else:
+        _LOGGER.warning(" - Only 1 media_player entity provided. Unable to join.")
+
+    return False
 
 ####################################
 ### Retrieve TTS Audio Functions ###
@@ -552,7 +575,7 @@ async def async_request_tts_audio(hass: HomeAssistant,
                     _LOGGER.debug("  -  ...changing TTS playback speed to %s percent",
                                 str(tts_playback_speed))
                     playback_speed = float(tts_playback_speed / 100)
-                    audio = audio.speedup(playback_speed=playback_speed)
+                    audio = audio.speedup(playback_speed=playback_speed, chunk_size=50)
                 end_time = datetime.now()
                 _LOGGER.debug(" - ...TTS audio completed in %s ms",
                             str((end_time - start_time).total_seconds() * 1000))
@@ -869,6 +892,13 @@ async def async_remove_cached_audio_data(hass: HomeAssistant, filepath_hash: str
 ### Audio Filename Functions ###
 ################################
 
+def get_chime_path(chime_path: str = ""):
+    """Retrieve preset chime path if selected."""
+    _LOGGER.debug("Chime path supplied = %s", chime_path)
+    if chime_path.startswith(MP3_PRESET_PATH_PLACEHOLDER):
+        chime_path = MP3_PRESET_PATH + chime_path.replace(MP3_PRESET_PATH_PLACEHOLDER, "") + ".mp3"
+    return chime_path
+
 def get_generated_filename(params: dict):
     """Generate a unique generated filename based on specific parameters."""
     filename = ""
@@ -921,13 +951,16 @@ async def async_play_media(hass: HomeAssistant,
     if join_players is True:
         # join entity_ids as a group
         if _data["group_members_supported"] > 1:
-            await async_join_media_players(hass, entity_ids)
-            service_data[CONF_ENTITY_ID] = JOIN_PLAYERS_ID
+            joint_speakers_entity_id = await async_join_media_players(hass, entity_ids)
+            if joint_speakers_entity_id is not False:
+                service_data[CONF_ENTITY_ID] = joint_speakers_entity_id
+            else:
+                _LOGGER.warning("Unable to join speakers. Only 1 media_player supported.")
         else:
             if _data["group_members_supported"] == 1:
-                _LOGGER.warning("Joint playback only supported on 1 media_player.")
+                _LOGGER.warning("Unable to join speakers. Only 1 media_player supported.")
             else:
-                _LOGGER.warning("No media_player found supporting joint playback.")
+                _LOGGER.warning("Unable to join speakers. No supported media_players found.")
 
     # Play the audio
     _LOGGER.debug('Calling media_player.play_media service with data:')

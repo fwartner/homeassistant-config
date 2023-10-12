@@ -1314,7 +1314,7 @@
         data:
           volume_level: 0.7
         target:
-          device_id: e44130d7e1ed3ec3b0a00e119c9f9e64
+          device_id: 7fd31d5c8da2c077ed3469b15bf45c2c
   - choose:
     - conditions:
       - condition: trigger
@@ -1348,7 +1348,7 @@
         data:
           volume_level: 0.36
         target:
-          device_id: e44130d7e1ed3ec3b0a00e119c9f9e64
+          device_id: 7fd31d5c8da2c077ed3469b15bf45c2c
   - choose:
     - conditions:
       - condition: trigger
@@ -1356,7 +1356,7 @@
         - badezimmerWaterTimerOn
       sequence:
       - parallel:
-        - service: notify.alexa_media_florians_4_echo_dot
+        - service: notify.alexa_media_echo_badezimmer
           data:
             message: So. Es wird Zeit, aus der Dusche zu kommen.
         - service: light.toggle

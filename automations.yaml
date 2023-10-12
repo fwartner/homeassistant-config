@@ -1034,18 +1034,17 @@
         - kucheOn
       sequence:
       - type: turn_on
-        device_id: e167e2f1f1c6002658c924c970d2853f
-        entity_id: bd86d041fb3a1a9a9292557802d54638
+        device_id: 9c48f229a15a44fd7c514335a7ae87dc
+        entity_id: 3453ee801fce725070e5cb808d26502a
         domain: light
-        brightness_pct: 30
     - conditions:
       - condition: trigger
         id:
         - kucheOff
       sequence:
       - type: turn_off
-        device_id: e167e2f1f1c6002658c924c970d2853f
-        entity_id: bd86d041fb3a1a9a9292557802d54638
+        device_id: 9c48f229a15a44fd7c514335a7ae87dc
+        entity_id: 3453ee801fce725070e5cb808d26502a
         domain: light
   mode: single
 - id: '1691320563612'
@@ -1157,18 +1156,17 @@
         - flurOn
       sequence:
       - type: turn_on
-        device_id: b59da74a1ad03e0a6c798def814580fa
-        entity_id: ceaf8ad210dc0faa638375e7524024c1
+        device_id: 213ae3e49d4d4c4f2a9c30035ec8dea0
+        entity_id: 51139407af100414a2d35fc1d95d1bdb
         domain: light
-        brightness_pct: 5
     - conditions:
       - condition: trigger
         id:
         - flurOff
       sequence:
       - type: turn_off
-        device_id: b59da74a1ad03e0a6c798def814580fa
-        entity_id: ceaf8ad210dc0faa638375e7524024c1
+        device_id: 213ae3e49d4d4c4f2a9c30035ec8dea0
+        entity_id: 51139407af100414a2d35fc1d95d1bdb
         domain: light
   mode: single
 - id: '1691429105737'

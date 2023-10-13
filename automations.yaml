@@ -2037,3 +2037,22 @@
   condition: []
   action: []
   mode: single
+- id: '1697199027134'
+  alias: Meeting
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.teams_status
+    from: unknown
+    to: InACall
+    id: meetingOn
+  - platform: state
+    entity_id:
+    - sensor.teams_status
+    from: InACall
+    to: unknown
+    id: meetingOff
+  condition: []
+  action: []
+  mode: single

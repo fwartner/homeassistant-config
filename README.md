@@ -27,8 +27,8 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2001
-Number of sensors | 1175
+Number of entities | 2008
+Number of sensors | 1180
 Number of automations | 58
 Number of scripts | 9
 Number of scenes | 26
@@ -39,7 +39,6 @@ Number of binary sensors | 158
 
 ### Add-ons
 - Advanced SSH & Web Terminal
-- AirCast
 - AirSonos
 - AppDaemon
 - chrony
@@ -49,6 +48,7 @@ Number of binary sensors | 158
 - Home Assistant Stream Deck
 - librespot player
 - Matter Server
+- openWakeWord
 - Piper
 - PS5 MQTT
 - Samba share

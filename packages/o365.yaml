@@ -1,8 +1,8 @@
 o365:
   accounts:
     - account_name: cloud37
-      client_id: "f4d657f2-0d47-4624-adf9-76e9916469f5"
-      client_secret: "7c5d260e-8105-4e7a-8934-a494137d9e5b"
+      client_id: !secret office_365_id
+      client_secret: !secret office_365_secret
       alt_auth_method: True
       enable_update: True
       email_sensor:

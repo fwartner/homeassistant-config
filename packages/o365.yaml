@@ -1,0 +1,19 @@
+o365:
+  accounts:
+    - account_name: cloud37
+      client_id: !secret office_365_id
+      client_secret: !secret office_365_secret
+      alt_auth_method: False
+      enable_update: False
+      email_sensor:
+        - name: inbox
+          is_unread: True
+          download_attachments: False
+      query_sensors:
+        - name: "Cloud37 Emails"
+          folder: "Inbox"
+          is_unread: True
+      status_sensors:
+        - name: "Teams Status"
+      chat_sensors:
+        - name: "Teams Chat"

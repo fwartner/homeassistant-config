@@ -1,0 +1,18 @@
+o365:
+  accounts:
+    - account_name: cloud37
+      client_id: "f4d657f2-0d47-4624-adf9-76e9916469f5"
+      client_secret: "7c5d260e-8105-4e7a-8934-a494137d9e5b"
+      alt_auth_method: True
+      enable_update: True
+      email_sensor:
+        - name: inbox
+          max_items: 2
+          is_unread: True
+          download_attachments: False
+      status_sensors:
+        - name: "User Teams Status"
+      chat_sensors:
+        - name: "User Chat"
+      todo_sensors:
+        enabled: False

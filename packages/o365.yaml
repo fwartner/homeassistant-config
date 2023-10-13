@@ -4,7 +4,7 @@ o365:
       client_id: !secret office_365_id
       client_secret: !secret office_365_secret
       alt_auth_method: False
-      enable_update: False
+      enable_update: True
       email_sensor:
         - name: inbox
           is_unread: True

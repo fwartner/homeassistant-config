@@ -27,7 +27,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 1998
+Number of entities | 2003
 Number of sensors | 1170
 Number of automations | 59
 Number of scripts | 9
@@ -42,6 +42,7 @@ Number of binary sensors | 157
 - AirCast
 - AirSonos
 - AppDaemon
+- Assist Microphone
 - chrony
 - ESPHome
 - Glances

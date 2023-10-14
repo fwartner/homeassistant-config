@@ -152,3 +152,5 @@ notebooks/
 airsonos.xml
 themes/ios-*
 yamlint_errors.txt
+
+o365_storage/.O365-token-cache/o365_cloud37.token

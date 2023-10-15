@@ -2056,3 +2056,45 @@
   condition: []
   action: []
   mode: single
+- id: '1697391352146'
+  alias: 'Voice: Staubsauger'
+  description: ''
+  trigger:
+  - platform: conversation
+    command:
+    - Starte den Staubsauger
+    - Mache Sauber
+    - Starte Reinigung
+    id: staubsaugerOn
+  - platform: conversation
+    command:
+    - Stoppe Reiningung
+    - Beende Reinigung
+    - Beende Staubsauger
+    id: staubsaugerOff
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - staubsaugerOn
+      sequence:
+      - service: vacuum.start
+        data: {}
+        target:
+          entity_id: vacuum.roborock_s7_maxv
+    - conditions:
+      - condition: trigger
+        id:
+        - staubsaugerOff
+      sequence:
+      - service: vacuum.stop
+        data: {}
+        target:
+          entity_id: vacuum.roborock_s7_maxv
+      - service: vacuum.return_to_base
+        data: {}
+        target:
+          entity_id: vacuum.roborock_s7_maxv
+  mode: single

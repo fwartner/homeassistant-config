@@ -1,0 +1,4 @@
+- platform: ping
+  host: 10.182.1.1
+  name: ping_router
+  scan_interval: 30

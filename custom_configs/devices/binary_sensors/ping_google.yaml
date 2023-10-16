@@ -1,0 +1,4 @@
+- platform: ping
+  host: google.de
+  name: ping_router
+  scan_interval: 30

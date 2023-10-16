@@ -4,8 +4,6 @@
       value_template: >
         {% if is_state_attr("proximity.home", "nearest", "iphone_von_florian") %}
           5bNAkjSrT8PbV4y2CmNHjy
-        {% elif is_state_attr("proximity.home", "nearest", "stefanies_iphone") %}
-          steffi
         {% elif is_state_attr("proximity.home", "nearest", "sm_g973f") %}
           anni
         {% endif %}

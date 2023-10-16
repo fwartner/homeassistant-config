@@ -3,4 +3,3 @@ notify:
     name: all_iphones
     services:
       - service: notify.mobile_app_florians_iphone
-      - service: notify.mobile_app_stefanies_iphone

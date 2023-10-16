@@ -2,7 +2,5 @@ proximity:
   home:
     devices:
       - device_tracker.iphone_von_florian
-      - device_tracker.stefanies_iphone
-      - device_tracker.sm_g973f
     tolerance: 50
     unit_of_measurement: km

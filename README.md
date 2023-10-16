@@ -27,8 +27,8 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2031
-Number of sensors | 1176
+Number of entities | 2121
+Number of sensors | 1266
 Number of automations | 59
 Number of scripts | 9
 Number of scenes | 26
@@ -65,6 +65,7 @@ Number of binary sensors | 157
 - [Alarmo](https://github.com/nielsfaber/alarmo)
 - [Alexa Media Player](https://github.com/custom-components/alexa_media_player)
 - [Anniversaries](https://github.com/pinkywafer/Anniversaries)
+- [Attributes Extractor](https://github.com/pilotak/homeassistant-attributes)
 - [Auto Backup](https://github.com/jcwillox/hass-auto-backup)
 - [Average Sensor](https://github.com/Limych/ha-average)
 - [Better Thermostat](https://github.com/KartoffelToby/better_thermostat)
@@ -139,6 +140,7 @@ Number of binary sensors | 157
 - [Auto Entities](https://github.com/thomasloven/lovelace-auto-entities)
 - [Banner Card](https://github.com/nervetattoo/banner-card)
 - [Bar Card](https://github.com/custom-cards/bar-card)
+- [Battery Entity Row](https://github.com/benct/lovelace-battery-entity-row)
 - [Battery State Card / Entity Row](https://github.com/maxwroc/battery-state-card)
 - [Better Thermostat Ui](https://github.com/KartoffelToby/better-thermostat-ui-card)
 - [Blind Card](https://github.com/tungmeister/hass-blind-card)

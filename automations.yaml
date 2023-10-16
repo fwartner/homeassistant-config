@@ -216,16 +216,16 @@
   description: ''
   trigger:
   - platform: device
-    device_id: c59d71c186dd5113268a8d1e392e68b7
-    domain: media_player
-    entity_id: 4748d69b5a095c96044b7453983b2f60
     type: turned_on
+    device_id: c59d71c186dd5113268a8d1e392e68b7
+    entity_id: 88c7878129fb5490982c4f4c71113e53
+    domain: remote
     id: tvSchlafzimmerOn
   - platform: device
-    device_id: c59d71c186dd5113268a8d1e392e68b7
-    domain: media_player
-    entity_id: 4748d69b5a095c96044b7453983b2f60
     type: turned_off
+    device_id: c59d71c186dd5113268a8d1e392e68b7
+    entity_id: 88c7878129fb5490982c4f4c71113e53
+    domain: remote
     id: tvSchlafzimmerOff
   condition:
   - condition: sun
@@ -1745,17 +1745,6 @@
         target:
           entity_id: switch.dashboard_screen
   mode: single
-- id: github_push
-  alias: Git
-  description: ''
-  trigger:
-  - platform: time_pattern
-    hours: /1
-  action:
-  - service: readme.generate
-    data: {}
-  - service: shell_command.push_to_github
-    data: {}
 - id: '1693261615102'
   alias: Prusa
   description: ''
@@ -1816,33 +1805,6 @@
         data: {}
         target:
           device_id: d62c502e3916ea9ec0806478b86b9f9f
-  mode: single
-- id: '1694092567345'
-  alias: NFC Tag Test ist gescannt
-  description: ''
-  trigger:
-  - platform: tag
-    tag_id: 2631af44-6350-4697-a239-478e0660aab0
-  condition: []
-  action:
-  - type: toggle
-    device_id: 2b6a73da1e720ed99fdeb5f4130c7944
-    entity_id: 2b4a193305082514c27ec180f14d3458
-    domain: light
-  mode: single
-- id: '1694092719002'
-  alias: NFC Tag Test ist gescannt
-  description: ''
-  trigger:
-  - platform: tag
-    tag_id: 2631af44-6350-4697-a239-478e0660aab0
-  condition: []
-  action:
-  - type: turn_on
-    device_id: 16f338039a31465ae8192aee81da8def
-    entity_id: 4910b9f1c61f74bbd8caeda2e60701dd
-    domain: light
-    brightness_pct: 100
   mode: single
 - id: '1694279250811'
   alias: Awtrix Notification Spotify

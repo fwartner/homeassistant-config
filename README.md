@@ -27,7 +27,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2009
+Number of entities | 2007
 Number of sensors | 1173
 Number of automations | 60
 Number of scripts | 9
@@ -52,7 +52,6 @@ Number of binary sensors | 157
 - Matter Server
 - openWakeWord
 - Piper
-- porcupine1
 - PS5 MQTT
 - Samba share
 - Silicon Labs Multiprotocol

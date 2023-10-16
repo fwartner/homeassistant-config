@@ -126,8 +126,9 @@ class PropertyToEntityDescription(Enum):
     microphone = EntityDescription(id=auto(), icon="mdi:microphone", category=EntityCategory.CONFIG)
     speaker = EntityDescription(id=auto(), icon="mdi:volume-high", category=EntityCategory.CONFIG)
     audioRecording = EntityDescription(id=auto(), icon="mdi:record-circle", category=EntityCategory.CONFIG)
-    snooze = EntityDescription(id=auto(), category=EntityCategory.CONFIG)
-    snoozeTime = EntityDescription(id=auto(), category=EntityCategory.CONFIG)
+    snooze = EntityDescription(id=auto(), icon="mdi:alarm-snooze", category=EntityCategory.CONFIG)
+    snoozeTime = EntityDescription(id=auto(), icon="mdi:alarm-snooze", category=EntityCategory.CONFIG)
+    loiteringDetection = EntityDescription(id=auto(), category=EntityCategory.CONFIG)
 
     # device select
     powerSource = EntityDescription(id=auto(), icon="mdi:power-plug", category=EntityCategory.DIAGNOSTIC)
@@ -140,6 +141,10 @@ class PropertyToEntityDescription(Enum):
     motionDetectionSensitivity = EntityDescription(id=auto(), category=EntityCategory.CONFIG)
     speakerVolume = EntityDescription(id=auto(), category=EntityCategory.CONFIG)
     nightvision = EntityDescription(id=auto(), icon="mdi:shield-moon", category=EntityCategory.CONFIG)
+    lightSettingsManualLightingActiveMode = EntityDescription(id=auto(), icon="mdi:cog-play", category=EntityCategory.CONFIG)
+    lightSettingsBrightnessManual = EntityDescription(id=auto(), icon="mdi:brightness-percent", category=EntityCategory.CONFIG)
+    lightSettingsManualDailyLighting = EntityDescription(id=auto(), category=EntityCategory.CONFIG)
+    lightSettingsScheduleDynamicLighting = EntityDescription(id=auto(), category=EntityCategory.CONFIG)
 
     # station sensor
     currentMode = EntityDescription(id=auto(), icon="mdi:security", category=EntityCategory.DIAGNOSTIC)

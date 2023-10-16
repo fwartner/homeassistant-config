@@ -1895,21 +1895,6 @@
       awtrix_displays:
       - 223c2407647b4142c2a2b1f5054f9a42
       toggle_helper: input_boolean.awtrix_wohnzimmer_time
-- id: '1694284461266'
-  alias: 'Awtrix: Matrix An'
-  description: ''
-  trigger:
-  - platform: time
-    at: 08:00:00
-  condition: []
-  action:
-  - service: light.turn_on
-    data: {}
-    target:
-      entity_id:
-      - light.awtrix_buro_matrix
-      - light.awtrix_wohnzimmer_matrix
-  mode: single
 - id: '1694417280204'
   alias: IKEA Rollos Wohnzimmer Taster
   description: ''
@@ -2029,13 +2014,6 @@
       - service: notify.alexa_media_echo_flur
         data:
           message: Die Wohnungstür ist abgeschlossen.
-  mode: single
-- id: '1695203707562'
-  alias: AWTRIX Nightmode
-  description: ''
-  trigger: []
-  condition: []
-  action: []
   mode: single
 - id: '1697199027134'
   alias: Meeting

@@ -1871,20 +1871,6 @@
       payload: "{\"icon\": 647,\n \"repeat\": 1,\n \"text\": \"{{states.media_player.spotify_florian.attributes.media_artist}}
         - {{states.media_player.spotify_florian.attributes.media_title}}\"\n}"
   mode: single
-- id: '1694281651442'
-  alias: 'Awtrix: Wohnzimmer Balkon Temperatur'
-  description: ''
-  use_blueprint:
-    path: smarthomejunkie/awtrix_create_sensor_app.yaml
-    input:
-      awtrix_displays:
-      - 223c2407647b4142c2a2b1f5054f9a42
-      toggle_helper: input_boolean.awtrix_wohnzimmer_balkon_temperatur
-      my_sensor: sensor.temperatur_balkon_combined
-      my_icon: '2056'
-      repeat: '1'
-      duration: '5'
-      lifetime: '5'
 - id: '1694282954348'
   alias: Awtrix Time
   description: ''
@@ -2029,7 +2015,7 @@
     entity_id:
     - sensor.teams_status
     from: InACall
-    to: unknown
+    to: Available
     id: meetingOff
   condition: []
   action: []

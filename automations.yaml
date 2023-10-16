@@ -2076,3 +2076,41 @@
         target:
           entity_id: vacuum.roborock_s7_maxv
   mode: single
+- id: '1697490610616'
+  alias: Adaptive Lighting - Sleepmode
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunrise
+    offset: '0'
+    id: sunOn
+  - platform: sun
+    event: sunset
+    offset: '0'
+    id: sunOff
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - sunOn
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id:
+          - switch.adaptive_lighting_sleep_mode_adaptive_lighting_wohnzimmer
+          - switch.adaptive_lighting_sleep_mode_adaptive_lighting_schlafzimmer
+    - conditions:
+      - condition: trigger
+        id:
+        - sunOff
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id:
+          - switch.adaptive_lighting_sleep_mode_adaptive_lighting_wohnzimmer
+          - switch.adaptive_lighting_sleep_mode_adaptive_lighting_schlafzimmer
+  mode: single

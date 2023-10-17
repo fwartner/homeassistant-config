@@ -6,6 +6,8 @@ recorder:
       - sensor
       - switch
       - media_player
+      - device_tracker
+      - person
   exclude:
     domains:
       - sun

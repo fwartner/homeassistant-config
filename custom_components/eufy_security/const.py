@@ -22,6 +22,7 @@ NAME = "Eufy Security"
 DOMAIN = "eufy_security"
 VERSION = "1.0.0"
 COORDINATOR = "coordinator"
+DISCONNECTED = "eufy-security-ws-disconnected"
 
 PLATFORMS: list[str] = [
     Platform.BINARY_SENSOR,
@@ -129,6 +130,11 @@ class PropertyToEntityDescription(Enum):
     snooze = EntityDescription(id=auto(), icon="mdi:alarm-snooze", category=EntityCategory.CONFIG)
     snoozeTime = EntityDescription(id=auto(), icon="mdi:alarm-snooze", category=EntityCategory.CONFIG)
     loiteringDetection = EntityDescription(id=auto(), category=EntityCategory.CONFIG)
+    motionDetectionTypePet = EntityDescription(id=auto(), category=EntityCategory.CONFIG)
+    motionDetectionTypeVehicle = EntityDescription(id=auto(), category=EntityCategory.CONFIG)
+    motionDetectionTypeHuman = EntityDescription(id=auto(), category=EntityCategory.CONFIG)
+    motionDetectionTypeHumanRecognition = EntityDescription(id=auto(), category=EntityCategory.CONFIG)
+    motionDetectionTypeAllOtherMotions = EntityDescription(id=auto(), category=EntityCategory.CONFIG)
 
     # device select
     powerSource = EntityDescription(id=auto(), icon="mdi:power-plug", category=EntityCategory.DIAGNOSTIC)

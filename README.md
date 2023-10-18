@@ -27,9 +27,9 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2123
-Number of sensors | 1266
-Number of automations | 58
+Number of entities | 2159
+Number of sensors | 1302
+Number of automations | 55
 Number of scripts | 9
 Number of scenes | 26
 Number of zones | 8
@@ -50,6 +50,8 @@ Number of binary sensors | 160
 - Home Assistant Stream Deck
 - librespot player
 - Matter Server
+- metube
+- Mosquitto broker
 - openWakeWord
 - Piper
 - PS5 MQTT
@@ -120,6 +122,7 @@ Number of binary sensors | 160
 - [Samsungtv Tizen](https://github.com/jaruba/ha-samsungtv-tizen)
 - [Scheduler Component](https://github.com/nielsfaber/scheduler-component)
 - [Simpleicons](https://github.com/vigonotion/hass-simpleicons)
+- [Spoolman](https://github.com/Disane87/spoolman-homeassistant)
 - [Spotcast](https://github.com/fondberg/spotcast)
 - [Sun2](https://github.com/pnbruckner/ha-sun2)
 - [Temperature Feels Like](https://github.com/Limych/ha-temperature-feels-like)
@@ -155,6 +158,7 @@ Number of binary sensors | 160
 - [Energy Entity Row](https://github.com/zeronounours/lovelace-energy-entity-row)
 - [Energy Flow Card Plus](https://github.com/flixlix/energy-flow-card-plus)
 - [Energy Overview Card](https://github.com/Sese-Schneider/ha-energy-overview-card)
+- [Entity Attributes Card](https://github.com/custom-cards/entity-attributes-card)
 - [Expander Card](https://github.com/Alia5/lovelace-expander-card)
 - [Firemote Card](https://github.com/PRProd/HA-Firemote)
 - [Flex Table   Highly Customizable, Data Visualization](https://github.com/custom-cards/flex-table-card)
@@ -179,6 +183,7 @@ Number of binary sensors | 160
 - [Mushroom](https://github.com/piitaya/lovelace-mushroom)
 - [Number Box](https://github.com/htmltiger/numberbox-card)
 - [Paper Buttons Row](https://github.com/jcwillox/lovelace-paper-buttons-row)
+- [Plan Coordinates](https://github.com/custom-cards/plan-coordinates)
 - [Power Flow Card Plus](https://github.com/flixlix/power-flow-card-plus)
 - [Power Usage Card With Regular Expressions](https://github.com/DBa2016/power-usage-card-regex)
 - [Power Wheel Card](https://github.com/gurbyz/power-wheel-card)
@@ -199,9 +204,11 @@ Number of binary sensors | 160
 - [Swipe Card](https://github.com/bramkragten/swipe-card)
 - [Tabbed Card](https://github.com/kinghat/tabbed-card)
 - [Team Tracker Card](https://github.com/vasqued2/ha-teamtracker-card)
+- [Text Action Element](https://github.com/custom-cards/text-action-element)
 - [Thermal Comfort Icons](https://github.com/rautesamtr/thermal_comfort_icons)
 - [Timer Bar Card](https://github.com/rianadon/timer-bar-card)
 - [Tv Touchpad Remote Card](https://github.com/iablon/HomeAssistant-Touchpad-Card)
+- [Unused Card](https://github.com/custom-cards/unused-card)
 - [Vacuum Card](https://github.com/denysdovhan/vacuum-card)
 - [Vertical Stack In Card](https://github.com/ofekashery/vertical-stack-in-card)
 - [Wallpanel](https://github.com/j-a-n/lovelace-wallpanel)

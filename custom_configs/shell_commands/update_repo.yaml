@@ -1,2 +1,2 @@
 shell_command:
-  update_repo: "sh /config/bin/gitupdate.sh"
+  update_repo: "sh /root/config/bin/gitupdate.sh"

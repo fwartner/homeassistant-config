@@ -2062,3 +2062,121 @@
           - switch.adaptive_lighting_sleep_mode_adaptive_lighting_wohnzimmer
           - switch.adaptive_lighting_sleep_mode_adaptive_lighting_schlafzimmer
   mode: single
+- id: '1697834117670'
+  alias: Nina Alarm
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.warning_lubeck_hansestadt_1
+    to: 'on'
+    id: luebeckWarningOn1
+  - platform: state
+    entity_id:
+    - binary_sensor.warning_lubeck_hansestadt_2
+    to: 'on'
+    id: luebeckWarningOn2
+  - platform: state
+    entity_id:
+    - binary_sensor.warning_lubeck_hansestadt_3
+    to: 'on'
+    id: luebeckWarningOn3
+  - platform: state
+    entity_id:
+    - binary_sensor.warning_lubeck_hansestadt_4
+    to: 'on'
+    id: luebeckWarningOn4
+  - platform: state
+    entity_id:
+    - binary_sensor.warning_lubeck_hansestadt_5
+    to: 'on'
+    id: luebeckWarningOn5
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id:
+          - luebeckWarningOn1
+        - condition: zone
+          entity_id: person.florian
+          zone: zone.home
+      sequence:
+      - service: notify.alexa_media_echo_show_wohnzimmer
+        data:
+          title: '{{  state_attr(''binary_sensor.warning_lubeck_hansestadt_1'', ''headline'')
+            }}'
+          message: '"Es gibt eine Warnung!" {{  state_attr(''binary_sensor.warning_lubeck_hansestadt_1'',
+            ''description'') }} {{  state_attr(''binary_sensor.warning_lubeck_hansestadt_1'',
+            ''recommended_actions'') }}'
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id:
+          - luebeckWarningOn2
+        - condition: zone
+          entity_id: person.florian
+          zone: zone.home
+      sequence:
+      - service: notify.alexa_media_echo_show_wohnzimmer
+        data:
+          title: '{{  state_attr(''binary_sensor.warning_lubeck_hansestadt_2'', ''headline'')
+            }}'
+          message: '"Es gibt eine Warnung!" {{  state_attr(''binary_sensor.warning_lubeck_hansestadt_2'',
+            ''description'') }} {{  state_attr(''binary_sensor.warning_lubeck_hansestadt_2'',
+            ''recommended_actions'') }}'
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id:
+          - luebeckWarningOn3
+        - condition: zone
+          entity_id: person.florian
+          zone: zone.home
+      sequence:
+      - service: notify.alexa_media_echo_show_wohnzimmer
+        data:
+          title: '{{  state_attr(''binary_sensor.warning_lubeck_hansestadt_3'', ''headline'')
+            }}'
+          message: '"Es gibt eine Warnung!" {{  state_attr(''binary_sensor.warning_lubeck_hansestadt_3'',
+            ''description'') }} {{  state_attr(''binary_sensor.warning_lubeck_hansestadt_3'',
+            ''recommended_actions'') }}'
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id:
+          - luebeckWarningOn4
+        - condition: zone
+          entity_id: person.florian
+          zone: zone.home
+      sequence:
+      - service: notify.alexa_media_echo_show_wohnzimmer
+        data:
+          title: '{{  state_attr(''binary_sensor.warning_lubeck_hansestadt_4'', ''headline'')
+            }}'
+          message: '"Es gibt eine Warnung!" {{  state_attr(''binary_sensor.warning_lubeck_hansestadt_4'',
+            ''description'') }} {{  state_attr(''binary_sensor.warning_lubeck_hansestadt_4'',
+            ''recommended_actions'') }}'
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id:
+          - luebeckWarningOn5
+        - condition: zone
+          entity_id: person.florian
+          zone: zone.home
+      sequence:
+      - service: notify.alexa_media_echo_show_wohnzimmer
+        data:
+          title: '{{  state_attr(''binary_sensor.warning_lubeck_hansestadt_5'', ''headline'')
+            }}'
+          message: '"Es gibt eine Warnung!" {{  state_attr(''binary_sensor.warning_lubeck_hansestadt_5'',
+            ''description'') }} {{  state_attr(''binary_sensor.warning_lubeck_hansestadt_5'',
+            ''recommended_actions'') }}'
+  mode: single

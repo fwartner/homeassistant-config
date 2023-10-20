@@ -17,7 +17,7 @@ read CHANGE_MSG
 CHANGE_MSG=${CHANGE_MSG:-Minor Edit}
 git commit -m "${CHANGE_MSG}"
 echo "-----> git commit done"
-git push origin master --force
+git push origin main --force
 echo "-----> git push done"
 echo "-----> all done"
 

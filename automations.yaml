@@ -396,7 +396,7 @@
           entity_id: input_boolean.jonas_ist_da
           state: 'on'
       sequence:
-      - service: notify.alexa_media_florians_echo_show_8_2nd_gen
+      - service: notify.alexa_media_echo_show_wohnzimmer
         data:
           message: Jonas ist im Büro
     - conditions:

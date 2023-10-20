@@ -1,2 +1,2 @@
 shell_command:
-  update_repo: 'cd /root/config && git add . && git commit -am "Automatic Commit" && git pull && git push'
+  update_repo: "sh /config/bin/gitupdate.sh"

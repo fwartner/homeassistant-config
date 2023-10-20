@@ -2180,3 +2180,14 @@
             ''description'') }} {{  state_attr(''binary_sensor.warning_lubeck_hansestadt_5'',
             ''recommended_actions'') }}'
   mode: single
+- id: '1697835025566'
+  alias: Git Push
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /5
+  condition: []
+  action:
+  - service: shell_command.push_to_github
+    data: {}
+  mode: single

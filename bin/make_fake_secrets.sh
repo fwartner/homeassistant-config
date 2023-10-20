@@ -8,6 +8,7 @@
 # (see LICENSE.md or https://creativecommons.org/licenses/by-nc-sa/4.0/)
 #
 
+git config --global --add safe.directory /config
 WDIR=$(cd `dirname $0` && pwd)
 ROOT=$(dirname ${WDIR})
 SEED=$$

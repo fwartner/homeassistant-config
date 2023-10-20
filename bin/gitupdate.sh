@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 
+git config --global --add safe.directory /config
 WDIR=$(cd `dirname $0` && pwd)
 ROOT=$(dirname ${WDIR})
 

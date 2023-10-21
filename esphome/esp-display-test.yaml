@@ -5,14 +5,7 @@ esphome:
 esp32:
   board: esp32-c3-devkitm-1
   framework:
-    type: esp-idf
-    version: recommended
-    # Custom sdkconfig options
-    sdkconfig_options:
-      COMPILER_OPTIMIZATION_SIZE: y
-    # Advanced tweaking options
-    advanced:
-      ignore_efuse_mac_crc: false
+    type: arduino
 
 external_components:
   - source: github://pr#3625
@@ -41,14 +34,14 @@ wifi:
 captive_portal:
 
 spi:
-  mosi_pin: GPIO32
-  clk_pin: GPIO27
+  mosi_pin: GPIO23
+  clk_pin: GPIO18
 
 display:
 - platform: gc9a01
-  reset_pin: GPIO26
-  cs_pin: GPIO25
-  dc_pin: GPIO33
+  reset_pin: GPIO2
+  cs_pin: GPIO10
+  dc_pin: GPIO2
   rotation: 180
   lambda: |-
     it.print(0, 120, id(font), "Hello World!");

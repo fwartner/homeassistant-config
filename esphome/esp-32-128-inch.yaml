@@ -1,0 +1,40 @@
+esphome:
+  name: esp-32-128-inch
+  friendly_name: esp-32-128-inch
+
+esp32:
+  board: esp32
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "3+pPmWwkDlaMThwdPYi0U6LOkBlGQAzupsPO3U6/Rew="
+
+ota:
+  password: "0c7f59ea52f4cfdc11aa3678eb0e1b29"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+external_components:
+  - source: github://pr#3625
+    components: [ gc9a01 ]
+
+spi:
+  mosi_pin: GPIO13
+  clk_pin: GPIO14
+
+display:
+- platform: gc9a01
+  reset_pin: GPIO26
+  cs_pin: GPIO15
+  dc_pin: GPIO33
+  rotation: 180
+  lambda: |-
+      it.print(0, 120, id(font), "Hello World!");

@@ -1,0 +1,31 @@
+esphome:
+  name: esp-display-test
+  friendly_name: esp-display-test
+
+esp32:
+  board: esp32-c3-devkitm-1
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "0u1tdxWDByxXCWuDTwiSV+/ogZATO37LvUNyFZ1RhrQ="
+
+ota:
+  password: "ec09054870686b8f95635bbdf3a18a4a"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Esp-Display-Test"
+    password: "nugjz0MUNNRL"
+
+captive_portal:
+    

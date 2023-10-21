@@ -450,7 +450,7 @@
         id:
         - jonasCleanToothTimerOn
       sequence:
-      - service: notify.alexa_media_florians_4_echo_dot
+      - service: notify.alexa_media_echo_badezimmer
         data:
           message: Und los gehts! Putz deine Zähne schön gründlich. Ich sage dir Bescheid,
             wenn du fertig bist.
@@ -459,10 +459,10 @@
         id:
         - jonasCleanToothTimerOff
       sequence:
-      - service: notify.alexa_media_florians_4_echo_dot
+      - service: notify.alexa_media_echo_badezimmer
         data:
           message: Super! Du kannst die Zahnbürste jetzt saubermachen und dich ins
-            Bett legen. Schlaf gut!
+            Bett legen.     Schlaf gut!
     - conditions:
       - condition: and
         conditions:

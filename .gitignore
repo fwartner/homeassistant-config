@@ -152,5 +152,8 @@ notebooks/
 airsonos.xml
 themes/ios-*
 yamlint_errors.txt
+zigbee.db-shm
+zigbee.db-wal
+
 
 o365_storage/

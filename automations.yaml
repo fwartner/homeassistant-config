@@ -118,10 +118,10 @@
     target:
       entity_id: media_player.nest_kuche
     data:
-      media_content_id: media-source://tts/cloud?message=Vergiss+nicht+nicht%2C+die+Waschmaschine+auszur%C3%A4umen.&language=de-DE&voice=KatjaNeural
+      media_content_id: media-source://tts/cloud?message=Vergiss+nicht%2C+die+Waschmaschine+auszur%C3%A4umen.&language=de-DE&voice=KatjaNeural
       media_content_type: provider
     metadata:
-      title: Vergiss nicht nicht, die Waschmaschine auszuräumen.
+      title: Vergiss nicht, die Waschmaschine auszuräumen.
       thumbnail: https://brands.home-assistant.io/_/cloud/logo.png
       media_class: app
       children_media_class:
@@ -130,7 +130,7 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/cloud?message=Vergiss+nicht+nicht%2C+die+Waschmaschine+auszur%C3%A4umen.&language=de-DE&voice=KatjaNeural
+        media_content_id: media-source://tts/cloud?message=Vergiss+nicht%2C+die+Waschmaschine+auszur%C3%A4umen.&language=de-DE&voice=KatjaNeural
   mode: single
 - id: '1669632865548'
   alias: 'Flur: Licht an wenn Tür auf'

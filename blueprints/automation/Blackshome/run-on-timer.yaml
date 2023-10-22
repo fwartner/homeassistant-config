@@ -1,0 +1,139 @@
+blueprint:
+  name: Entity - Run ON Timer
+  description: "# ENTITY - RUN ON TIMER\nVersion: 1.4\n\nThe most common automation
+    used for a Entity Run on Timer. Select a entity so when you turn it ON the pre-set
+    time period will turn it OFF automatically.\n\nLet us know what you think of this
+    blueprint and for community support including updates: [Click Here](https://community.home-assistant.io/t/entity-run-on-timer/499217)\n\nThe
+    Automation Process:\n  - When the entity is turned ON it will then be turned OFF
+    automatically in a pre-set time period. You can have as many entities as you like.\n
+    \ - If you have multiple entities, then all the entities will turn ON automatically
+    and then turned OFF in the pre-set time period. If you turn one entity OFF the
+    other entities will remain ON until the pre-set time period turns it OFF or you
+    manually turn it OFF.\n  - If HA restarts and the entities are already ON, all
+    the entities will still turn OFF automatically starting from the restart point
+    to the end of the pre-set time period.\n\n\nNeed help? See our FAQ: [Click Here](https://community.home-assistant.io/t/entity-run-on-timer/499217)\n\n**If
+    you like my blueprints, and would like to show your support or just say thank
+    you?** [Click Here](https://www.paypal.com/donate/?hosted_button_id=WAZS3QSDTPGA8)
+    \U0001F642\n"
+  domain: automation
+  input:
+    trigger_input:
+      name: Entities
+      description: Select the entities that will be turned OFF by the below pre-set
+        time period. IF more than one entity is selected then they will turn ON &
+        OFF together automatically. You can select a switch, light, sensor, binary
+        sensor or a input boolean.
+      selector:
+        entity:
+          filter:
+          - domain:
+            - switch
+            - light
+            - sensor
+            - binary_sensor
+            - input_boolean
+          multiple: true
+    time_seconds:
+      name: Seconds
+      description: Set the delay time in seconds.
+      default: 0
+      selector:
+        number:
+          min: 0.0
+          max: 60.0
+          step: 1.0
+          unit_of_measurement: seconds
+          mode: slider
+    time_minutes:
+      name: Minutes
+      description: Set the delay time in minutes.
+      default: 0
+      selector:
+        number:
+          min: 0.0
+          max: 60.0
+          step: 1.0
+          unit_of_measurement: minutes
+          mode: slider
+    time_hours:
+      name: Hours
+      description: Set the delay time in hours.
+      default: 0
+      selector:
+        number:
+          min: 0.0
+          max: 24.0
+          step: 1.0
+          unit_of_measurement: hours
+          mode: slider
+  source_url: https://gist.github.com/Blackshome/99ac675f3189a64b11daae5ff7eafaa7
+mode: restart
+max_exceeded: silent
+variables:
+  trigger_input: !input trigger_input
+  time_seconds: !input time_seconds
+  time_minutes: !input time_minutes
+  time_hours: !input time_hours
+trigger:
+- platform: state
+  id: t1
+  entity_id: !input trigger_input
+  from: 'off'
+  to: 'on'
+- platform: homeassistant
+  id: t2
+  event: start
+condition:
+- condition: or
+  conditions:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: !input trigger_input
+      match: any
+      state: 'on'
+    - condition: trigger
+      id: t1
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: !input trigger_input
+      state: 'on'
+      match: any
+    - condition: trigger
+      id: t2
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id: t2
+    sequence:
+    - alias: Wait the number of hours that has been set
+      delay:
+        hours: !input time_hours
+    - alias: Wait the number of minutes that has been set
+      delay:
+        minutes: !input time_minutes
+    - alias: Wait the number of seconds that has been set
+      delay:
+        seconds: !input time_seconds
+    - alias: Turn OFF the entities
+      service: homeassistant.turn_off
+      entity_id: !input trigger_input
+    - stop: Stop the automation
+  default:
+  - alias: Turn ON the entities
+    service: homeassistant.turn_on
+    entity_id: !input trigger_input
+  - alias: Wait the number of hours that has been set
+    delay:
+      hours: !input time_hours
+  - alias: Wait the number of minutes that has been set
+    delay:
+      minutes: !input time_minutes
+  - alias: Wait the number of seconds that has been set
+    delay:
+      seconds: !input time_seconds
+  - alias: Turn OFF the entities
+    service: homeassistant.turn_off
+    entity_id: !input trigger_input

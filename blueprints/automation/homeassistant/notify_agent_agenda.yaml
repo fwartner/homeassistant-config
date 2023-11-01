@@ -88,9 +88,14 @@ trigger:
   at: !input notify_time
 
 condition:
-  - condition: zone
-    entity_id: person.florian
-    zone: zone.home
+  - condition: and
+    conditions:
+      - condition: zone
+        entity_id: person.florian
+        zone: zone.home
+      - condition: state
+        entity_id: sensor.iphone_von_florian_presence
+        state: wohnzimmer
 
 action:
   - variables:

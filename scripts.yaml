@@ -7,25 +7,25 @@
     target:
       entity_id: timer.3_minuten_bett
   - type: turn_on
-    device_id: 496f1ee059a80ce3be70b9a32eb69778
-    entity_id: light.bett
+    device_id: b6b786754070027222906a9b148d9241
+    entity_id: ac0700e9c97c5f8f0ae16be986b38106
     domain: light
     brightness_pct: 30
   - type: turn_off
-    device_id: 816e324d0db76f186a09970899b71f68
-    entity_id: light.decke_schlafzimmer
+    device_id: 6c73301e52dd6dcbca19086b41a34e63
+    entity_id: 9f660825ed28073a10dae2644091c8e6
     domain: light
   - type: turn_off
-    device_id: 3fec69e2d26141a480d886592ddb9b07
-    entity_id: light.stehlampe
+    device_id: fe77e96440ea5bd125bde57df02a005b
+    entity_id: c0d9fd3b4aacf9d5b5a02d67e56ab0a1
     domain: light
   - service: cover.close_cover
     data: {}
     target:
       entity_id: cover.rollos_fensterbank_schlafzimmer
   - type: turn_off
-    device_id: 2580802aa078f9f43a98c3951327a6e9
-    entity_id: switch.steckdosenleiste_schlafzimmer
+    device_id: 478b9723de0593d7ecd82df10b431d50
+    entity_id: fba8f3766a6d41db9350ef9b99cc0fa7
     domain: switch
   - service: switch.turn_off
     data: {}
@@ -35,20 +35,14 @@
     domain: lock
     entity_id: 13e37e246a79f46bf7937aca860f9ba2
     type: lock
-  - service: light.turn_off
-    data: {}
-    target:
-      entity_id:
-      - light.awtrix_wohnzimmer_matrix
-      - light.awtrix_buro_matrix
   mode: single
   icon: mdi:bed-clock
 polly_futtern:
   alias: Polly füttern
   sequence:
-  - device_id: a4c274664cb7efe6046fa12adbcc36a2
+  - device_id: 82da98e72082a3aad236de2c98b417e0
     domain: select
-    entity_id: select.aqara_futterautomat_feed
+    entity_id: aa8abbdd71aaefba52d664cdc4fa0efc
     type: select_option
     option: START
   mode: single

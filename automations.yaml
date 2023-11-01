@@ -1,20 +1,3 @@
-- id: '1666350817094'
-  alias: Taster Schreibtisch Actions
-  description: ''
-  use_blueprint:
-    path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
-    input:
-      action_sensor: sensor.aqara_taster_schlafzimmer_action
-      single_action:
-      - type: toggle
-        device_id: 900249bc412782f591b44b1dfbf6784a
-        entity_id: light.hue_go_1
-        domain: light
-      double_action:
-      - service: switch.toggle
-        data: {}
-        target:
-          entity_id: switch.steckdose_schreibtisch
 - id: '1666541360265'
   alias: Wecker
   description: ''
@@ -149,18 +132,17 @@
     after_offset: '1'
   action:
   - type: turn_on
-    device_id: d8c4a563740ad75c1264d8ea5a45f73e
-    entity_id: light.decke_flur
+    device_id: 16f338039a31465ae8192aee81da8def
+    entity_id: 4910b9f1c61f74bbd8caeda2e60701dd
     domain: light
-    brightness_pct: 40
   - delay:
       hours: 0
       minutes: 1
       seconds: 0
       milliseconds: 0
   - type: turn_off
-    device_id: d8c4a563740ad75c1264d8ea5a45f73e
-    entity_id: light.decke_flur
+    device_id: 16f338039a31465ae8192aee81da8def
+    entity_id: 4910b9f1c61f74bbd8caeda2e60701dd
     domain: light
   mode: single
 - id: '1670802573901'
@@ -172,12 +154,12 @@
       action_sensor: sensor.aqara_taster_schlafzimmer_action
       double_action:
       - type: turn_on
-        device_id: 969bcb84da5527d41edf70f3c7cb80a5
-        entity_id: switch.steckdose_bett
+        device_id: 36a22733000aafdf6981ae28050acce6
+        entity_id: 9f3df5bcd72d18271a9c756a3e74a615
         domain: switch
       - type: turn_on
-        device_id: 1b7c5895c9f406690baac9b141e2bbc0
-        entity_id: switch.steckdose_tv_schlafzimmer
+        device_id: 3f3b82e0e25c8dae98f62ab1589ba2ca
+        entity_id: 7f3a644d010f80177ccd87f3d8915a5a
         domain: switch
       - service: script.3_minuten_bettzeit
         data: {}
@@ -615,23 +597,6 @@
       - input_boolean.putzen_wohnzimmer
       - input_boolean.putzen_schlafzimmer
   mode: single
-- id: '1683574762848'
-  alias: Schalter Schreibtisch Actions
-  description: ''
-  use_blueprint:
-    path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
-    input:
-      action_sensor: sensor.aqara_taster_schreibtisch_action
-      single_action:
-      - type: toggle
-        device_id: 900249bc412782f591b44b1dfbf6784a
-        entity_id: light.hue_go_1
-        domain: light
-      double_action:
-      - type: toggle
-        device_id: aaad1ea70b31b2d4cdd44583712720b2
-        entity_id: switch.steckdose_schreibtisch
-        domain: switch
 - id: '1683574940325'
   alias: Taster Schlafzimmer Actions
   description: ''
@@ -644,42 +609,6 @@
         data: {}
         target:
           entity_id: script.3_minuten_bettzeit
-- id: '1683577550606'
-  alias: Taster Badezimmer Actions
-  description: ''
-  use_blueprint:
-    path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
-    input:
-      action_sensor: sensor.aqara_taster_badezimmer_action
-      single_action:
-      - type: turn_on
-        device_id: 31cea6ff31b5a821a4fa741d0c987b4d
-        entity_id: switch.steckdose_badezimmer
-        domain: switch
-      - if:
-        - condition: device
-          type: is_on
-          device_id: 31cea6ff31b5a821a4fa741d0c987b4d
-          entity_id: switch.steckdose_badezimmer
-          domain: switch
-        then:
-        - delay:
-            hours: 0
-            minutes: 0
-            seconds: 10
-            milliseconds: 0
-        - service: media_player.play_media
-          target:
-            entity_id: media_player.owntone_output_badezimmer
-          data:
-            media_content_id: https://open.spotify.com/playlist/37i9dQZF1DWSWyJydK4fTU?si=d94fdd0a09d24319
-            media_content_type: playlist
-          metadata: {}
-      double_action:
-      - type: turn_off
-        device_id: 31cea6ff31b5a821a4fa741d0c987b4d
-        entity_id: switch.steckdose_badezimmer
-        domain: switch
 - id: '1684923867295'
   alias: Taster Futterautomat Füttern
   description: ''
@@ -689,9 +618,9 @@
     - sensor.ikea_taster_futterautomat_action
   condition: []
   action:
-  - device_id: a4c274664cb7efe6046fa12adbcc36a2
+  - device_id: 82da98e72082a3aad236de2c98b417e0
     domain: select
-    entity_id: select.aqara_futterautomat_feed
+    entity_id: aa8abbdd71aaefba52d664cdc4fa0efc
     type: select_option
     option: START
   mode: single
@@ -1554,9 +1483,9 @@
         id:
         - feedTimeCronOn
       sequence:
-      - device_id: a4c274664cb7efe6046fa12adbcc36a2
+      - device_id: 82da98e72082a3aad236de2c98b417e0
         domain: select
-        entity_id: select.aqara_futterautomat_feed
+        entity_id: aa8abbdd71aaefba52d664cdc4fa0efc
         type: select_option
         option: START
   mode: single

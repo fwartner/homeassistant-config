@@ -207,7 +207,7 @@ async def _async_setup_register_services(hass, update_supported):
 class O365CalendarEntity(CalendarEntity):
     """O365 Calendar Event Processing."""
 
-    _unrecorded_attributes = frozenset((ATTR_DATA,))
+    _unrecorded_attributes = frozenset((ATTR_DATA, ATTR_COLOR, ATTR_HEX_COLOR))
 
     def __init__(
         self,
@@ -242,7 +242,6 @@ class O365CalendarEntity(CalendarEntity):
         max_results = entity.get(CONF_MAX_RESULTS)
         search = entity.get(CONF_SEARCH)
         exclude = entity.get(CONF_EXCLUDE)
-        # _LOGGER.debug("Initialising calendar: %s", calendar_id)
         return O365CalendarData(
             account,
             self.entity_id,

@@ -597,18 +597,6 @@
       - input_boolean.putzen_wohnzimmer
       - input_boolean.putzen_schlafzimmer
   mode: single
-- id: '1683574940325'
-  alias: Taster Schlafzimmer Actions
-  description: ''
-  use_blueprint:
-    path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
-    input:
-      action_sensor: sensor.aqara_taster_schlafzimmer_action
-      double_action:
-      - service: script.turn_on
-        data: {}
-        target:
-          entity_id: script.3_minuten_bettzeit
 - id: '1684923867295'
   alias: Taster Futterautomat Füttern
   description: ''
@@ -1342,7 +1330,7 @@
     for:
       hours: 0
       minutes: 0
-      seconds: 5
+      seconds: 2
     id: doorOpenOn
   - platform: state
     entity_id:
@@ -1397,6 +1385,19 @@
         data: {}
         target:
           entity_id: media_player.sonos_ray
+    - conditions:
+      - condition: trigger
+        id:
+        - doorOpenOn
+      - condition: template
+        value_template: '{{ (as_timestamp(now()) - as_timestamp(states.device_tracker.iphone_von_florian_app.last_changed))
+          < 10 }}'
+      sequence:
+      - service: notify.alexa_media_echo_schlafzimmer
+        data:
+          message: '{{ [ ''Willkommen Zurück!'', ''Willkommen Zuhause.'', ''Da biste
+            ja wieder!'', ''Na, auch mal wieder da?'', ''Ach, kommst du auch mal wieder?'',
+            ] | random }}'
   mode: single
 - id: '1691769668517'
   alias: 'Jonas: Zähneputzen Starten'
@@ -1461,27 +1462,19 @@
   alias: Futterautomat
   description: ''
   trigger:
-  - platform: time_pattern
-    hours: /4
-    id: feedTimeCronOn
-  condition:
-  - condition: time
-    after: 07:30:00
-    before: '22:30:00'
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-    - sat
-    - sun
+  - platform: state
+    entity_id:
+    - calendar.polly
+    from: 'off'
+    to: 'on'
+    id: pollyFeedCalendarOn
+  condition: []
   action:
   - choose:
     - conditions:
       - condition: trigger
         id:
-        - feedTimeCronOn
+        - pollyFeedCalendarOn
       sequence:
       - device_id: 82da98e72082a3aad236de2c98b417e0
         domain: select

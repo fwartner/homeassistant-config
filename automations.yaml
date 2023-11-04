@@ -1465,9 +1465,8 @@
   - platform: state
     entity_id:
     - calendar.polly
-    from: 'off'
-    to: 'on'
     id: pollyFeedCalendarOn
+    attribute: start_time
   condition: []
   action:
   - choose:

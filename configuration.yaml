@@ -1,6 +1,8 @@
 homeassistant:
   packages: !include_dir_named packages
   legacy_templates: false
+  allowlist_external_dirs:
+    - /config/
 
 script: !include scripts.yaml
 scene: !include scenes.yaml

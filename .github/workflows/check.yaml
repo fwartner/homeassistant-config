@@ -1,4 +1,4 @@
-name: Check
+name: Configuration Check
 on: [push, pull_request]
 jobs:
   home-assistant:

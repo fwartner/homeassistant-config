@@ -1,3 +1,5 @@
 #!/bin/bash
 
-sh ./bin/gitupdate.sh
+./bin/yamllint.sh
+./bin/make_fake_secrets.sh
+python3 bin/commit_updates.py

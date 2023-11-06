@@ -1,4 +1,4 @@
 shell_command:
-  gen_fakesecrets: "bash /config/bin/make_fake_secrets.sh"
-  push_to_github: "cd /config && sh /bin/ha_gitpush.sh"
-  ping_website: "ping wartner.io"
+  gen_fakesecrets: bash /config/bin/make_fake_secrets.sh
+  push_to_github: "bash /config/bin/ha_gitpush.sh"
+  run_chores: "bash /config/chores"

@@ -2138,3 +2138,246 @@
         minutes: 0
         seconds: 0
       notify_time: 08:30:00
+- id: notifications_updates_available
+  alias: '[Notifications] Updates Available'
+  description: ''
+  trigger:
+  - platform: time_pattern
+    hours: /3
+  - platform: state
+    entity_id:
+    - update.home_assistant_core_update
+    to: 'on'
+  - platform: state
+    entity_id:
+    - update.home_assistant_operating_system_update
+    to: 'on'
+  - platform: state
+    entity_id:
+    - update.hacs_update
+    to: 'on'
+  condition:
+  - condition: time
+    after: 06:00:00
+    before: '20:00:00'
+  action:
+  - service: notify.alert
+    data:
+      title: Updates Available
+      message: "{%- for upd in states.update %} {%- set ignore = ['unknown', 'unavailable',
+        'none', '']  %} {%- if upd.state == 'on' and\n      state_attr(upd.entity_id,
+        'latest_version') is defined and\n      state_attr(upd.entity_id, 'installed_version')
+        is defined and\n      state_attr(upd.entity_id, 'latest_version') is not in
+        ignore %}\n{%- if is_state_attr(upd.entity_id, 'display_icon', 'mdi:docker')
+        %} {%- set name = state_attr(upd.entity_id, 'display_name') + \" (\" + state_attr(upd.entity_id,
+        'watcher') + \")\" %} {%- else %} {%- set name = iif(state_attr(upd.entity_id,
+        'title') == \"null\", state_attr(upd.entity_id, 'title'), state_attr(upd.entity_id,
+        'friendly_name')) %} {%- endif %} - {{name}}: {{state_attr(upd.entity_id,
+        'installed_version')}} -> {{state_attr(upd.entity_id, 'latest_version')}}
+        {% endif %} {%- endfor %}"
+      data:
+        tag: updates_available
+        notification_id: updates_available
+        push:
+          badge: 1
+          sound: none
+          interruption-level: time-sensitive
+        presentation_options:
+        - alert
+        - badge
+        group: alerts
+        actions:
+        - title: Pause Alert
+          action: pause_alert_updates_available
+  - service: persistent_notification.create
+    data:
+      notification_id: update-alert
+      title: Updates Available
+      message: "{%- for upd in states.update %} {%- set ignore = ['unknown', 'unavailable',
+        'none', '']  %} {%- if upd.state == 'on' and\n      state_attr(upd.entity_id,
+        'latest_version') is defined and\n      state_attr(upd.entity_id, 'installed_version')
+        is defined and\n      state_attr(upd.entity_id, 'latest_version') is not in
+        ignore %}\n{%- if is_state_attr(upd.entity_id, 'display_icon', 'mdi:docker')
+        %} {%- set name = state_attr(upd.entity_id, 'display_name') + \" (\" + state_attr(upd.entity_id,
+        'watcher') + \")\" %} {%- else %} {%- set name = iif(state_attr(upd.entity_id,
+        'title') == \"null\", state_attr(upd.entity_id, 'title'), state_attr(upd.entity_id,
+        'friendly_name')) %} {%- endif %} - {{name}}: {{state_attr(upd.entity_id,
+        'installed_version')}} -> {{state_attr(upd.entity_id, 'latest_version')}}
+        {% endif %} {%- endfor %}"
+  mode: single
+- id: notifications_updates_available
+  alias: '[Notifications] Updates Available'
+  description: ''
+  trigger:
+  - platform: time_pattern
+    hours: /3
+  - platform: state
+    entity_id:
+    - update.home_assistant_core_update
+    to:
+  - platform: state
+    entity_id:
+    - update.home_assistant_operating_system_update
+    to:
+  - platform: state
+    entity_id:
+    - update.hacs_update
+    to: 'on'
+  condition:
+  - condition: time
+    after: 06:00:00
+    before: '20:00:00'
+  action:
+  - service: notify.alert
+    data:
+      title: Updates Available
+      message: "{%- for upd in states.update %} {%- set ignore = ['unknown', 'unavailable',
+        'none', '']  %} {%- if upd.state == 'on' and\n      state_attr(upd.entity_id,
+        'latest_version') is defined and\n      state_attr(upd.entity_id, 'installed_version')
+        is defined and\n      state_attr(upd.entity_id, 'latest_version') is not in
+        ignore %}\n{%- if is_state_attr(upd.entity_id, 'display_icon', 'mdi:docker')
+        %} {%- set name = state_attr(upd.entity_id, 'display_name') + \" (\" + state_attr(upd.entity_id,
+        'watcher') + \")\" %} {%- else %} {%- set name = iif(state_attr(upd.entity_id,
+        'title') == \"null\", state_attr(upd.entity_id, 'title'), state_attr(upd.entity_id,
+        'friendly_name')) %} {%- endif %} - {{name}}: {{state_attr(upd.entity_id,
+        'installed_version')}} -> {{state_attr(upd.entity_id, 'latest_version')}}
+        {% endif %} {%- endfor %}"
+      data:
+        tag: updates_available
+        notification_id: updates_available
+        push:
+          badge: 1
+          sound: none
+          interruption-level: time-sensitive
+        presentation_options:
+        - alert
+        - badge
+        group: alerts
+        actions:
+        - title: Pause Alert
+          action: pause_alert_updates_available
+  - service: persistent_notification.create
+    data:
+      notification_id: update-alert
+      title: Updates Available
+      message: "{%- for upd in states.update %} {%- set ignore = ['unknown', 'unavailable',
+        'none', '']  %} {%- if upd.state == 'on' and\n      state_attr(upd.entity_id,
+        'latest_version') is defined and\n      state_attr(upd.entity_id, 'installed_version')
+        is defined and\n      state_attr(upd.entity_id, 'latest_version') is not in
+        ignore %}\n{%- if is_state_attr(upd.entity_id, 'display_icon', 'mdi:docker')
+        %} {%- set name = state_attr(upd.entity_id, 'display_name') + \" (\" + state_attr(upd.entity_id,
+        'watcher') + \")\" %} {%- else %} {%- set name = iif(state_attr(upd.entity_id,
+        'title') == \"null\", state_attr(upd.entity_id, 'title'), state_attr(upd.entity_id,
+        'friendly_name')) %} {%- endif %} - {{name}}: {{state_attr(upd.entity_id,
+        'installed_version')}} -> {{state_attr(upd.entity_id, 'latest_version')}}
+        {% endif %} {%- endfor %}"
+  mode: single
+- id: notifications_updates_available
+  alias: '[Notifications] Updates Available'
+  description: ''
+  trigger:
+  - platform: time_pattern
+    hours: /3
+  - platform: state
+    entity_id:
+    - update.home_assistant_core_update
+    to:
+  - platform: state
+    entity_id:
+    - update.home_assistant_operating_system_update
+    to:
+  - platform: state
+    entity_id:
+    - update.hacs_update
+    to: 'on'
+  condition:
+  - condition: time
+    after: 06:00:00
+    before: '20:00:00'
+  action:
+  - service: notify.alert
+    data:
+      title: Updates Available
+      message: "{%- for upd in states.update %} {%- set ignore = ['unknown', 'unavailable',
+        'none', '']  %} {%- if upd.state == 'on' and\n      state_attr(upd.entity_id,
+        'latest_version') is defined and\n      state_attr(upd.entity_id, 'installed_version')
+        is defined and\n      state_attr(upd.entity_id, 'latest_version') is not in
+        ignore %}\n{%- if is_state_attr(upd.entity_id, 'display_icon', 'mdi:docker')
+        %} {%- set name = state_attr(upd.entity_id, 'display_name') + \" (\" + state_attr(upd.entity_id,
+        'watcher') + \")\" %} {%- else %} {%- set name = iif(state_attr(upd.entity_id,
+        'title') == \"null\", state_attr(upd.entity_id, 'title'), state_attr(upd.entity_id,
+        'friendly_name')) %} {%- endif %} - {{name}}: {{state_attr(upd.entity_id,
+        'installed_version')}} -> {{state_attr(upd.entity_id, 'latest_version')}}
+        {% endif %} {%- endfor %}"
+      data:
+        tag: updates_available
+        notification_id: updates_available
+        push:
+          badge: 1
+          sound: none
+          interruption-level: time-sensitive
+        presentation_options:
+        - alert
+        - badge
+        group: alerts
+        actions:
+        - title: Pause Alert
+          action: pause_alert_updates_available
+  - service: persistent_notification.create
+    data:
+      notification_id: update-alert
+      title: Updates Available
+      message: "{%- for upd in states.update %} {%- set ignore = ['unknown', 'unavailable',
+        'none', '']  %} {%- if upd.state == 'on' and\n      state_attr(upd.entity_id,
+        'latest_version') is defined and\n      state_attr(upd.entity_id, 'installed_version')
+        is defined and\n      state_attr(upd.entity_id, 'latest_version') is not in
+        ignore %}\n{%- if is_state_attr(upd.entity_id, 'display_icon', 'mdi:docker')
+        %} {%- set name = state_attr(upd.entity_id, 'display_name') + \" (\" + state_attr(upd.entity_id,
+        'watcher') + \")\" %} {%- else %} {%- set name = iif(state_attr(upd.entity_id,
+        'title') == \"null\", state_attr(upd.entity_id, 'title'), state_attr(upd.entity_id,
+        'friendly_name')) %} {%- endif %} - {{name}}: {{state_attr(upd.entity_id,
+        'installed_version')}} -> {{state_attr(upd.entity_id, 'latest_version')}}
+        {% endif %} {%- endfor %}"
+  mode: single
+- id: a7c427e6-ce03-49eb-9a23-c5bbe7625aa4
+  alias: Admin - Generate README.md
+  description: ''
+  trigger:
+  - platform: time
+    at: 05:00:00
+  condition: []
+  action:
+  - service: readme.generate
+  initial_state: true
+- id: '1699266237959'
+  alias: 'Admin: Run Chores'
+  description: Run shell and Python scripts in utils folder.
+  trigger:
+    platform: time_pattern
+    hours: /3
+  action:
+    service: shell_command.run_chores
+- id: '1699266256067'
+  alias: Python Script - Update ha_overview
+  description: ''
+  trigger:
+  - event: start
+    platform: homeassistant
+  - platform: time_pattern
+    minutes: /30
+  action:
+  - service: python_script.ha_overview
+- id: 669e9cda-a9ba-484d-a715-53864fc0d61c
+  alias: Admin - Run Watchman (Daily)
+  description: ''
+  trigger:
+  - platform: time_pattern
+    hours: '3'
+  condition: []
+  action:
+  - service: watchman.report
+    data:
+      create_file: true
+      send_notification: false
+      parse_config: true
+  initial_state: true

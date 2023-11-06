@@ -154,6 +154,7 @@ themes/ios-*
 yamlint_errors.txt
 zigbee.db-shm
 zigbee.db-wal
+.shopping_list.json
 
 
 o365_storage/

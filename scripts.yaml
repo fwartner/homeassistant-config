@@ -140,3 +140,122 @@ speedtest_awtrix_wohnzimmer:
         textOffset: 33
   mode: single
   icon: mdi:speedometer
+'1699263812322':
+  alias: Store MQTT Sensor
+  description: Stores data in a MQTT message.
+  icon: mdi:message-bookmark
+  mode: parallel
+  fields:
+    name:
+      name: MQTT Name
+      example: last_message
+      required: true
+      selector:
+        text:
+    state:
+      name: State
+      example: some state
+      required: true
+      selector:
+        text:
+    attributes:
+      name: Attributes
+      example: attributes
+      selector:
+        text:
+          multiline: true
+  sequence:
+  - parallel:
+    - service: mqtt.publish
+      data:
+        topic: custom/sensor/{{ name }}/state
+        payload: '{{ state | striptags | truncate(250) }}'
+        retain: true
+    - if:
+      - condition: template
+        value_template: '{{ attributes != "" }}'
+      then:
+      - service: mqtt.publish
+        data:
+          topic: custom/sensor/{{ name }}/attributes
+          payload: '{{ attributes | default("none") }}'
+          retain: true
+'1699263855216':
+  alias: '[Zigbee2MQTT] Restart'
+  sequence:
+  - service: mqtt.publish
+    data:
+      topic: zigbee2mqtt/bridge/request/restart
+'1699263879066':
+  alias: '[HA] Purge Database'
+  description: Purge Database
+  icon: mdi:delete-sweep
+  sequence:
+  - service: recorder.purge
+    data:
+      keep_days: 0
+      repack: 'true'
+'1699263899938':
+  alias: '[Network] Run Speedtest'
+  max_exceeded: silent
+  sequence:
+  - service: homeassistant.update_entity
+    target:
+      entity_id:
+      - sensor.speedtest_download
+      - sensor.fast_com_download
+    data: {}
+'1699263944338':
+  alias: '[Alerts] Disable Alerts'
+  description: Disable Alerts
+  icon: mdi:alert
+  sequence:
+  - service: alert.turn_on
+    target:
+      entity_id: '{{ states.alert|selectattr(''state'',''eq'',''on'')|map(attribute=''entity_id'')|list
+        }}'
+'1699263958530':
+  alias: '[Alerts] Reset Alerts'
+  description: Turn on all disabled alerts
+  icon: mdi:alert
+  sequence:
+  - service: alert.turn_on
+    target:
+      entity_id: '{{ states.alert|selectattr(''state'',''eq'',''off'')|map(attribute=''entity_id'')|list
+        }}'
+'1699263995171':
+  alias: '[Apple TV] Power Schlafzimmer'
+  mode: single
+  sequence:
+  - service: remote.send_command
+    data:
+      delay_secs: 1
+      command:
+      - home_hold
+      - select
+    target:
+      entity_id:
+      - remote.apple_tv_schlafzimmer
+  - service: media_player.toggle
+    data: {}
+    target:
+      entity_id:
+      - media_player.apple_tv_schlafzimmer
+  icon: si:appletv
+power_wohnzimmer:
+  alias: '[Apple TV] Power Wohnzimmer'
+  sequence:
+  - service: remote.send_command
+    data:
+      delay_secs: 1
+      command:
+      - home_hold
+      - select
+    target:
+      entity_id: remote.apple_tv_wohnzimmer
+  - service: media_player.toggle
+    data: {}
+    target:
+      entity_id: media_player.apple_tv_wohnzimmer
+  mode: single
+  icon: si:appletv

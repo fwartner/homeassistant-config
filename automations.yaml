@@ -2225,6 +2225,8 @@
   - platform: time_pattern
     hours: /1
   action:
+  - service: readme.generate
+    data: {}
   - service: shell_command.run_chores
     data: {}
 - id: 669e9cda-a9ba-484d-a715-53864fc0d61c

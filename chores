@@ -1,4 +1,4 @@
 #!/bin/bash
 
 ./bin/make_fake_secrets.sh
-python3 bin/commit_updates.py
+./bin/ha_gitpush.sh

@@ -259,3 +259,10 @@ power_wohnzimmer:
       entity_id: media_player.apple_tv_wohnzimmer
   mode: single
   icon: si:appletv
+run_chores:
+  alias: Run Chores
+  sequence:
+  - service: shell_command.run_chores
+    data: {}
+  mode: single
+  icon: mdi:broom

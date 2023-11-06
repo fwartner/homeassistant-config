@@ -2371,3 +2371,14 @@
       send_notification: false
       parse_config: true
   initial_state: true
+- id: '1699267746889'
+  alias: '[Home Assistant] Restart Chores'
+  description: ''
+  trigger:
+  - platform: homeassistant
+    event: start
+  condition: []
+  action:
+  - service: shell_command.run_chores
+    data: {}
+  mode: single

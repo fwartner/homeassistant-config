@@ -15,7 +15,7 @@ group: !include_dir_merge_list custom_configs/groups/
 template: !include_dir_merge_list custom_configs/templates/
 binary_sensor: !include_dir_merge_list custom_configs/devices/binary_sensors/
 homekit: !include_dir_merge_list custom_configs/homekit/
-telegram_bot: !include_dir_merge_list custom_configs/telegram_bot/
+#telegram_bot: !include_dir_merge_list custom_configs/telegram_bot/
 proximity: !include_dir_merge_list custom_configs/proximity/
 rest: !include_dir_merge_list custom_configs/rest/
 switch: !include_dir_merge_list custom_configs/devices/switches/

@@ -18,8 +18,8 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2235
-Number of sensors | 1332
+Number of entities | 2299
+Number of sensors | 1385
 Number of automations | 59
 Number of scripts | 18
 Number of scenes | 26
@@ -113,6 +113,7 @@ Number of binary sensors | 167
 - [Samsungtv Tizen](https://github.com/jaruba/ha-samsungtv-tizen)
 - [Scheduler Component](https://github.com/nielsfaber/scheduler-component)
 - [Simpleicons](https://github.com/vigonotion/hass-simpleicons)
+- [Spook 👻 Not Your Homie](https://github.com/frenck/spook)
 - [Spoolman](https://github.com/Disane87/spoolman-homeassistant)
 - [Spotcast](https://github.com/fondberg/spotcast)
 - [Sun2](https://github.com/pnbruckner/ha-sun2)

@@ -1,0 +1,291 @@
+{
+    "config": {
+        "abort": {
+            "already_spooked": "Ouais... bon... non. Ok, merci, au revoir !"
+        },
+        "step": {
+            "user": {
+                "description": "Avez-vous lu la documentation ? Avez-vous lu la licence ? Êtes-vous vraiment sûr ?"
+            },
+            "choice_restart": {
+                "menu_options": {
+                    "restart_later": "Redémarrer plus tard",
+                    "restart_now": "Redémarrer maintenant"
+                },
+                "description": "Home Assistant doit être redémarrer, afin de terminer la configuration de Spook.\n\nVoulez-vous redémarrer Home Assistant maintenant?"
+            }
+        }
+    },
+    "issues": {
+        "automation_unknown_area_references": {
+            "title": "Pièces inconnues utilisées dans: {automation}",
+            "description": "Spook a trouvé un fantôme dans vos automatisations 👻\n\nEn flottant dans les parages, Spook est tombé sur l'automatisation suivante :\n\n[{automation}]({edit}) (`{entity_id}`)\n\nCette automatisation fait référence aux pièces suivantes, qui sont inconnues de Home Assistant :\n\n{areas}\n\n\n\nPour résoudre cette erreur, [modifiez l'automatisation]({edit}) et supprimez l'utilisation de ces pièces inexistantes.\n\nSpook 👻 Pas votre ami."
+        },
+        "automation_unknown_device_references": {
+            "title": "Appareils inconnus utilisés dans : {automation}",
+            "description": "Spook a trouvé un fantôme dans vos automatisations 👻\n\nEn flottant dans les parages, Spook est tombé sur l'automatisation suivante :\n\n[{automation}]({edit}) (`{entity_id}`)\n\nCette automatisation fait référence aux appareils suivants, qui sont inconnus de Home Assistant :\n\n{devices}\n\n\n\nPour résoudre cette erreur, [modifiez l'automatisation]({edit}) et supprimez l'utilisation de ces appareils inexistants.\n\nSpook 👻 Pas votre ami."
+        },
+        "automation_unknown_entity_references": {
+            "title": "Entités inconnues utilisées dans : {automation}",
+            "description": "Spook a trouvé un fantôme dans vos automatisations 👻\n\nEn flottant dans les parages, Spook est tombé sur l'automatisation suivante :\n\n[{automation}]({edit}) (`{entity_id}`)\n\nCette automatisation fait référence aux entitiés suivantes, qui sont inconnues de Home Assistant :\n\n{entities}\n\n\n\nPour résoudre cette erreur, [modifiez l'automatisation]({edit}) et supprimez l'utilisation de ces entités inexistantes.\n\nSpook 👻 Pas votre ami."
+        },
+        "group_unknown_members": {
+            "title": "Membres de groupe inconnus dans : {group}",
+            "description": "Spook a trouvé un fantôme dans vos groupes 👻\n\nEn flottant dans les parages, Spook est tombé sur le groupe suivant :\n\n{group} (`{entity_id}`)\n\nCe groupe possède des membres qui ne sont pas connus de Home Assistant :\n\n{entities}\n\n\n\nPour corriger cette erreur, modifiez le groupe, supprimez l'utilisation de ces entités inexistantes et redémarrez Home Assistant.\n\nSpook 👻 Pas votre ami."
+        },
+        "integration_unknown_source": {
+            "title": "Source inconnue : {helper}",
+            "description": "Spook a trouvé un fantôme dans vos entrées Intégrale de Riemann 👻\n\nEn flottant dans les parages, Spook est tombé sur l'entrée suivante :\n\n{helper} (`{entity_id}`)\n\nCette entrée possède une entité source inconnue de Home Assistant :\n\n`{source}`\n\n\n\nPour corriger cette erreur, modifiez l'entrée et ajustez l'entité source (ou supprimez l'entrée) et redémarrez Home Assistant.\n\nSpook 👻 Pas votre ami."
+        },
+        "lovelace_unknown_entity_references": {
+            "title": "Entités inconnues utilisées dans: {dashboard}",
+            "description": "Spook a trouvé un fantôme dans vos tableaux de bord 👻\n\nEn flottant dans les parages, Spook est tombé sur le tableau de bord suivant :\n\n[{dashboard}]({edit})\n\nCe tableau de bord fait référence aux entitiés suivantes, qui sont inconnues de Home Assistant:\n\n{entities}\n\n\n\nPour résoudre cette erreur, [modifiez le tableau de bord]({edit}) et supprimez l'utilisation de ces entités inexistantes.\n\nSpook 👻 Pas votre ami."
+        },
+        "script_unknown_area_references": {
+            "title": "Pièces inconnues utilisées dans: {script}",
+            "description": "Spook a trouvé un fantôme dans vos scripts 👻\n\nEn flottant dans les parages, Spook est tombé sur le script suivant :\n\n[{script}]({edit}) (`{entity_id}`)\n\nCe script fait référence aux pièces suivantes, qui sont inconnues de Home Assistant :\n\n{areas}\n\n\n\nPour résoudre cette erreur, [modifiez le script]({edit}) et supprimez l'utilisation de ces pièces inexistantes.\n\nSpook 👻 Pas votre ami."
+        },
+        "script_unknown_device_references": {
+            "title": "Appareils  inconnus utilisés dans: {script}",
+            "description": "Spook a trouvé un fantôme dans vos scripts 👻\n\nEn flottant dans les parages, Spook est tombé sur le script suivant :\n\n[{script}]({edit}) (`{entity_id}`)\n\nCe script fait référence aux appareils suivants, qui sont inconnus de Home Assistant :\n\n{devices}\n\n\n\nPour résoudre cette erreur, [modifiez le script]({edit}) et supprimez l'utilisation de ces appareils inexistants.\n\nSpook 👻 Pas votre ami."
+        },
+        "script_unknown_entity_references": {
+            "title": "Entités inconnues utilisées dans : {script}",
+            "description": "Spook a trouvé un fantôme dans vos scripts 👻\n\nEn flottant dans les parages, Spook est tombé sur le script suivant :\n\n[{script}]({edit}) (`{entity_id}`)\n\nCe script fait référence aux entitiés suivantes, qui sont inconnues de Home Assistant :\n\n{entities}\n\n\n\nPour résoudre cette erreur, [modifiez le script]({edit}) et supprimez l'utilisation de ces entités inexistantes.\n\nSpook 👻 Pas votre ami."
+        },
+        "switch_as_x_unknown_source": {
+            "title": "Unknown source: {helper}",
+            "description": "Spook a trouvé un fantôme dans vos entrées Interrupteur comme X 👻\n\nEn flottant dans les parages, Spook est tombé sur l'entrée suivante :\n\n{helper} (`{entity_id}`)\n\nCette entrée possède une entité source inconnue de Home Assistant :\n\n`{source}`\n\n\n\nPour corriger cette erreur, modifiez l'entrée et ajustez l'entité source (ou supprimez l'entrée) et redémarrez Home Assistant.\n\nSpook 👻 Pas votre ami."
+        },
+        "user_issue": {
+            "fix_flow": {
+                "step": {
+                    "confirm": {
+                        "description": "[description]",
+                        "title": "{title}"
+                    }
+                }
+            },
+            "title": "{title}"
+        },
+        "restart_required": {
+            "fix_flow": {
+                "step": {
+                    "confirm_restart": {
+                        "description": "Home Assistant doit être redémarré, afin de finaliser la configuration de Spook 👻.\n\nSélectionner Soumettre pour redémarrer Home Assistant maintenant.",
+                        "title": "Restart nécessaire"
+                    }
+                }
+            },
+            "title": "Restart nécessaire"
+        },
+        "scene_unknown_entity_references": {
+            "description": "Spook a trouvé un fantôme dans vos scenes👻\n\nEn flottant dans les parages, Spook est tombé sur la scene suivante :\n\n[{scene}]({edit})\n\nCette automatisation fait référence aux entitées suivantes, qui sont inconnues de Home Assistant :\n\n{entities}\n\n\nPour résoudre cette erreur, [modifiez la scene]({edit}) et supprimez l'utilisation de ces entitées inexistantes.\n\nSpook 👻 Pas votre ami.",
+            "title": "Entités inconnues utilisées dans :{scene}"
+        }
+    },
+    "entity": {
+        "sensor": {
+            "homeassistant_air_quality": {
+                "name": "Qualité de l'air"
+            },
+            "homeassistant_button": {
+                "name": "Boutons"
+            },
+            "homeassistant_calendar": {
+                "name": "Calendriers"
+            },
+            "homeassistant_camera": {
+                "name": "Caméras"
+            },
+            "homeassistant_entities": {
+                "name": "Entitées"
+            },
+            "homeassistant_input_button": {
+                "name": "Boutons d'entrées"
+            },
+            "homeassistant_alarm_control_panel": {
+                "name": "Panneaux de contrôle d'alarme"
+            },
+            "homeassistant_area": {
+                "name": "Pièces"
+            },
+            "homeassistant_automation": {
+                "name": "Automatisations"
+            },
+            "homeassistant_climate": {
+                "name": "Thermostat"
+            },
+            "homeassistant_cover": {
+                "name": "Volets"
+            },
+            "homeassistant_fan": {
+                "name": "Ventilateurs"
+            },
+            "repairs_ignored_issues": {
+                "name": "Ignoré"
+            },
+            "homeassistant_input_datetime": {
+                "name": "Entrées de date/heures"
+            },
+            "homeassistant_custom_component": {
+                "name": "Intégrations personnalisées"
+            },
+            "homeassistant_date": {
+                "name": "Dates"
+            },
+            "homeassistant_datetime": {
+                "name": "Date/heures"
+            },
+            "homeassistant_device": {
+                "name": "Appareils"
+            },
+            "homeassistant_binary_sensor": {
+                "name": "Capteurs booléens"
+            },
+            "homeassistant_device_tracker": {
+                "name": "Traceurs d'appareils"
+            },
+            "homeassistant_humidifier": {
+                "name": "Humidificateurs"
+            },
+            "homeassistant_image": {
+                "name": "Images"
+            },
+            "homeassistant_input_boolean": {
+                "name": "Entrées booléennes"
+            },
+            "homeassistant_input_select": {
+                "name": "Entrées de sélections"
+            },
+            "homeassistant_input_text": {
+                "name": "Entrées textes"
+            },
+            "repairs_active_issues": {
+                "name": "Actif"
+            },
+            "homeassistant_input_number": {
+                "name": "Entrées numériques"
+            },
+            "homeassistant_siren": {
+                "name": "Sirens"
+            },
+            "homeassistant_water_heater": {
+                "name": "Chaudières à eau"
+            },
+            "homeassistant_light": {
+                "name": "Lumières"
+            },
+            "homeassistant_number": {
+                "name": "Nombres"
+            },
+            "homeassistant_switch": {
+                "name": "Interrupteurs"
+            },
+            "homeassistant_tts": {
+                "name": "Text-to-speech"
+            },
+            "homeassistant_text": {
+                "name": "Textes"
+            },
+            "homeassistant_script": {
+                "name": "Scripts"
+            },
+            "homeassistant_sensor": {
+                "name": "Senseurs"
+            },
+            "homeassistant_update": {
+                "name": "Mise à jour"
+            },
+            "homeassistant_persistent_notification": {
+                "name": "Notifications persistantes"
+            },
+            "homeassistant_weather": {
+                "name": "Météo"
+            },
+            "homeassistant_sun": {
+                "name": "Suns"
+            },
+            "homeassistant_person": {
+                "name": "Personnes"
+            },
+            "homeassistant_stt": {
+                "name": "Discours à texte"
+            },
+            "homeassistant_select": {
+                "name": "Sélections"
+            },
+            "homeassistant_remote": {
+                "name": "Télécommandes"
+            },
+            "homeassistant_zone": {
+                "name": "Zones"
+            },
+            "homeassistant_lock": {
+                "name": "Verrouillages"
+            },
+            "repairs_total_issues": {
+                "name": "Total"
+            },
+            "homeassistant_vacuum": {
+                "name": "Aspirateurs"
+            },
+            "homeassistant_scene": {
+                "name": "Scenes"
+            },
+            "homeassistant_integration": {
+                "name": "Intégrations"
+            },
+            "homeassistant_time": {
+                "name": "Times"
+            },
+            "homeassistant_media_player": {
+                "name": "Media players"
+            }
+        },
+        "switch": {
+            "cloud_alexa_report_state": {
+                "name": "Rapport status Alexa"
+            },
+            "cloud_google_report_state": {
+                "name": "Rapport de status Google Assistant"
+            },
+            "cloud_remote": {
+                "name": "Télécommande"
+            }
+        },
+        "button": {
+            "repairs_ignore_all": {
+                "name": "Ignorer tout"
+            },
+            "homeassistant_reload": {
+                "name": "Recharger"
+            },
+            "homeassistant_restart": {
+                "name": "Redémarrer"
+            },
+            "repairs_unignore_all": {
+                "name": "Reconsidérer tout"
+            }
+        },
+        "event": {
+            "repairs_event": {
+                "state_attributes": {
+                    "event_type": {
+                        "state": {
+                            "create": "Problème créé",
+                            "remove": "Problème retiré",
+                            "update": "Problème mis-à-jour"
+                        }
+                    },
+                    "domain": {
+                        "name": "Source du problème"
+                    },
+                    "issue_id": {
+                        "name": "ID du problème"
+                    }
+                }
+            }
+        }
+    }
+}

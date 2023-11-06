@@ -2357,16 +2357,6 @@
     hours: /3
   action:
     service: shell_command.run_chores
-- id: '1699266256067'
-  alias: Python Script - Update ha_overview
-  description: ''
-  trigger:
-  - event: start
-    platform: homeassistant
-  - platform: time_pattern
-    minutes: /30
-  action:
-  - service: python_script.ha_overview
 - id: 669e9cda-a9ba-484d-a715-53864fc0d61c
   alias: Admin - Run Watchman (Daily)
   description: ''

@@ -1,4 +1,5 @@
 ![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)
+![Configuration Check](https://github.com/fwartner/homeassistant-config/actions/workflows/check.yaml/badge.svg)
 # Home Assistant Configuration
 My personal home assistant configuation files.
 
@@ -12,25 +13,15 @@ My personal home assistant configuation files.
 - Paperless-NGX running on Proxmox
 - UptimeKuma running on Proxmox (https://status.wartner.io)
 
-## Devices
-| Count | Name | Buy Link |
-|---|---|---|
-| 7 | Aqara Temperature & Humidity Sensor | https://amzn.to/44agb1M |
-| 7 | Aqara Door & Window Sensor | https://amzn.to/45lsb1t |
-| 3 | Aqara Water Leak Sensor | https://amzn.to/442abYR |
-| 2 | IKEA FYRTUR | / |
-| 2 | IKEA TREDANSEN | / |
-| 1 | Aqara Pet Feeder C1 | https://amzn.to/3s3DMnv |
-
 
 ## Some statistics about my installation:
 
 Description | Count
 -- | --
-Number of entities | 2233
+Number of entities | 2235
 Number of sensors | 1332
-Number of automations | 58
-Number of scripts | 17
+Number of automations | 59
+Number of scripts | 18
 Number of scenes | 26
 Number of zones | 8
 Number of binary sensors | 167

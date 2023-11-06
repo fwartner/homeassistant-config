@@ -124,7 +124,7 @@ alexa_lautstarke:
       volume_level: "{% if is_state(\"sensor.last_alexa\", \"media_player.echo_dot_second_gen\")
         %}\n  0.5\n{% else %}\n  0.3\n{% endif %}\n"
   mode: single
-  icon: phu:alexa-logo
+  icon: si:amazonalexa
 speedtest_awtrix_wohnzimmer:
   alias: SpeedTest (Awtrix Wohnzimmer)
   sequence:

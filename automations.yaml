@@ -2162,7 +2162,7 @@
     after: 06:00:00
     before: '20:00:00'
   action:
-  - service: notify.iphone_von_florian
+  - service: notify.mobile_app_florians_iphone
     data:
       title: Updates Available
       message: "{%- for upd in states.update %} {%- set ignore = ['unknown', 'unavailable',
@@ -2222,10 +2222,11 @@
   alias: 'Admin: Run Chores'
   description: Run shell and Python scripts in utils folder.
   trigger:
-    platform: time_pattern
-    hours: /3
+  - platform: time_pattern
+    hours: /1
   action:
-    service: shell_command.run_chores
+  - service: shell_command.run_chores
+    data: {}
 - id: 669e9cda-a9ba-484d-a715-53864fc0d61c
   alias: Admin - Run Watchman (Daily)
   description: ''

@@ -4,12 +4,19 @@ sensor:
     name: "Active Media Players"
     state: >
       {% set media_players = [
-        states.media_player.bedroom_apple_tv,
-        states.media_player.bedroom_symfonisk,
-        states.media_player.homepod_mini_bedroom_left,
-        states.media_player.homepod_mini_bedroom_right,
-        states.media_player.office_sonos,
-        states.media_player.spotify_thomas_baxter
+        states.media_player.tv_fernseher_wohnzimmer,
+        states.media_player.tv_fernseher_schlafzimmer,
+        states.media_player.spotify_florian,
+        states.media_player.nest_kuche,
+        states.media_player.hp_wohnzimmer,
+        states.media_player.fernseher_wohnzimmer,
+        states.media_player.echo_show_wohnzimmer,
+        states.media_player.echo_schlafzimmer,
+        states.media_player.echo_flur,
+        states.media_player.echo_badezimmer,
+        states.media_player.dashboard,
+        states.media_player.apple_tv_wohnzimmer,
+        states.media_player.apple_tv_schlafzimmer
       ] %}
 
       {% macro media(state) %}
@@ -31,12 +38,19 @@ sensor:
     attributes:
       active: >
         {% set media_players = [
-          states.media_player.bedroom_apple_tv,
-          states.media_player.bedroom_symfonisk,
-          states.media_player.homepod_mini_bedroom_left,
-          states.media_player.homepod_mini_bedroom_right,
-          states.media_player.office_sonos,
-          states.media_player.spotify_thomas_baxter
+          states.media_player.tv_fernseher_wohnzimmer,
+          states.media_player.tv_fernseher_schlafzimmer,
+          states.media_player.spotify_florian,
+          states.media_player.nest_kuche,
+          states.media_player.hp_wohnzimmer,
+          states.media_player.fernseher_wohnzimmer,
+          states.media_player.echo_show_wohnzimmer,
+          states.media_player.echo_schlafzimmer,
+          states.media_player.echo_flur,
+          states.media_player.echo_badezimmer,
+          states.media_player.dashboard,
+          states.media_player.apple_tv_wohnzimmer,
+          states.media_player.apple_tv_schlafzimmer
         ] %}
 
         {%- set media_players_playing = media_players | selectattr('state','eq','playing') | list %}
@@ -164,40 +178,3 @@ sensor:
             {{ state_attr(players[0], 'icon') }}
           {% endif %}
         {% endif %}
-      entity_picture: >
-        {%- if this.state not in ['unavailable','undefined','unknown','none','null','0'] %}
-          {%- set players = (state_attr('sensor.active_media_players', 'active')).split(', ') %}
-          {% if players[0] is defined %}
-            {%- set entitypic = state_attr(players[0],'entity_picture') %}
-            {%- set app_name = state_attr('sensor.active_media_players','app') | lower %}
-            {%- set app = state_attr(players[0], 'app_id') | lower %}
-            {%- set artist = state_attr('sensor.active_media_players', 'media_artist') | lower %}
-            {%- set media_content_type = state_attr(players[0], 'media_content_type') | lower %}
-            {%- if app is defined %}
-              {% if 'plex' in app %} /local/images/Plex_bg.png
-              {% elif 'infuse' in app %} /local/images/Plex_bg.png
-              {% elif 'com.apple.tvwatchlist' in app %} /local/images/ATVPlus_bg.jpg
-              {% elif 'airplay' in app %}
-                {% if media_content_type is defined %}
-                  {% if 'video' in media_content_type %} /local/images/media/AirPlay2.jpg
-                  {% else %} /local/images/media/AirPlay.jpg
-                  {% endif %}
-                {% else %} /local/images/media/AirPlay.jpg
-                {% endif %}
-              {% elif 'com.amazon' in app %} /local/images/AmazonPrime_bg.jpg
-              {% elif 'disneyplus' in app %} /local/images/dp_bg.jpg
-              {% elif 'youtube' in app %} /local/images/media/YouTube.jpg
-              {% elif 'tv2' in app %} /local/images/tv2play_bg.jpg
-              {% elif 'netflix' in app %} /local/images/netflix_bg.jpg
-              {% elif 'kanal5' in app %} /local/images/discovery_bg.jpg
-              {% elif 'twitch' in app %} /local/images/twitch_bg.jpg
-              {% else %}
-                {{ entitypic }}
-              {% endif %}
-            {%- elif 'plex' in players %}
-              {{ '/local/images/Plex_bg.png' }}
-            {%- else %}
-              {{ entitypic }}
-            {%- endif %}
-          {%- endif %}
-        {%- endif %}

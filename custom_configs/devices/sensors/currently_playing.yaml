@@ -1,0 +1,18 @@
+---
+platform: universal
+name: Currently Playing
+unique_id: currently_playing
+children:
+  - media_player.tv_fernseher_wohnzimmer,
+  - media_player.tv_fernseher_schlafzimmer,
+  - media_player.spotify_florian,
+  - media_player.nest_kuche,
+  - media_player.hp_wohnzimmer,
+  - media_player.fernseher_wohnzimmer,
+  - media_player.echo_show_wohnzimmer,
+  - media_player.echo_schlafzimmer,
+  - media_player.echo_flur,
+  - media_player.echo_badezimmer,
+  - media_player.dashboard,
+  - media_player.apple_tv_wohnzimmer,
+  - media_player.apple_tv_schlafzimmer

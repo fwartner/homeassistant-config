@@ -2254,3 +2254,14 @@
   - service: shell_command.run_chores
     data: {}
   mode: single
+- id: '1699291427370'
+  alias: Speedtest
+  description: Alle 2 Minuten
+  trigger:
+  - platform: time_pattern
+    minutes: /2
+  condition: []
+  action:
+  - service: script.1699263899938
+    data: {}
+  mode: single

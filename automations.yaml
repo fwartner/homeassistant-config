@@ -604,6 +604,7 @@
   - platform: state
     entity_id:
     - sensor.ikea_taster_futterautomat_action
+    to:
   condition: []
   action:
   - device_id: 82da98e72082a3aad236de2c98b417e0
@@ -2206,7 +2207,6 @@
         'installed_version')}} -> {{state_attr(upd.entity_id, 'latest_version')}}
         {% endif %} {%- endfor %}"
   mode: single
-- *id001
 - *id001
 - id: a7c427e6-ce03-49eb-9a23-c5bbe7625aa4
   alias: Admin - Generate README.md

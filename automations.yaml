@@ -2139,8 +2139,7 @@
         minutes: 0
         seconds: 0
       notify_time: 08:30:00
-- &id001
-  id: notifications_updates_available
+- id: notifications_updates_available
   alias: '[Notifications] Updates Available'
   description: ''
   trigger:
@@ -2207,7 +2206,6 @@
         'installed_version')}} -> {{state_attr(upd.entity_id, 'latest_version')}}
         {% endif %} {%- endfor %}"
   mode: single
-- *id001
 - id: a7c427e6-ce03-49eb-9a23-c5bbe7625aa4
   alias: Admin - Generate README.md
   description: ''

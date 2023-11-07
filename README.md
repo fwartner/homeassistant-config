@@ -18,7 +18,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2300
+Number of entities | 2299
 Number of sensors | 1385
 Number of automations | 60
 Number of scripts | 18
@@ -42,7 +42,6 @@ Number of binary sensors | 167
 - librespot player
 - Matter Server
 - metube
-- Mosquitto broker
 - openWakeWord
 - Piper
 - PS5 MQTT

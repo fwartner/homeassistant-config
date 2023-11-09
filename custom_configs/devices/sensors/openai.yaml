@@ -1,5 +1,4 @@
 - platform: openai_response
-  sensors:
-    api_key: !secret open_ai_key
-    model: "gpt-3.5-turbo"
-    name: "hassio_openai_response"
+  name: "OpenAI Response"
+  api_key: !secret open_ai_key
+  model: "gpt-3.5-turbo"

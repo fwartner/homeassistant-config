@@ -8,6 +8,7 @@ script: !include scripts.yaml
 scene: !include scenes.yaml
 input_select: !include_dir_merge_named custom_configs/devices/input_selects/
 input_boolean: !include_dir_merge_named custom_configs/devices/input_booleans/
+input_text: !include_dir_merge_named custom_configs/devices/input_texts/
 rest_command: !include_dir_merge_named custom_configs/devices/rest_commands/
 sensor: !include_dir_merge_list custom_configs/devices/sensors/
 camera: !include_dir_merge_list custom_configs/devices/cameras/

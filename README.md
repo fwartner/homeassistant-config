@@ -18,8 +18,8 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2244
-Number of sensors | 1338
+Number of entities | 2246
+Number of sensors | 1339
 Number of automations | 59
 Number of scripts | 18
 Number of scenes | 26
@@ -95,7 +95,6 @@ Number of binary sensors | 167
 - [Npm Switches](https://github.com/InTheDaylight14/nginx-proxy-manager-switches)
 - [Nuki Lock](https://github.com/kvj/hass_nuki_ng)
 - [Office 365 Integration](https://github.com/RogerSelwyn/O365-HomeAssistant)
-- [Openai Response](https://github.com/Hassassistant/openai_response)
 - [Openweathermaphistory](https://github.com/petergridge/openweathermaphistory)
 - [Passive Ble Monitor Integration](https://github.com/custom-components/ble_monitor)
 - [Personio](https://github.com/Sese-Schneider/ha-personio)

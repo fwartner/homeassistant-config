@@ -32,6 +32,7 @@ CONF_STORAGE="storage"
 
 PROXMOX_CLIENT = "proxmox_client"
 
+INTEGRATION_TITLE = "Proxmox VE"
 VERSION_REMOVE_YAML = "2023.8"
 
 
@@ -43,6 +44,7 @@ class ProxmoxType(StrEnum):
     QEMU = "qemu"
     LXC = "lxc"
     Storage = "storage"
+    Update = "update"
 
 
 class ProxmoxCommand(StrEnum):
@@ -80,3 +82,6 @@ class ProxmoxKeyAPIParse(StrEnum):
     NAME = "name"
     NETWORK_IN = "network_in"
     NETWORK_OUT = "network_out"
+    UPDATE_TOTAL = "total"
+    UPDATE_LIST = "updates_list"
+    UPDATE_AVAIL = "update"

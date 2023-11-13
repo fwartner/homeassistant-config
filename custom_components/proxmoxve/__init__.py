@@ -50,6 +50,7 @@ from .const import (
     DEFAULT_REALM,
     DEFAULT_VERIFY_SSL,
     DOMAIN,
+    INTEGRATION_TITLE,
     LOGGER,
     PROXMOX_CLIENT,
     VERSION_REMOVE_YAML,
@@ -61,6 +62,7 @@ from .coordinator import (
     ProxmoxNodeCoordinator,
     ProxmoxQEMUCoordinator,
     ProxmoxStorageCoordinator,
+    ProxmoxUpdateCoordinator,
 )
 
 PLATFORMS = [
@@ -132,7 +134,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
             severity=IssueSeverity.WARNING,
             translation_key="yaml_deprecated",
             translation_placeholders={
-                "integration": "Proxmox VE",
+                "integration": INTEGRATION_TITLE,
                 "platform": DOMAIN,
                 "version": VERSION_REMOVE_YAML,
             },
@@ -147,7 +149,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
                     severity=IssueSeverity.ERROR,
                     translation_key="import_invalid_port",
                     translation_placeholders={
-                        "integration": "Proxmox VE",
+                        "integration": INTEGRATION_TITLE,
                         "platform": DOMAIN,
                         "host": conf.get[CONF_HOST],
                         "port": conf.get[CONF_PORT],
@@ -355,6 +357,17 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
             coordinators[node] = coordinator_node
             if coordinator_node.data is not None:
                 nodes_add_device.append(node)
+
+
+            coordinator_updates = ProxmoxUpdateCoordinator(
+                hass=hass,
+                proxmox=proxmox,
+                api_category=ProxmoxType.Update,
+                node_name=node,
+            )
+            await coordinator_updates.async_refresh()
+            coordinators[f"{ProxmoxType.Update}_{node}"] = coordinator_updates
+
         else:
             async_create_issue(
                 hass,
@@ -364,12 +377,13 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
                 severity=IssueSeverity.ERROR,
                 translation_key="resource_nonexistent",
                 translation_placeholders={
-                    "integration": "Proxmox VE",
+                    "integration": INTEGRATION_TITLE,
                     "platform": DOMAIN,
                     "host": config_entry.data[CONF_HOST],
                     "port": config_entry.data[CONF_PORT],
-                    "resource_type": "Node",
+                    "resource_type": ProxmoxType.Node.capitalize(),
                     "resource": node,
+                    "permission": f"['perm','/nodes/{node}',['Sys.Audit']]",
                 },
             )
 
@@ -400,12 +414,13 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
                 severity=IssueSeverity.ERROR,
                 translation_key="resource_nonexistent",
                 translation_placeholders={
-                    "integration": "Proxmox VE",
+                    "integration": INTEGRATION_TITLE,
                     "platform": DOMAIN,
                     "host": config_entry.data[CONF_HOST],
                     "port": config_entry.data[CONF_PORT],
-                    "resource_type": ProxmoxType.QEMU,
+                    "resource_type": ProxmoxType.QEMU.upper(),
                     "resource": vm_id,
+                    "permission":  f"['perm','/vms/{vm_id}',['VM.Audit']]",
                 },
             )
 
@@ -436,12 +451,13 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
                 severity=IssueSeverity.ERROR,
                 translation_key="resource_nonexistent",
                 translation_placeholders={
-                    "integration": "Proxmox VE",
+                    "integration": INTEGRATION_TITLE,
                     "platform": DOMAIN,
                     "host": config_entry.data[CONF_HOST],
                     "port": config_entry.data[CONF_PORT],
-                    "resource_type": ProxmoxType.LXC,
+                    "resource_type": ProxmoxType.LXC.upper(),
                     "resource": container_id,
+                    "permission":  f"['perm','/vms/{container_id}',['VM.Audit']]",
                 },
             )
 
@@ -472,12 +488,13 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
                 severity=IssueSeverity.ERROR,
                 translation_key="resource_nonexistent",
                 translation_placeholders={
-                    "integration": "Proxmox VE",
+                    "integration": INTEGRATION_TITLE,
                     "platform": DOMAIN,
                     "host": config_entry.data[CONF_HOST],
                     "port": config_entry.data[CONF_PORT],
-                    "resource_type": ProxmoxType.Storage,
+                    "resource_type": ProxmoxType.Storage.capitalize(),
                     "resource": storage_id,
+                    "permission":  f"['perm','/storage/{storage_id}',['Datastore.Audit'],'any',1]"
                 },
             )
 
@@ -573,14 +590,14 @@ def device_info(
         )
         model = api_category.capitalize()
 
-    elif api_category is ProxmoxType.Node:
+    elif api_category in (ProxmoxType.Node, ProxmoxType.Update):
         coordinator = coordinators[node]
         if (coordinator_data := coordinator.data) is not None:
             model_processor = coordinator_data.model
             proxmox_version = f"Proxmox {coordinator_data.version}"
 
-        name = f"{api_category.capitalize()} {node}"
-        identifier = f"{config_entry.entry_id}_{api_category.upper()}_{node}"
+        name = f"{ProxmoxType.Node.capitalize()} {node}"
+        identifier = f"{config_entry.entry_id}_{ProxmoxType.Node.upper()}_{node}"
         url = f"https://{host}:{port}/#v1:0:=node/{node}"
         via_device = ("", "")
         model = model_processor
@@ -660,6 +677,7 @@ class ProxmoxClient:
 
 
 def call_api_post_status(
+    self,
     proxmox: ProxmoxAPI,
     api_category: ProxmoxType,
     command: str,
@@ -685,14 +703,47 @@ def call_api_post_status(
                 result = proxmox(
                     ["nodes", node, api_category, vm_id, "status", ProxmoxCommand.SUSPEND]
                 ).post(todisk=1)
+
             else:
                 result = proxmox(
                     ["nodes", node, api_category, vm_id, "status", command]
                 ).post()
 
-    except (ResourceException, ConnectTimeout) as err:
+    except ResourceException as error:
+        if error.status_code == 403:
+            if api_category is ProxmoxType.Node:
+                issue_id=f"{self.config_entry.entry_id}_{node}_command_forbiden"
+                resource=f"{api_category.capitalize()} {node}"
+                permission_check = f"['perm','/nodes/{node}',['Sys.PowerMgmt']]"
+            elif api_category in (ProxmoxType.QEMU, ProxmoxType.LXC):
+                issue_id=f"{self.config_entry.entry_id}_{vm_id}_command_forbiden"
+                resource=f"{api_category.upper()} {vm_id}"
+                permission_check = f"['perm','/vms/{vm_id}',['VM.PowerMgmt']]"
+            else:
+                raise ValueError(
+                    f"Resource not categorized correctly: Proxmox {api_category.upper()} {command} error - {error}",
+                ) from error
+
+            async_create_issue(
+                self.hass,
+                DOMAIN,
+                issue_id,
+                is_fixable=False,
+                severity=IssueSeverity.ERROR,
+                translation_key="resource_command_forbiden",
+                translation_placeholders={
+                    "resource": resource,
+                    "user": self.config_entry.data[CONF_USERNAME],
+                    "permission": permission_check,
+                    "command": command,
+                },
+            )
+            raise ValueError(
+                f"Proxmox {api_category.upper()} {command} error - {error}",
+            ) from error
+    except ConnectTimeout as error:
         raise ValueError(
-            f"Proxmox {api_category} {command} error - {err}",
-        ) from err
+            f"Proxmox {api_category.upper()} {command} error - {error}",
+        ) from error
 
     return result

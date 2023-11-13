@@ -494,88 +494,6 @@
         data:
           name: Toastbrot
   mode: single
-- id: '1677005798686'
-  alias: Bett
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.bed_sensor_bett_links
-    from: 'off'
-    to: 'on'
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 0
-    id: bettFloOn
-  - platform: state
-    entity_id:
-    - binary_sensor.bed_sensor_bett_links
-    from: 'on'
-    to: 'off'
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 0
-    id: bettFloOff
-  - platform: state
-    entity_id:
-    - timer.3_minuten_bett
-    from: active
-    to: idle
-    id: threeMinuteBedOff
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - bettFloOn
-      sequence:
-      - service: input_boolean.turn_on
-        data: {}
-        target:
-          entity_id:
-          - input_boolean.florian_im_bett
-    - conditions:
-      - condition: trigger
-        id:
-        - bettFloOff
-      sequence:
-      - service: input_boolean.turn_off
-        data: {}
-        target:
-          entity_id: input_boolean.florian_im_bett
-    - conditions:
-      - condition: trigger
-        id:
-        - threeMinuteBedOff
-      sequence:
-      - type: turn_off
-        device_id: 496f1ee059a80ce3be70b9a32eb69778
-        entity_id: light.bett
-        domain: light
-      - type: turn_off
-        device_id: 58ad2259e60395f647695636a43a16c8
-        entity_id: switch.steckdose_tv_bank_wohnzimmer
-        domain: switch
-      - type: turn_off
-        device_id: aaad1ea70b31b2d4cdd44583712720b2
-        entity_id: switch.steckdose_schreibtisch
-        domain: switch
-      - type: turn_off
-        device_id: 31cea6ff31b5a821a4fa741d0c987b4d
-        entity_id: switch.steckdose_badezimmer
-        domain: switch
-      - type: turn_off
-        device_id: 90c331ab3f9f2e741e5bb1be8bd89c5d
-        entity_id: switch.steckdose_dyson
-        domain: switch
-      - service: switch.turn_off
-        data: {}
-        target:
-          entity_id: switch.dashboard_screen
-  mode: single
 - id: '1678799484819'
   alias: 'Boolean: Reset Mitternacht'
   description: Staubsauger Einmal Täglich
@@ -2149,17 +2067,6 @@
   action:
   - service: readme.generate
   initial_state: true
-- id: '1699266237959'
-  alias: 'Admin: Run Chores'
-  description: Run shell and Python scripts in utils folder.
-  trigger:
-  - platform: time_pattern
-    hours: /1
-  action:
-  - service: readme.generate
-    data: {}
-  - service: shell_command.run_chores
-    data: {}
 - id: 669e9cda-a9ba-484d-a715-53864fc0d61c
   alias: Admin - Run Watchman (Daily)
   description: ''

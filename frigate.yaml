@@ -1,0 +1,7 @@
+mqtt:
+  host: 10.182.1.189
+  port: 1883
+  enabled: true
+  client_id: frigate
+  user: !secret mqtt_user
+  password: !secret mqtt_password

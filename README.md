@@ -18,13 +18,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2253
-Number of sensors | 1344
-Number of automations | 59
+Number of entities | 2237
+Number of sensors | 1347
+Number of automations | 57
 Number of scripts | 18
 Number of scenes | 26
 Number of zones | 8
-Number of binary sensors | 167
+Number of binary sensors | 165
 
 ## My installed extensions:
 
@@ -33,23 +33,16 @@ Number of binary sensors | 167
 - AirCast
 - AirSonos
 - AppDaemon
-- Assist Microphone
 - chrony
 - ESPHome
-- Glances
-- go2rtc
 - Home Assistant Stream Deck
-- librespot player
 - Matter Server
-- metube
-- openWakeWord
 - Piper
 - PS5 MQTT
 - Samba share
 - Silicon Labs Multiprotocol
 - speedtest
 - Studio Code Server
-- VLC
 - Whisper
 
 ### Custom integrations
@@ -70,7 +63,7 @@ Number of binary sensors | 167
 - [Daily Schedule](https://github.com/amitfin/daily_schedule)
 - [Daily Sensor](https://github.com/jeroenterheerdt/HADailySensor)
 - [Deutsche Bahn](https://github.com/FaserF/ha-deutschebahn)
-- [Dyson Cloud Integration](https://github.com/dotvezz/ha-dyson-cloud)
+- [Dyson](https://github.com/libdyson-wg/ha-dyson)
 - [Dyson Integration](https://github.com/dotvezz/ha-dyson)
 - [Energyscore](https://github.com/knudsvik/EnergyScore)
 - [Eufy Security](https://github.com/fuatakgun/eufy_security)

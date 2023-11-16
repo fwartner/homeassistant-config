@@ -2060,3 +2060,49 @@
   - service: script.1699263899938
     data: {}
   mode: single
+- id: '1700167188286'
+  alias: Luftreiniger
+  description: ''
+  trigger:
+  - platform: zone
+    entity_id: person.florian
+    zone: zone.home
+    event: leave
+    id: zoneLeavePure
+    alias: Luftreiniger nach Zone Trigger
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id:
+          - zoneLeavePure
+        - condition: state
+          entity_id: sensor.people_home
+          state: '0'
+          for:
+            hours: 0
+            minutes: 5
+            seconds: 0
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id:
+          - switch.luftreiniger_wohnzimmer_pure_boost
+          - switch.luftreiniger_schlafzimmer_pure_boost
+      - delay:
+          hours: 0
+          minutes: 10
+          seconds: 0
+          milliseconds: 0
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id:
+          - switch.luftreiniger_wohnzimmer_pure_boost
+          - switch.luftreiniger_schlafzimmer_pure_boost
+    alias: Luftreiniger nach Zone
+  mode: single

@@ -2130,3 +2130,54 @@
           entity_id:
           - switch.luftreiniger_schlafzimmer_pure_boost
   mode: single
+- id: '1700175805163'
+  alias: Movietime
+  description: ''
+  trigger:
+  - type: not_occupied
+    platform: device
+    device_id: d116b4e815a7a6a1a9ef5b5964b4fa60
+    entity_id: 9005bd83b2298d3a3a7ba3ad53c26103
+    domain: binary_sensor
+    id: couchFrei
+  - type: occupied
+    platform: device
+    device_id: d116b4e815a7a6a1a9ef5b5964b4fa60
+    entity_id: 9005bd83b2298d3a3a7ba3ad53c26103
+    domain: binary_sensor
+    id: couchBelegt
+  condition:
+  - condition: state
+    entity_id: input_boolean.movietime
+    state: 'on'
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - couchFrei
+      sequence:
+      - if:
+        - condition: state
+          entity_id: media_player.apple_tv_wohnzimmer
+          state: playing
+        then:
+        - service: media_player.media_pause
+          data: {}
+          target:
+            device_id: d60428083cf2206a189453343e1e4bb1
+    - conditions:
+      - condition: trigger
+        id:
+        - couchBelegt
+      sequence:
+      - if:
+        - condition: state
+          entity_id: media_player.apple_tv_wohnzimmer
+          state: paused
+        then:
+        - service: media_player.media_play
+          data: {}
+          target:
+            device_id: d60428083cf2206a189453343e1e4bb1
+  mode: single

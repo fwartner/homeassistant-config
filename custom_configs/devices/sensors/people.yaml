@@ -5,11 +5,3 @@
       unit_of_measurement: "home"
       value_template: >
         {{ states['person'] | selectattr('state','eq','home') | list | count }}
-
-- platform: template
-  sensors:
-    people_away:
-      friendly_name: "Jemand nicht Zuhause"
-      unit_of_measurement: "not_home"
-      value_template: >
-        {{ states['person'] | selectattr('state','ne','not_home') | list | count }}

@@ -44,6 +44,10 @@
     device_id: b6b786754070027222906a9b148d9241
     entity_id: ac0700e9c97c5f8f0ae16be986b38106
     domain: light
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.bett
   mode: single
   icon: mdi:bed-clock
 polly_futtern:

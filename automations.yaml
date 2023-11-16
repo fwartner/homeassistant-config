@@ -2070,6 +2070,10 @@
     event: leave
     id: zoneLeavePure
     alias: Luftreiniger nach Zone Trigger
+  - platform: time
+    at: '20:30:00'
+    alias: Luftreiniger Schlafzimmer Abends
+    id: timeEveningPure
   condition: []
   action:
   - choose:
@@ -2104,5 +2108,25 @@
           entity_id:
           - switch.luftreiniger_wohnzimmer_pure_boost
           - switch.luftreiniger_schlafzimmer_pure_boost
-    alias: Luftreiniger nach Zone
+      alias: Luftreiniger nach Zone
+    - conditions:
+      - condition: trigger
+        id:
+        - timeEveningPure
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id:
+          - switch.luftreiniger_schlafzimmer_pure_boost
+      - delay:
+          hours: 0
+          minutes: 10
+          seconds: 0
+          milliseconds: 0
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id:
+          - switch.luftreiniger_schlafzimmer_pure_boost
   mode: single

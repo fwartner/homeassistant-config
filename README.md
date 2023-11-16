@@ -18,13 +18,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2375
-Number of sensors | 1476
-Number of automations | 57
+Number of entities | 2418
+Number of sensors | 1479
+Number of automations | 58
 Number of scripts | 18
-Number of scenes | 26
+Number of scenes | 28
 Number of zones | 8
-Number of binary sensors | 164
+Number of binary sensors | 166
 
 ## My installed extensions:
 
@@ -165,6 +165,7 @@ Number of binary sensors | 164
 - [Mini Media Player](https://github.com/kalkih/mini-media-player)
 - [Multiple Entity Row](https://github.com/benct/lovelace-multiple-entity-row)
 - [Mushroom](https://github.com/piitaya/lovelace-mushroom)
+- [My Cards Bundle](https://github.com/AnthonMS/my-cards)
 - [Number Box](https://github.com/htmltiger/numberbox-card)
 - [Paper Buttons Row](https://github.com/jcwillox/lovelace-paper-buttons-row)
 - [Plan Coordinates](https://github.com/custom-cards/plan-coordinates)
@@ -203,6 +204,8 @@ Number of binary sensors | 164
 - [Zigbee2Mqtt Networkmap Card](https://github.com/azuwis/zigbee2mqtt-networkmap)
 
 ### Themes
+- [Catppuccin Theme](https://github.com/catppuccin/home-assistant)
+- [Github Dark Theme](https://github.com/einschmidt/github_dark_theme)
 - [Metrology   Metro + Fluent + Windows Themes   By Mmak.Es](https://github.com/Madelena/Metrology-for-Hass)
 - [Mushroom Themes](https://github.com/piitaya/lovelace-mushroom-themes)
 

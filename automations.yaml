@@ -2146,16 +2146,30 @@
     entity_id: 9005bd83b2298d3a3a7ba3ad53c26103
     domain: binary_sensor
     id: couchBelegt
-  condition:
-  - condition: state
-    entity_id: input_boolean.movietime
-    state: 'on'
+  - platform: state
+    entity_id:
+    - input_boolean.movietime
+    from: 'off'
+    to: 'on'
+    id: movietimeOn
+  - platform: state
+    entity_id:
+    - input_boolean.movietime
+    from: 'on'
+    to: 'off'
+    id: movietimeOff
+  condition: []
   action:
   - choose:
     - conditions:
-      - condition: trigger
-        id:
-        - couchFrei
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: input_boolean.movietime
+          state: 'on'
+        - condition: trigger
+          id:
+          - couchFrei
       sequence:
       - if:
         - condition: state
@@ -2167,9 +2181,14 @@
           target:
             device_id: d60428083cf2206a189453343e1e4bb1
     - conditions:
-      - condition: trigger
-        id:
-        - couchBelegt
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: input_boolean.movietime
+          state: 'on'
+        - condition: trigger
+          id:
+          - couchBelegt
       sequence:
       - if:
         - condition: state
@@ -2180,4 +2199,22 @@
           data: {}
           target:
             device_id: d60428083cf2206a189453343e1e4bb1
+    - conditions:
+      - condition: trigger
+        id:
+        - movietimeOn
+      sequence:
+      - type: turn_on
+        device_id: 8eaacb8197a2635277b701aac082f0c7
+        entity_id: 255a28db87beeaea88f4a5fc89b6b772
+        domain: switch
+    - conditions:
+      - condition: trigger
+        id:
+        - movietimeOff
+      sequence:
+      - type: turn_off
+        device_id: 8eaacb8197a2635277b701aac082f0c7
+        entity_id: 255a28db87beeaea88f4a5fc89b6b772
+        domain: switch
   mode: single

@@ -212,7 +212,74 @@
       friendly_name: Sonos Ray
       supported_features: 4127295
       state: playing
-    light.wohnzimmer:
+    light.tv:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - None
+      - candle
+      - fire
+      - prism
+      - sunrise
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: color_temp
+      brightness: 92
+      color_temp_kelvin: 3521
+      color_temp: 284
+      hs_color:
+      - 27.152
+      - 44.32
+      rgb_color:
+      - 255
+      - 193
+      - 141
+      xy_color:
+      - 0.453
+      - 0.374
+      effect: None
+      mode: normal
+      dynamics: none
+      friendly_name: TV
+      supported_features: 44
+      state: 'on'
+    light.hugo_rechts:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - None
+      - candle
+      - fire
+      - prism
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: color_temp
+      brightness: 92
+      color_temp_kelvin: 3521
+      color_temp: 284
+      hs_color:
+      - 27.152
+      - 44.32
+      rgb_color:
+      - 255
+      - 193
+      - 141
+      xy_color:
+      - 0.453
+      - 0.374
+      effect: None
+      mode: normal
+      dynamics: none
+      friendly_name: Hugo Rechts
+      supported_features: 44
+      state: 'on'
+    light.couch:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6535
       min_mireds: 153
@@ -234,42 +301,37 @@
       xy_color:
       - 0.453
       - 0.374
-      is_hue_group: true
-      hue_scenes:
-      - Blaue Lagune
-      - Ruby Romance
-      - Stille Nacht
-      - Lesen
-      - Energie tanken
-      - Nachtlicht
-      - Konzentrieren
-      - Tokio
-      - Galaxie
-      - Gedimmt
-      - Entspannen
-      - Hell
-      hue_type: room
-      lights:
-      - Hugo Rechts
-      - Regal
-      - Decke Wohnzimmer
-      - TV
-      - TV Bank
-      - Balkontür
-      dynamics: false
-      icon: mdi:lightbulb-group
-      friendly_name: Wohnzimmer
-      supported_features: 40
-      state: 'on'
-    light.decke_wohnzimmer:
-      supported_color_modes:
-      - brightness
-      color_mode:
-      brightness:
       mode: normal
       dynamics: none
-      friendly_name: Decke Wohnzimmer
+      friendly_name: Couch
       supported_features: 40
-      state: 'off'
+      state: 'on'
+    light.balkontur:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: color_temp
+      brightness: 92
+      color_temp_kelvin: 3521
+      color_temp: 284
+      hs_color:
+      - 27.152
+      - 44.32
+      rgb_color:
+      - 255
+      - 193
+      - 141
+      xy_color:
+      - 0.453
+      - 0.374
+      mode: normal
+      dynamics: none
+      friendly_name: Balkontür
+      supported_features: 40
+      state: 'on'
   icon: mdi:lock-reset
   metadata: {}

@@ -226,6 +226,9 @@
       "network_out": {
         "name": "Network out"
       },
+      "power_cycles": {
+        "name": "Power cycles"
+      },
       "node": {
         "name": "Node"
       },
@@ -251,6 +254,9 @@
       },
       "swap_used_perc": {
         "name": "Swap used percentage"
+      },
+      "temperature": {
+        "name": "Temperature"
       },
       "updates_total": {
         "name": "Total updates",

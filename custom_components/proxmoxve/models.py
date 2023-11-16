@@ -144,3 +144,5 @@ class ProxmoxDiskData:
     path: str
     disk_rpm: float
     disk_type: str
+    temperature: float
+    power_cycles: int

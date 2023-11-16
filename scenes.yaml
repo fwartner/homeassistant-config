@@ -136,7 +136,17 @@
       friendly_name: Sonos Ray
       supported_features: 4127295
       state: playing
+    select.kamera_wohnzimmer_ecke_nachtsicht:
+      options:
+      - '0'
+      - '1'
+      - '2'
+      icon: mdi:theme-light-dark
+      friendly_name: Kamera Wohnzimmer Ecke Nachtsicht
+      state: '1'
   icon: mdi:popcorn
   metadata:
     input_boolean.movietime:
+      entity_only: true
+    select.kamera_wohnzimmer_ecke_nachtsicht:
       entity_only: true

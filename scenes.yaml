@@ -150,3 +150,126 @@
       entity_only: true
     select.kamera_wohnzimmer_ecke_nachtsicht:
       entity_only: true
+- id: '1700176457036'
+  name: Normalzustand
+  entities:
+    number.sync_box_brightness:
+      min: 1
+      max: 100
+      step: 1
+      mode: auto
+      unit_of_measurement: '%'
+      icon: mdi:brightness-5
+      friendly_name: Sync Box Brightness
+      state: '100'
+    select.sync_box_hdmi_input:
+      options:
+      - 'Apple TV '
+      - PlayStation 5
+      - Nintendo Switch
+      - Vodafone
+      icon: mdi:hdmi-port
+      friendly_name: Sync Box HDMI Input
+      state: PlayStation 5
+    select.sync_box_intensity:
+      options:
+      - subtle
+      - moderate
+      - high
+      - intense
+      icon: mdi:sine-wave
+      friendly_name: Sync Box Intensity
+      state: high
+    select.sync_box_sync_mode:
+      options:
+      - video
+      - music
+      - game
+      friendly_name: Sync Box Sync mode
+      state: video
+    switch.sync_box_power:
+      icon: mdi:power
+      friendly_name: Sync Box Power
+      state: 'on'
+    switch.sync_box_light_sync:
+      icon: mdi:television-ambient-light
+      friendly_name: Sync Box Light Sync
+      state: 'off'
+    media_player.sonos_ray:
+      group_members:
+      - media_player.sonos_ray
+      volume_level: 0.1
+      is_volume_muted: false
+      media_content_id: x-sonos-htastream:RINCON_F0F6C1F0FCCC01400:spdif
+      media_content_type: music
+      media_title: TV
+      source: TV
+      shuffle: false
+      repeat: 'off'
+      queue_size: 1
+      device_class: speaker
+      icon: phu:sonos-beam
+      friendly_name: Sonos Ray
+      supported_features: 4127295
+      state: playing
+    light.wohnzimmer:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: color_temp
+      brightness: 92
+      color_temp_kelvin: 3521
+      color_temp: 284
+      hs_color:
+      - 27.152
+      - 44.32
+      rgb_color:
+      - 255
+      - 193
+      - 141
+      xy_color:
+      - 0.453
+      - 0.374
+      is_hue_group: true
+      hue_scenes:
+      - Blaue Lagune
+      - Ruby Romance
+      - Stille Nacht
+      - Lesen
+      - Energie tanken
+      - Nachtlicht
+      - Konzentrieren
+      - Tokio
+      - Galaxie
+      - Gedimmt
+      - Entspannen
+      - Hell
+      hue_type: room
+      lights:
+      - Hugo Rechts
+      - Regal
+      - Decke Wohnzimmer
+      - TV
+      - TV Bank
+      - Balkontür
+      dynamics: false
+      icon: mdi:lightbulb-group
+      friendly_name: Wohnzimmer
+      supported_features: 40
+      state: 'on'
+    light.decke_wohnzimmer:
+      supported_color_modes:
+      - brightness
+      color_mode:
+      brightness:
+      mode: normal
+      dynamics: none
+      friendly_name: Decke Wohnzimmer
+      supported_features: 40
+      state: 'off'
+  icon: mdi:lock-reset
+  metadata: {}

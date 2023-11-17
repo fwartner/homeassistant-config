@@ -60,24 +60,6 @@ polly_futtern:
     option: START
   mode: single
   icon: mdi:cat
-spiele_radio:
-  alias: Spiele Radio
-  sequence:
-  - service: media_player.play_media
-    data_template:
-      entity_id: media_player.nest
-      media_content_id: '{% if is_state("input_select.radio_station", "Q-dance Radio")
-        %} http://25253.live.streamtheworld.com/Q_DANCE.mp3 {% elif is_state("input_select.radio_station",
-        "RSH") %} https://rsh.streamabc.net/regc-rshlive5331785-mp3-192-8119086?sABC=648o0rr0%230%238q58rr09ss15s81sqn5n9n7or6pn6s73%23fgernzf.efu.qr&aw_0_1st.playerid=streams.rsh.de&amsparams=playerid:streams.rsh.de;skey:1686834912
-        {% elif is_state("input_select.radio_station", "NDR2") %} https://www.ndr.de/resources/metadaten/audio/m3u/ndr1wellenord_hl.m3u
-        {% elif is_state("input_select.radio_station", "Radio Hamburg") %} https://frontend.streamonkey.net/rhh-1036/mp3-stream.m3u
-        {% elif is_state("input_select.radio_station", "NJOY") %} http://www.ndr.de/resources/metadaten/audio/m3u/n-joy.m3u
-        {% endif %}
-
-        '
-      media_content_type: audio/mp4
-  mode: single
-  icon: mdi:radio
 anni_musik:
   alias: Anni Musik
   sequence:
@@ -198,24 +180,6 @@ speedtest_awtrix_wohnzimmer:
       - sensor.speedtest_download
       - sensor.fast_com_download
     data: {}
-'1699263944338':
-  alias: '[Alerts] Disable Alerts'
-  description: Disable Alerts
-  icon: mdi:alert
-  sequence:
-  - service: alert.turn_on
-    target:
-      entity_id: '{{ states.alert|selectattr(''state'',''eq'',''on'')|map(attribute=''entity_id'')|list
-        }}'
-'1699263958530':
-  alias: '[Alerts] Reset Alerts'
-  description: Turn on all disabled alerts
-  icon: mdi:alert
-  sequence:
-  - service: alert.turn_on
-    target:
-      entity_id: '{{ states.alert|selectattr(''state'',''eq'',''off'')|map(attribute=''entity_id'')|list
-        }}'
 '1699263995171':
   alias: '[Apple TV] Power Schlafzimmer'
   mode: single

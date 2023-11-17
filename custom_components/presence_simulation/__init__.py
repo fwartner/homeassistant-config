@@ -218,13 +218,17 @@ async def async_mysetup(hass, entities, deltaStr, refreshInterval, restoreParam,
     def handle_presence_simulation_sync(hass, call, minus_delta, expanded_entities, overridden_delta, overridden_random, entities_after_restart, delta_after_restart):
         dic = get_significant_states(hass=hass, start_time=minus_delta, entity_ids=expanded_entities, include_start_time_state=True, significant_changes_only=False)
         _LOGGER.debug("history: %s", dic)
+        # handle_presence_simulation_sync is called from async_add_executor_job,
+        # so may not be running in the event loop, so we can't call hass.async_create_task.
+        # instead calling hass.create_task, which is thread_safe.
+        # See homeassistant/core.py:create_task
         for entity_id in dic:
             _LOGGER.debug('Entity %s', entity_id)
             #launch an async task by entity_id
-            hass.async_create_task(simulate_single_entity(entity_id, dic[entity_id], overridden_delta, overridden_random))
+            hass.create_task(simulate_single_entity(entity_id, dic[entity_id], overridden_delta, overridden_random))
 
         #launch an async task that will restart the simulation after the delay has passed
-        hass.async_create_task(restart_presence_simulation(call, entities_after_restart=entities_after_restart, delta_after_restart=delta_after_restart, random_after_restart=overridden_random))
+        hass.create_task(restart_presence_simulation(call, entities_after_restart=entities_after_restart, delta_after_restart=delta_after_restart, random_after_restart=overridden_random))
         _LOGGER.debug("All async tasks launched")
 
 
@@ -326,13 +330,13 @@ async def async_mysetup(hass, entities, deltaStr, refreshInterval, restoreParam,
         if domain == "light":
             #if it is a light, checking the brigthness & color
             _LOGGER.debug("Switching light %s to %s", entity_id, state.state)
-            if "brightness" in state.attributes:
+            if "brightness" in state.attributes and state.attributes["brightness"] is not None:
                 _LOGGER.debug("Got attribute brightness: %s", state.attributes["brightness"])
                 service_data["brightness"] = state.attributes["brightness"]
             # Preserve accurate color information, where applicable
             # see https://developers.home-assistant.io/docs/core/entity/light/#color-modes
             # see https://developers.home-assistant.io/docs/core/entity/light/#turn-on-light-device
-            if "color_mode" in state.attributes:
+            if "color_mode" in state.attributes and state.attributes["color_mode"] is not None:
                 _LOGGER.debug("Got attribute color_mode: %s", state.attributes["color_mode"])
                 color_mode = state.attributes["color_mode"]
                 # color_temp is the only color mode with an attribute that's not color_mode+"_color"

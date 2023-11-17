@@ -118,17 +118,6 @@ offne_wohnungstur:
     type: unlock
   mode: single
   icon: mdi:lock-open
-alexa_lautstarke:
-  alias: Alexa Lautstärke
-  sequence:
-  - service: media_player.volume_set
-    target:
-      entity_id: '{{ states(''sensor.last_alexa'') }}'
-    data:
-      volume_level: "{% if is_state(\"sensor.last_alexa\", \"media_player.echo_dot_second_gen\")
-        %}\n  0.5\n{% else %}\n  0.3\n{% endif %}\n"
-  mode: single
-  icon: si:amazonalexa
 speedtest_awtrix_wohnzimmer:
   alias: SpeedTest (Awtrix Wohnzimmer)
   sequence:

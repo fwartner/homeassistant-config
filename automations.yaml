@@ -1455,33 +1455,6 @@
         target:
           entity_id: switch.dashboard_screen
   mode: single
-- id: '1693261615102'
-  alias: Prusa
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.prusalink_mini
-    to: idle
-    for:
-      hours: 0
-      minutes: 20
-      seconds: 0
-    from: printing
-    id: printFinished
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - printFinished
-      sequence:
-      - type: turn_off
-        device_id: d59c7f4a6655adb40f460f65613c323f
-        entity_id: 3e254c62e11a6d53e8ea28bf70f139d5
-        domain: switch
-  mode: single
 - id: '1693489965780'
   alias: Rollo Küche
   description: ''

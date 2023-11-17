@@ -2218,3 +2218,14 @@
         entity_id: 255a28db87beeaea88f4a5fc89b6b772
         domain: switch
   mode: single
+- id: '1700216956186'
+  alias: Heizung Wohnzimmer Test
+  description: ''
+  use_blueprint:
+    path: TheRealSimonMlr/ECO Heating Ultimate.yaml
+    input:
+      climate_entity: climate.heizung_wohnzimmer
+      presence_detector: binary_sensor.aqara_fp2_couch
+      window_contact: binary_sensor.aqara_contact_balkontur_wohnzimmer_contact
+      time_morning: 07:00:00
+      morning_comfort_temprature: 22

@@ -226,6 +226,20 @@ run_chores:
 duschen_vorbereiten:
   alias: Duschen Vorbereiten
   sequence:
+  - service: notify.alexa_media
+    data:
+      message: Ich bereite das Badezimmer für dich vor, damit du in ein paar Minuten
+        in aller Ruhe duschen gehen kannst. Ich gebe dir Bescheid, wenn ich damit
+        fertig bin.
+      data:
+        method: all
+        type: announce
+      target:
+      - media_player.echo_badezimmer
+      - media_player.echo_flur
+      - media_player.echo_schlafzimmer
+      - media_player.echo_schlafzimmer
+      title: Ich bereite das Badezimmer vor
   - service: climate.set_temperature
     data:
       hvac_mode: heat

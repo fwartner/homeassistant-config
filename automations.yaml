@@ -2096,3 +2096,34 @@
       double_action:
       - service: script.duschen_vorbereiten
         data: {}
+- id: '1700299914747'
+  alias: Duschen Ankündigen
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id:
+    - sensor.temperatur_badezimmer
+    above: 21
+  condition:
+  - condition: state
+    entity_id: input_boolean.duschen_vorbereiten
+    state: 'on'
+  action:
+  - service: notify.alexa_media
+    data:
+      message: Das Badezimmer hat eine Temperatur von mindestens 21 Grad erreicht.
+        Du kannst also jetzt duschen gehen.
+      data:
+        method: all
+        type: announce
+      target:
+      - media_player.echo_badezimmer
+      - media_player.echo_flur
+      - media_player.echo_schlafzimmer
+      - media_player.echo_schlafzimmer
+      title: Du könntest jetzt duschen gehen
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.duschen_vorbereiten
+  mode: single

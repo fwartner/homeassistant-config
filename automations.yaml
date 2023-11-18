@@ -2028,16 +2028,37 @@
     id: waterBadezimmerOff
   condition: []
   action:
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 10
-      milliseconds: 0
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.echo_badezimmer
-    data:
-      media_content_id: shuffle Songs to Sing in the Shower
-      media_content_type: SPOTIFY
-    metadata: {}
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - waterBadezimmerOn
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 10
+          milliseconds: 0
+      - service: media_player.play_media
+        target:
+          entity_id: media_player.echo_badezimmer
+        data:
+          media_content_id: shuffle Songs to Sing in the Shower
+          media_content_type: SPOTIFY
+        metadata: {}
+    - conditions:
+      - condition: trigger
+        id:
+        - waterBadezimmerOff
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 10
+          milliseconds: 0
+      - service: media_player.media_stop
+        data: {}
+        target:
+          entity_id:
+          - media_player.echo_badezimmer
   mode: single

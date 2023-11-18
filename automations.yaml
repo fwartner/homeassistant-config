@@ -2039,6 +2039,15 @@
     from: 'on'
     to: 'off'
     id: mmwaveDuschenAus
+  - platform: numeric_state
+    entity_id:
+    - sensor.luftfeuchtigkeit_badezimmer
+    for:
+      hours: 0
+      minutes: 20
+      seconds: 0
+    above: 70
+    id: luftfeuchtigkeitBadezimmerHoch
   condition:
   - condition: state
     entity_id: input_boolean.duschen_besetzt
@@ -2085,4 +2094,27 @@
         data: {}
         target:
           entity_id: input_boolean.duschen_besetzt
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id:
+          - luftfeuchtigkeitBadezimmerHoch
+        - condition: state
+          entity_id: binary_sensor.fenster_badezimmer
+          state: 'off'
+      sequence:
+      - service: notify.alexa_media
+        data:
+          target:
+          - media_player.echo_badezimmer
+          - media_player.echo_flur
+          - media_player.echo_schlafzimmer
+          - media_player.echo_schlafzimmer
+          data:
+            method: all
+            type: announce
+          title: Lüften nicht vergessen
+          message: Bitte öffne doch das Fenster im Badezimmer. Oder möchtest du ein
+            kleines Feuchtbiotop Zuhause haben?
   mode: single

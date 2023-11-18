@@ -2077,3 +2077,22 @@
       window_contact: binary_sensor.aqara_contact_balkontur_wohnzimmer_contact
       time_morning: 07:00:00
       morning_comfort_temprature: 22
+- id: '1700299245684'
+  description: ''
+  use_blueprint:
+    path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
+    input:
+      action_sensor: sensor.aqara_taster_badezimmer_action
+      double_action:
+      - service: script.duschen_vorbereiten
+        data: {}
+- id: '1700299340055'
+  alias: Duschen vorbereiten
+  description: ''
+  use_blueprint:
+    path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
+    input:
+      action_sensor: sensor.aqara_taster_badezimmer_action
+      double_action:
+      - service: script.duschen_vorbereiten
+        data: {}

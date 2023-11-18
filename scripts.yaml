@@ -249,6 +249,8 @@ duschen_vorbereiten:
   - service: input_boolean.turn_on
     data: {}
     target:
-      entity_id: input_boolean.duschen_vorbereiten
+      entity_id:
+      - input_boolean.duschen_vorbereiten
+      - input_boolean.duschen_besetzt
   mode: single
   icon: fas:shower

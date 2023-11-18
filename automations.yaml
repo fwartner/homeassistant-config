@@ -2033,7 +2033,16 @@
     from: 'on'
     to: 'off'
     id: waterBadezimmerOff
-  condition: []
+  - platform: state
+    entity_id:
+    - binary_sensor.mmwave_badezimmer
+    from: 'on'
+    to: 'off'
+    id: mmwaveDuschenAus
+  condition:
+  - condition: state
+    entity_id: input_boolean.duschen_besetzt
+    state: 'on'
   action:
   - choose:
     - conditions:
@@ -2053,4 +2062,37 @@
           media_content_id: shuffle Songs to Sing in the Shower
           media_content_type: SPOTIFY
         metadata: {}
+    - conditions:
+      - condition: trigger
+        id:
+        - waterBadezimmerOff
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 10
+          milliseconds: 0
+      - service: media_player.media_stop
+        data: {}
+        target:
+          entity_id:
+          - media_player.echo_badezimmer
+    - conditions:
+      - condition: trigger
+        id:
+        - mmwaveDuschenAus
+      sequence:
+      - service: media_player.media_stop
+        data: {}
+        target:
+          entity_id: media_player.echo_badezimmer
+      - service: climate.set_hvac_mode
+        data:
+          hvac_mode: 'off'
+        target:
+          entity_id: climate.heizung_badezimmer
+      - service: input_boolean.turn_off
+        data: {}
+        target:
+          entity_id: input_boolean.duschen_besetzt
   mode: single

@@ -1062,14 +1062,16 @@
         id:
         - doorOpenOn
       - condition: template
-        value_template: '{{ (as_timestamp(now()) - as_timestamp(states.device_tracker.iphone_von_florian_app.last_changed))
+        value_template: '{{ (as_timestamp(now()) - as_timestamp(states.person.florian.last_changed))
           < 10 }}'
       sequence:
-      - service: notify.alexa_media_echo_schlafzimmer
+      - service: notify.alexa_media_echo_flur
         data:
-          message: '{{ [ ''Willkommen Zurück!'', ''Willkommen Zuhause.'', ''Da biste
-            ja wieder!'', ''Na, auch mal wieder da?'', ''Ach, kommst du auch mal wieder?'',
-            ] | random }}'
+          message: '{{ [ ''Willkommen Zurück!'',  ''Willkommen Zuhause.'',  ''Da biste
+            ja wieder!'', ''Na, auch mal wieder da?'',  ''Ach, kommst du auch mal
+            wieder?'',  ''Schön, dass du wieder Zuhause bist!'',  ''Schön, dass du
+            wieder da bist!'',  ''Schön, dass du wieder Zuhause bist!'', ''Schöndich
+            wiederzusehen.'' ] | random }}'
   mode: single
 - id: '1691769668517'
   alias: 'Jonas: Zähneputzen Starten'

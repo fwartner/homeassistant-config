@@ -1994,7 +1994,7 @@
   action:
   - service: notify.alexa_media
     data:
-      message: Das Badezimmer hat eine Temperatur von mindestens 21 Grad erreicht.
+      message: Das Badezimmer hat eine Temperatur von mindestens 22 Grad erreicht.
         Du kannst also jetzt duschen gehen.
       data:
         method: all

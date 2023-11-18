@@ -2010,3 +2010,34 @@
     target:
       entity_id: input_boolean.duschen_vorbereiten
   mode: single
+- id: '1700300672837'
+  alias: Duschen
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.aqara_water_badezimmer_water_leak
+    from: 'off'
+    to: 'on'
+    id: waterBadezimmerOn
+  - platform: state
+    entity_id:
+    - binary_sensor.aqara_water_badezimmer_water_leak
+    from: 'on'
+    to: 'off'
+    id: waterBadezimmerOff
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.echo_badezimmer
+    data:
+      media_content_id: shuffle Songs to Sing in the Shower
+      media_content_type: SPOTIFY
+    metadata: {}
+  mode: single

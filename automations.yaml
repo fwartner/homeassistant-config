@@ -2055,6 +2055,11 @@
           minutes: 0
           seconds: 10
           milliseconds: 0
+      - service: media_player.volume_set
+        data:
+          volume_level: 0.4
+        target:
+          entity_id: media_player.echo_badezimmer
       - service: media_player.play_media
         target:
           entity_id: media_player.echo_badezimmer

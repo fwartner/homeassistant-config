@@ -2065,21 +2065,6 @@
     - conditions:
       - condition: trigger
         id:
-        - waterBadezimmerOff
-      sequence:
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 10
-          milliseconds: 0
-      - service: media_player.media_stop
-        data: {}
-        target:
-          entity_id:
-          - media_player.echo_badezimmer
-    - conditions:
-      - condition: trigger
-        id:
         - mmwaveDuschenAus
       sequence:
       - service: media_player.media_stop

@@ -18,9 +18,9 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2515
+Number of entities | 2514
 Number of sensors | 1555
-Number of automations | 58
+Number of automations | 57
 Number of scripts | 17
 Number of scenes | 28
 Number of zones | 9
@@ -67,6 +67,7 @@ Number of binary sensors | 170
 - [Deutsche Bahn](https://github.com/FaserF/ha-deutschebahn)
 - [Dyson](https://github.com/libdyson-wg/ha-dyson)
 - [Dyson Integration](https://github.com/dotvezz/ha-dyson)
+- [Ember Mug](https://github.com/sopelj/hass-ember-mug-component)
 - [Energyscore](https://github.com/knudsvik/EnergyScore)
 - [Eufy Security](https://github.com/fuatakgun/eufy_security)
 - [Expose Camera Stream Source](https://github.com/felipecrs/hass-expose-camera-stream-source)
@@ -110,6 +111,7 @@ Number of binary sensors | 170
 - [Spook 👻 Not Your Homie](https://github.com/frenck/spook)
 - [Spoolman](https://github.com/Disane87/spoolman-homeassistant)
 - [Spotcast](https://github.com/fondberg/spotcast)
+- [Stream Deck](https://github.com/Patrick762/hassio-streamdeck)
 - [Sun2](https://github.com/pnbruckner/ha-sun2)
 - [Temperature Feels Like](https://github.com/Limych/ha-temperature-feels-like)
 - [Thermal Comfort](https://github.com/dolezsa/thermal_comfort)

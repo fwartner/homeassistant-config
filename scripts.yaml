@@ -254,3 +254,44 @@ duschen_vorbereiten:
       - input_boolean.duschen_besetzt
   mode: single
   icon: fas:shower
+10_minuten_boost_schlafzimmer:
+  alias: 10 Minuten Boost Schlafzimmer
+  sequence:
+  - service: climate.set_fan_mode
+    data:
+      fan_mode: high
+    target:
+      entity_id: climate.luftreiniger_schlafzimmer
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - service: climate.set_fan_mode
+    data:
+      fan_mode: low
+    target:
+      entity_id: climate.luftreiniger_schlafzimmer
+  mode: single
+  icon: mdi:air-filter
+10_minuten_boost_wohnzimmer:
+  alias: 10 Minuten Boost Wohnzimmer
+  sequence:
+  - service: climate.set_fan_mode
+    data:
+      fan_mode: high
+    target:
+      entity_id:
+      - climate.luftreiniger_wohnzimmer
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - service: climate.set_fan_mode
+    data:
+      fan_mode: low
+    target:
+      entity_id: climate.luftreiniger_wohnzimmer
+  mode: single
+  icon: mdi:air-filter

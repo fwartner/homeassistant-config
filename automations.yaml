@@ -2156,6 +2156,17 @@
     - binary_sensor.nuki_haustur_ring_action
     to: 'on'
     id: nukiOn
+  - platform: state
+    entity_id:
+    - binary_sensor.macbook_camera_in_use
+    to: 'on'
+    id: macbookCameraOn
+  - platform: state
+    entity_id:
+    - binary_sensor.macbook_camera_in_use
+    to: 'off'
+    id: macbookCameraOff
+    from: 'on'
   condition: []
   action:
   - choose:
@@ -2195,4 +2206,25 @@
           topic: awtrix_wohnzimmer/notify
           payload: '{   "text": "Es hat geklingelt!",   "wakeup": true,   "duration":
             10, "icon": 54924 }'
+    - conditions:
+      - condition: trigger
+        id:
+        - macbookCameraOn
+      sequence:
+      - service: mqtt.publish
+        data:
+          qos: '1'
+          retain: false
+          topic: awtrix_wohnzimmer/notify
+          payload: '{   "text": "Ruhe Bitte!",   "wakeup": true,   "hold": true, "icon":
+            38789 }'
+    - conditions:
+      - condition: trigger
+        id:
+        - macbookCameraOff
+      sequence:
+      - service: button.press
+        data: {}
+        target:
+          entity_id: button.awtrix_wohnzimmer_dismiss_notification
   mode: single

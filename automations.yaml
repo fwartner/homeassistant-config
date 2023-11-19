@@ -2137,3 +2137,62 @@
         entity_id: a3b75251085eae273bb712e228192320
         domain: switch
   mode: single
+- id: '1700359527492'
+  alias: AWTRIX Notifications
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.mmwave_badezimmer
+    to: 'on'
+    id: badezimmerOn
+  - platform: state
+    entity_id:
+    - binary_sensor.mmwave_badezimmer
+    to: 'off'
+    id: badezimmerOff
+  - platform: state
+    entity_id:
+    - binary_sensor.nuki_haustur_ring_action
+    to: 'on'
+    id: nukiOn
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - badezimmerOn
+      sequence:
+      - service: mqtt.publish
+        data:
+          qos: '1'
+          retain: false
+          topic: awtrix_wohnzimmer/notify
+          payload: '{   "text": "Das Badezimmer ist gerade besetzt",   "wakeup": true,   "duration":
+            15, "icon": 7100 }'
+    - conditions:
+      - condition: trigger
+        id:
+        - badezimmerOn
+      sequence:
+      - service: mqtt.publish
+        data:
+          qos: '1'
+          retain: false
+          topic: awtrix_wohnzimmer/notify
+          payload: '{   "text": "Das Badezimmer ist wieder frei",   "wakeup": true,   "duration":
+            15, "icon": 7100 }'
+    - conditions:
+      - condition: trigger
+        id:
+        - nukiOn
+      sequence:
+      - service: mqtt.publish
+        data:
+          qos: '1'
+          retain: false
+          topic: awtrix_wohnzimmer/notify
+          payload: '{   "text": "Es hat geklingelt!",   "wakeup": true,   "duration":
+            10, "icon": 54924 }'
+  mode: single

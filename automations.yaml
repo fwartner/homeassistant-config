@@ -2180,8 +2180,8 @@
           qos: '1'
           retain: false
           topic: awtrix_wohnzimmer/notify
-          payload: '{   "text": "Das Badezimmer ist gerade besetzt",   "wakeup": true,   "duration":
-            15, "icon": 7100 }'
+          payload: '{   "text": "Das Badezimmer ist gerade besetzt",  "wakeup": true,   "duration":
+            15, "pushIcon": true, "icon": 7100 }'
     - conditions:
       - condition: trigger
         id:
@@ -2192,8 +2192,8 @@
           qos: '1'
           retain: false
           topic: awtrix_wohnzimmer/notify
-          payload: '{   "text": "Das Badezimmer ist wieder frei",   "wakeup": true,   "duration":
-            15, "icon": 7100 }'
+          payload: '{   "text": "Das Badezimmer ist wieder frei",  "wakeup": true,   "duration":
+            15, "pushIcon": true,  "icon": 7100 }'
     - conditions:
       - condition: trigger
         id:
@@ -2204,8 +2204,8 @@
           qos: '1'
           retain: false
           topic: awtrix_wohnzimmer/notify
-          payload: '{   "text": "Es hat geklingelt!",   "wakeup": true,   "duration":
-            10, "icon": 54924 }'
+          payload: '{   "text": "Es hat geklingelt!",  "wakeup": true,   "duration":
+            10, "pushIcon": true,  "icon": 54924 }'
     - conditions:
       - condition: trigger
         id:
@@ -2216,8 +2216,8 @@
           qos: '1'
           retain: false
           topic: awtrix_wohnzimmer/notify
-          payload: '{   "text": "Ruhe Bitte!",   "wakeup": true,   "hold": true, "icon":
-            38789 }'
+          payload: '{   "text": "Ruhe Bitte!",   "wakeup": true,  "hold": true, "pushIcon":
+            true,  "icon": 38789 }'
     - conditions:
       - condition: trigger
         id:

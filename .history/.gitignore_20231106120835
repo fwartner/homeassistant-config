@@ -155,7 +155,6 @@ yamlint_errors.txt
 zigbee.db-shm
 zigbee.db-wal
 .shopping_list.json
-image/
 
 
 o365_storage/

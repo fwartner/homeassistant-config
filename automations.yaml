@@ -1847,21 +1847,23 @@
         id:
         - timeEveningPure
       sequence:
-      - service: switch.turn_on
-        data: {}
+      - service: climate.set_fan_mode
+        data:
+          fan_mode: high
         target:
           entity_id:
-          - switch.luftreiniger_schlafzimmer_pure_boost
+          - climate.luftreiniger_schlafzimmer
       - delay:
           hours: 0
           minutes: 10
           seconds: 0
           milliseconds: 0
-      - service: switch.turn_off
-        data: {}
+      - service: climate.set_fan_mode
+        data:
+          fan_mode: low
         target:
           entity_id:
-          - switch.luftreiniger_schlafzimmer_pure_boost
+          - climate.luftreiniger_schlafzimmer
   mode: single
 - id: '1700175805163'
   alias: Movietime

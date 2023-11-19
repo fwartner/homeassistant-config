@@ -18,13 +18,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2481
-Number of sensors | 1526
-Number of automations | 57
+Number of entities | 2515
+Number of sensors | 1555
+Number of automations | 58
 Number of scripts | 17
 Number of scenes | 28
 Number of zones | 9
-Number of binary sensors | 169
+Number of binary sensors | 170
 
 ## My installed extensions:
 
@@ -35,6 +35,7 @@ Number of binary sensors | 169
 - AppDaemon
 - chrony
 - ESPHome
+- Home Assistant Google Drive Backup
 - Home Assistant Stream Deck
 - Matter Server
 - Piper
@@ -42,6 +43,7 @@ Number of binary sensors | 169
 - Samba share
 - Silicon Labs Multiprotocol
 - speedtest
+- Spotify Connect
 - Studio Code Server
 - Whisper
 

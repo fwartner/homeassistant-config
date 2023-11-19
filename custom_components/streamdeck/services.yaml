@@ -1,0 +1,9 @@
+# Stream Deck Integration Services
+
+sdinfo:
+  name: Get Stream Deck Info
+  description: Get the current state of the Stream Deck Integration. This service will fire a "streamdeck_status" event
+
+dump:
+  name: Dump Config Entries
+  description: Dump Integration Config Entries

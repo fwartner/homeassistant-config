@@ -1,0 +1,82 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Agregue una taza, copa o taza de viaje Ember",
+        "data": {
+          "address": "Dispositivo (Dirección MAC)",
+          "name": "Nombre",
+          "temperature_unit": "Unidad de temperatura",
+          "include_extra": "Incluir atributos adicionales para el desarrollo",
+          "debug": "Registro de servicios y características para el desarrollo al conectarse"
+        }
+      }
+    },
+    "abort": {
+      "unknown": "Un error desconocido ocurrió",
+      "cannot_connect": "No se puede conectar a el dispositivo",
+      "no_new_devices": "No se encontraron dispositivo Ember nuevos. Asegúrese de que esté en modo de emparejamiento."
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "low_battery": { "name": "Batería baja" },
+      "power": { "name": "Energía" }
+    },
+    "light": {
+      "led": { "name": "LED" }
+    },
+    "number": {
+      "target_temp": { "name": "Temperatura deseada" }
+    },
+    "select": {
+      "temperature_unit": { "name": "Unidad de temperatura" },
+      "volume_level": {
+        "name": "Nivel de volumen",
+        "state": {
+          "low": "Bajo",
+          "medium": "Medio",
+          "high": "Alto"
+        }
+      }
+    },
+    "sensor": {
+      "battery_percent": {
+        "name": "Batería",
+        "state_attributes": {
+          "battery_voltage": { "name": "Voltaje de la batería" }
+        }
+      },
+      "current_temp": { "name": "Temperatura actual" },
+      "liquid_level": {
+        "name": "Nivel de liquido",
+        "state_attributes": {
+          "raw_liquid_level": { "name": "Nivel de líquido bruto" }
+        }
+      },
+      "state": {
+        "name": "Estado",
+        "state": {
+          "unknown": "Desconocido",
+          "empty": "Vacío",
+          "filling": "Llenando",
+          "cold_no_control":  "Frío (Sin control)",
+          "cooling": "Enfriando",
+          "heating": "Calentamiento",
+          "perfect": "Perfecto",
+          "warm_no_control": "Cálido (sin control)"
+        },
+        "state_attributes": {
+          "date_time_zone": { "name": "Fecha y Zona Horaria" },
+          "dsk": { "name": "DSK" },
+          "firmware_info": { "name": "Información de firmware"},
+          "raw_state": { "name": "Estado bruto" },
+          "udsk": { "name": "UDSK" }
+        }
+      }
+    },
+    "text": {
+      "name": { "name": "Nombre" }
+    }
+  }
+}

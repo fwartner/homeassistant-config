@@ -1,0 +1,40 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "data": {
+          "name": "[%key:common::config_flow::data::name%]",
+          "host": "[%key:common::config_flow::data::host%]",
+          "show_name": "Show Entity Name",
+          "enabled_platforms": "Enabled Platforms"
+        }
+      },
+      "confirm": {
+        "description": "[%key:common::config_flow::description::confirm_setup%]"
+      }
+    },
+    "error": {
+      "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]"
+    },
+    "abort": {
+      "single_instance_allowed": "[%key:common::config_flow::abort::single_instance_allowed%]",
+      "no_devices_found": "[%key:common::config_flow::abort::no_devices_found%]",
+      "already_configured": "[%key:common::config_flow::abort::already_configured_device%]",
+      "no_hostname": "Can't resolve hostname from Discovery",
+      "no_streamdeck": "Device is not a Stream Deck"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "show_name": "Show Entity Name",
+          "enabled_platforms": "Enabled Platforms"
+        }
+      }
+    },
+    "abort": {
+      "options_saved": "Options saved"
+    }
+  }
+}

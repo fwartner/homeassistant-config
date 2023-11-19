@@ -1,0 +1,82 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Add an Ember Mug, Cup or Travel Mug",
+        "data": {
+          "address": "Device (MAC Address)",
+          "name": "Name",
+          "temperature_unit": "Temperature Unit",
+          "include_extra": "Include extra attributes for development",
+          "debug": "Log services and characteristics for development upon connection"
+        }
+      }
+    },
+    "abort": {
+      "unknown": "Unknown error occurred",
+      "cannot_connect": "Unable to connect to the device.",
+      "no_new_devices": "No new Ember devices were found. Please ensure it is in pairing mode."
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "low_battery": { "name": "Low battery" },
+      "power": { "name": "Power" }
+    },
+    "light": {
+      "led": { "name": "LED" }
+    },
+    "number": {
+      "target_temp": { "name": "Target temperature" }
+    },
+    "select": {
+      "temperature_unit": { "name": "Temperature unit" },
+      "volume_level": {
+        "name": "Volume Level",
+        "state": {
+          "low": "Low",
+          "medium": "Medium",
+          "high": "High"
+        }
+      }
+    },
+    "sensor": {
+      "battery_percent": {
+        "name": "Battery",
+        "state_attributes": {
+          "battery_voltage": { "name": "Battery voltage" }
+        }
+      },
+      "current_temp": { "name": "Current temperature" },
+      "liquid_level": {
+        "name": "Liquid level",
+        "state_attributes": {
+          "raw_liquid_level": { "name": "Raw liquid level" }
+        }
+      },
+      "state": {
+        "name": "State",
+        "state": {
+          "unknown": "Unknown",
+          "empty": "Empty",
+          "filling": "Filling",
+          "cold_no_control":  "Cold (No control)",
+          "cooling": "Cooling",
+          "heating": "Heating",
+          "perfect": "Perfect",
+          "warm_no_control": "Warm (No control)"
+        },
+        "state_attributes": {
+          "date_time_zone": { "name": "Date and Timezone" },
+          "dsk": { "name": "DSK" },
+          "firmware_info": { "name": "Firmware info"},
+          "raw_state": { "name": "Raw state" },
+          "udsk": { "name": "UDSK" }
+        }
+      }
+    },
+    "text": {
+      "name": { "name": "Name" }
+    }
+  }
+}

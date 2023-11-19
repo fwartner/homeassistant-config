@@ -1289,10 +1289,23 @@
     at: '23:30:00'
     id: offTime
   condition:
-  - condition: numeric_state
-    entity_id: sensor.people_home
-    above: 0
-    enabled: true
+  - condition: and
+    conditions:
+    - condition: numeric_state
+      entity_id: sensor.people_home
+      above: 0
+      enabled: true
+    - condition: time
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+      - sat
+      - sun
+      after: 07:00:00
+      before: '21:30:00'
   action:
   - choose:
     - conditions:

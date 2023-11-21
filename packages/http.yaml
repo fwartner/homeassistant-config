@@ -3,9 +3,5 @@ http:
   trusted_proxies:
     - 10.182.1.111
     - 127.0.0.1
-    - 10.182.1.208
-    - 90.187.195.137
     - 172.30.33.0/24
     - ::1
-auth_header:
-  username_header: X-authentik-username

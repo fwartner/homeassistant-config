@@ -7,5 +7,5 @@ http:
     - 90.187.195.137
     - 172.30.33.0/24
     - ::1
-  auth_header:
-    username_header: X-authentik-username
+auth_header:
+  username_header: X-authentik-username

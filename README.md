@@ -18,13 +18,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2517
-Number of sensors | 1556
+Number of entities | 2523
+Number of sensors | 1558
 Number of automations | 57
 Number of scripts | 17
 Number of scenes | 28
 Number of zones | 9
-Number of binary sensors | 170
+Number of binary sensors | 172
 
 ## My installed extensions:
 
@@ -77,6 +77,7 @@ Number of binary sensors | 170
 - [Grocy Custom Component](https://github.com/custom-components/grocy)
 - [HACS](https://github.com/hacs/integration)
 - [Hass.Agent](https://github.com/LAB02-Research/HASS.Agent-Integration)
+- [Header Authentication](https://github.com/BeryJu/hass-auth-header)
 - [Illuminance](https://github.com/pnbruckner/ha-illuminance)
 - [Iphone Device Tracker](https://github.com/mudape/iphonedetect)
 - [Irrigationprogram Custom Component](https://github.com/petergridge/Irrigation-V5)

@@ -727,11 +727,16 @@
     to: 'off'
     id: kucheOff
   condition:
-  - condition: sun
-    before: sunrise
-    after: sunset
-    after_offset: '1'
-    enabled: true
+  - condition: or
+    conditions:
+    - condition: sun
+      before: sunrise
+      after: sunset
+      after_offset: '1'
+      enabled: true
+    - condition: numeric_state
+      entity_id: sensor.mi_light_sensor_kuche_illuminance_lux
+      below: 300
   action:
   - choose:
     - conditions:
@@ -1106,10 +1111,16 @@
     to: 'off'
     id: badezimmerOff
   condition:
-  - condition: sun
-    before: sunrise
-    after: sunset
-    after_offset: '1'
+  - condition: or
+    conditions:
+    - condition: sun
+      before: sunrise
+      after: sunset
+      after_offset: '1'
+      enabled: true
+    - condition: numeric_state
+      entity_id: sensor.mi_light_sensor_kuche_illuminance_lux
+      below: 300
   action:
   - choose:
     - conditions:

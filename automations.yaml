@@ -2242,3 +2242,22 @@
         target:
           entity_id: button.awtrix_wohnzimmer_dismiss_notification
   mode: single
+- id: '1700777894209'
+  alias: Hue Dimmer Remote
+  description: ''
+  use_blueprint:
+    path: codycodes/hue-remote-dimmer-december-2021.yaml
+    input:
+      dimmer_device: 6339bf8c84a70aa82573894815c8d836
+      on_short_action:
+      - service: roborock.vacuum_clean_segment
+        data:
+          segments:
+          - '22'
+        target:
+          entity_id: vacuum.roborock_s7_maxv
+      on_long_action:
+      - service: vacuum.stop
+        data: {}
+        target:
+          entity_id: vacuum.roborock_s7_maxv

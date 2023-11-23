@@ -2289,6 +2289,13 @@
     attribute: event_type
     to: long_press
     id: staubsaugerKucheAus
+  - platform: state
+    entity_id:
+    - event.dimmer_flur_button_1
+    attribute: event_type
+    to: repeat
+    id: wohnungsturAufschließen
+    from: initial_press
   condition: []
   action:
   - choose:
@@ -2306,9 +2313,9 @@
     - conditions:
       - condition: trigger
         id:
-        - staubsaugerFlurAaus
+        - staubsaugerFlurAus
       sequence:
-      - service: roborock.vacuum_remote_control_stop
+      - service: vacuum.return_to_base
         data: {}
         target:
           entity_id: vacuum.roborock_s7_maxv
@@ -2328,8 +2335,17 @@
         id:
         - staubsaugerKucheAus
       sequence:
-      - service: roborock.vacuum_remote_control_stop
+      - service: vacuum.return_to_base
         data: {}
         target:
           entity_id: vacuum.roborock_s7_maxv
+    - conditions:
+      - condition: trigger
+        id:
+        - wohnungsturAufschließen
+      sequence:
+      - service: lock.unlock
+        data: {}
+        target:
+          entity_id: lock.nuki_wohnungstur_lock
   mode: single

@@ -1968,6 +1968,7 @@
         domain: switch
   mode: single
 - id: '1700299245684'
+  alias: Taster Badezimmer
   description: ''
   use_blueprint:
     path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
@@ -2242,25 +2243,6 @@
         target:
           entity_id: button.awtrix_wohnzimmer_dismiss_notification
   mode: single
-- id: '1700777894209'
-  alias: Hue Dimmer Remote
-  description: ''
-  use_blueprint:
-    path: codycodes/hue-remote-dimmer-december-2021.yaml
-    input:
-      dimmer_device: 6339bf8c84a70aa82573894815c8d836
-      on_short_action:
-      - service: roborock.vacuum_clean_segment
-        data:
-          segments:
-          - '22'
-        target:
-          entity_id: vacuum.roborock_s7_maxv
-      on_long_action:
-      - service: vacuum.stop
-        data: {}
-        target:
-          entity_id: vacuum.roborock_s7_maxv
 - id: '1700778014807'
   alias: Dimmer Flur
   description: ''
@@ -2293,9 +2275,14 @@
     entity_id:
     - event.dimmer_flur_button_1
     attribute: event_type
-    to: repeat
+    to: short_release
     id: wohnungsturAufschließen
-    from: initial_press
+  - platform: state
+    entity_id:
+    - event.dimmer_flur_button_1
+    attribute: event_type
+    to: long_press
+    id: wohnungsturAbschließen
   condition: []
   action:
   - choose:
@@ -2345,6 +2332,15 @@
         - wohnungsturAufschließen
       sequence:
       - service: lock.unlock
+        data: {}
+        target:
+          entity_id: lock.nuki_wohnungstur_lock
+    - conditions:
+      - condition: trigger
+        id:
+        - wohnungsturAbschließen
+      sequence:
+      - service: lock.lock
         data: {}
         target:
           entity_id: lock.nuki_wohnungstur_lock

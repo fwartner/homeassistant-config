@@ -2345,3 +2345,43 @@
         target:
           entity_id: lock.nuki_wohnungstur_lock
   mode: single
+- id: '1700779112103'
+  alias: Dimmer Wohnzimmer
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - event.dimmer_wohnzimmer_button_2
+    attribute: event_type
+    to: short_release
+    id: staubsaugerWohnzimmerAn
+  - platform: state
+    entity_id:
+    - event.dimmer_wohnzimmer_button_2
+    attribute: event_type
+    to: long_press
+    id: staubsaugerWohnzimmerAus
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - staubsaugerWohnzimmerAn
+      sequence:
+      - service: roborock.vacuum_clean_segment
+        data:
+          segments:
+          - '17'
+        target:
+          entity_id: vacuum.roborock_s7_maxv
+    - conditions:
+      - condition: trigger
+        id:
+        - staubsaugerWohnzimmerAus
+      sequence:
+      - service: vacuum.return_to_base
+        data: {}
+        target:
+          entity_id: vacuum.roborock_s7_maxv
+  mode: single

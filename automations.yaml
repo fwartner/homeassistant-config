@@ -2261,3 +2261,75 @@
         data: {}
         target:
           entity_id: vacuum.roborock_s7_maxv
+- id: '1700778014807'
+  alias: Dimmer Flur
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - event.dimmer_flur_button_2
+    attribute: event_type
+    to: short_release
+    id: staubsaugerFlurAn
+  - platform: state
+    entity_id:
+    - event.dimmer_flur_button_2
+    attribute: event_type
+    to: long_press
+    id: staubsaugerFlurAus
+  - platform: state
+    entity_id:
+    - event.dimmer_flur_button_3
+    attribute: event_type
+    to: short_release
+    id: staubsaugerKucheAn
+  - platform: state
+    entity_id:
+    - event.dimmer_flur_button_3
+    attribute: event_type
+    to: long_press
+    id: staubsaugerKucheAus
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - staubsaugerFlurAn
+      sequence:
+      - service: roborock.vacuum_clean_segment
+        data:
+          segments:
+          - '22'
+        target:
+          entity_id: vacuum.roborock_s7_maxv
+    - conditions:
+      - condition: trigger
+        id:
+        - staubsaugerFlurAaus
+      sequence:
+      - service: roborock.vacuum_remote_control_stop
+        data: {}
+        target:
+          entity_id: vacuum.roborock_s7_maxv
+    - conditions:
+      - condition: trigger
+        id:
+        - staubsaugerKucheAn
+      sequence:
+      - service: roborock.vacuum_clean_segment
+        data:
+          segments:
+          - '19'
+        target:
+          entity_id: vacuum.roborock_s7_maxv
+    - conditions:
+      - condition: trigger
+        id:
+        - staubsaugerKucheAus
+      sequence:
+      - service: roborock.vacuum_remote_control_stop
+        data: {}
+        target:
+          entity_id: vacuum.roborock_s7_maxv
+  mode: single

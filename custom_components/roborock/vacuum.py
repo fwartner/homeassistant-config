@@ -8,6 +8,8 @@ from abc import ABC
 from typing import Any
 
 import voluptuous as vol
+from roborock.roborock_message import RoborockDataProtocol
+
 from homeassistant.components.vacuum import (
     ATTR_BATTERY_ICON,
     ATTR_FAN_SPEED,
@@ -219,6 +221,9 @@ class RoborockVacuum(RoborockCoordinatedEntity, StateVacuumEntity, ABC):
         self.manual_seqnum = 0
         self._device = device
         self._coordinator = coordinator
+        self.api.add_listener(RoborockDataProtocol.FAN_POWER, self._update_from_listener, self.api.cache)
+        self.api.add_listener(RoborockDataProtocol.STATE, self._update_from_listener, self.api.cache)
+
 
     @property
     def supported_features(self) -> VacuumEntityFeature:
@@ -347,15 +352,15 @@ class RoborockVacuum(RoborockCoordinatedEntity, StateVacuumEntity, ABC):
         capability_attributes[ATTR_MOP_INTENSITY_LIST] = self.mop_intensity_list
         return capability_attributes
 
-    def is_paused(self) -> bool:
-        """Return if the vacuum is paused."""
-        return self.state == STATE_PAUSED or self.state == STATE_ERROR
+    def is_paused_idle_or_error(self) -> bool:
+        """Return if the vacuum is in paused, idle or error state."""
+        return self.state == STATE_PAUSED or self.state == STATE_IDLE or self.state == STATE_ERROR
 
     async def async_start(self) -> None:
         """Start the vacuum."""
-        if self.is_paused() and self._device_status.in_cleaning == 2:
+        if self.is_paused_idle_or_error() and self._device_status.in_cleaning == 2:
             await self.send(RoborockCommand.RESUME_ZONED_CLEAN)
-        elif self.is_paused and self._device_status.in_cleaning == 3:
+        elif self.is_paused_idle_or_error() and self._device_status.in_cleaning == 3:
             await self.send(RoborockCommand.RESUME_SEGMENT_CLEAN)
         else:
             await self.send(RoborockCommand.APP_START)

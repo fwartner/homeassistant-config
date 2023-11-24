@@ -1069,6 +1069,7 @@
       - condition: template
         value_template: '{{ (as_timestamp(now()) - as_timestamp(states.person.florian.last_changed))
           < 10 }}'
+        enabled: false
       sequence:
       - service: notify.alexa_media_echo_flur
         data:

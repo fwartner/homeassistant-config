@@ -18,8 +18,8 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2521
-Number of sensors | 1557
+Number of entities | 2512
+Number of sensors | 1550
 Number of automations | 59
 Number of scripts | 17
 Number of scenes | 28
@@ -34,9 +34,7 @@ Number of binary sensors | 171
 - AirSonos
 - AppDaemon
 - chrony
-- Epic Games Free
 - ESPHome
-- Free Games Claimer (NoVNC not working)
 - Home Assistant Google Drive Backup
 - Home Assistant Stream Deck
 - Matter Server
@@ -47,6 +45,7 @@ Number of binary sensors | 171
 - speedtest
 - Spotify Connect
 - Studio Code Server
+- tasmocompiler
 - Whisper
 
 ### Custom integrations

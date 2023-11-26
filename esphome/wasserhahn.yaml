@@ -45,7 +45,7 @@ web_server:
 
 switch:
   - platform: restart
-    name: "Wasserhan ESP Restart"
+    name: "ESP Restart"
   - platform: gpio
     name: "Wasserhahn"
     icon: "mdi:faucet"
@@ -57,12 +57,3 @@ switch:
         output: true
         open_drain: true
     restore_mode: ALWAYS_OFF
-  
-button:
-  - platform: template
-    name: Wasserhan
-    id: button_wasserhan
-    icon: "mdi:faucet"
-    on_press:
-      then:
-        - switch.toggle: switch_wasserhan

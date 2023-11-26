@@ -29,5 +29,5 @@ captive_portal:
 
 switch:
   - platform: gpio
-    pin: D4
+    pin: D8
     name: "Wasserhahn"

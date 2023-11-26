@@ -12,7 +12,24 @@ api:
     key: "FQEQCFmoRW5SV+YNDWFADil7rpV5meOXc7Tj007dfi4="
 
 ota:
-  password: "c5470ade6effa4bd7ec57ce88457d821"
+  safe_mode: true
+  password: !secret ota_password
+  on_begin:
+    then:
+      - logger.log: "OTA start"
+  on_progress:
+    then:
+      - logger.log:
+          format: "OTA progress %0.1f%%"
+          args: ["x"]
+  on_end:
+    then:
+      - logger.log: "OTA end"
+  on_error:
+    then:
+      - logger.log:
+          format: "OTA update error %d"
+          args: ["x"]
 
 wifi:
   ssid: !secret wifi_ssid

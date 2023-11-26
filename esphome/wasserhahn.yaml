@@ -29,12 +29,5 @@ captive_portal:
 
 switch:
   - platform: gpio
-    pin: D4
+    pin: D1
     name: "Wasserhahn"
-
-binary_sensor:
-  - platform: gpio
-    pin:
-      number: D4
-      mode: INPUT_PULLUP
-    name: "Touch sensor"

@@ -27,11 +27,14 @@ wifi:
 
 captive_portal:
 
+switch:
+  - platform: gpio
+    pin: D1
+    name: "Wasserhahn"
+
 binary_sensor:
   - platform: gpio
     pin:
-      number: GPIO15
+      number: D1
       mode: INPUT_PULLUP
     name: "Touch sensor"
-    filters:
-      - delayed_on: 10ms

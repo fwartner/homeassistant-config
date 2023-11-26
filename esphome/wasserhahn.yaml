@@ -44,8 +44,11 @@ web_server:
   port: 80
 
 switch:
+  - platform: restart
+    name: "Wasserhan ESP Restart"
   - platform: gpio
     name: "Wasserhahn"
+    id: switch_wasserhan
     pin: 
       number: D1
       inverted: true
@@ -53,3 +56,12 @@ switch:
         output: true
         open_drain: true
     restore_mode: ALWAYS_OFF
+  
+button:
+  - platform: template
+    name: Wasserhan
+    id: button_wasserhan
+
+    icon: "mdi:emoticon-outline"
+    on_press:
+      - logger.log: "Button pressed"

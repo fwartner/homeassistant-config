@@ -2386,3 +2386,26 @@
         target:
           entity_id: vacuum.roborock_s7_maxv
   mode: single
+- id: '1701034986006'
+  alias: Picnic
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id:
+    - sensor.picnic_beginn_des_slots_der_nachsten_lieferung
+    below: 2
+    id: picnicNextDelivery
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - picnicNextDelivery
+      sequence:
+      - service: notify.alexa_media_echo_show_wohnzimmer
+        data:
+          message: Deine Picnic-Bestellung kommt in weniger als zwei Stunden bei dir
+            an
+          title: Deine Picnic-Bestellung kommt
+  mode: single

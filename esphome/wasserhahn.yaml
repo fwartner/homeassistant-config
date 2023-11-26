@@ -48,6 +48,7 @@ switch:
     name: "Wasserhan ESP Restart"
   - platform: gpio
     name: "Wasserhahn"
+    icon: "mdi:faucet"
     id: switch_wasserhan
     pin: 
       number: D1
@@ -61,7 +62,7 @@ button:
   - platform: template
     name: Wasserhan
     id: button_wasserhan
-
-    icon: "mdi:emoticon-outline"
+    icon: "mdi:faucet"
     on_press:
-      - logger.log: "Button pressed"
+      then:
+        - switch.toggle: switch_wasserhan

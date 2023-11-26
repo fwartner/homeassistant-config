@@ -29,5 +29,11 @@ captive_portal:
 
 switch:
   - platform: gpio
-    pin: D1
     name: "Wasserhahn"
+    pin: 
+      number: D1
+      inverted: true
+      mode: 
+        output: true
+        open_drain: true
+    restore_mode: ALWAYS_OFF

@@ -47,7 +47,7 @@ switch:
   - platform: restart
     name: "ESP Restart"
   - platform: gpio
-    name: "Wasserhahn"
+    name: "Wasserlauf"
     icon: "mdi:faucet"
     id: switch_wasserhan
     pin: 

@@ -18,10 +18,10 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2512
-Number of sensors | 1550
-Number of automations | 59
-Number of scripts | 17
+Number of entities | 2533
+Number of sensors | 1566
+Number of automations | 60
+Number of scripts | 18
 Number of scenes | 28
 Number of zones | 9
 Number of binary sensors | 171
@@ -51,7 +51,7 @@ Number of binary sensors | 171
 ### Custom integrations
 - [Adaptive Lighting](https://github.com/basnijholt/adaptive-lighting)
 - [Alarmo](https://github.com/nielsfaber/alarmo)
-- [Alexa Media Player](https://github.com/custom-components/alexa_media_player)
+- [Alexa Media Player](https://github.com/alandtse/alexa_media_player)
 - [Anniversaries](https://github.com/pinkywafer/Anniversaries)
 - [Attributes Extractor](https://github.com/pilotak/homeassistant-attributes)
 - [Auto Backup](https://github.com/jcwillox/hass-auto-backup)

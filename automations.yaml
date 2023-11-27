@@ -589,6 +589,12 @@
     - input_boolean.guestmode
     from: 'on'
     to: 'off'
+  - platform: device
+    device_id: 1908fc0d3ce48c73492fb9d57e328810
+    domain: vacuum
+    entity_id: 6d5dc522199710de4cb17589e7196adf
+    type: cleaning
+    id: staubsaugerAn
   condition: []
   action:
   - service: fully_kiosk.load_url
@@ -600,6 +606,17 @@
     data: {}
     target:
       entity_id: switch.dashboard_screen
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - staubsaugerAn
+      sequence:
+      - service: fully_kiosk.load_url
+        data:
+          url: http://10.182.1.241:8123/dashboard-desktop/staubsauger
+        target:
+          device_id: 8d9991a5dd07654891a5cf3a476cba07
   mode: single
 - id: '1689602660317'
   alias: NFC Tag Putzen

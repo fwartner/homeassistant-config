@@ -21,6 +21,7 @@ class CustomCoverPositionRow extends LitElement {
 			customText: false,
 			reverseButtons: false,
 			allowDisablingButtons: true,
+			isTwoPositionCover: false,
 			openPosition: 99,
 			midOpenPosition: 66,
 			midClosePosition: 33,
@@ -58,6 +59,10 @@ class CustomCoverPositionRow extends LitElement {
 			_midLeftName: String,
 			_midRightName: String,
 			_rightName: String,
+			_hideLeft: String,
+			_hideMidLeft: String,
+			_hideMidRight: String,
+			_hideRight: String,
 			_leftPosition: Boolean,
 			_midLeftPosition: Boolean,
 			_midRightPosition: Boolean,
@@ -150,6 +155,7 @@ class CustomCoverPositionRow extends LitElement {
 		const custSetpoint = config.customSetpoints;
 		const custTxt = config.customText;
 		const revButtons = config.reverseButtons;
+		const twoPosCover = config.isTwoPositionCover;
 		const allowDisable = config.allowDisablingButtons;
 		const buttonWidth = config.width;
 		const buttonHeight = config.height;
@@ -302,6 +308,14 @@ class CustomCoverPositionRow extends LitElement {
 		let midCloseName = 'midclose';
 		let closeName = 'close';
 		
+		let hidemedium = 'display:block';
+
+		if (twoPosCover) {
+			hidemedium = 'display:none';
+		} else {
+			hidemedium = 'display:block';
+		}
+		
 		if (revButtons) {
 				this._stateObj = stateObj;
 				this._leftPosition = (opened === 'on' && allowDisable);
@@ -326,6 +340,8 @@ class CustomCoverPositionRow extends LitElement {
 				this._midLeftName = midOpenName;
 				this._midRightName = midCloseName;
 				this._rightName = closeName;
+				this._hideMidLeft = hidemedium;
+				this._hideMidRight = hidemedium;
 		} else {
 				this._stateObj = stateObj;
 				this._leftPosition = (closed === 'on' && allowDisable);
@@ -350,6 +366,8 @@ class CustomCoverPositionRow extends LitElement {
 				this._midLeftName = midCloseName;
 				this._midRightName = midOpenName;
 				this._rightName = openName;
+				this._hideMidLeft = hidemedium;
+				this._hideMidRight = hidemedium;
 		}
 	}
 	
@@ -371,5 +389,5 @@ class CustomCoverPositionRow extends LitElement {
 		}
 	}
 }
-	
+
 customElements.define('cover-position-preset-row', CustomCoverPositionRow);

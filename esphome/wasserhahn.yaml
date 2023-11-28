@@ -2,8 +2,8 @@ esphome:
   name: wasserhahn
   friendly_name: wasserhahn
 
-esp8266:
-  board: d1_mini
+esp32:
+  board: nodemcu-32s
 
 logger:
 

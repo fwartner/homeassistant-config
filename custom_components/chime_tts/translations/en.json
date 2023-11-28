@@ -102,5 +102,19 @@
                 "mp3_path_placeholder-whistle": "Whistle"
             }
         }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "Chime TTS Options",
+                "description": "Configure the `chime_tts.say` and `chime_tts.say_url` services:",
+                "data": {
+                    "queue_timeout": "Service call timeout (in seconds)",
+                    "media_dir": "Media folder (default 'local')",
+                    "temp_path": "Tempoary mp3 folder path",
+                    "www_path": "Public mp3 folder path (used in `chime_tts.say_url`)"
+                }
+            }
+        }
     }
 }

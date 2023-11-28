@@ -51,7 +51,7 @@ switch:
     icon: "mdi:faucet"
     id: switch_wasserhan
     pin: 
-      number: D1
+      number: GPIO13
       inverted: true
       mode: 
         output: true

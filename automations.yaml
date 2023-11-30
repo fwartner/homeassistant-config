@@ -2426,3 +2426,19 @@
             an
           title: Deine Picnic-Bestellung kommt
   mode: single
+- id: '1701356043476'
+  alias: Batterien
+  description: ''
+  use_blueprint:
+    path: sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
+    input:
+      actions:
+      - service: notify.alexa_media_echo_show_wohnzimmer
+        data:
+          message: Einige Batterien schein fast oder ganz leer zu sein. Guck doch
+            mal nach.
+      - service: notify.mobile_app_florians_iphone
+        data:
+          message: Einige Batterien schein fast oder ganz leer zu sein. Guck doch
+            mal nach.
+          title: "\U0001FAAB Niedriger Batterie Status"

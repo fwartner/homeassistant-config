@@ -348,7 +348,7 @@
         device_id: d60428083cf2206a189453343e1e4bb1
         entity_id: 0803f2de7bc30e5001fc4688fcfd0185
         domain: remote
-      - service: notify.alexa_media_echo_show_wohnzimmer
+      - service: notify.alexa_media_florians_echo_dot
         data:
           message: ' Lieber Jonas.. Es wird Zeit, ins Bett zu gehen. Bitte geh ins
             Badezimmer und     putz deine Zähne, zieh dir deinen Schlafanzug an und

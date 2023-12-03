@@ -39,14 +39,38 @@ MEDIA_DIR_KEY = "media_dir"
 MEDIA_DIR_DEFAULT = "local"
 
 MP3_PRESET_PATH = "custom_components/chime_tts/mp3s/"
-MP3_PRESET_PATH_PLACEHOLDER = "mp3_path_placeholder-"
+MP3_PRESET_PATH_PLACEHOLDER = "mp3_path_placeholder-"  # DEPRECATED
+MP3_PRESETS = [
+    "bells",
+    "bells_2",
+    "bright",
+    "chirp",
+    "choir",
+    "chord",
+    "classical",
+    "ding_dong",
+    "drumroll",
+    "dun_dun_dun",
+    "error",
+    "glockenspiel",
+    "hail",
+    "marimba",
+    "mario_coin",
+    "microphone_tap",
+    "tada",
+    "toast",
+    "twenty_four",
+    "sad_trombone",
+    "whistle",
+]
+MP3_PRESET_CUSTOM_PREFIX = "custom_chime_path_"
+MP3_PRESET_CUSTOM_KEY = "custom_paths"
 QUEUE = "QUEUE"
 QUEUE_STATUS_KEY = "QUEUE_STATUS"
 QUEUE_RUNNING = "QUEUE_RUNNING"
 QUEUE_IDLE = "QUEUE_IDLE"
 QUEUE_CURRENT_ID_KEY = "QUEUE_CURRENT_ID"
 QUEUE_LAST_ID = "QUEUE_LAST_ID"
-#TIMEOUT = "TIMEOUT"
 QUEUE_TIMEOUT_KEY = "queue_timeout"
 QUEUE_TIMEOUT_DEFAULT = 60
 

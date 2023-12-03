@@ -79,42 +79,63 @@
     "selector": {
         "chime_paths": {
             "options": {
-                "mp3_path_placeholder-bells": "Bells",
-                "mp3_path_placeholder-bells_2": "Bells 2",
-                "mp3_path_placeholder-bright": "Bright",
-                "mp3_path_placeholder-chirp": "Chirp",
-                "mp3_path_placeholder-choir": "Choir",
-                "mp3_path_placeholder-chord": "Chord",
-                "mp3_path_placeholder-classical": "Classical",
-                "mp3_path_placeholder-ding_dong": "Ding Dong",
-                "mp3_path_placeholder-drumroll": "Drum Roll",
-                "mp3_path_placeholder-dun_dun_dun": "Dun dun DUUUN!",
-                "mp3_path_placeholder-error": "Error",
-                "mp3_path_placeholder-glockenspiel": "Glockenspiel",
-                "mp3_path_placeholder-hail": "Hail",
-                "mp3_path_placeholder-marimba": "Marimba",
-                "mp3_path_placeholder-mario_coin": "Mario Coin",
-                "mp3_path_placeholder-microphone_tap": "Microphone Tap",
-                "mp3_path_placeholder-tada": "Ta-da!",
-                "mp3_path_placeholder-toast": "Toast",
-                "mp3_path_placeholder-twenty_four": "Twenty Four",
-                "mp3_path_placeholder-sad_trombone": "Sad Trombone",
-                "mp3_path_placeholder-whistle": "Whistle"
+                "bells": "Bells",
+                "bells_2": "Bells 2",
+                "bright": "Bright",
+                "chirp": "Chirp",
+                "choir": "Choir",
+                "chord": "Chord",
+                "classical": "Classical",
+                "ding_dong": "Ding Dong",
+                "drumroll": "Drum Roll",
+                "dun_dun_dun": "Dun dun DUUUN!",
+                "error": "Error",
+                "glockenspiel": "Glockenspiel",
+                "hail": "Hail",
+                "marimba": "Marimba",
+                "mario_coin": "Mario Coin",
+                "microphone_tap": "Microphone Tap",
+                "tada": "Ta-da!",
+                "toast": "Toast",
+                "twenty_four": "Twenty Four",
+                "sad_trombone": "Sad Trombone",
+                "whistle": "Whistle",
+                "custom_chime_path_1": "Custom 1",
+                "custom_chime_path_2": "Custom 2",
+                "custom_chime_path_3": "Custom 3",
+                "custom_chime_path_4": "Custom 4",
+                "custom_chime_path_5": "Custom 5"
             }
         }
     },
     "options": {
         "step": {
             "init": {
-                "title": "Chime TTS Options",
-                "description": "Configure the `chime_tts.say` and `chime_tts.say_url` services:",
+                "title": "Chime TTS Configuration",
+                "description": "Configure the `chime_tts.say` and `chime_tts.say_url` services and add custom chime mp3 paths:",
                 "data": {
                     "queue_timeout": "Service call timeout (in seconds)",
                     "media_dir": "Media folder (default 'local')",
                     "temp_path": "Tempoary mp3 folder path",
-                    "www_path": "Public mp3 folder path (used in `chime_tts.say_url`)"
+                    "www_path": "Public mp3 folder path (used in `chime_tts.say_url`)",
+                    "custom_chime_path_1": "'Custom 1' chime local mp3 file path",
+                    "custom_chime_path_2": "'Custom 2' chime local mp3 file path",
+                    "custom_chime_path_3": "'Custom 3' chime local mp3 file path",
+                    "custom_chime_path_4": "'Custom 4' chime local mp3 file path",
+                    "custom_chime_path_5": "'Custom 5' chime local mp3 file path"
                 }
             }
+        },
+        "error": {
+            "timeout": "The timeout value is invalid",
+            "timeout_sub": "Enter a valid timeout duration",
+            "multiple": "Multiple issues detected",
+            "invalid_chime_paths": "Invalid custom chime path detected",
+            "custom_chime_path_1": "'Custom 1' file path invalid",
+            "custom_chime_path_2": "'Custom 2' file path invalid",
+            "custom_chime_path_3": "'Custom 3' file path invalid",
+            "custom_chime_path_4": "'Custom 4' file path invalid",
+            "custom_chime_path_5": "'Custom 5' file path invalid"
         }
     }
 }

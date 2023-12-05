@@ -2532,3 +2532,72 @@
         hvac_mode: 'off'
       alias: Heizung Wohnzimmer Aus
   mode: single
+- id: '1701773191392'
+  alias: Heizung Toggle
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_boolean.heizung_toggle
+    to:
+  condition: []
+  action:
+  - if:
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: climate.heizung_badezimmer
+        state: heat
+      - condition: state
+        entity_id: climate.heizung_wohnzimmer
+        state: heat
+      - condition: state
+        entity_id: climate.heizung_schlafzimmer
+        state: heat
+      - condition: state
+        entity_id: climate.heizung_buro
+        state: heat
+    then:
+    - service: climate.set_hvac_mode
+      data:
+        hvac_mode: 'off'
+      target:
+        device_id:
+        - 90ee15e301be363c6e674cb006400119
+        - afd3d4982d793f98224ce76064298198
+        - a71ccaedb801d2e7e89232f60fea1706
+        - 5106942131c1dfe9055cba838a26b47b
+    - service: notify.mobile_app_florians_iphone
+      data:
+        title: ℹ️ Alle Heizungen ausgeschaltet
+        message: Alle Heizungen wurden erfolgreich ausgeschaltet.
+  - if:
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: climate.heizung_badezimmer
+        state: 'off'
+      - condition: state
+        entity_id: climate.heizung_wohnzimmer
+        state: 'off'
+      - condition: state
+        entity_id: climate.heizung_schlafzimmer
+        state: 'off'
+      - condition: state
+        entity_id: climate.heizung_buro
+        state: 'off'
+    then:
+    - service: climate.set_hvac_mode
+      data:
+        hvac_mode: heat
+      target:
+        device_id:
+        - 90ee15e301be363c6e674cb006400119
+        - afd3d4982d793f98224ce76064298198
+        - a71ccaedb801d2e7e89232f60fea1706
+        - 5106942131c1dfe9055cba838a26b47b
+    - service: notify.mobile_app_florians_iphone
+      data:
+        title: ℹ️ Alle Heizungen eingeschaltet
+        message: Alle Heizungen wurden erfolgreich eingeschaltet.
+  mode: single

@@ -18,13 +18,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2512
-Number of sensors | 1556
+Number of entities | 2585
+Number of sensors | 1601
 Number of automations | 63
 Number of scripts | 19
 Number of scenes | 28
 Number of zones | 9
-Number of binary sensors | 169
+Number of binary sensors | 180
 
 ## My installed extensions:
 
@@ -86,6 +86,7 @@ Number of binary sensors | 169
 - [Lovelace Gen](https://github.com/thomasloven/hass-lovelace_gen)
 - [Mail And Packages](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages)
 - [Moonraker](https://github.com/marcolivierarsenault/moonraker-home-assistant)
+- [Multiscrape](https://github.com/danieldotnl/ha-multiscrape)
 - [Music Assistant](https://github.com/music-assistant/hass-music-assistant)
 - [Myjdownloader](https://github.com/doudz/homeassistant-myjdownloader)
 - [Node Red Companion](https://github.com/zachowj/hass-node-red)

@@ -20,7 +20,7 @@ Description | Count
 -- | --
 Number of entities | 2585
 Number of sensors | 1601
-Number of automations | 63
+Number of automations | 62
 Number of scripts | 19
 Number of scenes | 28
 Number of zones | 9
@@ -56,6 +56,7 @@ Number of binary sensors | 180
 - [Attributes Extractor](https://github.com/pilotak/homeassistant-attributes)
 - [Auto Backup](https://github.com/jcwillox/hass-auto-backup)
 - [Average Sensor](https://github.com/Limych/ha-average)
+- [Battery Notes](https://github.com/andrew-codechimp/HA-Battery-Notes)
 - [Better Thermostat](https://github.com/KartoffelToby/better_thermostat)
 - [Blitzortung.Org Lightning Detector](https://github.com/mrk-its/homeassistant-blitzortung)
 - [Brewdog](https://github.com/custom-components/brewdog)

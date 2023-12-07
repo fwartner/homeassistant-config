@@ -2142,34 +2142,6 @@
           message: Bitte öffne doch das Fenster im Badezimmer. Oder möchtest du ein
             kleines Feuchtbiotop Zuhause haben?
   mode: single
-- id: '1700326117241'
-  alias: Steckdose Waschmaschine
-  description: ''
-  trigger:
-  - type: power
-    platform: device
-    device_id: a6aeedd7b20b622641299fd1ffb645ba
-    entity_id: b7ec5a27083409fab11174d4f2756468
-    domain: sensor
-    below: 10
-    for:
-      hours: 0
-      minutes: 20
-      seconds: 0
-    id: steckdoseWaschmaschinePowerOff
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - steckdoseWaschmaschinePowerOff
-      sequence:
-      - type: turn_off
-        device_id: a6aeedd7b20b622641299fd1ffb645ba
-        entity_id: a3b75251085eae273bb712e228192320
-        domain: switch
-  mode: single
 - id: '1700359527492'
   alias: AWTRIX Notifications
   description: ''

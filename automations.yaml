@@ -2034,7 +2034,7 @@
       - media_player.echo_badezimmer
       - media_player.echo_flur
       - media_player.echo_schlafzimmer
-      - media_player.echo_schlafzimmer
+      - media_player.echo_show_wohnzimmer
       title: Du könntest jetzt duschen gehen
   - service: input_boolean.turn_off
     data: {}

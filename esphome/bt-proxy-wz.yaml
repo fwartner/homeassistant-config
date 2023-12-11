@@ -1,31 +1,20 @@
-esphome:
+substitutions:
   name: bt-proxy-wz
-  friendly_name: bt-proxy-wz
-
-esp32:
-  board: esp32dev
-  framework:
-    type: arduino
-
-# Enable logging
-logger:
-
-# Enable Home Assistant API
+  friendly_name: Bluetooth Proxy Wohnzimmer
+packages:
+  esphome.bluetooth-proxy: github://esphome/bluetooth-proxies/esp32-generic.yaml@main
+esphome:
+  name: ${name}
+  name_add_mac_suffix: false
+  friendly_name: ${friendly_name}
 api:
   encryption:
-    key: "gjVz8Xns7eEZ8TEdIjvttdwmlBBxt7cBSjXBkXtJMVo="
-
-ota:
-  password: "d2c0c1b3b684947000a1cef19ac24025"
+    key: s+kxY82dWeKcTHa2ZCcMsvdZMPqTUYlkry0wAngCYSo=
 
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
 
-  # Enable fallback hotspot (captive portal) in case wifi connection fails
-  ap:
-    ssid: "Bt-Proxy-Wz Fallback Hotspot"
-    password: "DhYhMZ0rkFax"
-
-captive_portal:
-    
+switch:
+  - platform: restart
+    name: "ESP Restart"

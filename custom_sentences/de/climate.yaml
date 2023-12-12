@@ -1,0 +1,12 @@
+language: "de"
+
+intents:
+  SchlafzimmerModus:
+    data:
+      - sentences:
+          - "(stelle|wechsle) [das] schlafzimmer (auf|zu) {mode}"
+          - "(aktiviere|schalte an) {mode} im schlafzimmer"
+
+skip_words:
+  - "bitte"
+  - "kannst du"

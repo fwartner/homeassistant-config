@@ -1,0 +1,26 @@
+language: "de"
+
+intents:
+  SetVolume:
+    data:
+      - sentences:
+          - "(set|change) [the] {media_player} volume to {volume} [percent]"
+          - "(set|change) [the] volume for [the] {media_player} to {volume} [percent]"
+
+skip_words:
+  - "please"
+  - "can you"
+
+lists:
+  media_player:
+    values:
+      - in: "living room tv"
+        out: "media_player.living_room_tv"
+      - in: "basement tv"
+        out: "media_player.basement_tv"
+      - in: "master bedroom tv"
+        out: "media_player.master_bedroom_chromecast"
+  volume:
+    range:
+      from: 0
+      to: 100

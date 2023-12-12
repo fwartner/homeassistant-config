@@ -1,0 +1,7 @@
+language: "de"
+responses:
+  intents:
+    HassTurnOn:
+      default: "Ich habe {{ slots.name }} eingeschaltet"
+    HassTurnOff:
+      default: "Ich habe {{ slots.name }} ausgeschaltet"

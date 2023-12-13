@@ -79,7 +79,6 @@ condition:
 action:
   - variables:
       weather_entity: !input weather_entity
-      calendar_entity: !input calendar_entity
       zone_entity: !input zone_entity
       prompt: !input prompt
   - alias: Conversation Agent Notification Text

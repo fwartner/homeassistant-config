@@ -18,13 +18,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2554
-Number of sensors | 1588
+Number of entities | 2694
+Number of sensors | 1726
 Number of automations | 62
 Number of scripts | 19
 Number of scenes | 28
 Number of zones | 9
-Number of binary sensors | 165
+Number of binary sensors | 166
 
 ## My installed extensions:
 
@@ -83,6 +83,7 @@ Number of binary sensors | 165
 - [Illuminance](https://github.com/pnbruckner/ha-illuminance)
 - [Iphone Device Tracker](https://github.com/mudape/iphonedetect)
 - [Irrigationprogram Custom Component](https://github.com/petergridge/Irrigation-V5)
+- [Jokes](https://github.com/LaggAt/ha-jokes)
 - [Local Tuya](https://github.com/rospogrigio/localtuya)
 - [Lovelace Gen](https://github.com/thomasloven/hass-lovelace_gen)
 - [Mail And Packages](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages)
@@ -200,6 +201,7 @@ Number of binary sensors | 165
 - [Text Action Element](https://github.com/custom-cards/text-action-element)
 - [Thermal Comfort Icons](https://github.com/rautesamtr/thermal_comfort_icons)
 - [Timer Bar Card](https://github.com/rianadon/timer-bar-card)
+- [Trashcard](https://github.com/idaho/hassio-trash-card)
 - [Tv Touchpad Remote Card](https://github.com/iablon/HomeAssistant-Touchpad-Card)
 - [Unused Card](https://github.com/custom-cards/unused-card)
 - [Vacuum Card](https://github.com/denysdovhan/vacuum-card)

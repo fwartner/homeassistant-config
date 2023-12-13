@@ -1,6 +1,4 @@
 ![banner-01](https://github.com/fwartner/homeassistant-config/assets/6692500/49b42696-5687-49a7-a6f5-bf2b60227acb)
-
-
 ![Configuration Check](https://github.com/fwartner/homeassistant-config/actions/workflows/check.yaml/badge.svg)
 # Home Assistant Configuration
 My personal home assistant configuation files.

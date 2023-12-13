@@ -1,8 +1,6 @@
 blueprint:
   name: Conversation agent agenda notification
-  description:
-    Conversation agent generates a notification based on the upcoming calendar
-    agenda, location, and weather.
+  description: Conversation agent generates a notification based on the location, and weather.
   author: allenporter
   domain: automation
   input:
@@ -21,22 +19,6 @@ blueprint:
         text:
           multiline: false
       default: notify.notify
-    calendar_entity:
-      name: Calendar
-      description: The calendar entity to use for finding upcoming calendar events.
-      selector:
-        entity:
-          multiple: false
-          filter:
-            - domain:
-                - calendar
-    calendar_duration:
-      name: Calendar event duration
-      description: How many hours ahead to look for upcoming calendar events.
-      selector:
-        duration: {}
-      default:
-        hours: 18
     weather_entity:
       name: Weather entity
       description: The weather entity to use for upcoming weather forecast.
@@ -99,15 +81,7 @@ action:
       weather_entity: !input weather_entity
       calendar_entity: !input calendar_entity
       zone_entity: !input zone_entity
-      calendar_duration: !input calendar_duration
       prompt: !input prompt
-  - alias: Fetch Calendar Agenda
-    service: calendar.list_events
-    data:
-      duration: !input calendar_duration
-    target:
-      entity_id: !input calendar_entity
-    response_variable: agenda
   - alias: Conversation Agent Notification Text
     service: conversation.process
     data:
@@ -118,14 +92,8 @@ action:
         = state_attr(weather_entity, 'forecast')[0] %}\n{%- set temperature_unit = state_attr(weather_entity,
         'temperature_unit') -%}\nWeather: {{ forecast.condition }} ({{ forecast.temperature
         }}{{ temperature_unit }}, {{ forecast.precipitation }}% precipitation)\n{%-
-        endif %}\n\nCalendar \"{{ state_attr(calendar_entity, 'friendly_name') }}\"
-        events for the next {{ calendar_duration.hours }}:\n{%- if agenda.events %}\n
-        \ {%- for event in agenda.events %}\n  - Summary: {{ event.summary }}\n    Start-End:
-        {% if event.start is defined %}{{ event.start }} to {{ event.end }}{% else %}All
-        Day{% endif %}\n    {%- if event.descripton is defined %}\n    Descripton: {{
-        event.descripton }}\n    {% endif -%}\n    {%- if event.location is defined
-        %}\n      Location: {{ event.location }}\n    {% endif -%}\n  {%- endfor %}\n{%-
-        else %}\n  - No upcoming events.\n{%- endif %}\n\n{{ prompt }}"
+        endif %}\n\n  {%- endfor %}\n{%-
+        else %}\n{%- endif %}\n\n{{ prompt }}"
       agent_id: !input conversation_agent
     response_variable: agent
   - alias: Send notification

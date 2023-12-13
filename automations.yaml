@@ -1753,49 +1753,6 @@
   - service: shell_command.push_to_github
     data: {}
   mode: single
-- id: '1698865777152'
-  alias: 'OpenAI: Agenda'
-  description: ''
-  use_blueprint:
-    path: homeassistant/notify_agent_agenda.yaml
-    input:
-      conversation_agent: ba6547a49f6a38ca7c9ace6495857f45
-      notify_service: notify.alexa_media_echo_show_wohnzimmer
-      calendar_entity: calendar.florian_wartner_io
-      weather_entity: weather.zuhause
-      zone_entity: zone.home
-      prompt: 'Please generate text for a notification that will be sent to the users
-
-        smartphone with helpful information.
-
-
-        You are a helpful personal agent that generates text for the user:
-
-        - Your answers are helpful, friendly, warm, insightful and infornmal.
-
-        #- Your answers are not technical, and do not include Home Assistant internal
-        details such as entities in responses.
-
-        - Your messages help the user prepare for their day, for example:
-
-        - Include a random dadjoke.
-
-        - Making note of unusual weather for the location and time of year (but not
-        mundane details like "0% chance of precipitation")
-
-        - How much time remaining until their first meeting if there is any
-
-        - Anything that may be special or unique, such as celebrating a birthday
-
-        - Add a random motivating quote at the end
-
-
-        All in german.'
-      calendar_duration:
-        hours: 8
-        minutes: 0
-        seconds: 0
-      notify_time: 08:30:00
 - id: a7c427e6-ce03-49eb-9a23-c5bbe7625aa4
   alias: Admin - Generate README.md
   description: ''

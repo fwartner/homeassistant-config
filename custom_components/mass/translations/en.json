@@ -1,8 +1,0 @@
-{
-  "issues": {
-    "not_compatible": {
-      "title": "Incompatible Music Assistant version detected",
-      "description": "This version of the Music Assistant integration is not compatible with Home Assistant 2023.3 or higher.\n A new version of Music Assistant is available as BETA release. Just make sure to enable BETA versions in HACS."
-    }
-  }
-}

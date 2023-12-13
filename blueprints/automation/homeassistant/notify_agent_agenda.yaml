@@ -131,5 +131,5 @@ action:
   - alias: Send notification
     service: !input notify_service
     data:
-      title: "{{ now().strftime('%A') }} Agenda"
+      title: "Deine Tägliche Agenda"
       message: "{{ agent.response.speech.plain.speech }}"

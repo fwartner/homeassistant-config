@@ -1,0 +1,9 @@
+tts:
+  - platform: elevenlabs_tts
+    voice: Nicole
+    stability: 0.5
+    similarity: 0.75
+    style: 0
+    use_speaker_boost: "true"
+    model: eleven_multilingual_v1
+    optimize_streaming_latency: 3

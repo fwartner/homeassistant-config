@@ -26,6 +26,9 @@ Number of scenes | 28
 Number of zones | 9
 Number of binary sensors | 168
 
+## Demo
+![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)
+
 ## My installed extensions:
 
 ### Add-ons

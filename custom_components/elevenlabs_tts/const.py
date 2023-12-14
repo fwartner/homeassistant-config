@@ -3,7 +3,7 @@ from homeassistant.const import Platform
 
 ################################
 # Do not change! Will be set by release workflow
-INTEGRATION_VERSION = "2.2.2"
+INTEGRATION_VERSION = "2.2.4"
 MIN_REQUIRED_HA_VERSION = "2023.8.1"
 ################################
 

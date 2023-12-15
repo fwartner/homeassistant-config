@@ -1,0 +1,31 @@
+esphome:
+  name: bed-sensor
+  friendly_name: bed-sensor
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "s+aLwe7gA3LDPz4s6k3CkldL1U9nFfyM6/m5C3wC+1Q="
+
+ota:
+  password: "1c0fc750d9fe6c0ec5d8addbeb10e9fa"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Bed-Sensor Fallback Hotspot"
+    password: "KtsUmBHZEHOW"
+
+captive_portal:
+    

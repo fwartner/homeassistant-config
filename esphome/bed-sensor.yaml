@@ -27,5 +27,29 @@ wifi:
     ssid: "Bed-Sensor Fallback Hotspot"
     password: "KtsUmBHZEHOW"
 
-captive_portal:
+bluetooth_proxy:
+  active: True
+
+binary_sensor:
+  - platform: gpio
+    id: bett_links
+    pin:
+      number: 22
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "Bett Links"
+    icon: mdi:bed
+  
+  - platform: gpio
+    id: bett_rechts
+    pin:
+      number: 23
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "Bett Rechts"
+    icon: mdi:bed
+
+switch:
+  - platform: restart
+    name: "Restart"
     

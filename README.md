@@ -18,13 +18,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2753
+Number of entities | 2760
 Number of sensors | 1766
-Number of automations | 61
+Number of automations | 62
 Number of scripts | 19
 Number of scenes | 28
 Number of zones | 9
-Number of binary sensors | 168
+Number of binary sensors | 170
 
 ## Demo of my dashboard
 ![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)
@@ -110,8 +110,10 @@ Number of binary sensors | 168
 - [Pyscript](https://github.com/custom-components/pyscript)
 - [Qr Code Generator](https://github.com/DeerMaximum/QR-Code-Generator)
 - [Remote Home Assistant](https://github.com/custom-components/remote_homeassistant)
+- [Retry](https://github.com/amitfin/retry)
 - [Rewe Discounts](https://github.com/FaserF/ha-rewe)
 - [Roborock](https://github.com/humbertogontijo/homeassistant-roborock)
+- [Ryanair](https://github.com/jampez77/Ryanair)
 - [Samsungtv Smart](https://github.com/ollo69/ha-samsungtv-smart)
 - [Samsungtv Tizen](https://github.com/jaruba/ha-samsungtv-tizen)
 - [Scheduler Component](https://github.com/nielsfaber/scheduler-component)
@@ -133,6 +135,7 @@ Number of binary sensors | 168
 - [Webrtc Camera](https://github.com/AlexxIT/WebRTC)
 - [World'S Air Quality Index](https://github.com/pawkakol1/worlds-air-quality-index)
 - [Xiaomi Cloud Map Extractor](https://github.com/PiotrMachowski/Home-Assistant-custom-components-Xiaomi-Cloud-Map-Extractor)
+- [Xiaomi Miot Auto](https://github.com/al-one/hass-xiaomi-miot)
 - [Zoom](https://github.com/raman325/ha-zoom-automation)
 
 ### Lovelace plugins

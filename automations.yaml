@@ -2566,3 +2566,99 @@
             title: ℹ️ Alle Heizungen ausgeschaltet
             message: Alle Heizungen wurden erfolgreich ausgeschaltet.
   mode: single
+- id: '1702645776967'
+  alias: Bett Belegung
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.bett_sensor_bett_rechts
+    from: 'off'
+    to: 'on'
+    id: bettRechtsAn
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    alias: Bett Rechts An
+  - platform: state
+    entity_id:
+    - binary_sensor.bett_sensor_bett_links
+    from: 'off'
+    to: 'on'
+    id: bettLinksAn
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    alias: Bett Links An
+  - platform: state
+    entity_id:
+    - binary_sensor.bett_sensor_bett_rechts
+    from: 'on'
+    to: 'off'
+    id: bettRechtsAus
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    alias: Bett Rechts Aus
+  - alias: Bett Links Aus
+    platform: state
+    entity_id:
+    - binary_sensor.bett_sensor_bett_links
+    from: 'on'
+    to: 'off'
+    id: bettLinksAus
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - bettRechtsAn
+      sequence:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.bett_rechts
+        data: {}
+      alias: Bett Rechts An
+    - conditions:
+      - condition: trigger
+        id:
+        - bettLinksAn
+      sequence:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.bett_links
+        data: {}
+      alias: Bett Links An
+    - conditions:
+      - condition: trigger
+        id:
+        - bettRechtsAus
+      sequence:
+      - service: input_boolean.turn_off
+        target:
+          device_id: []
+          area_id: []
+          entity_id: input_boolean.bett_rechts
+        data: {}
+      alias: Bett Rechts Aus
+    - conditions:
+      - condition: trigger
+        id:
+        - bettLinksAus
+      sequence:
+      - service: input_boolean.turn_off
+        target:
+          device_id: []
+          area_id: []
+          entity_id: input_boolean.bett_links
+        data: {}
+      alias: Bett Links Aus
+  mode: single

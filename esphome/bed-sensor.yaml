@@ -16,10 +16,10 @@ api:
     key: "s+aLwe7gA3LDPz4s6k3CkldL1U9nFfyM6/m5C3wC+1Q="
 
 ota:
-  password: "1c0fc750d9fe6c0ec5d8addbeb10e9fa"
+  password: !secret ota_password
 
 wifi:
-  ssid: !secret wifi_ssid
+  ssid: "Florians Gäste"
   password: !secret wifi_password
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails

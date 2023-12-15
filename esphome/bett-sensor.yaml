@@ -3,7 +3,7 @@ esphome:
   friendly_name: Bett Sensor
 
 esp8266:
-  board: esp01_1m
+  board: nodemcu
 
 # Enable logging
 logger:
@@ -25,5 +25,25 @@ wifi:
     ssid: "Bett-Sensor Fallback Hotspot"
     password: "WePQNv9cg14o"
 
-captive_portal:
-    
+binary_sensor:
+  - platform: gpio
+    id: bett_links
+    pin:
+      number: D4
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "Bett Links"
+    icon: mdi:bed
+  
+  - platform: gpio
+    id: bett_rechts
+    pin:
+      number: D3
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "Bett Rechts"
+    icon: mdi:bed
+
+switch:
+  - platform: restart
+    name: "Restart"

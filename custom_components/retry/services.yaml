@@ -1,0 +1,81 @@
+call:
+  fields:
+    service:
+      example: homeassistant.turn_on
+      required: true
+      selector:
+        text:
+    retries:
+      advanced: true
+      example: 5
+      selector:
+        number:
+          min: 1
+          max: 100
+          unit_of_measurement: retries
+          mode: box
+    expected_state:
+      advanced: true
+      example: "on"
+      selector:
+        select:
+          multiple: true
+          custom_value: true
+          options:
+            - "on"
+            - "off"
+            - opening
+            - open
+            - closing
+            - closed
+            - cool
+            - heat
+    state_grace:
+      advanced: true
+      example: "3"
+      selector:
+        number:
+            min: 0.1
+            max: 180.0
+            unit_of_measurement: seconds
+            mode: box
+actions:
+  fields:
+    sequence:
+      required: true
+      selector:
+        action:
+    retries:
+      advanced: true
+      example: 5
+      selector:
+        number:
+          min: 1
+          max: 100
+          unit_of_measurement: retries
+          mode: box
+    expected_state:
+      advanced: true
+      example: "on"
+      selector:
+        select:
+          multiple: true
+          custom_value: true
+          options:
+            - "on"
+            - "off"
+            - opening
+            - open
+            - closing
+            - closed
+            - cool
+            - heat
+    state_grace:
+      advanced: true
+      example: "3"
+      selector:
+        number:
+            min: 0.1
+            max: 180.0
+            unit_of_measurement: seconds
+            mode: box

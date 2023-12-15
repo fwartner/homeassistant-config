@@ -1,0 +1,30 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Device is already configured"
+        },
+        "error": {
+            "cannot_connect": "Failed to connect",
+            "invalid_auth": "Invalid authentication",
+            "invalid_mfa_code": "Invalid MFA code",
+            "unknown": "Unexpected error"
+        },
+        "step": {
+            "mfa": {
+                "data": {
+                    "mfa_code": "MFA code (8-digits)"
+                },
+                "description": "{email}",
+                "title": "Enter your MFA code"
+            },
+            "user": {
+                "data": {
+                    "email": "Email",
+                    "host": "Host",
+                    "password": "Password"
+                },
+                "description": "{retries}"
+            }
+        }
+    }
+}

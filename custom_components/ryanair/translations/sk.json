@@ -1,0 +1,30 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Zariadenie je už nakonfigurované"
+        },
+        "error": {
+            "cannot_connect": "Nepodarilo sa pripojiť",
+            "invalid_auth": "Neplatné overenie",
+            "invalid_mfa_code": "Neplatný kód MFA",
+            "unknown": "Neočakávaná chyba"
+        },
+        "step": {
+            "mfa": {
+                "data": {
+                    "mfa_code": "MFA kód (8-miestne)"
+                },
+                "description": "{email}",
+                "title": "Zadajte kód MFA"
+            },
+            "user": {
+                "data": {
+                    "email": "Email",
+                    "host": "Host",
+                    "password": "Heslo"
+                },
+                "description": "{retries}"
+            }
+        }
+    }
+}

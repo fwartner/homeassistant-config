@@ -1,0 +1,17 @@
+{
+  "domain": "ryanair",
+  "name": "Ryanair",
+  "codeowners": [
+    "@jampez77"
+  ],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/jampez77/Ryanair/",
+  "homekit": {},
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/jampez77/Ryanair/issues",
+  "requirements": ["aztec-code-generator==0.11"],
+  "ssdp": [],
+  "version": "2023.12.0",
+  "zeroconf": []
+}

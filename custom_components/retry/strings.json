@@ -1,0 +1,74 @@
+{
+  "title": "Retry",
+  "config": {
+    "step": {
+      "user": {
+        "description": "[%key:common::config_flow::description::confirm_setup%]"
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "[%key:common::config_flow::abort::single_instance_allowed%]"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "disable_repair": "Disable repair tickets"
+        }
+      }
+    }
+  },
+  "issues": {
+    "failure": {
+      "title": "Service call failure",
+      "description": "`{service}` failed after {retries} retries. Check the log for additional information."
+    }
+  },
+  "services": {
+    "call": {
+      "name": "Call Service",
+      "description": "Retry a service call on failure.",
+      "fields": {
+        "service": {
+          "name": "Service",
+          "description": "The service to retry on failure."
+        },
+        "retries": {
+          "name": "Retries",
+          "description": "Max amount of calls (default is 7)."
+        },
+        "expected_state": {
+          "name": "Expected State",
+          "description": "The expected state of the entities after the service call."
+        },
+        "state_grace": {
+          "name": "State Grace Period",
+          "description": "Grace period (seconds) for expected state (defualt is 0.2)."
+        }
+      }
+    },
+    "actions": {
+      "name": "Actions",
+      "description": "Perform a sequence of actions with retries on service call failures.",
+      "fields": {
+        "sequence": {
+          "name": "Actions",
+          "description": "Sequence of actions."
+        },
+        "retries": {
+          "name": "Retries",
+          "description": "Max amount of calls (default is 7)."
+        },
+        "expected_state": {
+          "name": "Expected State",
+          "description": "The expected state of the entities after any service call."
+        },
+        "state_grace": {
+          "name": "State Grace Period",
+          "description": "Grace period (seconds) for expected state (defualt is 0.2)."
+        }
+      }
+    }
+  }
+}

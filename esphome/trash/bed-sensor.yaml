@@ -2,8 +2,10 @@ esphome:
   name: bed-sensor
   friendly_name: bed-sensor
 
-esp8266:
-  board: nodemcu
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
 
 # Enable logging
 logger:
@@ -11,25 +13,28 @@ logger:
 # Enable Home Assistant API
 api:
   encryption:
-    key: "K624JpfAbeUwkcmiYGZIMxDQDEnKewM41aW8nE0pr3M="
+    key: "s+aLwe7gA3LDPz4s6k3CkldL1U9nFfyM6/m5C3wC+1Q="
 
 ota:
-  password: "93201db328dc811fd2805375d4ef60a7"
+  password: !secret ota_password
 
 wifi:
-  ssid: !secret wifi_ssid
+  ssid: "Florians Gäste"
   password: !secret wifi_password
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
     ssid: "Bed-Sensor Fallback Hotspot"
-    password: "zCBXr836WN4p"
+    password: "KtsUmBHZEHOW"
+
+bluetooth_proxy:
+  active: True
 
 binary_sensor:
   - platform: gpio
     id: bett_links
     pin:
-      number: D3
+      number: 22
       mode: INPUT_PULLUP
       inverted: true
     name: "Bett Links"
@@ -38,7 +43,7 @@ binary_sensor:
   - platform: gpio
     id: bett_rechts
     pin:
-      number: D4
+      number: 23
       mode: INPUT_PULLUP
       inverted: true
     name: "Bett Rechts"
@@ -47,3 +52,4 @@ binary_sensor:
 switch:
   - platform: restart
     name: "Restart"
+    

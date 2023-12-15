@@ -3,6 +3,11 @@
     "version": 1,
     "devices": [
         {
+            "manufacturer": "Aldi",
+            "model": "MEGOS switch and dimming light remote control (141L100RC)",
+            "battery_type": "CR2450"
+        },        
+        {
             "manufacturer": "Develco",
             "model": "Smoke detector with siren (SMSZB-120)",
             "battery_type": "CR123"
@@ -17,6 +22,11 @@
             "manufacturer": "eWeLink",
             "model": "DS01",
             "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "eWeLink",
+            "model": "MS01",
+            "battery_type": "CR2450"
         },
         {
             "manufacturer": "Fantem",
@@ -65,6 +75,12 @@
         },
         {
             "manufacturer": "IKEA",
+            "model": "TRADFRI motion sensor",
+            "battery_type": "CR2032",
+            "battery_quantity": 2
+        },
+        {
+            "manufacturer": "IKEA",
             "model": "TRADFRI motion sensor (E1525/E1745)",
             "battery_type": "CR2032",
             "battery_quantity": 2
@@ -78,6 +94,22 @@
             "manufacturer": "IKEA",
             "model": "TRADFRI shortcut button (E1812)",
             "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "Lidl",
+            "model": "Silvercrest radiator valve with thermostat (368308_2010)",
+            "battery_type": "AA",
+            "battery_quantity": 2
+        },
+        {
+            "manufacturer": "LUMI",
+            "model": "lumi.remote.b1acn01",
+            "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "LUMI",
+            "model": "lumi.sensor_motion.aq2",
+            "battery_type": "CR2450"
         },
         {
             "manufacturer": "LUMI",

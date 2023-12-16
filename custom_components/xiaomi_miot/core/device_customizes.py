@@ -49,6 +49,24 @@ DEVICE_CUSTOMIZES = {
         'select_properties': 'mode',
     },
 
+    'babai.curtain.190812': {
+        'chunk_properties': 1,
+    },
+    'babai.curtain.at5810': {
+        'chunk_properties': 1,
+    },
+    'babai.curtain.bb82mj': {
+        'chunk_properties': 1,
+    },
+    'babai.curtain.m515e': {
+        'chunk_properties': 1,
+    },
+    'babai.curtain.mtx850': {
+        'chunk_properties': 1,
+    },
+    'babai.curtain.yilc3': {
+        'chunk_properties': 1,
+    },
     'bkrobo.chair.*': {
         'sensor_properties': 'sit_state,power_state,recharge',
         'switch_properties': 'on,setcheck',
@@ -406,6 +424,11 @@ DEVICE_CUSTOMIZES = {
     'dmaker.fan.p5': {
         'percentage_property': 'prop.2.6',
     },
+    'dmaker.fan.p5c': {
+        'percentage_property': 'speed_level',
+        'button_actions': 'turn_left,turn_right,toggle_mode,loop_gear',
+        'number_properties': 'off_delay_time',
+    },
     'dmaker.fan.p11': {
         'percentage_property': 'prop.2.6',  # issues/838
     },
@@ -445,8 +468,15 @@ DEVICE_CUSTOMIZES = {
         'sensor_properties': 'status',
         'switch_properties': 'mode,motor_reverse',
     },
+    'dooya.curtain.m7': {
+        'chunk_properties': 1,
+    },
+    'dooya.curtain.m7li': {
+        'chunk_properties': 1,
+    },
     'dooya.curtain.*': {
         'exclude_miot_properties': 'fault',
+        'switch_properties': 'motor_reverse',
     },
     'dreame.light.r2229': {
         'sensor_properties': 'interaction_gesture',
@@ -493,6 +523,17 @@ DEVICE_CUSTOMIZES = {
 
     'hfjh.fishbowl.v1': {
         'light_services': 'light',
+    },
+    'hfjh.fishbowl.v2': {
+        'switch_properties': 'water_pump,ledboard_time_switch,feed_time_switch,key_switch',
+        'select_properties': 'ledboard_model',
+        'number_properties': 'ledboard_brightness,ledboard_sun,ledboard_color,ledboard_stream,ledboard_speed,'
+                             'pump_flux,feed_num',
+        'light_services': 'fish_tank',
+        'power_property': 'fish_tank.on',
+        'mode_property': 'ledboard_model',
+        'brightness_property': 'ledboard_brightness',
+        'color_property': 'ledboard_color',
     },
     'hfjh.fishbowl.m100': {
         'light_services': 'light',
@@ -816,6 +857,9 @@ DEVICE_CUSTOMIZES = {
         'sensor_properties': 'remain_clean_time,fault,filter_left_time,no_water_time',
         'select_properties': 'mode',
     },
+    'mmgg.pet_waterer.wi11:no_water_flag': {
+         'reverse_state': True,
+    },
     'mmgg.pet_waterer.s1': {
         'binary_sensor_properties': 'no_water_flag,pump_block_flag,lid_up_flag',
         'button_actions': 'reset_filter_life,reset_clean_time',
@@ -871,6 +915,13 @@ DEVICE_CUSTOMIZES = {
         'number_properties': 'target_temperature,dry_time',
     },
 
+    'philips.light.aibed': {
+        'sensor_properties': 'sleep_state,wakeup_state',
+        'switch_properties': 'night_en,wristband_switch,awake_enable_first,awake_enable_second,awake_enable_third',
+        'select_properties': 'mode_main,mode_light,mode_sleep,mode_scene',
+        'number_properties': 'sleep_duration,music_preview,sleep_volume,sleep_startbri,scene_volume',
+        'button_actions': 'brightness_up,brightness_down,cct_up,cct_down,stop_preview',
+    },
     'philips.light.strip3': {
         'switch_properties': 'mitv_rhythm,acousto_optic_rhythm',
         'select_properties': 'rhythm_sensitivity,rhythm_animation',
@@ -1117,6 +1168,23 @@ DEVICE_CUSTOMIZES = {
         'exclude_miot_services': 'iot_linkage,machine_state,flag_bit',
         'exclude_miot_properties': 'enhance.timer',
     },
+    'xiaomi.airp.*': {
+        'exclude_miot_services': 'custom_service',
+    },
+    'xiaomi.controller.86v1': {
+        'switch_properties': 'mute,sleep_mode,auto_screen_off,auto_screen_brightness,touch_sound,key_name_display',
+        'select_properties': 'mode,mibrain_level,mico_level,display_state,wallpaper',
+        'number_properties': 'speaker.volume,brightness,theme',
+        'button_actions': 'homepage,light',
+        'text_actions': 'play_text,execute_text_directive',
+    },
+    'xiaomi.humidifier.p1200': {
+        'button_actions': 'loop_mode,reset_filter_life',
+        'select_properties': 'screen.brightness',
+        'sensor_properties': 'clean_time,fan_dry_time,fault,water_level,water_status',
+        'switch_properties': 'alarm,dry_switch,over_wet_protect,screen.on',
+        'number_properties': 'off_delay_time',
+    },
     'xiaomi.tv.*': {
         'auto_cloud': True,
         'switch_properties': 'is_on',
@@ -1303,6 +1371,10 @@ DEVICE_CUSTOMIZES = {
     'zhimi.heater.nb1': {
         'brightness_for_on': 0,
         'brightness_for_off': 2,
+    },
+    'zhimi.humidifier.cb1:water_level': {
+        'state_class': 'measurement',
+        'unit_of_measurement': '%',
     },
     'zhimi.humidifier.*': {
         'sensor_properties': 'water_level,actual_speed',

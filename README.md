@@ -18,8 +18,8 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2760
-Number of sensors | 1766
+Number of entities | 2765
+Number of sensors | 1769
 Number of automations | 62
 Number of scripts | 19
 Number of scenes | 28
@@ -36,6 +36,7 @@ Number of binary sensors | 170
 - AirCast
 - AirSonos
 - AppDaemon
+- Barcode Buddy for Grocy
 - chrony
 - ESPHome
 - Home Assistant Google Drive Backup

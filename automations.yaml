@@ -2741,13 +2741,13 @@
   - platform: numeric_state
     entity_id:
     - sensor.luftfeuchtigkeit_schlafzimmer
-    below: 45
+    below: 39.8
     id: humiditySchlafzimmerOn
   - platform: numeric_state
     entity_id:
     - sensor.luftfeuchtigkeit_schlafzimmer
     id: humiditySchlafzimmerOff
-    above: 50
+    above: 45
   condition: []
   action:
   - choose:

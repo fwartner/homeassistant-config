@@ -2686,17 +2686,19 @@
     event_data:
       action: UNLOCK_APARTMENT
     id: unlockApartment
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.historystats_florian_away_minutes
-    above: 0.05
+  condition: []
   action:
   - choose:
     - conditions:
-      - condition: trigger
-        id:
-        - zoneHomeOn
-        - nukiRingOn
+      - condition: and
+        conditions:
+        - condition: trigger
+          id:
+          - zoneHomeOn
+          - nukiRingOn
+        - condition: numeric_state
+          entity_id: sensor.historystats_florian_away_minutes
+          above: 0.05
       sequence:
       - service: notify.mobile_app_florians_iphone
         data:

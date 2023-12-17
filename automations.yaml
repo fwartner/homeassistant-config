@@ -2734,3 +2734,39 @@
           entity_id: lock.nuki_wohnungstur_lock
       alias: Wohnungstür Öffnen
   mode: single
+- id: '1702838857993'
+  alias: Luftfeuchtigkeit Schlafzimmer
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id:
+    - sensor.luftfeuchtigkeit_schlafzimmer
+    below: 45
+    id: humiditySchlafzimmerOn
+  - platform: numeric_state
+    entity_id:
+    - sensor.luftfeuchtigkeit_schlafzimmer
+    id: humiditySchlafzimmerOff
+    above: 50
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - humiditySchlafzimmerOn
+      sequence:
+      - type: turn_on
+        device_id: a521c9896da2546312edc25f8542a801
+        entity_id: 68835edfd0e0d5e8f8392a79e8ad9192
+        domain: fan
+    - conditions:
+      - condition: trigger
+        id:
+        - humiditySchlafzimmerOff
+      sequence:
+      - type: toggle
+        device_id: a521c9896da2546312edc25f8542a801
+        entity_id: 68835edfd0e0d5e8f8392a79e8ad9192
+        domain: fan
+  mode: single

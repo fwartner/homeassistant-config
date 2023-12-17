@@ -2703,7 +2703,7 @@
       - service: notify.mobile_app_florians_iphone
         data:
           message: Möchtest du die Tür öffnen?
-          title: "\U0001F510 Haustür öffnen"
+          title: "\U0001F510 Türen öffnen"
           data:
             actions:
             - action: UNLOCK_HOUSE

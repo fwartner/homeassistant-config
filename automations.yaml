@@ -2662,3 +2662,73 @@
         data: {}
       alias: Bett Links Aus
   mode: single
+- id: '1702827571661'
+  alias: Türen
+  description: ''
+  trigger:
+  - platform: zone
+    entity_id: person.florian
+    zone: zone.home
+    event: enter
+    id: zoneHomeOn
+  - platform: state
+    entity_id:
+    - binary_sensor.nuki_haustur_ring_action
+    to: 'on'
+    id: nukiRingOn
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: UNLOCK_HOUSE
+    id: unlockHouse
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: UNLOCK_APARTMENT
+    id: unlockApartment
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.historystats_florian_away_minutes
+    above: 0.05
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - zoneHomeOn
+        - nukiRingOn
+      sequence:
+      - service: notify.mobile_app_florians_iphone
+        data:
+          message: Möchtest du die Tür öffnen?
+          title: "\U0001F510 Haustür öffnen"
+          data:
+            actions:
+            - action: UNLOCK_HOUSE
+              title: Haustür öffnen
+              icon: sfsymbols:lock.open.fill
+            - action: UNLOCK_APARTMENT
+              title: Wohnungstür öffnen
+              icon: sfsymbols:lock.open.fill
+      alias: Notification
+    - conditions:
+      - condition: trigger
+        id:
+        - unlockHouse
+      sequence:
+      - service: lock.open
+        target:
+          entity_id: lock.nuki_haustur_lock
+        data: {}
+      alias: Haustür Öffnen
+    - conditions:
+      - condition: trigger
+        id:
+        - unlockApartment
+      sequence:
+      - service: lock.open
+        data: {}
+        target:
+          entity_id: lock.nuki_wohnungstur_lock
+      alias: Wohnungstür Öffnen
+  mode: single

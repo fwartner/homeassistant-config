@@ -1,7 +1,7 @@
 - platform: history_stats
-  name: historystats_florian_away_month
+  name: historystats_florian_home_month
   entity_id: device_tracker.iphone_von_florian
-  state: "not_home"
+  state: "home"
   type: time
   end: "{{ now().replace(hour=0, minute=0, second=0) }}"
   duration:

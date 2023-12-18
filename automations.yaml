@@ -2741,7 +2741,7 @@
   - platform: numeric_state
     entity_id:
     - sensor.luftfeuchtigkeit_schlafzimmer
-    below: 39.8
+    below: 40
     id: humiditySchlafzimmerOn
   - platform: numeric_state
     entity_id:

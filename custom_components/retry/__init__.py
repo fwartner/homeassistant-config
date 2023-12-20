@@ -130,7 +130,7 @@ class RetryParams:
     ) -> dict[str, any]:
         """Compose retry parameters."""
         retry_data = {
-            key: data[key] for key in SERVICE_SCHEMA_BASE_FIELDS if key in data
+            key: data[key] for key in data if key in SERVICE_SCHEMA_BASE_FIELDS
         }
         retry_service = data[ATTR_SERVICE]
         domain, service = retry_service.lower().split(".")
@@ -323,7 +323,7 @@ class RetryCall:
                 self._params.retry_data[ATTR_SERVICE],
                 self._inner_data.copy(),
                 True,
-                self._context,
+                Context(self._context.user_id, self._context.id),
             )
             await self._async_validate()
             self._log(
@@ -407,15 +407,15 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
         sequence = service_call.data[CONF_SEQUENCE].copy()
         retry_params = {
             key: service_call.data[key]
-            for key in SERVICE_SCHEMA_BASE_FIELDS
-            if key in service_call.data
+            for key in service_call.data
+            if key in SERVICE_SCHEMA_BASE_FIELDS
         }
         if ATTR_VALIDATION in retry_params:
             # Revert it back to string so it won't get rendered in advance.
             retry_params[ATTR_VALIDATION] = retry_params[ATTR_VALIDATION].template
         _wrap_service_calls(hass, sequence, retry_params)
         await script.Script(hass, sequence, ACTIONS_SERVICE, DOMAIN).async_run(
-            context=service_call.context
+            context=Context(service_call.context.user_id, service_call.context.id)
         )
 
     hass.services.async_register(

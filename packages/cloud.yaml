@@ -1,0 +1,15 @@
+cloud:
+  alexa:
+    filter:
+      include_entities:
+        - light.kueche
+        - light.wohnzimmer
+        - light.lightstrip_kuche
+        - light.decke_kueche
+         - light.decke_wohnzimmer
+    entity_config:
+      light.kitchen:
+        name: Custom Name for Alexa
+        description: The light in the kitchen
+      switch.stairs:
+        display_categories: LIGHT

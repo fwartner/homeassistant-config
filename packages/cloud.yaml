@@ -18,6 +18,8 @@ cloud:
         - light.wled_bettseite
         - light.wled_wall
         - light.wled_buro
+        - light.wled_please_do_disturb
+        - light.wled_shit
     entity_config:
       light.kitchen:
         name: Custom Name for Alexa

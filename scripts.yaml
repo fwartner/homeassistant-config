@@ -295,28 +295,6 @@ duschen_vorbereiten:
       entity_id: climate.luftreiniger_wohnzimmer
   mode: single
   icon: mdi:air-filter
-wasserlauf:
-  alias: Wasserlauf
-  sequence:
-  - type: turn_on
-    device_id: c601cff0c5327fe0bf2e84a19170ef1d
-    entity_id: b51136d57f4ea9565156dcdabff489fb
-    domain: switch
-  - delay: '{{ sekunden }}'
-  - type: turn_off
-    device_id: c601cff0c5327fe0bf2e84a19170ef1d
-    entity_id: b51136d57f4ea9565156dcdabff489fb
-    domain: switch
-  mode: single
-  icon: mdi:faucet
-  fields:
-    sekunden:
-      selector:
-        number:
-      required: true
-      name: Sekunden
-      description: Wie lange soll der Wasserlauf offen sein?
-      default: 1
 heizung_toggle:
   alias: Heizung Toggle
   sequence:

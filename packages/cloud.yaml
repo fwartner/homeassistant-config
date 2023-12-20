@@ -2,11 +2,22 @@ cloud:
   alexa:
     filter:
       include_entities:
-        - light.kueche
-        - light.wohnzimmer
-        - light.lightstrip_kuche
+        - light.licht_kueche
+        - light.licht_wohnzimmer
+        - light.licht_schlafzimmer
+        - light.licht_badezimmer
+        - light.licht_flur
+        - light.licht_buro
         - light.decke_kueche
-         - light.decke_wohnzimmer
+        - light.decke_wohnzimmer
+        - light.decke_badezimmer
+        - light.decke_schlafzimmer
+        - light.decke_flur
+        - light.bett
+        - light.stehlampe
+        - light.wled_bettseite
+        - light.wled_wall
+        - light.wled_buro
     entity_config:
       light.kitchen:
         name: Custom Name for Alexa

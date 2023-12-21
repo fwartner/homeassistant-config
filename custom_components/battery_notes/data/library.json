@@ -227,12 +227,12 @@
         {
             "manufacturer": "HEIMAN",
             "model": "Smoke detector (HS1SA)",
-            "battery_type": "Irreplaceable"
+            "battery_type": "CR123A"
         },
         {
             "manufacturer": "HEIMAN",
             "model": "Smoke detector (HS3SA/HS1SA)",
-            "battery_type": "Irreplaceable"
+            "battery_type": "CR123A"
         },
         {
             "manufacturer": "Hive",
@@ -367,16 +367,6 @@
         {
             "manufacturer": "LUMI",
             "model": "lumi.remote.b1acn01",
-            "battery_type": "CR2032"
-        },
-        {
-            "manufacturer": "LUMI",
-            "model": "lumi.sensor_motion.aq2",
-            "battery_type": "CR2450"
-        },
-        {
-            "manufacturer": "LUMI",
-            "model": "lumi.weather",
             "battery_type": "CR2032"
         },
         {
@@ -560,15 +550,20 @@
             "manufacturer": "Philips",
             "model": "RWL021",
             "battery_type": "CR2450"
-        },
+        },	    
         {
-            "manufacturer": "Philips",
-            "model": "RWL022",
-            "battery_type": "CR2032"
+             "manufacturer": "Philips",
+             "model": "RWL022",
+             "battery_type": "CR2032"
         },
         {
             "manufacturer": "Ring",
             "model": "Doorbell 2",
+            "battery_type": "Rechargeable"
+        },
+	{
+            "manufacturer": "Roborock",
+            "model": "roborock.vacuum.a15",
             "battery_type": "Rechargeable"
         },
         {
@@ -625,6 +620,11 @@
             "manufacturer": "Signify Netherlands B.V.",
             "model": "Hue wall switch module (RDM001)",
             "battery_type": "CR2450"
+        },
+        {
+            "manufacturer": "Signify Netherlands B.V.",
+            "model": "RWL022",
+            "battery_type": "CR2032"
         },
         {
             "manufacturer": "Siterwell",

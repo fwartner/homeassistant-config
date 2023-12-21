@@ -18,10 +18,10 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2839
+Number of entities | 2835
 Number of sensors | 1809
 Number of automations | 64
-Number of scripts | 19
+Number of scripts | 18
 Number of scenes | 28
 Number of zones | 9
 Number of binary sensors | 172
@@ -174,6 +174,7 @@ Number of binary sensors | 172
 - [Layout Card](https://github.com/thomasloven/lovelace-layout-card)
 - [Light Entity Card](https://github.com/ljmerza/light-entity-card)
 - [Light Popup Card (Homekit Style)](https://github.com/DBuit/light-popup-card)
+- [Linakdesk Card](https://github.com/IhorSyerkov/linak-desk-card)
 - [Logbook Card](https://github.com/royto/logbook-card)
 - [Lovelace Card Templater](https://github.com/gadgetchnnel/lovelace-card-templater)
 - [Lovelace Grocy Chores Card](https://github.com/isabellaalstrom/lovelace-grocy-chores-card)

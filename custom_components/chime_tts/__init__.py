@@ -14,6 +14,7 @@ from datetime import datetime
 from pydub import AudioSegment
 from .config_flow import ChimeTTSOptionsFlowHandler
 
+from .audio_helper import ChimeTTSFAudioHelper
 
 from homeassistant.components.media_player.const import (
     ATTR_MEDIA_CONTENT_ID,
@@ -57,6 +58,7 @@ from .const import (
     WWW_PATH_DEFAULT,
     MEDIA_DIR_KEY,
     MEDIA_DIR_DEFAULT,
+    ALEXA_FFMPEG_ARGS,
     MP3_PRESET_PATH,
     MP3_PRESETS,
     MP3_PRESET_CUSTOM_PREFIX,
@@ -107,7 +109,10 @@ async def async_setup(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
     # Say Service #
     ###############
 
-    async def async_say(service):
+    async def async_say(service, is_say_url = False):
+        if is_say_url is False:
+            _LOGGER.debug("----- Chime TTS Say Called. Version %s -----", VERSION)
+
         result = await start_queue(service, hass, async_say_execute)
         # Service call completed successfully
 
@@ -144,6 +149,11 @@ async def async_setup(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
         cache = service.data.get("cache", False)
         announce = service.data.get("announce", False)
 
+        # FFmpeg arguments
+        ffmpeg_args = service.data.get("audio_conversion", None)
+        if ffmpeg_args is not None:
+            ffmpeg_args = ALEXA_FFMPEG_ARGS if service.data.get("audio_conversion", None).lower() == "alexa" else (None if service.data.get("audio_conversion", None).lower() == "custom" else service.data.get("audio_conversion", None))
+
         params = {
             "entity_ids": entity_ids,
             "hass": hass,
@@ -159,6 +169,7 @@ async def async_setup(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
             "volume_level": volume_level,
             "join_players": join_players,
             "unjoin_players": unjoin_players,
+            "ffmpeg_args": ffmpeg_args,
         }
 
         for params_list in [params, options]:
@@ -167,7 +178,7 @@ async def async_setup(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
             else:
                 _LOGGER.debug("----- TTS-Specific Params -----")
             for key, value in params_list.items():
-                if value is not None:
+                if value is not None and key != "hass":
                     _LOGGER.debug(" * %s = %s", key, str(value))
         _LOGGER.debug("-------------------------------")
 
@@ -185,7 +196,7 @@ async def async_setup(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
         audio_dict = await async_get_playback_audio_path(params, options)
         if audio_dict is None:
             return False
-        _LOGGER.debug(" - audio_dict = %s", str(audio_dict))
+        _LOGGER.debug("  - audio_dict = %s", str(audio_dict))
         audio_path = audio_dict[AUDIO_PATH_KEY]
         audio_duration = audio_dict[AUDIO_DURATION_KEY]
 
@@ -211,7 +222,7 @@ async def async_setup(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
                 )
 
         # Save generated temp mp3 file to cache
-        if cache is True or len(entity_ids) == 0:
+        if cache is True or entity_ids is None or len(entity_ids) == 0:
             if _data["is_save_generated"] is True:
                 if cache:
                     _LOGGER.debug("Saving generated mp3 file to cache")
@@ -224,16 +235,26 @@ async def async_setup(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
         end_time = datetime.now()
         elapsed_time = (end_time - start_time).total_seconds() * 1000
 
-        # Convert URL to external
-        instance_url = str(get_url(hass))
-        external_url = (
-            (instance_url + audio_path).replace("/config", "").replace("www/", "local/")
-        )
-        _LOGGER.debug("Final URL = %s", external_url)
+        # Convert URL to external for chime_tts.say_url
+        if entity_ids is None or len(entity_ids) == 0:
+            instance_url = hass.config.external_url
+            if instance_url is None:
+                instance_url = str(get_url(hass))
+
+            external_url = (
+                (instance_url + audio_path).replace("/config", "").replace("www/", "local/")
+            )
+            _LOGGER.debug("Final URL = %s", external_url)
+
+            _LOGGER.debug("----- Chime TTS Say URL Completed in %s ms -----", str(elapsed_time))
+
+            return {
+                "url": external_url,
+                "duration": audio_duration
+            }
 
         _LOGGER.debug("----- Chime TTS Say Completed in %s ms -----", str(elapsed_time))
 
-        return external_url
 
     hass.services.async_register(DOMAIN, SERVICE_SAY, async_say)
 
@@ -243,9 +264,8 @@ async def async_setup(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
 
     async def async_say_url(service) -> ServiceResponse:
         """Create a public URL to an audio file generated with the `chime_tts.say` service."""
-        _LOGGER.debug("Calling chime_tts.say_url...")
-        url = await async_say(service)
-        return {"url": url}
+        _LOGGER.debug("----- Chime TTS Say URL Called. Version %s -----", VERSION)
+        return await async_say(service, True)
 
     hass.services.async_register(
         DOMAIN, SERVICE_SAY_URL, async_say_url, supports_response=SupportsResponse.ONLY
@@ -305,7 +325,6 @@ def init_queue():
 
 def queue_new_service_call(service):
     """Add a new service call to the queue."""
-    _LOGGER.debug("----- Chime TTS Say Called. Version %s -----", VERSION)
     service_id = _data[QUEUE_LAST_ID] + 1
     if _data[QUEUE] is None:
         _data[QUEUE] = []
@@ -340,6 +359,7 @@ def dequeue_service_call():
             # Move on to the next item (queued or in the future)
             _LOGGER.debug("Incrementing to next queued service call.")
             _data[QUEUE_CURRENT_ID_KEY] += 1
+            _data[QUEUE_STATUS_KEY] = QUEUE_IDLE
 
 
 async def start_queue(service, hass, say_execute_callback):
@@ -367,8 +387,8 @@ async def start_queue(service, hass, say_execute_callback):
                 elapsed_time += retry_interval
                 if _data[QUEUE_STATUS_KEY] is QUEUE_IDLE:
                     break
-            # Status is still 'running' after timeout
-            if _data[QUEUE_STATUS_KEY] is QUEUE_RUNNING:
+            if _data[QUEUE_STATUS_KEY] is not QUEUE_IDLE:
+                # Timeout
                 _LOGGER.error(
                     "Timeout reached on queued job #%s.", str(service_dict["id"])
                 )
@@ -586,7 +606,7 @@ async def async_request_tts_audio(
     """Send an API request for TTS audio and return the audio file's local filepath."""
 
     start_time = datetime.now()
-    debug_string = (
+    _LOGGER.debug("async_request_tts_audio(%s)",
         "hass, tts_platform = "
         + tts_platform
         + ", message = "
@@ -597,10 +617,9 @@ async def async_request_tts_audio(
         + str(cache)
         + ", language = "
         + str(language)
+        + ", options = "
+        + str(options)
     )
-    for key in options:
-        debug_string += ", " + key + " = " + str(options[key])
-    _LOGGER.debug("async_request_tts_audio(%s)", debug_string)
 
     # Data validation
 
@@ -651,16 +670,16 @@ async def async_request_tts_audio(
             options=options,
         )
     except Exception as error:
-        if error == "Invalid TTS provider selected":
-            missing_tts_platform_warning(tts_platform)
+        if f"{error}" == "Invalid TTS provider selected":
+            missing_tts_platform_error(tts_platform)
         else:
-            _LOGGER.warning(
+            _LOGGER.error(
                 "   - Error calling tts.media_source.generate_media_source_id: %s",
                 error,
             )
         return None
     if media_source_id is None:
-        _LOGGER.warning(" - ...unable to generate media_source_id")
+        _LOGGER.error(" - Error: Unable to generate media_source_id")
         return None
 
     audio_data = None
@@ -669,7 +688,7 @@ async def async_request_tts_audio(
             hass=hass, media_source_id=media_source_id
         )
     except Exception as error:
-        _LOGGER.warning(
+        _LOGGER.error(
             "   - Error calling tts.async_get_media_source_audio: %s", error
         )
         return None
@@ -679,13 +698,13 @@ async def async_request_tts_audio(
             audio_bytes = audio_data[1]
             file = io.BytesIO(audio_bytes)
             if file is None:
-                _LOGGER.warning(" - ...could not convert TTS bytes to audio")
+                _LOGGER.error(" - ...could not convert TTS bytes to audio")
                 return None
             audio = AudioSegment.from_file(file)
             if audio is not None:
                 if tts_playback_speed != 100:
                     _LOGGER.debug(
-                        "  -  ...changing TTS playback speed to %s percent",
+                        " -  ...changing TTS playback speed to %s percent",
                         str(tts_playback_speed),
                     )
                     playback_speed = float(tts_playback_speed / 100)
@@ -701,15 +720,15 @@ async def async_request_tts_audio(
                     str((end_time - start_time).total_seconds() * 1000),
                 )
                 return audio
-            _LOGGER.warning(" - ...could not extract TTS audio from file")
+            _LOGGER.error(" - ...could not extract TTS audio from file")
         else:
-            _LOGGER.warning(" - ...audio_data did not contain audio bytes")
+            _LOGGER.error(" - ...audio_data did not contain audio bytes")
     else:
-        _LOGGER.warning(" - ...audio_data generation failed")
+        _LOGGER.error(" - ...audio_data generation failed")
     return None
 
 
-def missing_tts_platform_warning(tts_platform):
+def missing_tts_platform_error(tts_platform):
     """Write a TTS platform specific debug warning when the TTS platform has not been configured."""
     tts_platform_name = tts_platform
     if tts_platform is AMAZON_POLLY:
@@ -740,7 +759,7 @@ def missing_tts_platform_warning(tts_platform):
         tts_platform_name = "VoiceRSS"
     if tts_platform is YANDEX_TTS:
         tts_platform_name = "Yandex TTS"
-    _LOGGER.warning(
+    _LOGGER.error(
         "The %s platform was not found. Please check that it has been configured correctly: https://www.home-assistant.io/integrations/#text-to-speech",
         tts_platform_name,
     )
@@ -765,6 +784,7 @@ async def async_get_playback_audio_path(params: dict, options: dict):
     language = params["language"]
     cache = params["cache"]
     entity_ids = params["entity_ids"]
+    ffmpeg_args = params["ffmpeg_args"]
     _data["delay"] = 0
     _data["is_save_generated"] = False
     _LOGGER.debug("async_get_playback_audio_path")
@@ -819,51 +839,64 @@ async def async_get_playback_audio_path(params: dict, options: dict):
     if output_audio is not None:
         duration = float(len(output_audio) / 1000.0)
         _data["delay"] = duration
-        _LOGGER.debug(" - Final audio created:")
-        _LOGGER.debug("   - Duration = %ss", duration)
+        _LOGGER.debug(" - Final audio created. Duration: %ss", duration)
 
         # Save MP3 file
-        if len(entity_ids) > 0:
+        _LOGGER.debug(" - Saving mp3 file...")
+        if entity_ids and len(entity_ids) > 0:
             # Use the temp folder path
             new_audio_folder = _data[TEMP_PATH_KEY]
         else:
             # Use the public folder path (i.e chime_tts.say_url service calls)
             new_audio_folder = _data[WWW_PATH_KEY]
-        _LOGGER.debug("new_audio_folder = %s", new_audio_folder)
 
         if os.path.exists(new_audio_folder) is False:
-            _LOGGER.debug("Creating audio folder: %s", new_audio_folder)
+            _LOGGER.debug("  - Creating audio folder: %s", new_audio_folder)
             try:
                 os.makedirs(new_audio_folder)
-                _LOGGER.debug("   - Audio folder created")
+                _LOGGER.debug("  - Audio folder created")
             except OSError as error:
                 _LOGGER.warning(
-                    "   - An error occurred while creating the folder '%s': %s",
+                    "  - An error occurred while creating the folder '%s': %s",
                     new_audio_folder,
                     error,
                 )
             except Exception as error:
                 _LOGGER.warning(
-                    "   - An error occurred when creating the folder: %s", error
+                    "  - An error occurred when creating the folder: %s", error
                 )
         else:
-            _LOGGER.debug("Audio folder exists: %s", new_audio_folder)
+            _LOGGER.debug("  - Audio folder exists: %s", new_audio_folder)
 
-        _LOGGER.debug(" - Creating mp3 file...")
         try:
             with tempfile.NamedTemporaryFile(
                 prefix=new_audio_folder, suffix=".mp3"
             ) as temp_obj:
                 new_audio_full_path = temp_obj.name
-            _LOGGER.debug("   - Filepath = '%s'", new_audio_full_path)
-            _data["is_save_generated"] = True
             output_audio.export(new_audio_full_path, format="mp3")
 
-            if len(entity_ids) == 0:
-                new_audio_full_path = get_file_path(hass, new_audio_full_path)
-                _LOGGER.debug("   - Non-relative filepath = '%s'", new_audio_full_path)
+            # Perform FFmpeg conversion
+            if ffmpeg_args:
+                _LOGGER.debug("  - Performing FFmpeg audio conversion...")
+                converted_output_audio = ChimeTTSFAudioHelper.ffmpeg_convert_from_file(new_audio_full_path, ffmpeg_args)
+                if converted_output_audio is not False:
+                    _LOGGER.debug("  - ...FFmpeg audio conversion completed.")
+                    new_audio_full_path = converted_output_audio
+                else:
+                    _LOGGER.warning("  - ...FFmpeg audio conversion failed. Using unconverted audio file")
 
-            _LOGGER.debug("   - File saved successfully")
+            _LOGGER.debug("  - Filepath = '%s'", new_audio_full_path)
+            _data["is_save_generated"] = True
+
+
+            # Check URL (chime_tts.say_url)
+            if entity_ids is None or len(entity_ids) == 0:
+                relative_path = new_audio_full_path
+                new_audio_full_path = get_file_path(hass, new_audio_full_path)
+                if relative_path != new_audio_full_path:
+                    _LOGGER.debug("  - Non-relative filepath = '%s'", new_audio_full_path)
+
+            _LOGGER.debug("  - File saved successfully")
         except Exception as error:
             _LOGGER.warning(
                 "An error occurred when creating the temp mp3 file: %s", error
@@ -907,7 +940,7 @@ def get_audio_from_path(hass: HomeAssistant, filepath: str, delay=0, audio=None)
             if audio_from_path is not None:
                 duration = float(len(audio_from_path) / 1000.0)
                 _LOGGER.debug(
-                    "   - ...audio with duration %ss retrieved successfully",
+                    " - ...retrieved successfully. Audio duration: %ss",
                     str(duration),
                 )
                 if audio is None:
@@ -1140,10 +1173,11 @@ async def async_play_media(
     media_folder = "/media/"
     media_folder_index_in_path = media_source_path.find(media_folder)
     if media_folder_index_in_path != -1:
-        media_path = media_source_path[media_folder_index_in_path + len(media_folder) :]
-        media_source_path = "media-source://media_source/<media_dir>/<path>".replace(
+        media_path = media_source_path[media_folder_index_in_path + len(media_folder) :].replace("//", "/")
+        media_source_path = "media-source://media_source/<media_dir>/<media_path>".replace(
             "<media_dir>", _data[MEDIA_DIR_KEY]
-        ).replace("<path>", media_path)
+        ).replace(
+            "<media_path>", media_path)
     service_data[ATTR_MEDIA_CONTENT_ID] = media_source_path
 
     # announce
@@ -1327,22 +1361,11 @@ def update_configuration(config_entry: ConfigEntry, hass: HomeAssistant = None):
     if hass is not None:
         _data[ROOT_PATH_KEY] = hass.config.path("").replace("/config", "")
 
-    def get_full_path(relative_path):
-        """Generate a full path to the relative path."""
-        if _data[ROOT_PATH_KEY] != "/":
-            relative_path = relative_path.replace(_data[ROOT_PATH_KEY], "")
-        relative_path = (
-            (_data[ROOT_PATH_KEY] + "/" + relative_path + "/")
-            .replace("//", "/")
-            .replace("//", "/")
-        )
-        return relative_path
-
     if DEFAULT_TEMP_PATH_KEY not in _data:
-        _data[DEFAULT_TEMP_PATH_KEY] = get_full_path(TEMP_PATH_DEFAULT)
+        _data[DEFAULT_TEMP_PATH_KEY] = hass.config.path(TEMP_PATH_DEFAULT)
 
     if DEFAULT_WWW_PATH_KEY not in _data:
-        _data[DEFAULT_WWW_PATH_KEY] = get_full_path(WWW_PATH_DEFAULT)
+        _data[DEFAULT_WWW_PATH_KEY] = hass.config.path(WWW_PATH_DEFAULT)
 
     # Set configurable values
     options = config_entry.options
@@ -1354,12 +1377,16 @@ def update_configuration(config_entry: ConfigEntry, hass: HomeAssistant = None):
     _data[MEDIA_DIR_KEY] = options.get(MEDIA_DIR_KEY, MEDIA_DIR_DEFAULT)
 
     # www / local folder path
-    _data[WWW_PATH_KEY] = get_full_path(options.get(WWW_PATH_KEY, WWW_PATH_DEFAULT))
+    _data[WWW_PATH_KEY] = hass.config.path(
+        options.get(WWW_PATH_KEY, WWW_PATH_DEFAULT)
+    )
+    _data[WWW_PATH_KEY] = (_data[WWW_PATH_KEY] + "/").replace("//", "/")
 
     # Temp folder path
-    _data[TEMP_PATH_KEY] = get_full_path(
+    _data[TEMP_PATH_KEY] = hass.config.path(
         options.get(TEMP_PATH_KEY, _data[DEFAULT_TEMP_PATH_KEY])
     )
+    _data[TEMP_PATH_KEY] = (_data[TEMP_PATH_KEY] + "/").replace("//", "/")
 
     # Custom chime paths
     _data[MP3_PRESET_CUSTOM_KEY] = {}

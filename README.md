@@ -18,7 +18,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2929
+Number of entities | 2932
 Number of sensors | 1859
 Number of automations | 64
 Number of scripts | 18
@@ -39,6 +39,7 @@ Number of binary sensors | 172
 - Barcode Buddy for Grocy
 - chrony
 - ESPHome
+- Fusion
 - Home Assistant Google Drive Backup
 - Home Assistant Stream Deck
 - Matter Server

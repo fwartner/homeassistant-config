@@ -49,9 +49,9 @@ from ..const import (
     PERM_USER_READ,
     TOKEN_FILE_MISSING,
     TOKEN_FILENAME,
-    YAML_CALENDARS,
+    YAML_CALENDARS_FILENAME,
 )
-from ..schema import CALENDAR_DEVICE_SCHEMA
+from ..schema import YAML_CALENDAR_DEVICE_SCHEMA
 from ..utils.filemgmt import build_config_file_path, build_yaml_filename, load_yaml_file
 
 _LOGGER = logging.getLogger(__name__)
@@ -141,6 +141,19 @@ class Permissions:
             alternate_perm in self.permissions for alternate_perm in minimum_perm[1]
         )
 
+    def report_perms(self):
+        """Report on permissions status."""
+        for permission in self.requested_permissions:
+            if permission == PERM_OFFLINE_ACCESS:
+                continue
+            if permission not in self.permissions:
+                _LOGGER.warning(
+                    "O365 config requests permission: '%s'. Not available in token '%s' for account '%s'.",
+                    permission,
+                    self.token_filename,
+                    self._config[CONF_ACCOUNT_NAME],
+                )
+
     def _build_token_filename(self):
         """Create the token file name."""
         config_file = (
@@ -211,12 +224,12 @@ class Permissions:
     def _group_permissions_required(self):
         """Return if group permissions are required."""
         yaml_filename = build_yaml_filename(
-            self._config, YAML_CALENDARS, self._conf_type
+            self._config, YAML_CALENDARS_FILENAME, self._conf_type
         )
         calendars = load_yaml_file(
             build_config_file_path(self._hass, yaml_filename),
             CONF_CAL_ID,
-            CALENDAR_DEVICE_SCHEMA,
+            YAML_CALENDAR_DEVICE_SCHEMA,
         )
         for cal_id, calendar in calendars.items():
             if cal_id.startswith(CONST_GROUP):

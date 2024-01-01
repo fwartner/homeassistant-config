@@ -14,14 +14,16 @@
     "step": {
       "manual": {
         "data": {
-          "url": "URL of the Music Assistant server"
+          "url": "URL of the Music Assistant server",
+          "expose_players_assist": "Expose players to Assist"
         }
       },
       "on_supervisor": {
         "title": "Select connection method",
         "description": "Do you want to use the official Music Assistant Server add-on?\n\nIf you are already running the Music Assistant Server in another add-on, in a custom container, natively etc., then do not select this option.",
         "data": {
-          "use_addon": "Use the official Music Assistant Server add-on"
+          "use_addon": "Use the official Music Assistant Server add-on",
+          "expose_players_assist": "Expose players to Assist"
         }
       },
       "install_addon": {
@@ -35,7 +37,10 @@
       },
       "discovery_confirm": {
         "description": "Do you want to add the Music Assistant Server `{url}` to Home Assistant?",
-        "title": "Discovered Music Assistant Server"
+        "title": "Discovered Music Assistant Server",
+        "data": {
+          "expose_players_assist": "Expose players to Assist"
+        }
       }
     },
     "error": {

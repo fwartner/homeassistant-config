@@ -258,6 +258,11 @@
         },
         {
             "manufacturer": "Ecolink",
+            "model": "FF-ZWAVE5-ECO",
+            "battery_type": "CR123"
+        },
+        {
+            "manufacturer": "Ecolink",
             "model": "TILT-ZWAVE2.5-ECO",
             "battery_type": "CR123A"
         },
@@ -585,6 +590,11 @@
             "model": "Duette",
             "battery_type": "AA",
             "battery_quantity": 12
+        },
+        {
+            "manufacturer": "IKEA",
+            "model": "E2102",
+            "battery_type": "Rechargeable"
         },
         {
             "manufacturer": "IKEA",

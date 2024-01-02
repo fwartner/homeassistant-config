@@ -13,6 +13,11 @@
             "battery_type": "CR2450"
         },
         {
+            "manufacturer": "_TZ3000_abci1hiu",
+            "model": "TS0044",
+            "battery_type": "A23"
+        },
+        {
             "manufacturer": "_TZ3000_dowj6gyi",
             "model": "TS0201",
             "battery_type": "CR2450"
@@ -1417,6 +1422,12 @@
         },
         {
             "manufacturer": "TuYa",
+            "model": "LCZ030",
+            "battery_type": "AA",
+            "battery_quantity": 2
+        },
+        {
+            "manufacturer": "TuYa",
             "model": "Luminance door sensor (ZG-102ZL)",
             "battery_type": "CR2032"
         },
@@ -1477,6 +1488,12 @@
         },
         {
             "manufacturer": "TuYa",
+            "model": "TS0201_1",
+            "battery_type": "AA",
+            "battery_quantity": 2
+        },
+        {
+            "manufacturer": "TuYa",
             "model": "TS0203",
             "battery_type": "CR2032"
         },
@@ -1500,6 +1517,11 @@
         {
             "manufacturer": "TuYa",
             "model": "Zigbee water leak sensor (TS0207_water_leak_detector_2)",
+            "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "TUYATEC-xrvzm3yI",
+            "model": "RH3001",
             "battery_type": "CR2032"
         },
         {

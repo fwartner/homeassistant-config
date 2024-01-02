@@ -219,6 +219,12 @@
             "battery_quantity": 2
         },
         {
+            "manufacturer": "Danfoss",
+            "model": "LC-13",
+            "battery_type": "AA",
+            "battery_quantity": 2
+        },
+        {
             "manufacturer": "Develco",
             "model": "Smoke detector with siren (SMSZB-120)",
             "battery_type": "CR123"
@@ -592,6 +598,12 @@
             "battery_quantity": 12
         },
         {
+            "manufacturer": "ID Lock AS",
+            "model": "ID-150",
+            "battery_type": "AA",
+            "battery_quantity": 8
+        },
+        {
             "manufacturer": "IKEA",
             "model": "E2102",
             "battery_type": "Rechargeable"
@@ -643,6 +655,12 @@
             "manufacturer": "IKEA",
             "model": "TRADFRI shortcut button (E1812)",
             "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "IKEA",
+            "model": "VALLHORN wireless motion sensor (E2134)",
+            "battery_type": "AAA",
+            "battery_quantity": 2
         },
         {
             "manufacturer": "IKEA of Sweden",

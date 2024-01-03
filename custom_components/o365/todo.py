@@ -202,7 +202,13 @@ class O365TodoList(O365Entity, TodoListEntity):
                 else TodoItemStatus.NEEDS_ACTION
             )
             self._todo_items.append(
-                TodoItem(uid=todo.task_id, summary=todo.subject, status=completed)
+                TodoItem(
+                    uid=todo.task_id,
+                    summary=todo.subject,
+                    status=completed,
+                    description=todo.body,
+                    due=todo.due,
+                )
             )
 
             self._extra_attributes = self._update_extra_state_attributes(todos)
@@ -292,9 +298,17 @@ class O365TodoList(O365Entity, TodoListEntity):
         o365_task = await self.hass.async_add_executor_job(
             self.todolist.get_task, item.uid
         )
-        if item.summary and item.summary != o365_task.subject:
+        if (
+            (item.summary and item.summary != o365_task.subject)
+            or (item.description and item.description != o365_task.body)
+            or (item.due and item.due != o365_task.due)
+        ):
             await self.async_update_todo(
-                todo_id=item.uid, subject=item.summary, o365_task=o365_task
+                todo_id=item.uid,
+                subject=item.summary,
+                description=item.description,
+                due=item.due,
+                o365_task=o365_task,
             )
         if item.status:
             completed = None

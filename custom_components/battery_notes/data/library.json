@@ -158,6 +158,12 @@
         },
         {
             "manufacturer": "August Home Inc.",
+            "model": "ASL6_05/101200/SI",
+            "battery_type": "AA",
+            "battery_quantity": 4
+        },
+        {
+            "manufacturer": "August Home Inc.",
             "model": "ASL6_05/101300/SI",
             "battery_type": "AA",
             "battery_quantity": 4
@@ -575,6 +581,11 @@
             "model": "HKZW-DWS01",
             "battery_type": "AAA",
             "battery_quantity": 2
+        },
+        {
+            "manufacturer": "Heatit",
+            "model": "Z-PH WALL CONTROLLER",
+            "battery_type": "CR2450"
         },
         {
             "manufacturer": "HEIMAN",

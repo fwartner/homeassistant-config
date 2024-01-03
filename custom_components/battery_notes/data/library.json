@@ -686,6 +686,11 @@
         },
         {
             "manufacturer": "IKEA of Sweden",
+            "model": "SOMRIG shortcut button",
+            "battery_type": "AAA"
+        },
+        {
+            "manufacturer": "IKEA of Sweden",
             "model": "SYMFONISK Sound Controller",
             "battery_type": "CR2032"
         },
@@ -825,6 +830,12 @@
             "manufacturer": "LUMI",
             "model": "lumi.curtain.acn002",
             "battery_type": "Rechargeable"
+        },
+        {
+            "manufacturer": "LUMI",
+            "model": "lumi.motion.ac02",
+            "battery_type": "CR2450",
+            "battery_quantity": 2
         },
         {
             "manufacturer": "LUMI",

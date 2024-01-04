@@ -707,9 +707,19 @@
         },
         {
             "manufacturer": "IKEA",
+            "model": "TRADFRI wireless dimmer (ICTC-G-1)",
+            "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "IKEA",
             "model": "VALLHORN wireless motion sensor (E2134)",
             "battery_type": "AAA",
             "battery_quantity": 2
+        },
+        {
+            "manufacturer": "IKEA of Sweden",
+            "model": "FYRTUR block-out roller blind",
+            "battery_type": "BRAUNIT Battery pack"
         },
         {
             "manufacturer": "IKEA of Sweden",
@@ -751,6 +761,11 @@
         {
             "manufacturer": "IKEA of Sweden",
             "model": "TRADFRI ON/OFF switch",
+            "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "IKEA of Sweden",
+            "model": "TRADFRI open/close remote",
             "battery_type": "CR2032"
         },
         {
@@ -934,6 +949,11 @@
             "manufacturer": "LUMI",
             "model": "lumi.sensor_motion.aq2",
             "battery_type": "CR2450"
+        },
+        {
+            "manufacturer": "LUMI",
+            "model": "lumi.sensor_switch",
+            "battery_type": "CR2032"
         },
         {
             "manufacturer": "LUMI",
@@ -1280,6 +1300,11 @@
         },
         {
             "manufacturer": "Signify Netherlands B.V.",
+            "model": "Hue Smart button (ROM001)",
+            "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "Signify Netherlands B.V.",
             "model": "Hue tap dial switch (RDM002)",
             "battery_type": "CR2032"
         },
@@ -1450,6 +1475,12 @@
             "manufacturer": "switchbot",
             "model": "WoIOSensorTH",
             "battery_type": "AAA",
+            "battery_quantity": 2
+        },
+        {
+            "manufacturer": "switchbot",
+            "model": "WoLock",
+            "battery_type": "CR123A",
             "battery_quantity": 2
         },
         {

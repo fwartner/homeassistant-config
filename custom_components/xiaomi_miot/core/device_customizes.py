@@ -36,6 +36,17 @@ DEVICE_CUSTOMIZES = {
         'number_properties': 'offline_timeout,motion_timeout,online_level,offline_level,online_duration,'
                              'offline_duration,ble_in_threshold,ble_out_threshold,ble_far_timeout',
     },
+    'ainice.sensor_occupy.pr': {
+        'main_miot_services': 'occupancy_sensor',
+        'state_property': 'occupancy_sensor.occupancy_status',
+        'interval_seconds': 10,
+        'sensor_properties': 'no_one_duration,has_someone_duration,zone_param',
+        'switch_properties': 'radar_switch,bluetooth_switch,count_switch',
+        'select_properties': 'sensitivity,direction,position',
+        'number_properties': 'hold_duration',
+        'button_actions': 'reboot',
+        'exclude_miot_properties': 'cmd_request,cmd_response',
+    },
     'air.fan.ca23ad9': {
         'unreadable_properties': True,  # issues/1097
     },
@@ -939,6 +950,39 @@ DEVICE_CUSTOMIZES = {
         'cloud_delay_update': 8,
         'miot_type': 'urn:miot-spec-v2:device:air-conditioner:0000A004:qdhkl-b23:2',
     },
+    'qmi.plug.psv3': {
+        'main_miot_services': 'switch-2',
+        'sensor_attributes': 'power_cost_today,power_cost_month',
+        'sensor_properties': 'switch.temperature',
+        'stat_power_cost_key': '3.1',
+        'exclude_miot_services': 'simulation',
+    },
+    'qmi.plug.psv3:electric_current': {
+        'value_ratio': 0.001,
+        'unit_of_measurement': 'A',
+    },
+    'qmi.plug.psv3:voltage': {
+        'value_ratio': 0.001,
+        'unit_of_measurement': 'V',
+    },
+    'qmi.plug.psv3:power_consumption': {
+        'value_ratio': 1,
+        'state_class': 'total_increasing',
+        'device_class': 'energy',
+        'unit_of_measurement': 'kWh',
+    },
+    'qmi.plug.psv3:power_cost_today': {
+        'value_ratio': 1,
+        'state_class': 'total_increasing',
+        'device_class': 'energy',
+        'unit_of_measurement': 'kWh',
+    },
+    'qmi.plug.psv3:power_cost_month': {
+        'value_ratio': 1,
+        'state_class': 'total_increasing',
+        'device_class': 'energy',
+        'unit_of_measurement': 'kWh',
+    },
     'qmi.plug.tw02': {
         'main_miot_services': 'switch-2',
         'sensor_attributes': 'power_cost_today,power_cost_month',
@@ -959,9 +1003,9 @@ DEVICE_CUSTOMIZES = {
     },
     'qmi.plug.tw02:power_consumption': {
         'value_ratio': 1,
-        'state_class': "total_increasing",
-        'device_class': "energy",
-        'unit_of_measurement': "kWh",
+        'state_class': 'total_increasing',
+        'device_class': 'energy',
+        'unit_of_measurement': 'kWh',
     },
     'qmi.plug.tw02:power_cost_today': {
         'value_ratio': 1,
@@ -1336,6 +1380,12 @@ DEVICE_CUSTOMIZES = {
         'brightness_for_on': 0,
         'brightness_for_off': 2,
         'button_actions': 'reset_filter_life',
+    },
+    'zhimi.airp.rma3': {
+        'sensor_properties': 'moto_speed_rpm',
+        'switch_properties': 'alarm',
+        'select_properties': 'brightness',
+        'number_properties': 'air_purifier_favorite.fan_level',
     },
     'zhimi.airpurifier.*': {
         'speed_property': 'favorite_level,favorite_fan_level',

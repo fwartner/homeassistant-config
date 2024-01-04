@@ -88,6 +88,7 @@ TRANSLATION_LANGUAGES = {
         },
 
         'environment': {
+            'environment air quality': '空气质量',
             'environment temperature': '温度',
             'environment relative humidity': '湿度',
             'environment pm2.5 density': 'PM2.5 浓度',
@@ -107,6 +108,12 @@ TRANSLATION_LANGUAGES = {
             'sleep': '睡眠',
             'strong': '强力',
             'circular wind': '循环风',
+        },
+
+        'filter': {
+            'filter left time': '滤芯剩余时间',
+            'filter used time': '滤芯已用时间',
+            'filter life level': '滤芯剩余寿命',
         },
 
         'intelligent_speaker': {
@@ -181,6 +188,7 @@ TRANSLATION_LANGUAGES = {
 
         'magnet_sensor': {
             'magnet sensor': '门窗传感器',
+            'magnet sensor illumination': '光照度',
         },
 
         'motion_sensor': {
@@ -210,6 +218,7 @@ TRANSLATION_LANGUAGES = {
             'power consumption electric power': '功率',
             'power consumption electric current': '电流',
             'power consumption electric voltage': '电压',
+            'power consumption voltage': '电压',
         },
 
         'ptc_bath_heater': {
@@ -316,6 +325,11 @@ TRANSLATION_LANGUAGES = {
         'water_heater': {
             'water heater': '热水器',
         },
+        'water_heater.mode': {
+            'low': '低温',
+            'medium': '中温',
+            'high': '高温'
+        },
         'airer': {
             'airer': '晾衣架',
             'dryer': '干燥功能',
@@ -355,12 +369,16 @@ TRANSLATION_LANGUAGES = {
             'physical control locked': 'Φυσικός έλεγχος κλειδωμένος',
         },
 
+        'clock': {
+            'stop alarm': 'Διακοπή ξυπνητηριού'
+        },
+
         'fan_level': {
             'auto': 'Αυτόματο',
-            # 'low': '低档',
-            # 'medium': '中档',
-            # 'middle': '中档',
-            # 'high': '高档',
+            # 'low': 'Χαμηλό',
+            # 'medium': 'Μεσαίο',
+            # 'middle': 'Μεσαίο',
+            # 'high': 'Υψηλό',
             'quiet': 'Ήσυχο',
             'turbo': 'Τούρμπο',
             'level1': 'Επίπεδο 1',
@@ -419,6 +437,14 @@ TRANSLATION_LANGUAGES = {
             'stuck': 'Κόλλησε',
         },
 
+        'environment': {
+            'environment temperature': 'Θερμοκρασία',
+            'environment relative humidity': 'Σχετική υγρασία περιβάλλοντος',
+            'environment pm2.5 density': 'Πυκνότητα περιβάλλοντος PM2.5',
+            'environment co2 density': 'Περιβαλλοντική πυκνότητα co2',
+            'environment tvoc density': 'Περιβαλλοντική πυκνότητα TVOC'
+        },
+
         'fan.mode': {
             'basic': 'Βασική',
             'basic wind': 'Βασικός άνεμος',
@@ -431,6 +457,14 @@ TRANSLATION_LANGUAGES = {
             'sleep': 'Ύπνος',
             'strong': 'Δυνατή',
             'circular wind': 'Κυκλικός άνεμος',
+        },
+
+        'intelligent_speaker': {
+            'wake up': 'Ξύπνημα',
+            'play music': 'Αναπαραγωγή μουσικής',
+            'play radio': 'Αναπαραγωγή ραδιοφώνου',
+            'play text': 'Αναπαραγωγή κειμένου',
+            'execute text directive': 'Εκτέλεση οδηγίας κειμένου'
         },
 
         'ir_aircondition_control': {
@@ -502,6 +536,14 @@ TRANSLATION_LANGUAGES = {
         'motion_sensor': {
             'motion sensor': 'Ανίχνευση κίνησης',
             'motion sensor illumination': 'Ανίχνευση φωτισμού',
+        },
+
+        'occupancy_sensor': {
+            'occupancy sensor occupancy status': 'Κατάσταση αισθητήρα παρουσίας'
+        },
+        'occupancy_sensor.occupancy_status': {
+            'someone exists': 'Κάποιος υπάρχει',
+            'no one exists': 'Κάποιος δεν υπάρχει'
         },
 
         'physical_control_locked': {
@@ -629,6 +671,25 @@ TRANSLATION_LANGUAGES = {
 
         'water_heater': {
             'water heater': 'Θερμοσίφωνας νερού',
+        },
+
+        'airer': {
+            'airer': 'Απλώστρα',
+            'dryer': 'Στεγνωτήριο',
+            'drying_level': 'Επίπεδο στεγνώματος',
+            'left_time': 'Υπολειπόμενος χρόνος',
+            'fault': 'Σφάλμα',
+        },
+        'airer.dryer': {
+            'Air Drying': 'Στέγνωμα',
+            'Hot Air Drying': 'Στέγνωμα ζεστού αέρα',
+        },
+        'airer.fault': {
+            'No Faults': 'Κανένα σφάλμα',
+            'Obstruction': 'Απόφραξη',
+            'Overweight': 'Υπέρβαρο',
+            'Overheat': 'Υπερθέρμανση',
+            'Motor Failure': 'Βλάβη κινητήρα',
         },
     },
 

@@ -146,9 +146,20 @@
             "battery_quantity": 4
         },
         {
+            "manufacturer": "American Power Conversion",
+            "model": "Back-UPS XS 1500M",
+            "battery_type": "Rechargable"
+        },
+        {
             "manufacturer": "Aqara",
             "model": "Aqara Door and Window Sensor P2",
             "battery_type": "CR123A"
+        },
+        {
+            "manufacturer": "August",
+            "model": "TEST200228",
+            "battery_type": "AA",
+            "battery_quantity": 4
         },
         {
             "manufacturer": "August Home Inc.",
@@ -206,6 +217,11 @@
             "manufacturer": "CentraLite",
             "model": "3326-L",
             "battery_type": "CR2"
+        },
+        {
+            "manufacturer": "CPS",
+            "model": "CP1500AVRLCDa",
+            "battery_type": "Rechargable"
         },
         {
             "manufacturer": "Custom devices (DiY)",
@@ -632,6 +648,11 @@
         },
         {
             "manufacturer": "IKEA",
+            "model": "RODRET wireless dimmer/power switch (E2201)",
+            "battery_type": "AAA"
+        },
+        {
+            "manufacturer": "IKEA",
             "model": "STYRBAR remote control (E2001/E2002)",
             "battery_type": "AAA",
             "battery_quantity": 2
@@ -935,6 +956,11 @@
             "battery_type": "CR2032"
         },
         {
+            "manufacturer": "Namron",
+            "model": "Zigbee 4 channel switch K8 (black) (4512721)",
+            "battery_type": "CR2450"
+        },
+        {
             "manufacturer": "Neo",
             "model": "Temperature & humidity sensor and alarm (NAS-AB02B0)",
             "battery_type": "CR123A",
@@ -1047,6 +1073,11 @@
             "manufacturer": "OSRAM",
             "model": "Smart+ switch mini (AC0251100NJ/AC0251600NJ/AC0251700NJ)",
             "battery_type": "CR2450"
+        },
+        {
+            "manufacturer": "Philio Technology Corp",
+            "model": "PST02A",
+            "battery_type": "CR123A"
         },
         {
             "manufacturer": "Philips",
@@ -1181,6 +1212,12 @@
             "manufacturer": "Shelly",
             "model": "Shelly H&T",
             "battery_type": "CR123A"
+        },
+        {
+            "manufacturer": "Shenzhen Kaadas Intelligent Technology Co., Ltd.",
+            "model": "DB1",
+            "battery_type": "AA",
+            "battery_quantity": 4
         },
         {
             "manufacturer": "Signify Netherlands B.V.",
@@ -1364,6 +1401,11 @@
         },
         {
             "manufacturer": "switchbot",
+            "model": "WoBlindTilt",
+            "battery_type": "Rechargable"
+        },
+        {
+            "manufacturer": "switchbot",
             "model": "WoCurtain",
             "battery_type": "Rechargeable"
         },
@@ -1375,6 +1417,12 @@
         {
             "manufacturer": "switchbot",
             "model": "WoIOSensorTH",
+            "battery_type": "AAA",
+            "battery_quantity": 2
+        },
+        {
+            "manufacturer": "switchbot",
+            "model": "WoPresence",
             "battery_type": "AAA",
             "battery_quantity": 2
         },
@@ -1559,6 +1607,17 @@
             "battery_type": "CR2032"
         },
         {
+            "manufacturer": "tuya",
+            "model": "TS0210",
+            "battery_type": "AAA",
+            "battery_quantity": 2
+        },
+        {
+            "manufacturer": "tuya",
+            "model": "TS0601",
+            "battery_type": "CR2"
+        },
+        {
             "manufacturer": "TuYa",
             "model": "TS0601_smoke_1",
             "battery_type": "AAA",
@@ -1606,6 +1665,16 @@
             "manufacturer": "Visonic",
             "model": "MCT-340 E",
             "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "WyzeLabs",
+            "model": "WVOD1",
+            "battery_type": "Rechargable"
+        },
+        {
+            "manufacturer": "WyzeLabs",
+            "model": "YD.LO1",
+            "battery_type": "Rechargable"
         },
         {
             "manufacturer": "Xiaomi",

@@ -18,6 +18,11 @@
             "battery_type": "A23"
         },
         {
+            "manufacturer": "_TZ3000_bzxlofth",
+            "model": "TS0203",
+            "battery_type": "CR2032"
+        },
+        {
             "manufacturer": "_TZ3000_dowj6gyi",
             "model": "TS0201",
             "battery_type": "CR2450"
@@ -227,6 +232,12 @@
             "manufacturer": "Custom devices (DiY)",
             "model": "Xiaomi temperature & humidity sensor with custom firmware (LYWSD03MMC)",
             "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "Danalock",
+            "model": "BT/ZB smartlock (V3-BTZB/V3-BTZBE)",
+            "battery_type": "CR123A",
+            "battery_quantity": 4
         },
         {
             "manufacturer": "Danalock",
@@ -744,6 +755,11 @@
         },
         {
             "manufacturer": "IKEA of Sweden",
+            "model": "TRADFRI remote control",
+            "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "IKEA of Sweden",
             "model": "TRADFRI SHORTCUT Button",
             "battery_type": "CR2032"
         },
@@ -767,6 +783,11 @@
             "manufacturer": "iNode",
             "model": "iNode Energy Meter",
             "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "Iris",
+            "model": "3326-L",
+            "battery_type": "CR2"
         },
         {
             "manufacturer": "iRobot",
@@ -1214,6 +1235,11 @@
             "battery_type": "CR123A"
         },
         {
+            "manufacturer": "Shelly",
+            "model": "Shelly Plus Smoke",
+            "battery_type": "CR123A"
+        },
+        {
             "manufacturer": "Shenzhen Kaadas Intelligent Technology Co., Ltd.",
             "model": "DB1",
             "battery_type": "AA",
@@ -1373,6 +1399,12 @@
             "manufacturer": "Sure Petcare",
             "model": "Cat flap",
             "battery_type": "AA",
+            "battery_quantity": 4
+        },
+        {
+            "manufacturer": "Sure Petcare",
+            "model": "Felaqua",
+            "battery_type": "C",
             "battery_quantity": 4
         },
         {

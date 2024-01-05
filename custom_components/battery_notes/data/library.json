@@ -230,6 +230,12 @@
             "battery_type": "CR2"
         },
         {
+            "manufacturer": "Computime",
+            "model": "SLT3",
+            "battery_type": "AA",
+            "battery_quantity": 4
+        },
+        {
             "manufacturer": "CPS",
             "model": "CP1500AVRLCDa",
             "battery_type": "Rechargable"
@@ -266,6 +272,12 @@
         {
             "manufacturer": "Danfoss",
             "model": "LC-13",
+            "battery_type": "AA",
+            "battery_quantity": 2
+        },
+        {
+            "manufacturer": "Danfoss",
+            "model": "TRV001",
             "battery_type": "AA",
             "battery_quantity": 2
         },
@@ -559,6 +571,11 @@
         },
         {
             "manufacturer": "Fibargroup",
+            "model": "FGFS101",
+            "battery_type": "CR123A"
+        },
+        {
+            "manufacturer": "Fibargroup",
             "model": "FGK101",
             "battery_type": "ER14250"
         },
@@ -819,6 +836,12 @@
         {
             "manufacturer": "INKBIRD",
             "model": "IBS-TH",
+            "battery_type": "AAA",
+            "battery_quantity": 2
+        },
+        {
+            "manufacturer": "INKBIRD",
+            "model": "IBS-TH2/P01B",
             "battery_type": "AAA",
             "battery_quantity": 2
         },
@@ -1107,6 +1130,11 @@
             "battery_type": "CR123A"
         },
         {
+            "manufacturer": "Nortek Security & Control LLC",
+            "model": "WADWAZ-1",
+            "battery_type": "CR123A"
+        },
+        {
             "manufacturer": "Nuki",
             "model": "Nuki Opener",
             "battery_type": "AAA",
@@ -1314,6 +1342,11 @@
         {
             "manufacturer": "Shelly",
             "model": "Shelly Plus Smoke",
+            "battery_type": "CR123A"
+        },
+        {
+            "manufacturer": "Shenzhen Heiman Technology Co., Ltd.",
+            "model": "Smoke Detector (HS1SA-Z)",
             "battery_type": "CR123A"
         },
         {
@@ -1731,6 +1764,11 @@
         },
         {
             "manufacturer": "TuYa",
+            "model": "Photoelectric smoke detector (PA-44Z)",
+            "battery_type": "PP3"
+        },
+        {
+            "manufacturer": "TuYa",
             "model": "Smart knob (ERS-10TZBVK-AA)",
             "battery_type": "CR2032"
         },
@@ -1819,8 +1857,18 @@
         },
         {
             "manufacturer": "TuYa",
+            "model": "Wireless switch with 2 buttons (TS0042)",
+            "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "TuYa",
             "model": "Wireless switch with 4 buttons (TS0044)",
             "battery_type": "CR2430"
+        },
+        {
+            "manufacturer": "TuYa",
+            "model": "Zigbee fingerbot plus (TS0001_fingerbot)",
+            "battery_type": "CR2"
         },
         {
             "manufacturer": "TuYa",

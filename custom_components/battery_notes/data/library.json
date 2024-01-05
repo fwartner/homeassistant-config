@@ -3,6 +3,12 @@
     "version": 1,
     "devices": [
         {
+            "manufacturer": "_TYZB01_7qf81wty",
+            "model": "TS1001",
+            "battery_type": "AAA",
+            "battery_quantity": 2
+        },
+        {
             "manufacturer": "_TZ3000_4fjiwweb",
             "model": "TS004F",
             "battery_type": "CR2032"
@@ -487,6 +493,18 @@
             "battery_quantity": 2
         },
         {
+            "manufacturer": "eQ-3",
+            "model": "MAX! Radiator Thermostat",
+            "battery_type": "AA",
+            "battery_quantity": 2
+        },
+        {
+            "manufacturer": "eQ-3",
+            "model": "MAX! Window Sensor",
+            "battery_type": "AA",
+            "battery_quantity": 2
+        },
+        {
             "manufacturer": "Eurotronics",
             "model": "Spirit",
             "battery_type": "AA",
@@ -533,6 +551,11 @@
             "manufacturer": "Fibargroup",
             "model": "FGDW002",
             "battery_type": "ER14250"
+        },
+        {
+            "manufacturer": "Fibargroup",
+            "model": "FGFS101",
+            "battery_type": "CR123A"
         },
         {
             "manufacturer": "Fibargroup",
@@ -656,6 +679,11 @@
             "manufacturer": "IKEA",
             "model": "FYRTUR roller blind (E1757)",
             "battery_type": "Rechargeable"
+        },
+        {
+            "manufacturer": "IKEA",
+            "model": "PARASOLL door/window Sensor (E2013)",
+            "battery_type": "AAA"
         },
         {
             "manufacturer": "IKEA",
@@ -890,6 +918,12 @@
         },
         {
             "manufacturer": "LUMI",
+            "model": "lumi.airmonitor.acn01",
+            "battery_type": "CR2450",
+            "battery_quantity": 2
+        },
+        {
+            "manufacturer": "LUMI",
             "model": "lumi.airrtc.agl001",
             "battery_type": "AA",
             "battery_quantity": 2
@@ -987,6 +1021,12 @@
             "battery_quantity": 2
         },
         {
+            "manufacturer": "Moes",
+            "model": "Universal smart IR remote control (UFO-R11)",
+            "battery_type": "AAA",
+            "battery_quantity": 2
+        },
+        {
             "manufacturer": "Mopeka IOT",
             "model": "M1015",
             "battery_type": "AAA-Lithium"
@@ -1060,6 +1100,11 @@
             "model": "Smart Thermostat",
             "battery_type": "AAA",
             "battery_quantity": 3
+        },
+        {
+            "manufacturer": "Nortek Security & Control LLC",
+            "model": "WADWAZ-1",
+            "battery_type": "CR123A"
         },
         {
             "manufacturer": "Nuki",
@@ -1179,6 +1224,12 @@
             "manufacturer": "Philips",
             "model": "RWL022",
             "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "Poly-control",
+            "model": "Danalock V3-BTZE",
+            "battery_type": "CR123A",
+            "battery_quantity": 4
         },
         {
             "manufacturer": "Ring",
@@ -1365,6 +1416,11 @@
             "battery_type": "CR2"
         },
         {
+            "manufacturer": "Smartthing",
+            "model": "STS-WTR-250",
+            "battery_type": "CR2"
+        },
+        {
             "manufacturer": "SmartThings",
             "model": "Button (IM6001-BTP01)",
             "battery_type": "CR2450"
@@ -1383,6 +1439,11 @@
             "manufacturer": "SmartThings",
             "model": "Multipurpose sensor (2018 model) (IM6001-MPP01)",
             "battery_type": "CR2450"
+        },
+        {
+            "manufacturer": "SOMFY",
+            "model": "Sonesse 28 WF Li-Ion Roller",
+            "battery_type": "Rechargeable"
         },
         {
             "manufacturer": "Sonoff",
@@ -1419,6 +1480,11 @@
             "manufacturer": "SONOFF",
             "model": "Wireless button (SNZB-01)",
             "battery_type": "CR2450"
+        },
+        {
+            "manufacturer": "SONOFF",
+            "model": "ZBCurtain",
+            "battery_type": "Rechargeable"
         },
         {
             "manufacturer": "SONOFF",
@@ -1579,6 +1645,44 @@
             "battery_type": "CR2032"
         },
         {
+            "manufacturer": "Tuya",
+            "model": "_TZ3000_au1rjicn",
+            "battery_type": "AAA",
+            "battery_quantity": 2
+        },
+        {
+            "manufacturer": "Tuya",
+            "model": "_TZ3000_dfgbtub0",
+            "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "Tuya",
+            "model": "_TZ3000_ee8nrt2l",
+            "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "Tuya",
+            "model": "_TZ3000_ftwuvum5",
+            "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "Tuya",
+            "model": "_TZ3000_itb0omhv",
+            "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "Tuya",
+            "model": "_TZ3000_oxslv1c9",
+            "battery_type": "AAA",
+            "battery_quantity": 2
+        },
+        {
+            "manufacturer": "Tuya",
+            "model": "_TZ3000_upgcbody",
+            "battery_type": "AAA",
+            "battery_quantity": 2
+        },
+        {
             "manufacturer": "TuYa",
             "model": "Button scene switch (SH-SC07)",
             "battery_type": "CR2450"
@@ -1597,6 +1701,12 @@
             "manufacturer": "TuYa",
             "model": "IH012-RT01",
             "battery_type": "CR2450"
+        },
+        {
+            "manufacturer": "Tuya",
+            "model": "kscbebaf3s1eogvt",
+            "battery_type": "AAA",
+            "battery_quantity": 2
         },
         {
             "manufacturer": "TuYa",
@@ -1623,6 +1733,11 @@
             "manufacturer": "TuYa",
             "model": "Smart knob (ERS-10TZBVK-AA)",
             "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "TuYa",
+            "model": "Smoke sensor (TS0205)",
+            "battery_type": "CR123"
         },
         {
             "manufacturer": "TuYa",
@@ -1695,8 +1810,12 @@
         {
             "manufacturer": "TuYa",
             "model": "Water leak detector (TS0207_water_leak_detector)",
-            "battery_type": "AAA",
-            "battery_quantity": 2
+            "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "TuYa",
+            "model": "Wireless switch with 1 button (TS0041)",
+            "battery_type": "CR2032"
         },
         {
             "manufacturer": "TuYa",
@@ -1707,6 +1826,12 @@
             "manufacturer": "TuYa",
             "model": "Zigbee water leak sensor (TS0207_water_leak_detector_2)",
             "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "Tuya",
+            "model": "zqeaw7pi",
+            "battery_type": "AAA",
+            "battery_quantity": 2
         },
         {
             "manufacturer": "TUYATEC-xrvzm3yI",
@@ -1973,6 +2098,11 @@
         },
         {
             "manufacturer": "Xiaomi",
+            "model": "Temperature & humidity sensor (LYWSD03MMC)",
+            "battery_type": "CR2032"
+        },
+        {
+            "manufacturer": "Xiaomi",
             "model": "WSDCGQ01LM",
             "battery_type": "CR2032"
         },
@@ -2006,7 +2136,31 @@
         },
         {
             "manufacturer": "YoLink",
+            "model": "LeakSensor",
+            "battery_type": "AAA",
+            "battery_quantity": 2
+        },
+        {
+            "manufacturer": "YoLink",
             "model": "MotionSensor",
+            "battery_type": "AAA",
+            "battery_quantity": 2
+        },
+        {
+            "manufacturer": "YoLink",
+            "model": "SmartRemoter",
+            "battery_type": "AAA",
+            "battery_quantity": 2
+        },
+        {
+            "manufacturer": "YoLink",
+            "model": "THSensor",
+            "battery_type": "AAA",
+            "battery_quantity": 2
+        },
+        {
+            "manufacturer": "YoLink",
+            "model": "VibrationSensor",
             "battery_type": "AAA",
             "battery_quantity": 2
         },

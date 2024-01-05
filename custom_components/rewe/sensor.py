@@ -50,8 +50,6 @@ async def async_setup_entry(
     _LOGGER.debug("Sensor async_setup_entry")
     if entry.options:
         config.update(entry.options)
-    sensors = ReweSensor(config, hass)
-    async_add_entities(sensors, update_before_add=True)
     async_add_entities(
         [
             ReweSensor(config, hass)
@@ -72,7 +70,7 @@ class ReweSensor(Entity):
         self._name = f"Rewe {self.market_id}"
         self._state = None
         self._available = True
-        self._session = cloudscraper.create_scraper()
+        self._session = cloudscraper.create_scraper(ecdhCurve="secp384r1")
 
     @property
     def name(self) -> str:

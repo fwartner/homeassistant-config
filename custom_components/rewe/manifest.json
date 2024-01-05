@@ -7,10 +7,10 @@
   "config_flow": true,
   "dependencies": [],
   "documentation": "https://github.com/faserf/ha-rewe#readme",
-  "issue_tracker": "https://github.com/faserf/ha-rewe/issues",
   "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/faserf/ha-rewe/issues",
   "requirements": [
     "cloudscraper==1.2.71"
   ],
-  "version": "2023.06.0"
+  "version": "2024.01.0"
 }

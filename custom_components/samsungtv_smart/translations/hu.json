@@ -1,0 +1,115 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Ez a Samsung TV már konfigurálva van.",
+            "already_in_progress": "A Samsung TV konfigurációja már folyamatban van.",
+            "unsupported_version": "Ehhez az integrációhoz legalább a HomeAssistant {req_ver} verzió szükséges, jelenleg a(z) {run_ver} verziót használja."
+        },
+        "error": {
+            "auth_missing": "A Home Assistantnek nincs engedélye a ehhez a Samsung TV-hez való kapcsolódáshoz. Kérjük, ellenőrizze a TV beállításait, hogy engedélyezni tudja a Home Assistant számára.",
+            "invalid_host": "Érvénytelen hoszt.",
+            "not_successful": "Nem sikerült létrehozni WebSocket kapcsolatot ezzel a Samsung TV készülékkel.",
+            "not_supported": "Ez a Samsung TV készülék jelenleg nem támogatott.",
+            "wrong_api_key": "Hibás SmartThings token.",
+            "st_device_not_found": "SmartThings TV eszközazonosító (deviceID) nem található.",
+            "st_device_used": "SmartThings TV eszközazonosító (deviceID) már használatban van."
+        },
+        "flow_title": "SamsungTV Smart: {model}",
+        "step": {
+            "confirm": {
+                "description": "Szeretné beállítani a Samsung TV-t ({model})? Ha még soha nem csatlakoztatta a Home Assistantot, akkor megjelenik egy felugró ablak a TV-n, ami engedélyezést kér. A manuális konfigurációk ezen TV esetében felülíródnak."
+            },
+            "user": {
+                "data": {
+                    "host": "Hoszt vagy IP cím",
+                    "name": "Az entitásnak adott név",
+                    "use_ha_name_for_ws": "Használja a HA példány nevét az azonosításhoz a TV-n",
+                    "api_key": "SmartThings által generált token (opcionális)"
+                },
+                "description": "Adja meg a Samsung TV adataidat. A SmartThings token opcionális, de erősen javasolt. Miután megerősítette, látnia kell egy felugró ablakot a TV-n, ami engedélyezést kér."
+            },
+            "stdevice": {
+                "data": {
+                    "st_devices": "SmartThings TV"
+                },
+                "description": "Több TV-t is konfigurált a fiókján. Válassza ki a konfigurálandó TV-t a listából."
+            },
+            "stdeviceid": {
+                "data": {
+                    "device_id": "SmartThings TV eszközazonosító (deviceID)"
+                },
+                "description": "Az automatikus SmartThings eszközazonosítás sikertelen volt. A folytatáshoz az eszközazonosítót be kell azonosítania a SmartThings weboldalon (bővebben a dokumentációban) és be kell illesztenie ide."
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "SamsungTV Smart beállítások",
+                "data": {
+                    "use_st_status_info": "Használja a SmartThings TV állapotinformációt",
+                    "use_st_channel_info": "Használja a SmartThings TV csatornainformációt",
+                    "show_channel_number": "Használja a SmartThings TV csatornaszám információt",
+                    "app_load_method": "Alkalmazások lista betöltési módja induláskor",
+                    "logo_option": "Mutassa a logót ismert forrásokhoz, alkalmazásokhoz és csatornákhoz",
+                    "use_local_logo": "Engedélyezze a helyi logóképek használatát",
+                    "power_on_method": "A TV bekapcsolásához használt módszer",
+                    "show_adv_opt": "Opciók menü mutatása"
+                }
+            },
+            "menu": {
+                "title": "SamsungTV Smart opciók menü",
+                "menu_options": {
+                    "adv_opt": "Haladó opciók",
+                    "app_list": "Alkalmazások listájának konfigurálása",
+                    "channel_list": "Csatornák listájának konfigurálása",
+                    "init": "Alapbeállítások",
+                    "save_exit": "Opciók mentése és kilépés",
+                    "source_list": "Források listájának konfigurálása",
+                    "sync_ent": "Szinkronizált entitások konfigurálása"
+                }
+            },
+            "adv_opt": {
+                "title": "SamsungTV Smart haladó opciók",
+                "data": {
+                    "app_launch_method": "Az alkalmazások indítási módszerének használata",
+                    "dump_apps": "Az alkalmazások listájának naplófájlba való kiírása induláskor (amennyiben lehetséges)",
+                    "use_mute_check": "Hangerőnémítás állapotának használata hamis bekapcsolás észleléséhez",
+                    "wol_repeat": "WOL (Wake-on-LAN) csomag ismétlései a TV bekapcsolásához",
+                    "power_on_delay": "Másodpercek a bekapcsolási állapot késleltetéséhez",
+                    "ping_port": "TCP port, amelyet a bekapcsolási állapot ellenőrzéséhez használnak (0 az ICMP-hez)",
+                    "ext_power_entity": "Bemeneti érzékelő a bekapcsolási állapot felismeréséhez",
+                    "toggle_art_mode": "Art módra váltó bekapcsológomb (kizárólag Frame TV esetén)"
+                }
+            },
+            "sync_ent": {
+                "title": "SamsungTV Smart szinkronizált entitások",
+                "data": {
+                    "sync_turn_off": "Lista azokról az entitásokról, amelyeket kikapcsol a TV-vel",
+                    "sync_turn_on": "Lista azokról az entitásokról, amelyeket bekapcsol a TV-vel"
+                }
+            },
+            "app_list": {
+                "title": "SamsungTV Smart alkalmazások listájának konfigurálása",
+                "data": {
+                    "app_list": "Alkalmazások listája:"
+                }
+            },
+            "channel_list": {
+                "title": "SamsungTV Smart csatornák listájának konfigurálása",
+                "data": {
+                    "channel_list": "Csatornák listája:"
+                }
+            },
+            "source_list": {
+                "title": "SamsungTV Smart források listájának konfigurálása",
+                "data": {
+                    "source_list": "Források listája:"
+                }
+            }
+        },
+        "error": {
+            "invalid_tv_list": "Érvénytelen formátum. Kérjük, ellenőrizze a dokumentációt."
+        }
+    }
+}

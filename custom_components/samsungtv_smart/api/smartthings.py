@@ -17,25 +17,86 @@ API_DEVICES = f"{API_BASEURL}/devices"
 DEVICE_TYPE_OCF = "OCF"
 DEVICE_TYPE_NAME_TV = "Samsung OCF TV"
 
-COMMAND_POWER_OFF = {"capability": "switch", "command": "off"}
-COMMAND_POWER_ON = {"capability": "switch", "command": "on"}
-COMMAND_REFRESH = {"capability": "refresh", "command": "refresh"}
-COMMAND_SET_SOURCE = {"capability": "mediaInputSource", "command": "setInputSource"}
-COMMAND_MUTE = {"capability": "audioMute", "command": "mute"}
-COMMAND_UNMUTE = {"capability": "audioMute", "command": "unmute"}
-COMMAND_VOLUME_UP = {"capability": "audioVolume", "command": "volumeUp"}
-COMMAND_VOLUME_DOWN = {"capability": "audioVolume", "command": "volumeDown"}
-COMMAND_SET_VOLUME = {"capability": "audioVolume", "command": "setVolume"}
-COMMAND_CHANNEL_UP = {"capability": "tvChannel", "command": "channelUp"}
-COMMAND_CHANNEL_DOWN = {"capability": "tvChannel", "command": "channelDown"}
-COMMAND_SET_CHANNEL = {"capability": "tvChannel", "command": "setTvChannel"}
-COMMAND_PAUSE = {"capability": "mediaPlayback", "command": "pause"}
-COMMAND_PLAY = {"capability": "mediaPlayback", "command": "play"}
-COMMAND_STOP = {"capability": "mediaPlayback", "command": "stop"}
-COMMAND_FAST_FORWARD = {"capability": "mediaPlayback", "command": "fastForward"}
-COMMAND_REWIND = {"capability": "mediaPlayback", "command": "rewind"}
-COMMAND_SOUND_MODE = {"capability": "custom.soundmode", "command": "setSoundMode"}
-COMMAND_PICTURE_MODE = {"capability": "custom.picturemode", "command": "setPictureMode"}
+COMMAND_POWER_OFF = {
+    "capability": "switch",
+    "command": "off",
+}
+COMMAND_POWER_ON = {
+    "capability": "switch",
+    "command": "on",
+}
+COMMAND_REFRESH = {
+    "capability": "refresh",
+    "command": "refresh",
+}
+COMMAND_SET_SOURCE = {
+    "capability": "mediaInputSource",
+    "command": "setInputSource",
+}
+COMMAND_SET_VD_SOURCE = {
+    "capability": "samsungvd.mediaInputSource",
+    "command": "setInputSource",
+}
+COMMAND_MUTE = {
+    "capability": "audioMute",
+    "command": "mute",
+}
+COMMAND_UNMUTE = {
+    "capability": "audioMute",
+    "command": "unmute",
+}
+COMMAND_VOLUME_UP = {
+    "capability": "audioVolume",
+    "command": "volumeUp",
+}
+COMMAND_VOLUME_DOWN = {
+    "capability": "audioVolume",
+    "command": "volumeDown",
+}
+COMMAND_SET_VOLUME = {
+    "capability": "audioVolume",
+    "command": "setVolume",
+}
+COMMAND_CHANNEL_UP = {
+    "capability": "tvChannel",
+    "command": "channelUp",
+}
+COMMAND_CHANNEL_DOWN = {
+    "capability": "tvChannel",
+    "command": "channelDown",
+}
+COMMAND_SET_CHANNEL = {
+    "capability": "tvChannel",
+    "command": "setTvChannel",
+}
+COMMAND_PAUSE = {
+    "capability": "mediaPlayback",
+    "command": "pause",
+}
+COMMAND_PLAY = {
+    "capability": "mediaPlayback",
+    "command": "play",
+}
+COMMAND_STOP = {
+    "capability": "mediaPlayback",
+    "command": "stop",
+}
+COMMAND_FAST_FORWARD = {
+    "capability": "mediaPlayback",
+    "command": "fastForward",
+}
+COMMAND_REWIND = {
+    "capability": "mediaPlayback",
+    "command": "rewind",
+}
+COMMAND_SOUND_MODE = {
+    "capability": "custom.soundmode",
+    "command": "setSoundMode",
+}
+COMMAND_PICTURE_MODE = {
+    "capability": "custom.picturemode",
+    "command": "setPictureMode",
+}
 
 DIGITAL_TV = "digitalTv"
 
@@ -486,6 +547,15 @@ class SmartThingsTV:
         # if source not in self._source_list:
         #     return
         data_cmd = _command(COMMAND_SET_SOURCE, [source])
+        # set property to reflect new changes
+        self._set_source(source)
+        await self._async_send_command(data_cmd)
+
+    async def async_select_vd_source(self, source):
+        """Select source"""
+        # if source not in self._source_list:
+        #     return
+        data_cmd = _command(COMMAND_SET_VD_SOURCE, [source])
         # set property to reflect new changes
         self._set_source(source)
         await self._async_send_command(data_cmd)

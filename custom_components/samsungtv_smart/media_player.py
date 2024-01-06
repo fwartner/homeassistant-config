@@ -651,7 +651,7 @@ class SamsungTVDevice(SamsungTVEntity, MediaPlayerEntity):
         self._source = found_source
         return self._source
 
-    async def _smartthings_keys(self, source_key):
+    async def _smartthings_keys(self, source_key: str):
         """Manage the SmartThings key commands."""
         if not self._st:
             _LOGGER.error(
@@ -668,6 +668,8 @@ class SamsungTVDevice(SamsungTVEntity, MediaPlayerEntity):
             await self._st.async_select_source(source_key.replace("ST_", ""))
         elif source_key == "ST_TV":
             await self._st.async_select_source("digitalTv")
+        elif source_key == "ST_PC":
+            await self._st.async_select_vd_source(source_key.replace("ST_", ""))
         elif source_key == "ST_CHUP":
             await self._st.async_send_command("stepchannel", "up")
         elif source_key == "ST_CHDOWN":

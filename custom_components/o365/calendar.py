@@ -21,7 +21,7 @@ from homeassistant.components.calendar import (
 )
 from homeassistant.const import CONF_NAME
 from homeassistant.exceptions import HomeAssistantError, ServiceValidationError
-from homeassistant.helpers import entity_platform, entity_registry
+from homeassistant.helpers import entity_platform
 from homeassistant.helpers.entity import generate_entity_id
 from homeassistant.util import dt
 from requests.exceptions import HTTPError, RetryError
@@ -57,6 +57,7 @@ from .const import (
     EVENT_CREATE_CALENDAR_EVENT,
     EVENT_HA_EVENT,
     EVENT_MODIFY_CALENDAR_EVENT,
+    EVENT_MODIFY_CALENDAR_RECURRENCES,
     EVENT_REMOVE_CALENDAR_EVENT,
     EVENT_REMOVE_CALENDAR_RECURRENCES,
     EVENT_RESPOND_CALENDAR_EVENT,
@@ -229,10 +230,11 @@ class O365CalendarEntity(CalendarEntity):
         self.data = self._init_data(account, calendar_id, entity)
         self._calendar_id = calendar_id
         self._device_id = device_id
-        self._uid_checked = False
         if update_supported:
             self._attr_supported_features = (
-                CalendarEntityFeature.CREATE_EVENT | CalendarEntityFeature.DELETE_EVENT
+                CalendarEntityFeature.CREATE_EVENT
+                | CalendarEntityFeature.DELETE_EVENT
+                | CalendarEntityFeature.UPDATE_EVENT
             )
 
     def _init_data(self, account, calendar_id, entity):
@@ -278,20 +280,9 @@ class O365CalendarEntity(CalendarEntity):
     @property
     def unique_id(self):
         """Entity unique id."""
-        unique_id = (
+        return (
             f"{self._calendar_id}_{self._config[CONF_ACCOUNT_NAME]}_{self._device_id}"
         )
-        if not self._uid_checked:
-            self._check_unique_id(unique_id)
-        return unique_id
-
-    # To be removed at start of 2024, temporary fudge to correct wrong UIDs
-    def _check_unique_id(self, unique_id):
-        ent_reg = entity_registry.async_get(self.hass)
-        entry = ent_reg.async_get(self.entity_id)
-        if entry and entry.unique_id != unique_id:
-            ent_reg.async_update_entity(self.entity_id, new_unique_id=unique_id)
-            self._uid_checked = True
 
     async def async_get_events(self, hass, start_date, end_date):
         """Get events."""
@@ -331,6 +322,32 @@ class O365CalendarEntity(CalendarEntity):
             rrule=rrule,
         )
 
+    async def async_update_event(
+        self,
+        uid: str,
+        event: dict[str, Any],
+        recurrence_id: str | None = None,
+        recurrence_range: str | None = None,
+    ) -> None:
+        """Update an event on the calendar."""
+        start = event[EVENT_START]
+        end = event[EVENT_END]
+        is_all_day = not isinstance(start, datetime)
+        subject = event[EVENT_SUMMARY]
+        body = event.get(EVENT_DESCRIPTION)
+        rrule = event.get(EVENT_RRULE)
+        await self.async_modify_calendar_event(
+            event_id=uid,
+            recurrence_id=recurrence_id,
+            recurrence_range=recurrence_range,
+            subject=subject,
+            start=start,
+            end=end,
+            body=body,
+            is_all_day=is_all_day,
+            rrule=rrule,
+        )
+
     async def async_delete_event(
         self,
         uid: str,
@@ -355,7 +372,14 @@ class O365CalendarEntity(CalendarEntity):
         self.async_schedule_update_ha_state(True)
 
     async def async_modify_calendar_event(
-        self, event_id, subject=None, start=None, end=None, **kwargs
+        self,
+        event_id,
+        recurrence_id,
+        recurrence_range,
+        subject=None,
+        start=None,
+        end=None,
+        **kwargs,
     ):
         """Modify the event."""
 
@@ -366,10 +390,27 @@ class O365CalendarEntity(CalendarEntity):
             _group_calendar_log(self.entity_id)
             return
 
+        if recurrence_range:
+            await self._async_update_calendar_event(
+                recurrence_id,
+                EVENT_MODIFY_CALENDAR_RECURRENCES,
+                subject,
+                start,
+                end,
+                **kwargs,
+            )
+        else:
+            await self._async_update_calendar_event(
+                event_id, EVENT_MODIFY_CALENDAR_EVENT, subject, start, end, **kwargs
+            )
+
+    async def _async_update_calendar_event(
+        self, event_id, ha_event, subject, start, end, **kwargs
+    ):
         event = await self._async_get_event_from_calendar(event_id)
         event = add_call_data_to_event(event, subject, start, end, **kwargs)
         await self.hass.async_add_executor_job(event.save)
-        self._raise_event(EVENT_MODIFY_CALENDAR_EVENT, event_id)
+        self._raise_event(ha_event, event_id)
         self.async_schedule_update_ha_state(True)
 
     async def async_remove_calendar_event(

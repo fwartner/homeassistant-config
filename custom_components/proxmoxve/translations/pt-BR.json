@@ -121,6 +121,14 @@
           "disk_used_perc": {
             "name": "Disco percentual em uso"
           },
+          "lxc_on": {
+            "name": "Containers em execução",
+            "state_attributes": {
+              "lxc_on_list": {
+                "name": "Lista de containers"
+              }
+            }
+          },
           "memory_free": {
             "name": "Memória disponível"
           },
@@ -148,9 +156,19 @@
           "power_cycles": {
             "name": "Ciclos de energia"
           },
+          "qemu_on": {
+            "name": "Máquinas virtuais em execução",
+            "state_attributes": {
+              "qemu_on_list": {
+                "name": "Lista de máquinas virtuais"
+              }
+            }
+          },
           "status_raw": {
             "name": "Status",
             "state": {
+              "internal-error": "Erro interno",
+              "prelaunch": "Pré lançamento",
               "paused": "Pausado",
               "stopped": "Desligado",
               "suspended": "Suspenso",
@@ -184,7 +202,7 @@
             }
           },
           "uptime": {
-            "name": "Tempo de atividade"
+            "name": "Última inicialização"
           }
       }
   },
@@ -246,7 +264,14 @@
       "abort": {
           "changes_successful": "Alterações salvas com sucesso.",
           "no_nodes": "Nenhum nó foi retornado para o host.",
-          "no_vms": "Não há máquinas virtuais ou contêineres para este nó, a entrada de configuração será criada para o nó."
+          "no_vms": "Não há máquinas virtuais ou contêineres para este nó, a entrada de configuração será criada para o nó.",
+          "no_nodes_to_add": "Não há nós para adicionar.",
+          "node_already_exists": "O nó selecionado já existe.",
+          "auth_error": "Autenticação inválida",
+          "cant_connect": "Falha ao conectar",
+          "general_error": "Erro inesperado",
+          "invalid_port": "Número da porta inválida",
+          "ssl_rejection": "Não foi possível verificar o certificado SSL"
       },
       "error": {
           "auth_error": "Autenticação inválida",

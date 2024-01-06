@@ -11,17 +11,25 @@ from homeassistant.components.binary_sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity import DeviceInfo
+from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from . import COORDINATORS, DOMAIN, device_info
-from .const import CONF_LXC, CONF_NODES, CONF_QEMU, ProxmoxKeyAPIParse, ProxmoxType
+from .const import (
+    CONF_LXC,
+    CONF_NODES,
+    CONF_QEMU,
+    LOGGER,
+    ProxmoxKeyAPIParse,
+    ProxmoxType,
+)
 from .entity import ProxmoxEntity
 from .models import ProxmoxEntityDescription
 
 
-@dataclass
+@dataclass(frozen=True, kw_only=True)
 class ProxmoxBinarySensorEntityDescription(
     ProxmoxEntityDescription, BinarySensorEntityDescription
 ):
@@ -42,7 +50,9 @@ PROXMOX_BINARYSENSOR_NODES: Final[tuple[ProxmoxBinarySensorEntityDescription, ..
     ),
 )
 
-PROXMOX_BINARYSENSOR_UPDATES: Final[tuple[ProxmoxBinarySensorEntityDescription, ...]] = (
+PROXMOX_BINARYSENSOR_UPDATES: Final[
+    tuple[ProxmoxBinarySensorEntityDescription, ...]
+] = (
     ProxmoxBinarySensorEntityDescription(
         key=ProxmoxKeyAPIParse.UPDATE_AVAIL,
         name="Updates packages",
@@ -91,11 +101,13 @@ async def async_setup_entry(
     """Set up binary sensors."""
 
     sensors = []
+    migrate_unique_id_disks = []
+
     coordinators = hass.data[DOMAIN][config_entry.entry_id][COORDINATORS]
 
     for node in config_entry.data[CONF_NODES]:
-        if node in coordinators:
-            coordinator = coordinators[node]
+        if f"{ProxmoxType.Node}_{node}" in coordinators:
+            coordinator = coordinators[f"{ProxmoxType.Node}_{node}"]
         else:
             continue
 
@@ -135,32 +147,41 @@ async def async_setup_entry(
                         )
                     )
 
-            if f"{node}_{ProxmoxType.Disk}" in coordinators:
-                for coordinator_disk in coordinators[f"{node}_{ProxmoxType.Disk}"]:
-                    if (coordinator_data := coordinator_disk.data) is None:
-                        continue
+            for coordinator_disk in (
+                coordinators[f"{ProxmoxType.Disk}_{node}"]
+                if f"{ProxmoxType.Disk}_{node}" in coordinators
+                else []
+            ):
+                if (coordinator_data := coordinator_disk.data) is None:
+                    continue
 
-                    for description in PROXMOX_BINARYSENSOR_DISKS:
-                        sensors.append(
-                            create_binary_sensor(
-                                coordinator=coordinator_disk,
-                                info_device=device_info(
-                                    hass=hass,
-                                    config_entry=config_entry,
-                                    api_category=ProxmoxType.Disk,
-                                    node=node,
-                                    resource_id=coordinator_data.path,
-                                    cordinator_resource=coordinator_data,
-                                ),
-                                description=description,
-                                resource_id=coordinator_data.path,
+                for description in PROXMOX_BINARYSENSOR_DISKS:
+                    sensors.append(
+                        create_binary_sensor(
+                            coordinator=coordinator_disk,
+                            info_device=device_info(
+                                hass=hass,
                                 config_entry=config_entry,
-                            )
+                                api_category=ProxmoxType.Disk,
+                                node=node,
+                                resource_id=coordinator_data.path,
+                                cordinator_resource=coordinator_data,
+                            ),
+                            description=description,
+                            resource_id=f"{node}_{coordinator_data.path}",
+                            config_entry=config_entry,
                         )
+                    )
+                    migrate_unique_id_disks.append(
+                        {
+                            "old_unique_id": f"{config_entry.entry_id}_{coordinator_data.path}_{description.key}",
+                            "new_unique_id": f"{config_entry.entry_id}_{node}_{coordinator_data.path}_{description.key}",
+                        }
+                    )
 
     for vm_id in config_entry.data[CONF_QEMU]:
-        if vm_id in coordinators:
-            coordinator = coordinators[vm_id]
+        if f"{ProxmoxType.QEMU}_{vm_id}" in coordinators:
+            coordinator = coordinators[f"{ProxmoxType.QEMU}_{vm_id}"]
         else:
             continue
 
@@ -185,8 +206,8 @@ async def async_setup_entry(
                 )
 
     for container_id in config_entry.data[CONF_LXC]:
-        if container_id in coordinators:
-            coordinator = coordinators[container_id]
+        if f"{ProxmoxType.LXC}_{container_id}" in coordinators:
+            coordinator = coordinators[f"{ProxmoxType.LXC}_{container_id}"]
         else:
             continue
 
@@ -210,7 +231,27 @@ async def async_setup_entry(
                     )
                 )
 
+    await _async_migrate_old_unique_ids(hass, migrate_unique_id_disks)
     async_add_entities(sensors)
+
+
+async def _async_migrate_old_unique_ids(hass, entities):
+    """Migration of the unique id of disk entities."""
+    registry = er.async_get(hass)
+    for entity in entities:
+        entity_id = registry.async_get_entity_id(
+            "binary_sensor", DOMAIN, entity["old_unique_id"]
+        )
+        if entity_id is not None:
+            LOGGER.debug(
+                "Migrating unique_id %s: from [%s] to [%s]",
+                entity_id,
+                entity["old_unique_id"],
+                entity["new_unique_id"],
+            )
+            registry.async_update_entity(
+                entity_id, new_unique_id=entity["new_unique_id"]
+            )
 
 
 def create_binary_sensor(

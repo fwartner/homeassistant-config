@@ -1,10 +1,10 @@
 """Sensor to read Proxmox VE data."""
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from datetime import timedelta
-from typing import Any, Final, Mapping
+from typing import Any, Final
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -13,9 +13,15 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import PERCENTAGE, REVOLUTIONS_PER_MINUTE, UnitOfInformation, UnitOfTemperature, UnitOfTime
+from homeassistant.const import (
+    PERCENTAGE,
+    REVOLUTIONS_PER_MINUTE,
+    UnitOfInformation,
+    UnitOfTemperature,
+)
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity import DeviceInfo
+from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import StateType
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
@@ -29,6 +35,7 @@ from .const import (
     CONF_STORAGE,
     COORDINATORS,
     DOMAIN,
+    LOGGER,
     ProxmoxKeyAPIParse,
     ProxmoxType,
 )
@@ -36,12 +43,12 @@ from .entity import ProxmoxEntity
 from .models import ProxmoxEntityDescription
 
 
-@dataclass
+@dataclass(frozen=True, kw_only=True)
 class ProxmoxSensorEntityDescription(ProxmoxEntityDescription, SensorEntityDescription):
     """Class describing Proxmox sensor entities."""
 
     conversion_fn: Callable | None = None  # conversion factor to be applied to units
-    value_fn: Callable[[Any], bool | str] | None = None
+    value_fn: Callable[[Any], Any | str] | None = None
     api_category: ProxmoxType | None = None  # Set when the sensor applies to only QEMU or LXC, if None applies to both.
     extra_attrs: list[str] | None = None
 
@@ -236,7 +243,7 @@ PROXMOX_SENSOR_SWAP: Final[tuple[ProxmoxSensorEntityDescription, ...]] = (
 PROXMOX_SENSOR_UPTIME: Final[tuple[ProxmoxSensorEntityDescription, ...]] = (
     ProxmoxSensorEntityDescription(
         key=ProxmoxKeyAPIParse.UPTIME,
-        name="Uptime",
+        name="Last boot",
         icon="mdi:database-clock-outline",
         conversion_fn=lambda x: (
             dt_util.utcnow() - timedelta(seconds=x) if x > 0 else None
@@ -300,6 +307,24 @@ PROXMOX_SENSOR_NODES: Final[tuple[ProxmoxSensorEntityDescription, ...]] = (
     *PROXMOX_SENSOR_MEMORY,
     *PROXMOX_SENSOR_SWAP,
     *PROXMOX_SENSOR_UPTIME,
+    ProxmoxSensorEntityDescription(
+        key="qemu_on",
+        name="Virtual machines running",
+        icon="mdi:server",
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=0,
+        translation_key="qemu_on",
+        extra_attrs=["qemu_on_list"],
+    ),
+    ProxmoxSensorEntityDescription(
+        key="lxc_on",
+        name="Containers running",
+        icon="mdi:server",
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=0,
+        translation_key="lxc_on",
+        extra_attrs=["lxc_on_list"],
+    ),
 )
 
 PROXMOX_SENSOR_QEMU: Final[tuple[ProxmoxSensorEntityDescription, ...]] = (
@@ -314,7 +339,9 @@ PROXMOX_SENSOR_QEMU: Final[tuple[ProxmoxSensorEntityDescription, ...]] = (
         name="Status",
         icon="mdi:server",
         translation_key="status_raw",
-        value_fn=lambda x: x.health if x.health not in ["running", "stopped"] else x.status,
+        value_fn=lambda x: x.health
+        if x.health not in ["running", "stopped"]
+        else x.status,
     ),
     *PROXMOX_SENSOR_CPU,
     *PROXMOX_SENSOR_DISK,
@@ -396,6 +423,7 @@ PROXMOX_SENSOR_DISKS: Final[tuple[ProxmoxSensorEntityDescription, ...]] = (
     ),
 )
 
+
 async def async_setup_entry(
     hass: HomeAssistant,
     config_entry: ConfigEntry,
@@ -404,12 +432,13 @@ async def async_setup_entry(
     """Set up sensor."""
 
     sensors = []
+    migrate_unique_id_disks = []
 
     coordinators = hass.data[DOMAIN][config_entry.entry_id][COORDINATORS]
 
     for node in config_entry.data[CONF_NODES]:
-        if node in coordinators:
-            coordinator = coordinators[node]
+        if f"{ProxmoxType.Node}_{node}" in coordinators:
+            coordinator = coordinators[f"{ProxmoxType.Node}_{node}"]
         else:
             continue
 
@@ -449,32 +478,41 @@ async def async_setup_entry(
                         )
                     )
 
-            if f"{node}_{ProxmoxType.Disk}" in coordinators:
-                for coordinator_disk in coordinators[f"{node}_{ProxmoxType.Disk}"]:
-                    if (coordinator_data := coordinator_disk.data) is None:
-                        continue
+            for coordinator_disk in (
+                coordinators[f"{ProxmoxType.Disk}_{node}"]
+                if f"{ProxmoxType.Disk}_{node}" in coordinators
+                else []
+            ):
+                if (coordinator_data := coordinator_disk.data) is None:
+                    continue
 
-                    for description in PROXMOX_SENSOR_DISKS:
-                        sensors.append(
-                            create_sensor(
-                                coordinator=coordinator_disk,
-                                info_device=device_info(
-                                    hass=hass,
-                                    config_entry=config_entry,
-                                    api_category=ProxmoxType.Disk,
-                                    node=node,
-                                    resource_id=coordinator_data.path,
-                                    cordinator_resource=coordinator_data,
-                                ),
-                                description=description,
-                                resource_id=coordinator_data.path,
+                for description in PROXMOX_SENSOR_DISKS:
+                    sensors.append(
+                        create_sensor(
+                            coordinator=coordinator_disk,
+                            info_device=device_info(
+                                hass=hass,
                                 config_entry=config_entry,
-                            )
+                                api_category=ProxmoxType.Disk,
+                                node=node,
+                                resource_id=coordinator_data.path,
+                                cordinator_resource=coordinator_data,
+                            ),
+                            description=description,
+                            resource_id=f"{node}_{coordinator_data.path}",
+                            config_entry=config_entry,
                         )
+                    )
+                    migrate_unique_id_disks.append(
+                        {
+                            "old_unique_id": f"{config_entry.entry_id}_{coordinator_data.path}_{description.key}",
+                            "new_unique_id": f"{config_entry.entry_id}_{node}_{coordinator_data.path}_{description.key}",
+                        }
+                    )
 
     for vm_id in config_entry.data[CONF_QEMU]:
-        if vm_id in coordinators:
-            coordinator = coordinators[vm_id]
+        if f"{ProxmoxType.QEMU}_{vm_id}" in coordinators:
+            coordinator = coordinators[f"{ProxmoxType.QEMU}_{vm_id}"]
         else:
             continue
 
@@ -499,8 +537,8 @@ async def async_setup_entry(
                 )
 
     for ct_id in config_entry.data[CONF_LXC]:
-        if ct_id in coordinators:
-            coordinator = coordinators[ct_id]
+        if f"{ProxmoxType.LXC}_{ct_id}" in coordinators:
+            coordinator = coordinators[f"{ProxmoxType.LXC}_{ct_id}"]
         else:
             continue
 
@@ -525,8 +563,8 @@ async def async_setup_entry(
                 )
 
     for storage_id in config_entry.data[CONF_STORAGE]:
-        if storage_id in coordinators:
-            coordinator = coordinators[storage_id]
+        if f"{ProxmoxType.Storage}_{storage_id}" in coordinators:
+            coordinator = coordinators[f"{ProxmoxType.Storage}_{storage_id}"]
         else:
             continue
 
@@ -550,7 +588,27 @@ async def async_setup_entry(
                     )
                 )
 
+    await _async_migrate_old_unique_ids(hass, migrate_unique_id_disks)
     async_add_entities(sensors)
+
+
+async def _async_migrate_old_unique_ids(hass, entities):
+    """Migration of the unique id of disk entities."""
+    registry = er.async_get(hass)
+    for entity in entities:
+        entity_id = registry.async_get_entity_id(
+            "sensor", DOMAIN, entity["old_unique_id"]
+        )
+        if entity_id is not None:
+            LOGGER.debug(
+                "Migrating unique_id %s: from [%s] to [%s]",
+                entity_id,
+                entity["old_unique_id"],
+                entity["new_unique_id"],
+            )
+            registry.async_update_entity(
+                entity_id, new_unique_id=entity["new_unique_id"]
+            )
 
 
 def create_sensor(
@@ -596,7 +654,10 @@ class ProxmoxSensorEntity(ProxmoxEntity, SensorEntity):
         if not getattr(data, self.entity_description.key, False):
             if value := self.entity_description.value_fn:
                 native_value = value(data)
-            elif self.entity_description.key in (ProxmoxKeyAPIParse.CPU, ProxmoxKeyAPIParse.UPDATE_TOTAL):
+            elif self.entity_description.key in (
+                ProxmoxKeyAPIParse.CPU,
+                ProxmoxKeyAPIParse.UPDATE_TOTAL,
+            ):
                 return 0
             else:
                 return None

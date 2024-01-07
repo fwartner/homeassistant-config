@@ -1,0 +1,3 @@
+appdaemon:
+  app_dir: /homeassistant/appdaemon/apps
+  secrets: /homeassistant/secrets.yaml

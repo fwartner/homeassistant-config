@@ -1,4 +1,5 @@
 """ bunq sensor"""
+import dataclasses
 from homeassistant.components.sensor import (
     SensorEntity,SensorEntityDescription,SensorDeviceClass
 )
@@ -44,8 +45,11 @@ class BunqBalanceSensor(CoordinatorEntity, SensorEntity):
             LOGGER.debug("no account for id %s", str(self._attr_unique_id))
         else:
             self._attr_native_value = float(account["balance"]["value"])
-            self.entity_description.name = "bunq_" + account["description"].lower().replace(" ", "_")
-            self.entity_description.unit_of_measurement = account["currency"]
+            self.entity_description = dataclasses.replace(
+                self.entity_description,
+                name =  "bunq_" + account["description"].lower().replace(" ", "_"),
+                unit_of_measurement = account["currency"]
+            )
             self.load_transactions(transactions)
             self._attr_extra_state_attributes['account_id'] = self._attr_unique_id
 

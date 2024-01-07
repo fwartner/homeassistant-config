@@ -1,11 +1,11 @@
 """ Smartthings TV integration """
+from __future__ import annotations
 
 from asyncio import TimeoutError as AsyncTimeoutError
 from datetime import timedelta
 from enum import Enum
 import json
 import logging
-from typing import Dict, List, Optional
 
 from aiohttp import ClientConnectionError, ClientResponseError, ClientSession
 
@@ -104,7 +104,7 @@ MIN_TIME_BETWEEN_UPDATES = timedelta(seconds=10)
 _LOGGER = logging.getLogger(__name__)
 
 
-def _headers(api_key: str) -> Dict[str, str]:
+def _headers(api_key: str) -> dict[str, str]:
     return {
         "Authorization": f"Bearer {api_key}",
         "Accept": "application/json",
@@ -112,12 +112,12 @@ def _headers(api_key: str) -> Dict[str, str]:
     }
 
 
-def _command(command: Dict, arguments: Optional[List] = None):
-    cmd = {"commands": [{"component": "main"}]}
-    cmd["commands"][0].update(command)
+def _command(command: dict, arguments: list | None = None):
+    cmd = {"component": "main", **command}
     if arguments:
-        cmd["commands"][0]["arguments"] = arguments
-    return str(cmd)
+        cmd["arguments"] = arguments
+    cmd_full = {"commands": [cmd]}
+    return str(cmd_full)
 
 
 class STStatus(Enum):
@@ -136,7 +136,7 @@ class SmartThingsTV:
         api_key: str,
         device_id: str,
         use_channel_info: bool = True,
-        session: Optional[ClientSession] = None,
+        session: ClientSession | None = None,
     ):
         """Initialize SmartThingsTV."""
         self._api_key = api_key
@@ -556,8 +556,6 @@ class SmartThingsTV:
         # if source not in self._source_list:
         #     return
         data_cmd = _command(COMMAND_SET_VD_SOURCE, [source])
-        # set property to reflect new changes
-        self._set_source(source)
         await self._async_send_command(data_cmd)
 
     async def async_set_sound_mode(self, mode):

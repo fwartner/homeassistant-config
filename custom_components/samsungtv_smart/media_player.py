@@ -668,8 +668,9 @@ class SamsungTVDevice(SamsungTVEntity, MediaPlayerEntity):
             await self._st.async_select_source(source_key.replace("ST_", ""))
         elif source_key == "ST_TV":
             await self._st.async_select_source("digitalTv")
-        elif source_key == "ST_PC":
-            await self._st.async_select_vd_source(source_key.replace("ST_", ""))
+        elif source_key.startswith("ST_VD:"):
+            if cmd := source_key.replace("ST_VD:", ""):
+                await self._st.async_select_vd_source(cmd)
         elif source_key == "ST_CHUP":
             await self._st.async_send_command("stepchannel", "up")
         elif source_key == "ST_CHDOWN":
@@ -691,8 +692,8 @@ class SamsungTVDevice(SamsungTVEntity, MediaPlayerEntity):
             if vol_lev.isdigit():
                 await self._st.async_send_command("setvolume", vol_lev)
         else:
-            _LOGGER.error("Unsupported SmartThings command: %s", source_key)
-            return False
+            raise ValueError(f"Unsupported SmartThings command: {source_key}")
+
         return True
 
     def _log_st_error(self, st_error: bool):

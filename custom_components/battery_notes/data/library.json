@@ -638,10 +638,22 @@
             "battery_quantity": 2
         },
         {
+            "manufacturer": "Frient",
+            "model": "EMIZB-141",
+            "battery_type": "AA",
+            "battery_quantity": 2
+        },
+        {
             "manufacturer": "frient",
             "model": "MOSZB-140",
             "battery_type": "AA",
             "battery_quantity": 2
+        },
+        {
+            "manufacturer": "Frient",
+            "model": "ZHEMI101",
+            "battery_type": "AA",
+            "battery_quantity": 3
         },
         {
             "manufacturer": "frient A/S",

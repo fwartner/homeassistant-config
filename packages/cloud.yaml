@@ -1,16 +1,1 @@
 cloud:
-  alexa:
-    filter:
-      include_entities:
-        - light.kitchen
-      include_domains:
-        - switch
-        - alarm_control_panel
-      exclude_entities:
-        - switch.outside
-    entity_config:
-      light.kitchen:
-        name: Custom Name for Alexa
-        description: The light in the kitchen
-      switch.stairs:
-        display_categories: LIGHT

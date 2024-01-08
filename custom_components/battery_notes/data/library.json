@@ -367,6 +367,11 @@
             "battery_type": "CR123A"
         },
         {
+            "manufacturer": "Elexa Consumer Products Inc.",
+            "model": "DMWS1",
+            "battery_type": "CR2"
+        },
+        {
             "manufacturer": "eQ-3",
             "model": "HM-CC-RT-DN",
             "battery_type": "AA",
@@ -680,6 +685,12 @@
             "manufacturer": "Google",
             "model": "Topaz-2.7",
             "battery_type": "MANUAL"
+        },
+        {
+            "manufacturer": "Govee",
+            "model": "H5054",
+            "battery_type": "AAA",
+            "battery_quantity": 2
         },
         {
             "manufacturer": "Govee",
@@ -1442,6 +1453,16 @@
             "model": "DB1",
             "battery_type": "AA",
             "battery_quantity": 4
+        },
+        {
+            "manufacturer": "Shenzhen Neo Electronics Co., Ltd.",
+            "model": "NAS-DS01Z",
+            "battery_type": "CR2"
+        },
+        {
+            "manufacturer": "Shenzhen Neo Electronics Co., Ltd.",
+            "model": "NAS-WS01Z",
+            "battery_type": "CR2"
         },
         {
             "manufacturer": "Signify Netherlands B.V.",

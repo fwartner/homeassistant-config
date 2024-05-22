@@ -9,8 +9,6 @@ My personal home assistant configuation files.
 ## External Tools & Integrations
 - PostgreSQL running on Proxmox
 - InfluxDB running on Proxmox
-- Prometheus running on Proxmox
-- Grafana running on Proxmox
 - Nginx Proxy Manager running on Proxmox
 - NodeRED running on Proxmox
 - Paperless-NGX running on Proxmox

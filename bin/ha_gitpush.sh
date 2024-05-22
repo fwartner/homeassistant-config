@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # To run before
-git config core.sshCommand "ssh -i /homeassistant/.ssh/id_ed25519 -o 'StrictHostKeyChecking=no' -F /dev/null"
+git config core.sshCommand "ssh -i /.ssh/id_ed25519 -o 'StrictHostKeyChecking=no' -F /dev/null"
 
 HA_VERSION=`cat .HA_VERSION`
 COMMIT_CURRENT_DATE=$(date +'%d-%m-%Y %H:%M:%S')

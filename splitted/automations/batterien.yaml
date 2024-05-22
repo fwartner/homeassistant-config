@@ -1,0 +1,13 @@
+alias: Batterien
+description: ''
+id: '1701356043476'
+use_blueprint:
+  input:
+    actions:
+    - data:
+        message: Einige Batterien schein fast oder ganz leer zu sein. Guck doch mal
+          nach.
+        title: "\U0001FAAB Niedriger Batterie Status"
+      service: notify.mobile_app_iphone_von_florian
+    day: 1
+  path: sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml

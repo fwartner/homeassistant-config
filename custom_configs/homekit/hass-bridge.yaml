@@ -1,0 +1,16 @@
+- name: Home Assistant
+  port: 21068
+  filter:
+    include_domains:
+      - cover
+    include_entity_globs:
+      - climate.luftreiniger_*
+      - climate.heizung_*
+      - switch.steckdose*
+    include_entities:
+      - fan.ventilator
+  entity_config:
+    camera.kamera_flur:
+      support_audio: true
+    camera.kamera_wohnzimmer_ecke:
+      support_audio: true

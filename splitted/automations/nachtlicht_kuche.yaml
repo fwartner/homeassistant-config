@@ -1,0 +1,44 @@
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - kucheOn
+    sequence:
+    - brightness_pct: 30
+      device_id: 7e56df9d6385100a6089783f6de066d7
+      domain: light
+      entity_id: 36aeda22c66e308e67721d47b46bf669
+      type: turn_on
+  - conditions:
+    - condition: trigger
+      id:
+      - kucheOff
+    sequence:
+    - device_id: 7e56df9d6385100a6089783f6de066d7
+      domain: light
+      entity_id: 36aeda22c66e308e67721d47b46bf669
+      type: turn_off
+alias: "Nachtlicht K\xFCche"
+condition:
+- after: sunset
+  after_offset: '1'
+  before: sunrise
+  before_offset: '1'
+  condition: sun
+description: ''
+id: '1691151128778'
+mode: single
+trigger:
+- entity_id:
+  - binary_sensor.hlk_kuche_belegung
+  from: 'off'
+  id: kucheOn
+  platform: state
+  to: 'on'
+- entity_id:
+  - binary_sensor.hlk_kuche_belegung
+  from: 'on'
+  id: kucheOff
+  platform: state
+  to: 'off'

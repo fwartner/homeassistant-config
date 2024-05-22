@@ -1,0 +1,40 @@
+'1699263812322':
+  alias: Store MQTT Sensor
+  description: Stores data in a MQTT message.
+  fields:
+    attributes:
+      example: attributes
+      name: Attributes
+      selector:
+        text:
+          multiline: true
+    name:
+      example: last_message
+      name: MQTT Name
+      required: true
+      selector:
+        text: null
+    state:
+      example: some state
+      name: State
+      required: true
+      selector:
+        text: null
+  icon: mdi:message-bookmark
+  mode: parallel
+  sequence:
+  - parallel:
+    - data:
+        payload: '{{ state | striptags | truncate(250) }}'
+        retain: true
+        topic: custom/sensor/{{ name }}/state
+      service: mqtt.publish
+    - if:
+      - condition: template
+        value_template: '{{ attributes != "" }}'
+      then:
+      - data:
+          payload: '{{ attributes | default("none") }}'
+          retain: true
+          topic: custom/sensor/{{ name }}/attributes
+        service: mqtt.publish

@@ -1,0 +1,7 @@
+platform: template
+sensors:
+  updater_supervisor:
+    friendly_name: "Updater Supervisor"
+    device_class: problem
+    value_template: "{{ state_attr('sensor.supervisor_updates', 'update_available') }}"
+    availability_template: "{{ states('sensor.supervisor_updates') | int(-1) > -1 }}"

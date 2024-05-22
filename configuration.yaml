@@ -1,0 +1,32 @@
+homeassistant:
+  packages: !include_dir_named integrations
+  time_zone: Europe/Berlin
+  language: de
+  country: DE
+  currency: EUR
+  unit_system: metric
+  elevation: 15
+
+script: !include scripts.yaml
+scene: !include scenes.yaml
+input_select: !include_dir_merge_named custom_configs/input_selects/
+input_boolean: !include_dir_merge_named custom_configs/input_booleans/
+input_text: !include_dir_merge_named custom_configs/input_texts/
+rest_command: !include_dir_merge_named custom_configs/rest_commands/
+sensor: !include_dir_merge_list custom_configs/sensors/
+camera: !include_dir_merge_list custom_configs/cameras/
+group: !include_dir_merge_list custom_configs/groups/
+template: !include_dir_merge_list custom_configs/templates/
+binary_sensor: !include_dir_merge_list custom_configs/binary_sensors/
+telegram_bot: !include_dir_merge_list custom_configs/telegram_bot/
+rest: !include_dir_merge_list custom_configs/rest/
+switch: !include_dir_merge_list custom_configs/switches/
+conversation: !include_dir_merge_list custom_configs/conversation/
+alert: !include_dir_merge_named custom_configs/alerts/
+intent_script: !include_dir_merge_list custom_configs/intents/
+shell_command: !include_dir_merge_list custom_configs/shell_commands/
+automation: !include automations.yaml
+utility_meter: !include_dir_merge_list custom_configs/utility_meter/
+mqtt:
+  sensor: !include_dir_merge_list custom_configs/mqtt/sensor/
+command_line: !include_dir_merge_list custom_configs/command_line/

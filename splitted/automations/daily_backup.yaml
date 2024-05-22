@@ -1,0 +1,16 @@
+action:
+- data:
+    keep_days: 2
+  service: auto_backup.backup_full
+alias: Daily Backup
+condition: []
+description: ''
+id: '1690625427032'
+mode: single
+trigger:
+- at: 02:00:00
+  platform: time
+- command:
+  - Mache ein Backup
+  - Mach ein Backup
+  platform: conversation

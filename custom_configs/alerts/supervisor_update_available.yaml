@@ -1,0 +1,14 @@
+supervisor_update_available:
+  name: Der Supervisor hat ein Update
+  entity_id: binary_sensor.updater_supervisor
+  state: "on"
+  can_acknowledge: false
+  repeat: 360
+  title: "Es ist ein Update für den Supervisor verfügbar"
+  message: "Die neue version ist {{ state_attr('sensor.supervisor_updates', 'newest_version') }}. Zurzeit auf Version {{ state_attr('sensor.supervisor_updates', 'current_version') }}"
+  notifiers:
+    - "florians_iphone"
+  data:
+    tag: "supervisor-update-available"
+    url: "https://ha.wartner.cloud/hassio/dashboard"
+    ttl: 21600

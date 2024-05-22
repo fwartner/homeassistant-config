@@ -1,0 +1,18 @@
+logbook:
+  include:
+    domains:
+      - climate
+      - light
+      - media_player
+      - switch
+      - person
+      - sensor
+      - automation
+      - zone
+  exclude:
+    domains:
+      - sun
+      - group
+      - weather
+    entities:
+      - sensor.date

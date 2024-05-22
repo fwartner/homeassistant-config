@@ -1,0 +1,13 @@
+action:
+- data: {}
+  metadata: {}
+  service: script.esphome_update_all_devices
+alias: ESPHome Auto-Update
+condition: []
+description: ''
+id: '1713785658342'
+mode: single
+trigger:
+- platform: template
+  value_template: '{{ integration_entities(''esphome'') | select(''match'', ''^update.'')
+    | select(''is_state'', ''on'') | list | count > 0 }}'

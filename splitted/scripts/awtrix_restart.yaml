@@ -1,0 +1,13 @@
+awtrix_restart:
+  alias: AWTRIX Reboot
+  mode: single
+  sequence:
+  - parallel:
+    - alias: "AWTRIX Reboot B\xFCro"
+      data:
+        topic: awtrix_buro/reboot
+      service: mqtt.publish
+    - alias: AWTRIX Reboot Wohnzimmer
+      data:
+        topic: awtrix_wohnzimmer/reboot
+      service: mqtt.publish

@@ -1,0 +1,80 @@
+blueprint:
+  name: Awtrix random effect
+  description: This blueprint allows you to select the effects, which should be randomly displayed on your Awtrix light
+  domain: automation
+  author: N1c093
+  input:
+    awtrix_light:
+      name: Awtrix Display
+      description: Select the target Awtrix display.
+      selector:
+        device:
+          model: "AWTRIX Light"
+    effect_list:
+      name: Effects
+      description: "Select the effects which should randomly be displayed. See: https://blueforcer.github.io/awtrix-light/#/effects"
+      selector:
+        select:
+          options:
+            - BrickBreaker
+            - Fireworks
+            - Radar
+            - Snake
+            - TheaterChase
+            - SwirlOut
+            - LookingEyes
+            - Pacifica
+            - PlasmaCloud
+            - Checkerboard
+            - PingPong
+            - Ripple
+            - TwinklingStars
+            - ColorWaves
+            - SwirlIn
+            - Matrix
+            - Plasma
+            - MovingLine
+          mode: list
+          multiple: true
+    duration:
+      name: Effect duration
+      description: Select how long each effect should be displayed.
+      default: "10"
+      selector:
+        number:
+          min: 1
+          max: 999
+          mode: box
+          unit_of_measurement: seconds
+    change_interval:
+      name: Effect change interval
+      description: 'Select how often (in minutes) the effect should change. Input must start with "/" Example: "/5"'
+      default: "/5"
+      selector:
+        text:
+          suffix: minutes
+
+mode: queued
+
+variables:
+  device_id: !input awtrix_light
+  awtrix_light: "{{ iif( device_attr(device_id, 'name_by_user') != none, device_attr(device_id, 'name_by_user'), device_attr(device_id, 'name') ) }}"
+  effect_list: !input effect_list
+  effect_random: "{{effect_list|random}}"
+  duration: !input duration
+
+trigger:
+  - platform: time_pattern
+    minutes: !input change_interval
+
+action:
+  - service: mqtt.publish
+    data:
+      qos: 0
+      retain: false
+      topic: "{{awtrix_light}}/custom/effect"
+      payload: |-
+        {   
+          "effect": "{{ effect_random }}",
+          "duration": "{{ duration }}"
+        }

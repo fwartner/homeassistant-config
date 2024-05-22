@@ -1,0 +1,17 @@
+power_wohnzimmer:
+  alias: '[Apple TV] Power Wohnzimmer'
+  icon: si:appletv
+  mode: single
+  sequence:
+  - data:
+      command:
+      - home_hold
+      - select
+      delay_secs: 1
+    service: remote.send_command
+    target:
+      entity_id: remote.appletv_wohnzimmer
+  - data: {}
+    service: media_player.toggle
+    target:
+      entity_id: media_player.appletv_wohnzimmer

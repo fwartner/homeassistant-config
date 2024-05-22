@@ -1,0 +1,677 @@
+3_minuten_bettzeit:
+  alias: 3 Minuten Bettzeit
+  sequence:
+  - parallel:
+    - service: cover.close_cover
+      metadata: {}
+      data: {}
+      target:
+        entity_id: cover.rollos_schlafzimmer
+    - service: switch.turn_off
+      data: {}
+      target:
+        entity_id: switch.dashboard_bildschirm
+    - service: lock.lock
+      target:
+        entity_id: lock.nuki_wohnungstur_lock
+      data: {}
+    - service: light.turn_off
+      target:
+        entity_id: light.alle_lampen
+      data: {}
+    - service: switch.turn_off
+      target:
+        entity_id: switch.alle_steckdosen
+      data: {}
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - type: turn_on
+    device_id: 687585a826f140c103f447d4384f11a8
+    entity_id: 107487a20fd417d6c27308fc10f3df40
+    domain: switch
+  - service: light.turn_on
+    target:
+      entity_id: light.bett
+    data:
+      brightness_pct: 30
+  - type: turn_on
+    device_id: cee4b3caf72c6c64e4cf9115e5ad0c40
+    entity_id: 82f42d86b638d5bf6c7b3f54ee19ac1a
+    domain: switch
+  - service: timer.start
+    data: {}
+    target:
+      entity_id: timer.3_minuten_bett
+  - delay:
+      hours: 0
+      minutes: 3
+      seconds: 0
+      milliseconds: 0
+  - type: turn_off
+    device_id: 5b11b0840d4c4062ffc65bf3e4390f30
+    entity_id: bce45d1352e6bb15287c05e343ace4b7
+    domain: light
+  mode: single
+  icon: mdi:bed-clock
+polly_futtern:
+  alias: Polly füttern
+  sequence:
+  - device_id: 04ece3de9f8fdb037bfefdbfd2fa78ca
+    domain: select
+    entity_id: 6ff3e29cf091354896df420b804035f6
+    type: select_option
+    option: START
+  mode: single
+  icon: mdi:cat
+anni_musik:
+  alias: Anni Musik
+  sequence:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.nest_kuche
+    data:
+      media_content_id: spotify://71c55d65e0fb83ea97ebfd495afe5ed5/spotify:playlist:0cxlQu2hr6yFYZXds7HK6h
+      media_content_type: spotify://playlist
+    metadata:
+      title: "Musik zum aufstehen \U0001F31E"
+      thumbnail: https://i.scdn.co/image/ab67706c0000bebb4c8c729ddff49692ef888a62
+      media_class: playlist
+      children_media_class: track
+      navigateIds:
+      - {}
+      - media_content_type: spotify://library
+        media_content_id: spotify://71c55d65e0fb83ea97ebfd495afe5ed5
+      - media_content_type: spotify://current_user_playlists
+        media_content_id: spotify://71c55d65e0fb83ea97ebfd495afe5ed5/current_user_playlists
+  mode: single
+  icon: mdi:account-music
+zahneputzen:
+  alias: Zähneputzen
+  sequence:
+  - service: timer.start
+    data: {}
+    target:
+      entity_id: timer.zahneputzen
+  mode: single
+  icon: mdi:toothbrush
+offne_wohnungstur:
+  alias: Öffne Wohnungstür
+  sequence:
+  - device_id: bb8a84cf268277f3d38063aee6ce698e
+    domain: lock
+    entity_id: 7b91d36587ba4469f26de8a280995404
+    type: open
+  mode: single
+  icon: mdi:lock-open
+'1699263812322':
+  alias: Store MQTT Sensor
+  description: Stores data in a MQTT message.
+  icon: mdi:message-bookmark
+  mode: parallel
+  fields:
+    name:
+      name: MQTT Name
+      example: last_message
+      required: true
+      selector:
+        text:
+    state:
+      name: State
+      example: some state
+      required: true
+      selector:
+        text:
+    attributes:
+      name: Attributes
+      example: attributes
+      selector:
+        text:
+          multiline: true
+  sequence:
+  - parallel:
+    - service: mqtt.publish
+      data:
+        topic: custom/sensor/{{ name }}/state
+        payload: '{{ state | striptags | truncate(250) }}'
+        retain: true
+    - if:
+      - condition: template
+        value_template: '{{ attributes != "" }}'
+      then:
+      - service: mqtt.publish
+        data:
+          topic: custom/sensor/{{ name }}/attributes
+          payload: '{{ attributes | default("none") }}'
+          retain: true
+'1699263855216':
+  alias: '[Zigbee2MQTT] Restart'
+  sequence:
+  - service: mqtt.publish
+    data:
+      topic: zigbee2mqtt/bridge/request/restart
+'1699263879066':
+  alias: '[HA] Purge Database'
+  description: Purge Database
+  icon: mdi:delete-sweep
+  sequence:
+  - service: recorder.purge
+    data:
+      keep_days: 0
+      repack: 'true'
+'1699263899938':
+  alias: '[Network] Run Speedtest'
+  max_exceeded: silent
+  sequence:
+  - service: homeassistant.update_entity
+    target:
+      entity_id:
+      - sensor.fast_com_download
+    data: {}
+power_wohnzimmer:
+  alias: '[Apple TV] Power Wohnzimmer'
+  sequence:
+  - service: remote.send_command
+    data:
+      delay_secs: 1
+      command:
+      - home_hold
+      - select
+    target:
+      entity_id: remote.appletv_wohnzimmer
+  - service: media_player.toggle
+    data: {}
+    target:
+      entity_id: media_player.appletv_wohnzimmer
+  mode: single
+  icon: si:appletv
+run_chores:
+  alias: Run Chores
+  sequence:
+  - service: shell_command.run_chores
+    data: {}
+  mode: single
+  icon: mdi:broom
+duschen_vorbereiten:
+  alias: Duschen Vorbereiten
+  sequence:
+  - service: notify.alexa_media
+    data:
+      message: Ich bereite das Badezimmer für dich vor, damit du in ein paar Minuten
+        in aller Ruhe duschen gehen kannst. Ich gebe dir Bescheid, wenn ich damit
+        fertig bin.
+      data:
+        method: all
+        type: announce
+      target:
+      - media_player.echo_badezimmer
+      - media_player.echo_flur
+      - media_player.echo_schlafzimmer
+      - media_player.echo_schlafzimmer
+      title: Ich bereite das Badezimmer vor
+  - service: climate.set_temperature
+    data:
+      hvac_mode: heat
+      temperature: 22
+    target:
+      entity_id: climate.heizung_badezimmer
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.duschen_vorbereiten
+      - input_boolean.duschen_besetzt
+  mode: single
+  icon: fas:shower
+10_minuten_boost_schlafzimmer:
+  alias: 10 Minuten Boost Schlafzimmer
+  sequence:
+  - service: climate.set_fan_mode
+    data:
+      fan_mode: high
+    target:
+      entity_id: climate.luftreiniger_schlafzimmer
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - service: climate.set_fan_mode
+    data:
+      fan_mode: low
+    target:
+      entity_id: climate.luftreiniger_schlafzimmer
+  mode: single
+  icon: mdi:air-filter
+10_minuten_boost_wohnzimmer:
+  alias: 10 Minuten Boost Wohnzimmer
+  sequence:
+  - service: climate.set_fan_mode
+    data:
+      fan_mode: high
+    target:
+      entity_id:
+      - climate.luftreiniger_wohnzimmer
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - service: climate.set_fan_mode
+    data:
+      fan_mode: low
+    target:
+      entity_id: climate.luftreiniger_wohnzimmer
+  mode: single
+  icon: mdi:air-filter
+awtrix_speedtest:
+  alias: AWTRIX Speedtest
+  sequence:
+  - service: mqtt.publish
+    data:
+      topic: awtrix_wohnzimmer/notify
+      payload: '{"text":"Download-Geschwindigkeit beträgt {{ states.sensor.speedtest_download.state}}  Mbp/s","icon":58101,"pushIcon":0,"repeat":1,"textCase":2}'
+    alias: Publish AWTRIX Wohnzimmer Download
+  - service: mqtt.publish
+    data:
+      topic: awtrix_wohnzimmer/notify
+      payload: '{"text":"Upload-Geschwindigkeit beträgt {{ states.sensor.speedtest_upload.state}}  Mbp/s","icon":41181,"pushIcon":0,"repeat":1,"textCase":2}'
+    alias: Publish AWTRIX Wohnzimmer Upload
+  - service: mqtt.publish
+    data:
+      topic: awtrix_buro/notify
+      payload: '{"text":"Download-Geschwindigkeit beträgt {{ states.sensor.speedtest_download.state}}  Mbp/s","icon":58101,"pushIcon":0,"repeat":1,"textCase":2}'
+    alias: Publish AWTRIX Büro Download
+  - service: mqtt.publish
+    data:
+      topic: awtrix_buro/notify
+      payload: '{"text":"Upload-Geschwindigkeit beträgt {{ states.sensor.speedtest_upload.state}}  Mbp/s","icon":41181,"pushIcon":0,"repeat":1,"textCase":2}'
+    alias: Publish AWTRIX Büro Upload
+  mode: single
+  icon: mdi:speedometer
+awtrix_doorbell:
+  alias: AWTRIX Doorbell
+  sequence:
+  - alias: Publish AWTRIX Wohnzimmer
+    service: mqtt.publish
+    data:
+      topic: awtrix_wohnzimmer/notify
+      payload: '{"text":"Jemand hat an der Tür geklingelt!","icon":56373,"pushIcon":0,"repeat":1,"textCase":2}}'
+  - alias: Publish AWTRIX Büro
+    service: mqtt.publish
+    data:
+      topic: awtrix_buro/notify
+      payload: '{"text":"Jemand hat an der Tür geklingelt!","icon":56373,"pushIcon":0,"repeat":1,"textCase":2}}'
+  mode: single
+  icon: mdi:bell
+awtrix_restart:
+  alias: AWTRIX Reboot
+  sequence:
+  - parallel:
+    - alias: AWTRIX Reboot Büro
+      service: mqtt.publish
+      data:
+        topic: awtrix_buro/reboot
+    - service: mqtt.publish
+      data:
+        topic: awtrix_wohnzimmer/reboot
+      alias: AWTRIX Reboot Wohnzimmer
+  mode: single
+awtrix_placeholder:
+  alias: AWTRIX Placeholder
+  sequence:
+  - parallel:
+    - alias: Publish AWTRIX Wohnzimmer
+      service: mqtt.publish
+      data:
+        topic: awtrix_wohnzimmer/notify
+        payload: '{   "effect":"LookingEyes",   "hold": true }'
+    - alias: Publish AWTRIX Büro
+      service: mqtt.publish
+      data:
+        topic: awtrix_buro/notify
+        payload: '{   "effect":"LookingEyes",   "hold": true }'
+  mode: single
+awtrix_dismiss_notification:
+  alias: AWTRIX Dismiss Notification
+  sequence:
+  - parallel:
+    - alias: Publish AWTRIX Wohnzimmer
+      service: mqtt.publish
+      data:
+        topic: awtrix_wohnzimmer/notify/dismiss
+    - alias: Publish AWTRIX Büro
+      service: mqtt.publish
+      data:
+        topic: awtrix_buro/notify/dismiss
+  mode: single
+announce:
+  alias: Announce
+  use_blueprint:
+    path: balloob/announce-text-to-speech-on-media-player.yaml
+    input:
+      text_to_speech_engine: tts.elevenlabs_tts
+      media_player:
+      - media_player.echo_show_wohnzimmer
+  icon: mdi:account-voice
+willkommen_florian:
+  alias: Willkommen Florian
+  sequence:
+  - service: notify.alexa_media_echo_flur
+    metadata: {}
+    data:
+      message: '{{ [ "Willkommen zu Hause, Florian! Wir haben dich vermisst!", "Endlich
+        bist du wieder da, Florian – das Haus war ohne dich einfach nicht dasselbe!",
+        "Florian, dein Zuhause heißt dich herzlich willkommen!", "Es ist so schön,
+        dich wieder zu haben, Florian. Willkommen zurück!", "Dein Rückkehr bringt
+        wieder Freude und Licht ins Haus, Florian!", "Florian, wir haben auf diesen
+        Moment gewartet – willkommen daheim!", "Das Warten hat ein Ende, Florian!
+        Dein Zuhause begrüßt dich mit offenen Armen!", "Willkommen zurück in deinem
+        sicheren Hafen, Florian!", "Florian, dein Zuhause ist nicht komplett ohne
+        dich – schön, dass du wieder da bist!", "Deine Rückkehr macht unser Zuhause
+        wieder komplett, Florian. Willkommen!", "Florian, das ganze Haus strahlt vor
+        Freude, weil du wieder da bist!", "Es ist Zeit für neue Erinnerungen, Florian
+        – willkommen zu Hause!", "Dein Platz hier war immer offen, Florian. Schön,
+        dich zurückzuhaben!", "Willkommen zurück, Florian! Lass uns da weitermachen,
+        wo wir aufgehört haben!", "Florian, dein Zuhause hat dich vermisst – willkommen
+        zurück!", "Nichts ist besser, als dich wieder zu Hause zu haben, Florian!",
+        "Florian, jede Ecke hier spricht von deiner Rückkehr – willkommen zu Hause!",
+        "Dein Zuhause jubelt über deine Rückkehr, Florian! Willkommen!", "Wir zählen
+        die schönen Momente, seit du weg warst, Florian. Willkommen zurück!", "Florian,
+        das Glück ist komplett, jetzt wo du wieder zu Hause bist!" ] | random }}
+
+        '
+  icon: mdi:home-circle
+  mode: single
+staubsauger_wohnzimmer_reinigen:
+  alias: '[Staubsauger] Wohnzimmer Reinigen'
+  sequence:
+  - service: vacuum.send_command
+    metadata: {}
+    data:
+      command: set_custom_mode
+      params: 104
+    target:
+      entity_id: vacuum.roborock_s7_maxv
+  - service: vacuum.set_fan_speed
+    target:
+      entity_id:
+      - vacuum.roborock_s7_maxv
+    data:
+      fan_speed: '100'
+  - service: roborock.vacuum_clean_segment
+    target:
+      entity_id: vacuum.roborock_s7_maxv
+    data:
+      segments:
+      - 17
+      repeats: 1
+  mode: single
+  icon: phu:roborock
+staubsauger_schlafzimmer_reinigen:
+  alias: '[Staubsauger] Schlafzimmer Reinigen'
+  sequence:
+  - service: vacuum.send_command
+    metadata: {}
+    data:
+      command: set_custom_mode
+      params: 104
+    target:
+      entity_id: vacuum.roborock_s7_maxv
+  - service: vacuum.set_fan_speed
+    target:
+      entity_id:
+      - vacuum.roborock_s7_maxv
+    data:
+      fan_speed: '100'
+  - service: roborock.vacuum_clean_segment
+    target:
+      entity_id: vacuum.roborock_s7_maxv
+    data:
+      segments:
+      - 16
+      repeats: 1
+  mode: single
+  icon: phu:roborock
+staubsauger_badezimmer_reinigen:
+  alias: '[Staubsauger] Badezimmer Reinigen'
+  sequence:
+  - service: vacuum.send_command
+    metadata: {}
+    data:
+      command: set_custom_mode
+      params: 104
+    target:
+      entity_id: vacuum.roborock_s7_maxv
+  - service: vacuum.set_fan_speed
+    target:
+      entity_id:
+      - vacuum.roborock_s7_maxv
+    data:
+      fan_speed: '100'
+  - service: roborock.vacuum_clean_segment
+    target:
+      entity_id: vacuum.roborock_s7_maxv
+    data:
+      segments:
+      - 16
+      repeats: 1
+  mode: single
+  icon: phu:roborock
+staubsauger_kuche_reinigen:
+  alias: '[Staubsauger] Küche Reinigen'
+  sequence:
+  - service: vacuum.send_command
+    metadata: {}
+    data:
+      command: set_custom_mode
+      params: 104
+    target:
+      entity_id: vacuum.roborock_s7_maxv
+  - service: vacuum.set_fan_speed
+    target:
+      entity_id:
+      - vacuum.roborock_s7_maxv
+    data:
+      fan_speed: '100'
+  - service: roborock.vacuum_clean_segment
+    target:
+      entity_id: vacuum.roborock_s7_maxv
+    data:
+      segments:
+      - 19
+      repeats: 1
+  mode: single
+  icon: phu:roborock
+staubsauger_flur_reinigen:
+  alias: '[Staubsauger] Flur Reinigen'
+  sequence:
+  - service: vacuum.send_command
+    metadata: {}
+    data:
+      command: set_custom_mode
+      params: 104
+    target:
+      entity_id: vacuum.roborock_s7_maxv
+  - service: vacuum.set_fan_speed
+    target:
+      entity_id:
+      - vacuum.roborock_s7_maxv
+    data:
+      fan_speed: '100'
+  - service: roborock.vacuum_clean_segment
+    target:
+      entity_id: vacuum.roborock_s7_maxv
+    data:
+      segments:
+      - 18
+      repeats: 1
+  mode: single
+  icon: phu:roborock
+staubsauger_buro_reinigen:
+  alias: '[Staubsauger] Büro Reinigen'
+  sequence:
+  - service: vacuum.send_command
+    metadata: {}
+    data:
+      command: set_custom_mode
+      params: 104
+    target:
+      entity_id: vacuum.roborock_s7_maxv
+  - service: vacuum.set_fan_speed
+    target:
+      entity_id:
+      - vacuum.roborock_s7_maxv
+    data:
+      fan_speed: '100'
+  - service: roborock.vacuum_clean_segment
+    target:
+      entity_id: vacuum.roborock_s7_maxv
+    data:
+      segments:
+      - 20
+      repeats: 1
+  mode: single
+  icon: phu:roborock
+wecker_sound_alexa:
+  alias: Wecker Sound Alexa
+  sequence:
+  - service: input_text.set_value
+    data_template:
+      entity_id: input_text.alexa_actionable_notification
+      value: '{"text": "<audio src=''https://minio.srv.wartner.io/homeassistant/wecker.mp3''/>",
+        "event": "none"}
+
+        '
+  - service: media_player.play_media
+    data_template:
+      entity_id: "{% if alexa_device %}\n  {{ alexa_device }}\n{% else %}\n  media_player.echo_schlafzimmer\n{%
+        endif %}\n"
+      media_content_type: skill
+      media_content_id: amzn1.ask.skill.e4280a53-blahblahblah
+  mode: single
+  icon: mdi:alarm
+esphome_update_all_devices:
+  alias: 'ESPHome: Update All Devices'
+  sequence:
+  - repeat:
+      for_each: '{{ states.update | selectattr(''state'', ''eq'', ''on'') | map(attribute=''entity_id'')
+        | select(''in'', integration_entities(''esphome'')) | list }} '
+      sequence:
+      - service: update.install
+        data: {}
+        target:
+          entity_id: '{{ repeat.item }}'
+      - wait_template: '{{ is_state(repeat.item, ''off'') }}'
+        continue_on_timeout: true
+  mode: single
+  icon: si:esphome
+wled_kinderzimmer_tri_fade:
+  alias: WLED Kinderzimmer Tri Fade
+  sequence:
+  - service: light.turn_on
+    metadata: {}
+    data:
+      profile: Tri Fade
+    target:
+      device_id: f3de76d97bb68ab3da1ce90751eaed74
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - service: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      device_id: f3de76d97bb68ab3da1ce90751eaed74
+  mode: single
+  icon: mdi:led-strip-variant
+appletv_family_guy:
+  alias: 'AppleTV: Family Guy'
+  sequence:
+  - service: media_player.play_media
+    data:
+      media_content_type: url
+      media_content_id: https://www.disneyplus.com/de-de/browse/entity-c3a22862-23b8-496d-97e0-c8e40fe44ec5
+    target:
+      device_id: 67feb204d2fca3cfd31e143defa33fe5
+  mode: single
+  icon: mdi:theater
+appletv_american_dad:
+  alias: 'AppleTV: American Dad'
+  sequence:
+  - service: media_player.play_media
+    data:
+      media_content_type: url
+      media_content_id: https://www.disneyplus.com/de-de/browse/entity-5b4ab988-e3a7-4750-a11a-9aa3d65f8cfe
+    target:
+      device_id: 67feb204d2fca3cfd31e143defa33fe5
+  mode: single
+  icon: mdi:theater
+appletv_simpsons:
+  alias: 'AppleTV: Simpsons'
+  sequence:
+  - service: media_player.play_media
+    data:
+      media_content_type: url
+      media_content_id: https://www.disneyplus.com/de-de/browse/entity-cac75c8f-a9e2-4d95-ac73-1cf1cc7b9568
+    target:
+      device_id: 67feb204d2fca3cfd31e143defa33fe5
+  mode: single
+  icon: mdi:theater
+'1713998512463':
+  alias: Wecker Adaptive
+  sequence:
+  - condition: state
+    entity_id: input_boolean.wecker_an_aus
+    state: 'off'
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.wecker
+    data:
+      time: '{{ now().strftime("%H:%M:%S") }}'
+  - service: input_boolean.turn_on
+    target:
+      entity_id:
+      - input_boolean.wecker_an_aus
+    data: {}
+  - repeat:
+      count: "{{ (states.switch\n    | map(attribute=\"entity_id\")\n    | select(\">\",\"switch.adaptive_lighting_adaptive_lighting_schlafzimmer\")\n
+        \   | select(\"<\", \"switch.adaptive_lighting_adaptive_lighting_schlafzimmer\")\n
+        \   | join(\",\")\n   ).split(\",\") | length }}\n"
+      sequence:
+      - service: adaptive_lighting.change_switch_settings
+        data:
+          entity_id: switch.adaptive_lighting_adaptive_lighting_schlafzimmer
+          sunrise_time: '{{ now().strftime("%H:%M:%S") }}'
+          sunset_time: '{{ (as_timestamp(now()) + 12*60*60) | timestamp_custom("%H:%M:%S")
+            }}
+
+            '
+  - service: script.turn_on
+    data: {}
+    target:
+      entity_id: script.wecker_sound_alexa
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.wecker_an_aus
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.wecker
+    data:
+      time: '{{ now().strftime("%H:%M:%S") }}'
+  mode: queued
+  icon: mdi:weather-sunset
+  max: 10
+zeit_furs_bett:
+  alias: Zeit fürs Bett
+  sequence:
+  - service: notify.alexa_media_echo_schlafzimmer
+    data:
+      message: ''
+  mode: single
+  icon: mdi:bed-clock

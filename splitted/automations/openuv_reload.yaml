@@ -1,0 +1,19 @@
+action:
+- data: {}
+  service: homeassistant.update_entity
+  target:
+    entity_id:
+    - binary_sensor.openuv_schutzfenster
+    - sensor.openuv_aktueller_uv_index
+    - sensor.openuv_aktueller_uv_wert
+alias: 'OpenUV: Reload'
+condition:
+- after: sunrise
+  before: sunset
+  condition: sun
+description: ''
+id: '1716151253982'
+mode: single
+trigger:
+- hours: /12
+  platform: time_pattern

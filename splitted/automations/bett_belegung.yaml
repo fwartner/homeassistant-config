@@ -1,0 +1,96 @@
+action:
+- choose:
+  - alias: Bett Rechts An
+    conditions:
+    - condition: trigger
+      id:
+      - bettRechtsAn
+    sequence:
+    - data: {}
+      service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.bett_rechts
+  - alias: Bett Links An
+    conditions:
+    - condition: trigger
+      id:
+      - bettLinksAn
+    sequence:
+    - data: {}
+      service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.bett_links
+  - alias: Bett Rechts Aus
+    conditions:
+    - condition: trigger
+      id:
+      - bettRechtsAus
+    sequence:
+    - data: {}
+      service: input_boolean.turn_off
+      target:
+        area_id: []
+        device_id: []
+        entity_id: input_boolean.bett_rechts
+  - alias: Bett Links Aus
+    conditions:
+    - condition: trigger
+      id:
+      - bettLinksAus
+    sequence:
+    - data: {}
+      service: input_boolean.turn_off
+      target:
+        area_id: []
+        device_id: []
+        entity_id: input_boolean.bett_links
+alias: Bett Belegung
+condition: []
+description: ''
+id: '1702645776967'
+mode: single
+trigger:
+- alias: Bett Rechts An
+  entity_id:
+  - binary_sensor.bett_sensor_bett_rechts
+  for:
+    hours: 0
+    minutes: 1
+    seconds: 0
+  from: 'off'
+  id: bettRechtsAn
+  platform: state
+  to: 'on'
+- alias: Bett Links An
+  entity_id:
+  - binary_sensor.bett_sensor_bett_links
+  for:
+    hours: 0
+    minutes: 1
+    seconds: 0
+  from: 'off'
+  id: bettLinksAn
+  platform: state
+  to: 'on'
+- alias: Bett Rechts Aus
+  entity_id:
+  - binary_sensor.bett_sensor_bett_rechts
+  for:
+    hours: 0
+    minutes: 1
+    seconds: 0
+  from: 'on'
+  id: bettRechtsAus
+  platform: state
+  to: 'off'
+- alias: Bett Links Aus
+  entity_id:
+  - binary_sensor.bett_sensor_bett_links
+  for:
+    hours: 0
+    minutes: 1
+    seconds: 0
+  from: 'on'
+  id: bettLinksAus
+  platform: state
+  to: 'off'

@@ -1,0 +1,16 @@
+action:
+- data:
+    payload: '{"icon": "instagram", "text": "{{ states(''sensor.instagram_api'')}}
+      Follower", "duration": 5 }'
+    qos: '0'
+    retain: false
+    topic: awtrix_wohnzimmer/custom/instagramfollower
+  metadata: {}
+  service: mqtt.publish
+alias: 'AWTRIX: Wohnzimmer Instagram Follower'
+description: ''
+id: '1715336573998'
+mode: single
+trigger:
+- minutes: /5
+  platform: time_pattern

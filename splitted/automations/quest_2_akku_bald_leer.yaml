@@ -1,0 +1,20 @@
+action:
+- data:
+    message: "Es sieht so aus, als w\xE4re der Akku deiner Quest 2 bald leer. Lad\
+      \ sie doch mal auf."
+    title: "\U0001FAAB Deine Quest 2 ist bald leer"
+  metadata: {}
+  service: notify.mobile_app_iphone_von_florian
+alias: 'Quest 2: Akku bald leer'
+condition:
+- below: 15
+  condition: numeric_state
+  entity_id: sensor.quest_2_battery_level
+description: ''
+id: '1713893524835'
+mode: single
+trigger:
+- below: 15
+  entity_id:
+  - sensor.quest_2_battery_level
+  platform: numeric_state

@@ -1,0 +1,5 @@
+notify:
+  - platform: group
+    name: all_iphones
+    services:
+      - service: notify.mobile_app_iphone_von_florian

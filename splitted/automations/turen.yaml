@@ -1,0 +1,72 @@
+action:
+- choose:
+  - alias: Notification
+    conditions:
+    - condition: and
+      conditions:
+      - condition: trigger
+        id:
+        - zoneHomeOn
+        - nukiRingOn
+      - above: 0.05
+        condition: numeric_state
+        entity_id: sensor.historystats_florian_away_minutes
+    sequence:
+    - data:
+        data:
+          actions:
+          - action: UNLOCK_HOUSE
+            icon: sfsymbols:lock.open.fill
+            title: "Haust\xFCr \xF6ffnen"
+          - action: UNLOCK_APARTMENT
+            icon: sfsymbols:lock.open.fill
+            title: "Wohnungst\xFCr \xF6ffnen"
+        message: "M\xF6chtest du die T\xFCr \xF6ffnen?"
+        title: "\U0001F510 T\xFCren \xF6ffnen"
+      service: notify.mobile_app_iphone_von_florian
+  - alias: "Haust\xFCr \xD6ffnen"
+    conditions:
+    - condition: trigger
+      id:
+      - unlockHouse
+    sequence:
+    - data: {}
+      service: lock.open
+      target:
+        entity_id: lock.nuki_haustur_lock
+  - alias: "Wohnungst\xFCr \xD6ffnen"
+    conditions:
+    - condition: trigger
+      id:
+      - unlockApartment
+    sequence:
+    - data: {}
+      service: lock.open
+      target:
+        entity_id: lock.nuki_wohnungstur_lock
+alias: "T\xFCren"
+condition: []
+description: ''
+id: '1702827571661'
+mode: single
+trigger:
+- entity_id: person.florian_wartner
+  event: enter
+  id: zoneHomeOn
+  platform: zone
+  zone: zone.home
+- entity_id:
+  - binary_sensor.nuki_haustur_ring_action
+  id: nukiRingOn
+  platform: state
+  to: 'on'
+- event_data:
+    action: UNLOCK_HOUSE
+  event_type: mobile_app_notification_action
+  id: unlockHouse
+  platform: event
+- event_data:
+    action: UNLOCK_APARTMENT
+  event_type: mobile_app_notification_action
+  id: unlockApartment
+  platform: event

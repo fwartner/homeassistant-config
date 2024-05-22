@@ -1,0 +1,116 @@
+- resource: "https://umami-tosc08s.srv.wartner.io/api/websites/3d084592-54d1-4670-b0ba-6835ddd04914/stats"
+  headers:
+    Authorization: !secret umami_token
+  scan_interval: 30
+  params:
+    startAt: "{{ as_timestamp(states('input_datetime.umami_startat')) | int * 1000 }}"
+    endAt: "{{ (now().timestamp() | int * 1000 ) }}"
+  sensor:
+    - name: "Umami Aufrufe Dynamisch"
+      unique_id: umami_aufrufe_dynamisch
+      icon: mdi:eye
+      unit_of_measurement: "Aufrufe"
+      json_attributes_path: "$.pageviews"
+      value_template: "{{ value_json.pageviews.value }}"
+      json_attributes:
+        - "value"
+        - "change"
+    - name: "Umami Besucher Dynamisch"
+      unique_id: umami_besucher_dynamisch
+      icon: mdi:account-multiple
+      unit_of_measurement: "Besucher"
+      state_class: total_increasing
+      json_attributes_path: "$.visitors"
+      value_template: "{{ value_json.visitors.value }}"
+      json_attributes:
+        - "value"
+        - "change"
+    - name: "Umami Besuche Dynamisch"
+      unique_id: umami_besuche_dynamisch
+      icon: mdi:account-multiple-outline
+      unit_of_measurement: "Besuche"
+      state_class: total_increasing
+      json_attributes_path: "$.visits"
+      value_template: "{{ value_json.visits.value }}"
+      json_attributes:
+        - "value"
+        - "change"
+    - name: "Umami Absprünge Dynamisch"
+      unique_id: umami_absprunge_dynamisch
+      icon: mdi:debug-step-over
+      unit_of_measurement: "Absprünge"
+      state_class: total_increasing
+      json_attributes_path: "$.bounces"
+      value_template: "{{ value_json.bounces.value }}"
+      json_attributes:
+        - "value"
+        - "change"
+    - name: "Umami Gesamte Zeit Dynamisch"
+      unique_id: umami_gesamte_zeit_dynamisch
+      icon: mdi:clock-time-eight
+      unit_of_measurement: "Sekunden"
+      state_class: total_increasing
+      json_attributes_path: "$.totaltime"
+      value_template: "{{ value_json.totaltime.value }}"
+      json_attributes:
+        - "value"
+        - "change"
+
+- resource: "https://umami-tosc08s.srv.wartner.io/api/websites/3d084592-54d1-4670-b0ba-6835ddd04914/stats"
+  headers:
+    Authorization: !secret umami_token
+  scan_interval: 30
+  params:
+    startAt: "{{ (now() - timedelta(hours=24) ).timestamp() | int * 1000 }}"
+    endAt: "{{ (now().timestamp() | int * 1000 ) }}"
+  sensor:
+    - name: "Umami Aufrufe 24 Stunden"
+      unique_id: umami_aufrufe_24_stunden
+      icon: mdi:eye
+      unit_of_measurement: "Aufrufe"
+      state_class: total_increasing
+      json_attributes_path: "$.pageviews"
+      value_template: "{{ value_json.pageviews.value }}"
+      json_attributes:
+        - "value"
+        - "change"
+    - name: "Umami Besucher 24 Stunden"
+      unique_id: umami_besucher_24_stunden
+      icon: mdi:account-multiple
+      unit_of_measurement: "Besucher"
+      state_class: total_increasing
+      json_attributes_path: "$.visitors"
+      value_template: "{{ value_json.visitors.value }}"
+      json_attributes:
+        - "value"
+        - "change"
+    - name: "Umami Besuche 24 Stunden"
+      unique_id: umami_besuche_24_stunden
+      icon: mdi:account-multiple-outline
+      unit_of_measurement: "Besuche"
+      state_class: total_increasing
+      json_attributes_path: "$.visits"
+      value_template: "{{ value_json.visits.value }}"
+      json_attributes:
+        - "value"
+        - "change"
+    - name: "Umami Absprünge 24 Stunden"
+      unique_id: umami_absprunge_24_stunden
+      icon: mdi:debug-step-over
+      unit_of_measurement: "Absprünge"
+      state_class: total_increasing
+      json_attributes_path: "$.bounces"
+      value_template: "{{ value_json.bounces.value }}"
+      json_attributes:
+        - "value"
+        - "change"
+    - name: "Umami Gesamte Zeit 24 Stunden"
+      unique_id: umami_gesamte_zeit_24_stunden
+      icon: mdi:clock-time-eight
+      unit_of_measurement: "Sekunden"
+      state_class: total_increasing
+      json_attributes_path: "$.totaltime"
+      value_template: "{{ value_json.totaltime.value }}"
+      json_attributes:
+        - "value"
+        - "change"

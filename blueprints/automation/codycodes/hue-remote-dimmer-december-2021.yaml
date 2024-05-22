@@ -1,0 +1,159 @@
+blueprint:
+  name: Hue Dimmer Remote
+  description: '(Dec 2021 Update) Using a Hue bridge with which a dimmer remote is
+    paired,  allows you to configure actions based on said Hue Dimmer Remote
+
+    NOTE: tested with RWL020 and RWL022, but community says it also works with RWL021!
+
+    '
+  domain: automation
+  source_url: https://gist.github.com/codycodes/f051781c35cfdfee15162ff680c9cbd8
+  input:
+    dimmer_device:
+      name: Dimmer Remote Device
+      description: Your Hue dimmer remote (e.g. RWL020); check Hue integration and/or
+        Hue app if you don't know the name
+      selector:
+        device:
+          integration: hue
+          multiple: false
+    on_short_action:
+      name: On Short Press Action
+      description: Action to perform after pressing ON shortly
+      default: []
+      selector:
+        action: {}
+    on_long_action:
+      name: On Long Press Action
+      description: Action to perform after pressing ON for a long period
+      default: []
+      selector:
+        action: {}
+    brightness_up_short_action:
+      name: Brightness Up Short Press Action
+      description: Action to perform after pressing brightness up shortly
+      default: []
+      selector:
+        action: {}
+    brightness_up_long_action:
+      name: Brightness Up Long Press Action
+      description: Action to perform after pressing brightness up for a long period
+      default: []
+      selector:
+        action: {}
+    brightness_down_short_action:
+      name: Brightness Down Short Press Action
+      description: Action to perform after pressing brightness down shortly
+      default: []
+      selector:
+        action: {}
+    brightness_down_long_action:
+      name: Brightness Down Long Press Action
+      description: Action to perform after pressing brightness down for a long period
+      default: []
+      selector:
+        action: {}
+    off_short_action:
+      name: Off Short Press Action
+      description: Action to perform after pressing OFF shortly
+      default: []
+      selector:
+        action: {}
+    off_long_action:
+      name: Off Long Press Action
+      description: Action to perform after pressing OFF for a long period
+      default: []
+      selector:
+        action: {}
+mode: single
+trigger:
+- device_id: !input dimmer_device
+  domain: hue
+  platform: device
+  type: short_release
+  subtype: 1
+  id: on short
+- device_id: !input dimmer_device
+  domain: hue
+  platform: device
+  type: long_release
+  subtype: 1
+  id: on long
+- device_id: !input dimmer_device
+  domain: hue
+  platform: device
+  type: short_release
+  subtype: 2
+  id: brightness up short
+- device_id: !input dimmer_device
+  domain: hue
+  platform: device
+  type: long_release
+  subtype: 2
+  id: brightness up long
+- device_id: !input dimmer_device
+  domain: hue
+  platform: device
+  type: short_release
+  subtype: 3
+  id: brightness down short
+- device_id: !input dimmer_device
+  domain: hue
+  platform: device
+  type: long_release
+  subtype: 3
+  id: brightness down long
+- device_id: !input dimmer_device
+  domain: hue
+  platform: device
+  type: short_release
+  subtype: 4
+  id: off short
+- device_id: !input dimmer_device
+  domain: hue
+  platform: device
+  type: long_release
+  subtype: 4
+  id: off long
+condition: []
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id: on short
+    sequence: !input on_short_action
+  - conditions:
+    - condition: trigger
+      id: on long
+    sequence: !input on_long_action
+  - conditions:
+    - condition: trigger
+      id: brightness up short
+    sequence: !input brightness_up_short_action
+  - conditions:
+    - condition: trigger
+      id: brightness up long
+    sequence: !input brightness_up_long_action
+  - conditions:
+    - condition: trigger
+      id: brightness down short
+    sequence: !input brightness_down_short_action
+  - conditions:
+    - condition: trigger
+      id: brightness down long
+    sequence: !input brightness_down_long_action
+  - conditions:
+    - condition: trigger
+      id: off short
+    sequence: !input off_short_action
+  - conditions:
+    - condition: trigger
+      id: off long
+    sequence: !input off_long_action
+  default:
+  - service: persistent_notification.create
+    data:
+      message: Hue dimmer ran default event from "choose" action on button press!
+        Please check any automations which may not be handling this event!
+      notification_id: hue_dimmer_blueprint
+      title: Uncaught Dimmer Command

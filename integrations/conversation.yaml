@@ -1,0 +1,16 @@
+conversation:
+  intents:
+    GetWohnzimmerTemperature:
+      - "wie warm ist es im wohnzimmer"
+    GetSchlafzimmerTemperature:
+      - "wie warm ist es im schlafzimmer"
+    GetKinderzimmerTemperature:
+      - "wie warm ist es im kinderzimmer"
+    GetKuecheTemperature:
+      - "wie warm ist es in der küche"
+    GetFlurTemperatureemperature:
+      - "wie warm ist es im flur"
+    GetBadezimmerTemperature:
+      - "wie warm ist es im badezimmer"
+    GetBalkonTemperature:
+      - "wie warm ist es auf dem balkon"

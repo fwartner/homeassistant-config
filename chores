@@ -1,0 +1,8 @@
+#!/bin/bash
+
+python3 /root/homeassistant/bin/split_automations.py
+python3 /root/homeassistant/bin/split_scripts.py
+python3 /root/homeassistant/bin/split_scenes.py
+
+sh /root/homeassistant/bin/make_fake_secrets.sh
+sh /root/homeassistant/bin/ha_gitpush.sh

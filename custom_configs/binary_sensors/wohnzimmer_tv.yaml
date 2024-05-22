@@ -1,0 +1,25 @@
+- platform: bayesian
+  name: TV im Wohnzimmer
+  prior: 0
+  probability_threshold: 0.6
+  observations:
+    - platform: state
+      prob_given_true: 0.2
+      prob_given_false: 0
+      to_state: on
+      entity_id: switch.steckdose_tv_bank_wohnzimmer
+    - platform: state
+      prob_given_true: 0.2
+      prob_given_false: 0
+      to_state: on
+      entity_id: light.wohnzimmer
+    - platform: state
+      prob_given_true: 0.2
+      prob_given_false: 0
+      to_state: playing
+      entity_id: media_player.apple_tv_wohnzimmer
+    - platform: state
+      prob_given_true: 0.2
+      prob_given_false: 0
+      to_state: playing
+      entity_id: media_player.sonos_ray

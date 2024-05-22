@@ -1,0 +1,24 @@
+energy_import_daily:
+  source: sensor.energy_import_sum
+  name: Energy Import Daily
+  cycle: daily
+energy_import_monthly:
+  source: sensor.energy_import_sum
+  name: Energy Import Monthly
+  cycle: monthly
+energy_export_daily:
+  source: sensor.energy_export_sum
+  name: Energy Export Daily
+  cycle: daily
+energy_export_monthly:
+  source: sensor.energy_export_sum
+  name: Energy Export Monthly
+  cycle: monthly
+energy_consumption_daily:
+  source: sensor.energy_consumption_sum
+  name: Energy Consumption Daily
+  cycle: daily
+energy_consumption_monthly:
+  source: sensor.energy_consumption_sum
+  name: Energy Consumption Monthly
+  cycle: monthly

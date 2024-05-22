@@ -1,0 +1,7 @@
+- platform: history_stats
+  name: historystats_florian_away
+  entity_id: person.florian
+  state: "not_home"
+  type: time
+  start: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  end: "{{ now() }}"

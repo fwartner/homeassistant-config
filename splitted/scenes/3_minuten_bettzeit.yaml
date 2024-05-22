@@ -1,0 +1,14 @@
+- entities:
+    script.3_minuten_bettzeit:
+      current: 0
+      friendly_name: 3 Minuten Bettzeit
+      icon: mdi:bed-clock
+      last_triggered: '2023-09-04T08:21:32.786654+00:00'
+      mode: single
+      state: 'off'
+  icon: mdi:bed
+  id: '1693826667643'
+  metadata:
+    script.3_minuten_bettzeit:
+      entity_only: true
+  name: 3 Minuten Bettzeit

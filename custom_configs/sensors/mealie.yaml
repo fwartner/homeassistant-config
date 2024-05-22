@@ -1,0 +1,19 @@
+- platform: rest
+  resource: "https://mealie.wartner.cloud/api/groups/mealplans/today"
+  method: GET
+  name: Mealie Heutiges Gericht
+  headers:
+    Authorization: !secret mealie_token
+  value_template: "{{ value_json[0].recipe.name }}"
+  force_update: true
+  scan_interval: 30
+
+- platform: rest
+  resource: "https://mealie.wartner.cloud/api/groups/mealplans/today"
+  method: GET
+  name: Mealie Heutiges Gericht ID
+  headers:
+    Authorization: !secret mealie_token
+  value_template: "{{ value_json[0].recipe.id }}"
+  force_update: true
+  scan_interval: 30

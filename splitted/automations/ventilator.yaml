@@ -1,0 +1,54 @@
+action:
+- choose:
+  - conditions:
+    - condition: and
+      conditions:
+      - condition: trigger
+        id:
+        - fanOn
+      - after: 07:00:00
+        before: '22:00:00'
+        condition: time
+        enabled: false
+        weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+        - sat
+        - sun
+    sequence:
+    - data:
+        percentage: 60
+      service: fan.turn_on
+      target:
+        entity_id: fan.ventilator_wohnzimmer
+  - conditions:
+    - condition: trigger
+      id:
+      - fanOff
+    sequence:
+    - data: {}
+      service: fan.turn_off
+      target:
+        entity_id: fan.ventilator_wohnzimmer
+alias: Ventilator
+condition:
+- condition: state
+  entity_id: input_boolean.ventilator
+  state: 'on'
+description: "An: Wenn \xFCber 26 Grad\nAus: Wenn unter 24 Grad"
+id: '1686557247104'
+mode: single
+trigger:
+- above: 25
+  entity_id:
+  - sensor.wohnzimmer_temperature
+  id: fanOn
+  platform: numeric_state
+- below: 23
+  entity_id:
+  - sensor.wohnzimmer_temperature
+  id: fanOff
+  platform: numeric_state

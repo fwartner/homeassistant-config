@@ -1,0 +1,109 @@
+blueprint:
+  name: Heating Control
+  description: Control your heating with options for person home, if temp is below
+    a specific value, set temp, and heating between specific times.
+  domain: automation
+  input:
+    heating:
+      name: Climate Device
+      description: The climate device to use.
+      selector:
+        entity:
+          domain: climate
+          multiple: false
+    temp_sensor:
+      name: Temperature Sensor
+      description: Temperature Sensor to check.
+      selector:
+        entity:
+          domain: sensor
+          device_class: temperature
+          multiple: false
+    person1:
+      name: Person 1
+      description: The first person that has to be home.
+      default: []
+      selector:
+        entity:
+          domain: person
+          multiple: false
+    person2:
+      name: Person 2
+      description: The second person that has to be home.
+      default: []
+      selector:
+        entity:
+          domain: person
+          multiple: false
+    min_temp:
+      name: Minimum Temp
+      description: If temperature is below this value and someone is home, It turns
+        heating on.
+      default: 15
+      selector:
+        number:
+          min: 15.0
+          max: 25.0
+          step: 1.0
+          mode: slider
+    set_temp:
+      name: Temperature Target
+      description: If the heating turns on, It heats to this target temperature.
+      default: 20
+      selector:
+        number:
+          min: 15.0
+          max: 25.0
+          step: 1.0
+          mode: slider
+    time_after:
+      name: Time After
+      description: After this time the heating turns on, so it's warm in the morning
+      default: 07:30:00
+      selector:
+        time: {}
+    time_before:
+      name: Time Before
+      description: After this time the heating turns off, This to prevent the heating
+        is on in the middle of the night
+      default: '21:30:00'
+      selector:
+        time: {}
+  source_url: https://gist.github.com/r3mcos3/5908a49fac1ea2e5332ae13ad2cd6fb3
+variables:
+  set_temp: !input set_temp
+trigger:
+- platform: homeassistant
+  event: start
+- platform: event
+  event_type: automation_reloaded
+- platform: time_pattern
+  minutes: /10
+action:
+- choose:
+  - conditions:
+    - condition: numeric_state
+      entity_id: !input temp_sensor
+      below: !input min_temp
+    - condition: time
+      before: !input time_before
+      after: !input time_after
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: !input person1
+        state: home
+      - condition: state
+        entity_id: !input person2
+        state: home
+    sequence:
+    - service: climate.set_temperature
+      data:
+        entity_id: !input heating
+        hvac_mode: heat
+        temperature: '{{ set_temp }}'
+  default:
+  - service: climate.turn_off
+    data:
+      entity_id: !input heating
+mode: single

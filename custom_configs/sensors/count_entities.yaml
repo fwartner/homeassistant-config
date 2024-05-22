@@ -1,0 +1,49 @@
+- platform: template
+  sensors:
+    count_automations:
+      icon_template: mdi:autorenew
+      value_template: "{{ states.automation | count }}"
+
+    count_scripts:
+      icon_template: mdi:script-text-outline
+      value_template: "{{ states.script| count }}"
+
+    count_device_trackers:
+      icon_template: mdi:map-marker
+      value_template: "{{ states.device_tracker | count }}"
+
+    count_binary_sensors:
+      icon_template: mdi:unfold-more-horizontal
+      value_template: "{{ states.binary_sensor| count }}"
+
+    count_sensors:
+      icon_template: mdi:resistor
+      value_template: "{{ states.sensor | count }}"
+
+    count_switches:
+      icon_template: mdi:light-switch
+      value_template: "{{ states.switch | count }}"
+
+    count_zones:
+      icon_template: mdi:map-marker-radius
+      value_template: "{{ states.zone | count }}"
+
+    count_input_booleans:
+      icon_template: mdi:toggle-switch
+      value_template: "{{ states.input_boolean | count }}"
+
+    count_input_numbers:
+      icon_template: mdi:numeric
+      value_template: "{{ states.input_number | count }}"
+
+    count_input_texts:
+      icon_template: mdi:alphabetical
+      value_template: "{{ states.input_text | count }}"
+
+    count_input_selects:
+      icon_template: mdi:view-list
+      value_template: "{{ states.input_select | count }}"
+
+    count_input_datetimes:
+      icon_template: mdi:calendar-clock
+      value_template: "{{ states.input_datetime | count }}"

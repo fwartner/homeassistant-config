@@ -1,0 +1,8 @@
+- sensor:
+    - name: Last Alexa
+      state: |-
+        {{ expand(integration_entities('alexa_media') | select('search', 'media_player'))
+        | selectattr('attributes.last_called', 'eq', True) | map(attribute='entity_id') | first }}
+      availability: |-
+        {{ expand(integration_entities('alexa_media') | select('search', 'media_player'))
+        | selectattr('attributes.last_called','eq',True) | first is defined }}

@@ -1,0 +1,30 @@
+action:
+- choose:
+  - conditions:
+    - condition: and
+      conditions:
+      - condition: trigger
+        id:
+        - luebeckWarningOn1
+      - condition: zone
+        entity_id: person.florian_wartner
+        zone: zone.home
+    sequence:
+    - data:
+        message: '"Es gibt eine Warnung!" {{  state_attr(''binary_sensor.warning_lubeck_hansestadt_1'',
+          ''description'') }} {{  state_attr(''binary_sensor.warning_lubeck_hansestadt_1'',
+          ''recommended_actions'') }}'
+        title: '{{  state_attr(''binary_sensor.warning_lubeck_hansestadt_1'', ''headline'')
+          }}'
+      service: notify.alexa_media_echo_show_wohnzimmer
+alias: Nina Alarm
+condition: []
+description: ''
+id: '1697834117670'
+mode: single
+trigger:
+- entity_id:
+  - binary_sensor.warning_lubeck_hansestadt_1
+  id: luebeckWarningOn1
+  platform: state
+  to: 'on'

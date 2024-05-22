@@ -1,0 +1,67 @@
+influxdb:
+  api_version: 2
+  ssl: false
+  host: 10.182.1.78
+  port: 8086
+  organization: 5022c850ba9cc536
+  bucket: homeassistant
+  token: !secret influxdb_token
+  default_measurement: state
+  tags:
+    source: HA
+  tags_attributes:
+    - friendly_name
+  ignore_attributes:
+    - icon
+  include:
+    domains:
+      - alarm_control_panel
+      - light
+      - person
+      - zone
+      - automation
+      - fan
+      - cover
+      - script
+      - update
+      - switch
+      - sensor
+      - binary_sensor
+      - climate
+    entities:
+      - sensor.stromverbrauch_aktuell
+      - person.florian_wartner
+      - weather.openweathermap
+    entity_globs:
+      - sensor.aqara_thermo_*_temperature
+      - sensor.aqara_thermo_*_pressure
+      - sensor.aqara_thermo_*_humidity
+      - sensor.shelly_em3_channel_*_power
+      - sensor.shelly_em3_channel_*_current
+      - sensor.shelly_em3_channel_*_energy
+      - sensor.steckdose_*_energy
+      - binary_sensor.*_occupancy
+      - sensor.system_monitor_*
+      - sensor.*_zigbee
+      - sensor.battery_status_*
+      - sensor.*_battery
+      - sensor.temperature_*
+      - sensor.*_temperature
+      - sensor.humidity_*
+      - sensor.*_humidity
+      - sensor.illumination_*
+      - sensor.*_illuminance
+      - sensor.*_power
+      - sensor.*_watt
+      - sensor.*_energy
+      - sensor.*_ampere
+      - sensor.*_consumption
+      - sensor.*_todays_usage
+      - sensor.*_voltage
+      - sensor.*_volt
+      - sensor.ha_vm_diskio_sda_*
+      - sensor.ha_vm_disk_sda_*
+      - sensor.*_weight
+      - sensor.co2_in_*
+      - sensor.pm25_in_*
+      - sensor.pm10_in_*

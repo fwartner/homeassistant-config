@@ -1,0 +1,55 @@
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - tooHotBalconyOn
+    sequence:
+    - data: {}
+      service: cover.close_cover
+      target:
+        entity_id:
+        - cover.rollos_schlafzimmer
+        - cover.rollos_wohnzimmer_fensterbank
+  - conditions:
+    - condition: trigger
+      id:
+      - tooHotBalconyOff
+    sequence:
+    - data: {}
+      service: input_boolean.turn_off
+      target:
+        entity_id:
+        - input_boolean.zu_warm
+    - data: {}
+      service: cover.open_cover
+      target:
+        entity_id:
+        - cover.rollos_schlafzimmer
+        - cover.rollos_wohnzimmer_fensterbank
+alias: Rollos runter wenn 26 Grad auf Balkon
+condition:
+- before: '21:00:00'
+  condition: time
+  weekday:
+  - mon
+  - tue
+  - wed
+  - thu
+  - fri
+  - sat
+  - sun
+description: ''
+id: '1686661353814'
+mode: single
+trigger:
+- above: 26
+  entity_id:
+  - sensor.balkon_temperature
+  id: tooHotBalconyOn
+  platform: numeric_state
+- below: 23
+  entity_id:
+  - sensor.balkon_temperature
+  id: tooHotBalconyOff
+  platform: numeric_state

@@ -1,0 +1,5 @@
+- platform: derivative
+  source: sensor.luftfeuchtigkeit_badezimmer
+  name: Feuchtigkeits-Badezimmer-Derivat
+  unit_time: min
+  time_window: "00:10:00"

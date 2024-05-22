@@ -1,0 +1,53 @@
+action:
+- data: {}
+  enabled: true
+  service: counter.reset
+  target:
+    entity_id:
+    - counter.katzenklo_counter
+- if:
+  - after: 06:00:00
+    before: '20:00:00'
+    condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+    - sun
+  then:
+  - data:
+      command: set_custom_mode
+      params: 104
+    metadata: {}
+    service: vacuum.send_command
+    target:
+      entity_id: vacuum.roborock_s7_maxv
+  - data:
+      fan_speed: '100'
+    service: vacuum.set_fan_speed
+    target:
+      entity_id:
+      - vacuum.roborock_s7_maxv
+  - data:
+      repeats: 1
+      segments:
+      - 20
+    service: roborock.vacuum_clean_segment
+    target:
+      entity_id: vacuum.roborock_s7_maxv
+alias: Katzenklo Counter Reset
+condition:
+- condition: state
+  entity_id: input_boolean.staubsauger_reinigung_erlaubt
+  state: 'on'
+description: ''
+id: '1710933790796'
+mode: single
+trigger:
+- entity_id:
+  - counter.katzenklo_counter
+  platform: state
+  to: '11'

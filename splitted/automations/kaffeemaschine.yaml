@@ -1,0 +1,35 @@
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - kaffeemaschineOn
+    sequence:
+    - device_id: 7641a6d433b2e26a0c7d94ad413df030
+      domain: switch
+      entity_id: ea900cc1cb4a987a44c517bbb1816c5c
+      type: turn_on
+  - conditions:
+    - condition: trigger
+      id:
+      - kaffeemaschineOff
+    sequence:
+    - device_id: 7641a6d433b2e26a0c7d94ad413df030
+      domain: switch
+      entity_id: ea900cc1cb4a987a44c517bbb1816c5c
+      type: turn_off
+alias: Kaffeemaschine
+condition:
+- condition: state
+  entity_id: sensor.people_home
+  state: '1'
+description: "F\xFC vier Stunden"
+id: '1674670778068'
+mode: single
+trigger:
+- at: 07:30:00
+  id: kaffeemaschineOn
+  platform: time
+- at: '11:30:00'
+  id: kaffeemaschineOff
+  platform: time

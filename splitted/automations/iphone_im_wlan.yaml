@@ -1,0 +1,18 @@
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - iphoneWLANOn
+    sequence: []
+alias: iPhone im WLAN
+condition: []
+description: ''
+id: '1692135326497'
+mode: single
+trigger:
+- entity_id:
+  - sensor.florians_iphone_ssid
+  id: iphoneWLANOn
+  platform: state
+  to: Florians Homebase

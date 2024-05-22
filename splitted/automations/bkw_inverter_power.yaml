@@ -1,0 +1,32 @@
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - bkwInverterOff
+    sequence:
+    - device_id: 25e8395680cf11660d43d6d06ecb2d14
+      domain: switch
+      entity_id: c2b543703b09163eb220f8b8a0eb4830
+      type: turn_off
+  - conditions:
+    - condition: trigger
+      id:
+      - bkwInverterOn
+    sequence:
+    - device_id: 25e8395680cf11660d43d6d06ecb2d14
+      domain: switch
+      entity_id: c2b543703b09163eb220f8b8a0eb4830
+      type: turn_on
+alias: 'BKW: Inverter Power'
+condition: []
+description: ''
+id: '1711970118796'
+mode: single
+trigger:
+- at: sensor.sun_next_setting
+  id: bkwInverterOff
+  platform: time
+- at: sensor.sun_next_rising
+  id: bkwInverterOn
+  platform: time

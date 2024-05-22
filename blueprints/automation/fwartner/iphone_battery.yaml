@@ -1,0 +1,134 @@
+blueprint:
+  name: Awtrix Phone Battery Notification
+  description: Phone Charging indicator on Awtrix Display.
+  domain: automation
+  author: Sevag
+  input:
+    awtrix_light:
+      name: Awtrix Display
+      description: Select the target Awtrix display.
+      selector:
+        device:
+          model: "AWTRIX Light"
+    mobile_battery:
+      name: Phone or device
+      description: select your Phone Battery.
+      selector:
+        entity:
+          filter:
+            - integration: mobile_app
+              device_class:
+                - battery
+                - state
+          multiple: false
+    toggle_on:
+      name: Toggle on
+      description: Select the Toggle Helper that will toggle the automation on or off.
+      selector:
+        entity:
+          domain: input_boolean
+    message_text:
+      name: Notification Text
+      description: Enter the notification text.
+      default: "My Phone Battery is"
+    icon_in:
+      name: Icon
+      description: Enter the Icon Name or ID of the icon.
+      selector:
+        text:
+      default: ""
+    push_icon:
+      name: Push Icon
+      description: Icon behavior
+      selector:
+        select:
+          options:
+            - label: "Icon doesn't move"
+              value: "0"
+            - label: "Icon moves with text and will not appear again"
+              value: "1"
+            - label: "Icon moves with text but appears again when the text starts"
+              value: "2"
+          mode: dropdown
+      default: "2"
+    duration:
+      name: Duration (in seconds)
+      description: Sets how long the app should be displayed unit is seconds.
+      default: "10"
+    text_case:
+      name: Text Case
+      description: Select how you would like your text to display.
+      selector:
+        select:
+          options:
+            - label: "Use global setting"
+              value: "0"
+            - label: "Force Uppercase"
+              value: "1"
+            - label: "Show as you entered it"
+              value: "2"
+          mode: dropdown
+      default: "2"
+    background_color:
+      name: Background Color
+      description: Select the Background color
+      selector:
+        color_rgb:
+      default: [0, 0, 0]
+    text_color:
+      name: Text Color
+      description: Select the Text color.
+      selector:
+        color_rgb:
+      default: [255, 255, 255]
+    show_rainbow:
+      name: Rainbow Colors
+      description: Should the notification be shown in Rainbow colors?
+      selector:
+        boolean:
+      default: false
+
+mode: queued
+
+trigger:
+  - platform: time_pattern
+    seconds: /10
+
+variables:
+  device_id: !input awtrix_light
+  awtrix_light: "{{ iif( device_attr(device_id, 'name_by_user') != none, device_attr(device_id, 'name_by_user'), device_attr(device_id, 'name') ) }}"
+  my_sensor: !input mobile_battery
+  message_text: !input message_text
+  all_text: >
+    {{ message_text }}{{ ' ' }}{{states(my_sensor, "state" , "unit_of_measurement" )}}
+  duration_on: !input duration
+  show_rainbow: !input show_rainbow
+  push_icon: !input push_icon
+  icon_in: !input icon_in
+  background_color: !input background_color
+  text_color: !input text_color
+  text_case: !input text_case
+  toggle_con: !input toggle_on
+
+condition:
+  - condition: state
+    entity_id: !input toggle_on
+    state: "on"
+
+action:
+  service: mqtt.publish
+  data:
+    qos: 0
+    retain: false
+    topic: "{{awtrix_light}}/notify"
+    payload: |-
+      {   
+        "text": "{{ all_text }}",
+        "icon": "{{ icon_in }}",
+        "background": {{ background_color }},
+        "color": {{ text_color }},
+        "textCase": {{ text_case }},
+        "pushIcon": {{ push_icon }},
+        "rainbow": {{ iif(show_rainbow, "true", "false") }},
+        "duration": {{ duration_on }}
+      }

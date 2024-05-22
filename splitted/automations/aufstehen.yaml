@@ -1,0 +1,20 @@
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - timeOn
+    sequence:
+    - data: {}
+      service: switch.turn_on
+      target:
+        entity_id: switch.dashboard_bildschirm
+alias: Aufstehen
+condition: []
+description: ''
+id: '1692310400644'
+mode: single
+trigger:
+- at: 07:30:00
+  id: timeOn
+  platform: time

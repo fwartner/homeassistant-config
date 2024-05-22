@@ -1,0 +1,3 @@
+- platform: meteoalarm
+  country: "germany"
+  province: "Lübeck"

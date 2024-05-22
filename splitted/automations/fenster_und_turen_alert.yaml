@@ -1,0 +1,87 @@
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - windowOpenOn
+    sequence:
+    - data: {}
+      metadata: {}
+      service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.windows_open
+  - conditions:
+    - condition: trigger
+      id:
+      - windowOpenOff
+    sequence:
+    - data: {}
+      service: input_boolean.turn_off
+      target:
+        entity_id:
+        - input_boolean.windows_open
+  - conditions:
+    - condition: trigger
+      id:
+      - doorOpenOn
+    sequence:
+    - data: {}
+      metadata: {}
+      service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.doors_open
+  - conditions:
+    - condition: trigger
+      id:
+      - doorOpenOff
+    sequence:
+    - data: {}
+      service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.doors_open
+alias: "Fenster und T\xFCren Alert"
+condition:
+- condition: state
+  entity_id: input_boolean.nicht_storen
+  state: 'off'
+- below: 1
+  condition: numeric_state
+  entity_id: sensor.people_home
+description: ''
+id: '1713180340302'
+mode: single
+trigger:
+- entity_id:
+  - binary_sensor.aqara_contact_balkontur_contact
+  - binary_sensor.eve_contact_schlafzimmer_fenster_rechts
+  from: 'off'
+  id: windowOpenOn
+  platform: state
+  to: 'on'
+- entity_id:
+  - binary_sensor.aqara_contact_balkontur_contact
+  - binary_sensor.eve_contact_schlafzimmer_fenster_rechts
+  from: 'on'
+  id: windowOpenOff
+  platform: state
+  to: 'off'
+- entity_id:
+  - binary_sensor.aqara_contact_badezimmer_contact
+  - binary_sensor.aqara_contact_kinderzimmer_contact
+  - binary_sensor.aqara_contact_schlafzimmer_contact
+  - binary_sensor.aqara_contact_wohnungstur_contact
+  - binary_sensor.aqara_contact_wohnzimmer_contact
+  from: 'off'
+  id: doorOpenOn
+  platform: state
+  to: 'on'
+- entity_id:
+  - binary_sensor.aqara_contact_badezimmer_contact
+  - binary_sensor.aqara_contact_kinderzimmer_contact
+  - binary_sensor.aqara_contact_schlafzimmer_contact
+  - binary_sensor.aqara_contact_wohnungstur_contact
+  - binary_sensor.aqara_contact_wohnzimmer_contact
+  from: 'on'
+  id: doorOpenOff
+  platform: state
+  to: 'off'

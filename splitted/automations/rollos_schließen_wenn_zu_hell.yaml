@@ -1,0 +1,52 @@
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - wohnzimmerRollosOn
+    sequence:
+    - data: {}
+      service: cover.close_cover
+      target:
+        entity_id: cover.rollos_wohnzimmer_fensterbank
+  - conditions:
+    - condition: trigger
+      id:
+      - wohnzimmerRollosOff
+    sequence:
+    - data: {}
+      service: cover.open_cover
+      target:
+        entity_id: cover.rollos_wohnzimmer_fensterbank
+  - conditions:
+    - condition: trigger
+      id:
+      - kucheRollosOn
+    sequence: []
+alias: "Rollos schlie\xDFen wenn zu hell"
+condition:
+- condition: state
+  entity_id: input_boolean.zu_warm
+  state: 'off'
+description: ''
+id: '1691320563612'
+mode: single
+trigger:
+- above: 10000
+  device_id: cc409c26cddb1137902b367f0bbcc342
+  domain: sensor
+  entity_id: 92fbba10867e030bf34955d6b0015ff3
+  id: wohnzimmerRollosOn
+  platform: device
+  type: illuminance
+- below: 5000
+  device_id: cc409c26cddb1137902b367f0bbcc342
+  domain: sensor
+  entity_id: 92fbba10867e030bf34955d6b0015ff3
+  for:
+    hours: 0
+    minutes: 2
+    seconds: 0
+  id: wohnzimmerRollosOff
+  platform: device
+  type: illuminance

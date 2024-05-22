@@ -1,0 +1,278 @@
+##########
+# This Blueprint is created by Smart Home Junkie
+# (c) copyright 2023 by Smart Home Junkie. You may not copy, reproduce, distribute, transmit, modify, create derivative works,
+# or in any other way exploit any part of copyrighted material without the prior written permission from Smart Home Junkie
+##########
+
+blueprint:
+  name: Awtrix Create Notification
+  description: Show a notification on the Ulanzi Clock
+  domain: automation
+  author: Smart Home Junkie
+  input:
+    awtrix_displays:
+      name: Awtrix Displays
+      description: Select the target Awtrix displays.
+      selector:
+        device:
+          integration: mqtt
+          model: "AWTRIX Light"
+          manufacturer: Blueforcer
+          multiple: true
+    # clock_number:
+    #   name: Clock Number
+    #   description: Select your clock in your house if you have multiple clocks. This is needed to support the middle button to dismiss a notification. Supports up to 5 clocks.
+    #   selector:
+    #     select:
+    #       options:
+    #         - label: "Clock Number 1"
+    #           value: "binary_sensor.button_select"
+    #         - label: "Clock Number 2"
+    #           value: "binary_sensor.button_select_2"
+    #         - label: "Clock Number 3"
+    #           value: "binary_sensor.button_select_3"
+    #         - label: "Clock Number 4"
+    #           value: "binary_sensor.button_select_4"
+    #         - label: "Clock Number 5"
+    #           value: "binary_sensor.button_select_5"
+    #       mode: dropdown
+    #   default: "binary_sensor.button_select"
+    toggle_helper:
+      name: Toggle Helper
+      description: Select the Toggle Helper that will toggle the notification on or off.
+      selector:
+        entity:
+          domain: input_boolean
+    notification_text:
+      name: Notification Text
+      description: Enter the notification text.
+      default: ""
+    my_icon:
+      name: Icon
+      description: Enter the Icon Name or ID of the icon that you like to show.
+      selector:
+        text:
+      default: ""
+    push_icon:
+      name: Push Icon
+      description: Icon behavior
+      selector:
+        select:
+          options:
+            - label: "Icon doesn't move"
+              value: "0"
+            - label: "Icon moves with text and will not appear again"
+              value: "1"
+            - label: "Icon moves with text but appears again when the text starts"
+              value: "2"
+          mode: dropdown
+      default: "2"
+    text_case:
+      name: Text Case
+      description: Select how you would like your text to display.
+      selector:
+        select:
+          options:
+            - label: "Use global setting"
+              value: "0"
+            - label: "Force Uppercase"
+              value: "1"
+            - label: "Show as you entered it"
+              value: "2"
+          mode: dropdown
+      default: "0"
+    background_color:
+      name: Background Color
+      description: Select the Background color
+      selector:
+        color_rgb:
+      default: [0, 0, 0]
+    text_color:
+      name: Text Color
+      description: Select the Text color
+      selector:
+        color_rgb:
+      default: [255, 255, 255]
+    show_rainbow:
+      name: Rainbow Colors
+      description: Should the notification be shown in Rainbow colors?
+      selector:
+        boolean:
+      default: false
+    play_alert_tone:
+      name: Play Alert Tone
+      description: Should an alert tone be played?
+      selector:
+        boolean:
+      default: false
+    hold_notification:
+      name: Hold Notification
+      description: Should the notification stay on the display until it's manually dismissed? (Overrides Repeat & Duration).
+      selector:
+        boolean:
+      default: true
+    repeat:
+      name: Repeat
+      description: Sets how many times the text should be scrolled through the matrix before the app ends. If the value is -1, the duration will be taken into account instead.
+      default: "-1"
+    duration:
+      name: Duration (in seconds)
+      description: Sets how long the app should be displayed. 0 is global app time.
+      default: "0"
+    stack:
+      name: Stack Notification?
+      description: Defines if the notification will be stacked. "Off" will immediately replace the current notification.
+      selector:
+        boolean:
+      default: true
+    scroll:
+      name: Scroll the notification?
+      description: Enables text scrolling.
+      selector:
+        boolean:
+      default: true
+    scrollspeed:
+      name: Scroll Speed Percentage
+      description: Modifies the scrollspeed. You need to enter a percentage value.
+      selector:
+        number:
+          mode: slider
+          min: 0
+          max: 100
+      default: 100
+    effect:
+      name: Effect
+      description: Select a background effect (optional).
+      selector:
+        select:
+          options:
+            - label: "None"
+              value: ""
+            - label: "BrickBreaker"
+              value: "BrickBreaker"
+            - label: "Checkerboard"
+              value: "Checkerboard"
+            - label: "ColorWaves"
+              value: "ColorWaves"
+            - label: "Fireworks"
+              value: "Fireworks"
+            - label: "LookingEyes"
+              value: "LookingEyes"
+            - label: "Matrix"
+              value: "Matrix"
+            - label: "MovingLine"
+              value: "MovingLine"
+            - label: "PingPong"
+              value: "PingPong"
+            - label: "Pacifica"
+              value: "Pacifica"
+            - label: "Plasma"
+              value: "Plasma"
+            - label: "PlasmaCloud"
+              value: "PlasmaCloud"
+            - label: "Radar"
+              value: "Radar"
+            - label: "Ripple"
+              value: "Ripple"
+            - label: "Snake"
+              value: "Snake"
+            - label: "SwirlIn"
+              value: "SwirlIn"
+            - label: "SwirlOut"
+              value: "SwirlOut"
+            - label: "TheaterChase"
+              value: "TheaterChase"
+            - label: "TwinklingStars"
+              value: "TwinklingStars"
+      default: ""
+
+mode: queued
+
+trigger:
+  - platform: state
+    entity_id: !input toggle_helper
+    to: "on"
+    id: "On"
+  - platform: state
+    entity_id: !input toggle_helper
+    to: "off"
+    id: "Off"
+  # - platform: state
+  #   entity_id: !input clock_number
+  #   to: "on"
+  #   id: "Dismiss"
+
+variables:
+  device_ids: !input awtrix_displays
+  devices: >-
+    {% macro get_device(device_id) %}
+      {{ states((device_entities(device_id) | select('search','device_topic') | list)[0] | default('unknown')) }}
+    {% endmacro %}
+
+    {% set ns = namespace(devices=[]) %}
+    {% for device_id in device_ids %}
+      {% set device=get_device(device_id)|replace(' ','')|replace('\n','') %}
+      {% set ns.devices = ns.devices + [ device ] %}
+    {% endfor %}
+    {{ ns.devices | reject('match','unavailable|unknown') | list }}
+  my_toggle_helper: !input toggle_helper
+  notification_text: !input notification_text
+  hold_notification: !input hold_notification
+  show_rainbow: !input show_rainbow
+  play_alert_tone: !input play_alert_tone
+  push_icon: !input push_icon
+  my_icon: !input my_icon
+  background_color: !input background_color
+  text_color: !input text_color
+  text_case: !input text_case
+  my_repeat: !input repeat
+  my_duration: !input duration
+  stack: !input stack
+  scrolling: !input scroll
+  scroll_speed: !input scrollspeed
+  effect: !input effect
+
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: "On"
+        sequence:
+          - repeat:
+              for_each: "{{ devices }}"
+              sequence:
+                - service: mqtt.publish
+                  data:
+                    qos: 0
+                    retain: false
+                    topic: "{{ repeat.item ~ '/notify'}}"
+                    payload: |-
+                      {   
+                        "text": "{{ notification_text }}",
+                        "icon": "{{ my_icon }}",
+                        "background": {{ background_color }},
+                        "color": {{ text_color }},
+                        "sound": "{{ iif(play_alert_tone, "alert", "") }}",
+                        "textCase": {{ text_case }},
+                        "pushIcon": {{ push_icon }},
+                        "rainbow": {{ iif(show_rainbow, "true", "false") }},              
+                        "hold": {{ iif(hold_notification, "true", "false") }},
+                        "repeat": {{ my_repeat }},
+                        "duration": {{ my_duration }},
+                        "stack": {{ iif(stack, "true", "false") }},
+                        "noScroll": {{ iif(scrolling, "false", "true") }},
+                        "scrollSpeed": {{ scroll_speed }},
+                        "effect": "{{ effect }}"
+                      }
+      - conditions:
+          - condition: trigger
+            id: "Off"
+        sequence:
+          - repeat:
+              for_each: "{{ devices }}"
+              sequence:
+                - service: mqtt.publish
+                  data:
+                    qos: 0
+                    retain: false
+                    topic: "{{ repeat.item ~ '/notify/dismiss'}}"

@@ -1,0 +1,148 @@
+blueprint:
+  name: Sensor Light
+  description: "# SENSOR LIGHT\nThe most common automation used for a sensor light.
+    The good thing is, with this automation you can turn on as many lights as you
+    like by selecting an Area or a Device or a Entity or just any combination you
+    like and use just one motion sensor to do it. BE CARFUL when selecting an Area
+    or a Device as it will turn On and OFF everything attached, lights, switches,
+    etc .\n\nVersion: 1.2\n\nFor community support see this forum post: [Click Here](https://community.home-assistant.io/t/sensor-light/481048)\n\nGitHub:
+    [Click Here](https://gist.github.com/Blackshome/6edfec0ff6a25c5da0d07b88dc908238)\n\nThe
+    Automation Process:\n - Triggered on a motion sensor and turns the lights ON.\n
+    - When no motion is detected a time delay is activated and turns the lights OFF
+    Automatically.\n - The lights will stay ON if the motion sensor detected motion
+    before the time delay turns the lights OFF. It will then rest the time delay after
+    last motion is detected.\n - You have the option to use the \"Motion Sensor By-pass\".
+    This allows you to add a switch to manually By-pass the motion sensor so you can
+    use the light switch as normal by turning it ON and OFF manually.\n - You have
+    the option to use the \"Sun Elevation\". This is used for adding a condition to
+    only work when it is dark. Use the slider to adjust when this option will be activated
+    by the suns position to the horizon. This option is turned OFF by default. If
+    you move the slider and then decide you don't want to use the \"sun Elevation\"
+    option you will have to edit the Automation in YAML buy clicking on the 3 dots
+    at the top right corner and then \"edit in YAML\". Then making sure the \"sun_elevation\"
+    reads \"sun_elevation: none\" removing any numbers that were set and then click
+    \"Save\". If you don't see a number value next to \"degrees\" then this function
+    is disabled.\n \n\n Note: If you turn the light on manually and the motion sensor
+    detects motion the light will turn off automatically. It is recommended to use
+    the \"Motion Sensor By-pass\" option if you would like to keep the lights ON or
+    OFF for extended time periods.\n \n !!UNDER CONSTRUCTION!!\n \n The below options
+    are not working or haven't been tested yet. Feel free to jump in and help if you
+    like and I will update the Blueprint. Just can't work out the Manual By-pass option
+    yet. I don't have a Ambient Light Sensor to test or develop this further yet.\n
+    \    \n     \n OPTIONS UNDER DEVELOPMENT\n - Have the option to set a Ambient
+    Light Sensor and set the LUX value. This is used for adding a condition to only
+    work when it is dark or below the Ambient Light LUX Value.\n - Have the option
+    for notification. This allows you to be notified when the motion sensor is triggered\n"
+  domain: automation
+  input:
+    motion_trigger:
+      name: Motion Sensor
+      description: The Motion Sensor that turns the lights ON and OFF
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: motion
+          multiple: false
+    light_switch:
+      name: Lights
+      description: The lights that get turned on by the motion sensor
+      selector:
+        target:
+          entity:
+            domain: light
+    time_delay:
+      name: Time Delay
+      description: Time to leave the light on after last motion is detected.
+      default: 5
+      selector:
+        number:
+          min: 0.0
+          max: 30.0
+          step: 0.5
+          unit_of_measurement: minutes
+          mode: slider
+    motion_bypass:
+      name: Motion Sensor By-pass (Optional)
+      description: Select a switch that will By-pass the motion sensor and make your
+        lights function as normal. The switch cannot be included in the "Lights" selection.
+        To disable this function type the word "none" in the feild, click off it and
+        a save option pops up, then click save.
+      default: none
+      selector:
+        entity: {}
+    sun_elevation:
+      name: Sun Elevation (Optional)
+      description: This is the angle between the sun and the horizon. Negative values
+        mean the sun is BELOW the horizon. If you don't see a number value next to
+        "degrees" then this function is disabled. See the above "Automation Process"
+        notes on how to disable this function. Guide is -1.5 (dusk) and at -4.0 (dawn).
+      default: none
+      selector:
+        number:
+          min: -10.0
+          max: 5.0
+          step: 0.5
+          unit_of_measurement: degrees
+          mode: slider
+    ambient_light_sensor:
+      name: Ambient Light Sensor (Optional)  !!UNDER CONSTRUCTION!!
+      description: This is used for adding a condition to only work when it is dark
+        or below the Ambient Light LUX Value.
+      default: none
+      selector:
+        entity:
+          domain: sensor
+          device_class: illuminance
+          multiple: false
+    ambient_light_value:
+      name: Ambient Light LUX Value (Optional)  !!UNDER CONSTRUCTION!!
+      description: Set the Ambient Light Value if you have selected Ambient Light
+        Sensor. Guide is 20 lux (dusk) and at 80 lux (dawn).
+      default: none
+      selector:
+        number:
+          min: 0.0
+          max: 500.0
+          step: 10.0
+          unit_of_measurement: LUX
+          mode: slider
+  source_url: https://gist.github.com/Blackshome/6edfec0ff6a25c5da0d07b88dc908238
+mode: restart
+max_exceeded: silent
+variables:
+  motion_trigger: !input motion_trigger
+  light_switch: !input light_switch
+  time_delay: !input time_delay
+  motion_bypass: !input motion_bypass
+  sun_elevation: !input sun_elevation
+  ambient_light_sensor: !input ambient_light_sensor
+  ambient_light_value: !input ambient_light_value
+trigger:
+  platform: state
+  entity_id: !input motion_trigger
+  from: 'off'
+  to: 'on'
+condition:
+- condition: or
+  conditions:
+  - '{{ motion_bypass == ''none'' }}'
+  - '{{ states[motion_bypass].state == ''off'' }}'
+- condition: template
+  value_template: '{{ (sun_elevation == none) or (state_attr(''sun.sun'',''elevation'')
+    <= sun_elevation | float(90)) }}'
+action:
+- alias: Turn on the light
+  service: homeassistant.turn_on
+  target: !input light_switch
+- alias: Wait until motion sensor is off
+  wait_for_trigger:
+    platform: state
+    entity_id: !input motion_trigger
+    from: 'on'
+    to: 'off'
+- alias: Wait the number of minutes that has been set
+  delay:
+    minutes: !input time_delay
+- alias: Turn off the lights
+  service: homeassistant.turn_off
+  target: !input light_switch

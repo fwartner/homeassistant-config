@@ -1,0 +1,38 @@
+action:
+- choose:
+  - conditions:
+    - condition: state
+      entity_id: media_player.spotify_florian
+      state: playing
+    - attribute: media_content_type
+      condition: state
+      entity_id: media_player.spotify_florian
+      state: music
+    sequence:
+    - data:
+        payload: "{\n  \"text\": \"{{ state_attr('media_player.spotify_florian', 'media_artist')\
+          \ }} - {{ state_attr('media_player.spotify_florian', 'media_title') }}\"\
+          ,\n  \"icon\": \"647\",\n  \"rainbow\": true,\n  \"repeat\": 2,\n  \"pushIcon\"\
+          : 0,\n  \"textCase\": 0,\n  \"textOffset\": 15,\n  \"progress\": {{ ( states.media_player.spotify_florian.attributes.media_position\
+          \ / states.media_player.spotify_florian.attributes.media_duration * 100\
+          \ ) | round() }},\n  \"progressC\": \"18B04C\"\n}"
+        qos: 0
+        retain: false
+        topic: awtrix_wohnzimmer/custom/spotify
+      service: mqtt.publish
+  - conditions:
+    - condition: template
+      value_template: '{{ not states.media_player.spotify_florian.state == ''playing''
+        }}'
+    sequence:
+    - data:
+        qos: 0
+        retain: false
+        topic: awtrix_wohnzimmer/custom/spotify
+      service: mqtt.publish
+alias: "Awtrix Spotify NowPlaying \U0001F3B9"
+description: ''
+id: '1715341461660'
+trigger:
+- entity_id: media_player.spotify_florian
+  platform: state

@@ -1,0 +1,21 @@
+- platform: rest
+  name: Paperless Documents
+  resource: http://10.182.1.53:8080/api/documents/
+  method: GET
+  headers:
+    Authorization: !secret paperless_token
+  value_template: "{{ value_json.count }}"
+  scan_interval: 300
+  unique_id: paperless_documents
+  unit_of_measurement: Dokumente
+
+- platform: rest
+  name: Paperless Inbox
+  resource: http://10.182.1.53:8080/api/tags/7/
+  method: GET
+  headers:
+    Authorization: !secret paperless_token
+  value_template: "{{ value_json.document_count }}"
+  scan_interval: 60
+  unique_id: paperless_inbox
+  unit_of_measurement: Dokumente

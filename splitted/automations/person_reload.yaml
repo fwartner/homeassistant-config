@@ -1,0 +1,11 @@
+action:
+- data: {}
+  service: person.reload
+alias: 'Person: Reload'
+condition: []
+description: ''
+id: '1713949268424'
+mode: single
+trigger:
+- minutes: /2
+  platform: time_pattern

@@ -1,0 +1,31 @@
+blueprint:
+  name: Add to-do
+  description: A script that adds an item to a to-do list.
+  domain: script
+  input:
+    to_do_list:
+      selector:
+        entity:
+          domain:
+          - todo
+          multiple: false
+      name: To-do list
+    item_label:
+      selector:
+        text: {}
+      default: Item
+      name: Item label
+  source_url: https://community.home-assistant.io/t/add-to-do-item/699193
+mode: queued
+fields:
+  item:
+    selector:
+      text:
+    name: !input item_label
+    required: true
+sequence:
+- service: todo.add_item
+  data:
+    item: '{{ item }}'
+  target:
+    entity_id: !input to_do_list

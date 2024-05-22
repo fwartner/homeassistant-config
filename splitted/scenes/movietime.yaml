@@ -1,0 +1,81 @@
+- entities:
+    input_boolean.movietime:
+      editable: true
+      friendly_name: Movietime
+      icon: mdi:theater
+      state: 'on'
+    light.tv_bank:
+      brightness: null
+      color_mode: null
+      dynamics: none
+      friendly_name: TV Bank
+      mode: normal
+      state: 'off'
+      supported_color_modes:
+      - brightness
+      supported_features: 40
+    media_player.sonos_ray:
+      device_class: speaker
+      friendly_name: Sonos Ray
+      group_members:
+      - media_player.sonos_ray
+      icon: phu:sonos-beam
+      is_volume_muted: false
+      media_content_id: x-sonos-htastream:RINCON_F0F6C1F0FCCC01400:spdif
+      media_content_type: music
+      media_title: TV
+      queue_size: 1
+      repeat: 'off'
+      shuffle: false
+      source: TV
+      state: playing
+      supported_features: 4127295
+      volume_level: 0.12
+    number.sync_box_brightness:
+      friendly_name: Sync Box Brightness
+      icon: mdi:brightness-5
+      max: 100
+      min: 1
+      mode: auto
+      state: '100'
+      step: 1
+      unit_of_measurement: '%'
+    select.sync_box_hdmi_input:
+      friendly_name: Sync Box HDMI Input
+      icon: mdi:hdmi-port
+      options:
+      - 'Apple TV '
+      - PlayStation 5
+      - Nintendo Switch
+      - Vodafone
+      state: PlayStation 5
+    select.sync_box_intensity:
+      friendly_name: Sync Box Intensity
+      icon: mdi:sine-wave
+      options:
+      - subtle
+      - moderate
+      - high
+      - intense
+      state: high
+    select.sync_box_sync_mode:
+      friendly_name: Sync Box Sync mode
+      options:
+      - video
+      - music
+      - game
+      state: video
+    switch.sync_box_light_sync:
+      friendly_name: Sync Box Light Sync
+      icon: mdi:television-ambient-light
+      state: 'on'
+    switch.sync_box_power:
+      friendly_name: Sync Box Power
+      icon: mdi:power
+      state: 'on'
+  icon: mdi:popcorn
+  id: '1700176197523'
+  metadata:
+    input_boolean.movietime:
+      entity_only: true
+  name: Movietime

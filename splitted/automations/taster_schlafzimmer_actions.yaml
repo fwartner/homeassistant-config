@@ -1,0 +1,40 @@
+alias: Taster Schlafzimmer Actions
+description: ''
+id: '1670802573901'
+use_blueprint:
+  input:
+    action_sensor: sensor.aqara_taster_schlafzimmer_action
+    double_action:
+    - data: {}
+      service: script.3_minuten_bettzeit
+    single_action:
+    - else:
+      - if:
+        - condition: or
+          conditions:
+          - condition: state
+            entity_id: cover.rollos_schlafzimmer
+            state: opening
+          - condition: state
+            entity_id: cover.rollos_schlafzimmer
+            state: open
+        then:
+        - data: {}
+          service: cover.close_cover
+          target:
+            entity_id: cover.rollos_schlafzimmer
+      if:
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: cover.rollos_schlafzimmer
+          state: closing
+        - condition: state
+          entity_id: cover.rollos_schlafzimmer
+          state: closed
+      then:
+      - data: {}
+        service: cover.open_cover
+        target:
+          entity_id: cover.rollos_schlafzimmer
+  path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml

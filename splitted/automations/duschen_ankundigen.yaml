@@ -1,0 +1,30 @@
+action:
+- data:
+    data:
+      method: all
+      type: announce
+    message: Das Badezimmer hat eine Temperatur von mindestens 22 Grad erreicht. Du
+      kannst also jetzt duschen gehen.
+    target:
+    - media_player.echo_badezimmer
+    - media_player.echo_schlafzimmer
+    - media_player.echo_show_wohnzimmer
+    title: "Du k\xF6nntest jetzt duschen gehen"
+  service: notify.alexa_media
+- data: {}
+  service: input_boolean.turn_off
+  target:
+    entity_id: input_boolean.duschen_vorbereiten
+alias: "Duschen Ank\xFCndigen"
+condition:
+- condition: state
+  entity_id: input_boolean.duschen_vorbereiten
+  state: 'on'
+description: ''
+id: '1700299914747'
+mode: single
+trigger:
+- above: 22
+  entity_id:
+  - sensor.badezimmer_temperature
+  platform: numeric_state

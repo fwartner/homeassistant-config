@@ -1,0 +1,45 @@
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - washingMachineOffAfterTime
+    sequence:
+    - device_id: 3c45a70c459e2e66b166dca5891180c6
+      domain: switch
+      entity_id: eb4d372310f986822d024a05f2007c03
+      type: turn_off
+  - conditions:
+    - condition: trigger
+      id:
+      - dishWasherOffAfterTime
+    sequence:
+    - device_id: 4a05cd597a16be48ba279a90d1ba5c18
+      domain: switch
+      entity_id: 6a36fb96527589eaed3672a9978a3393
+      type: turn_off
+alias: "K\xFCche Steckdosen Power Management"
+description: ''
+id: '1711970540815'
+mode: single
+trigger:
+- entity_id:
+  - sensor.steckdose_waschmaschine_energy_power
+  for:
+    hours: 0
+    minutes: 2
+    seconds: 0
+  from: null
+  id: washingMachineOffAfterTime
+  platform: state
+  to: '0'
+- entity_id:
+  - sensor.steckdose_spuhlmaschine_energy_power
+  for:
+    hours: 0
+    minutes: 2
+    seconds: 0
+  from: null
+  id: dishWasherOffAfterTime
+  platform: state
+  to: '0'

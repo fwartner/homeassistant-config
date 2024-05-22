@@ -1,0 +1,16 @@
+substitutions:
+  name: upsy-desky-9fb728
+  friendly_name: Upsy Desky 9fb728
+packages:
+  tj_horner.upsy_desky: github://tjhorner/upsy-desky/firmware/stock.yaml@v2.0.0
+esphome:
+  name: ${name}
+  name_add_mac_suffix: false
+  friendly_name: ${friendly_name} 
+api:
+  encryption:
+    key: FRZQkUOvo6xeUzLxkRVSZhFVjkfhEUsiTflXNupBHdA=
+
+wifi:
+  ssid: !secret wifi_ssid_iot
+  password: !secret wifi_password

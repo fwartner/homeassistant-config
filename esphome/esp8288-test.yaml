@@ -1,0 +1,40 @@
+esphome:
+  name: esp32test
+  friendly_name: ESP32-Test
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "92xcMdT3CRX9piYQiqk3ZVdjkhEkGSnATdjbMKXvcBY="
+
+ota:
+  password: "377d746e936b87aef7e19c6a405ef7be"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Esp8288-Test Fallback Hotspot"
+    password: "EI88RkmQL7F0"
+
+captive_portal:
+    
+output:
+  - id: fan_output
+    platform: gpio
+    pin: 16
+
+fan:
+  - platform: binary
+    output: fan_output
+    name: "Löt-Lüfter"

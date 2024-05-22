@@ -1,0 +1,25 @@
+staubsauger_badezimmer_reinigen:
+  alias: '[Staubsauger] Badezimmer Reinigen'
+  icon: phu:roborock
+  mode: single
+  sequence:
+  - data:
+      command: set_custom_mode
+      params: 104
+    metadata: {}
+    service: vacuum.send_command
+    target:
+      entity_id: vacuum.roborock_s7_maxv
+  - data:
+      fan_speed: '100'
+    service: vacuum.set_fan_speed
+    target:
+      entity_id:
+      - vacuum.roborock_s7_maxv
+  - data:
+      repeats: 1
+      segments:
+      - 16
+    service: roborock.vacuum_clean_segment
+    target:
+      entity_id: vacuum.roborock_s7_maxv

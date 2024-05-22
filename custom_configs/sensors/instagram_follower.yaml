@@ -1,0 +1,11 @@
+- platform: rest
+  name: instagram_api
+  resource_template: "https://i.instagram.com/api/v1/users/web_profile_info/?username=fwartner"
+  method: GET
+  headers:
+    content-type: "application/json"
+    user-agent: "Instagram 76.0.0.15.395 Android (24/7.0; 640dpi; 1440x2560; samsung; SM-G930F; herolte; samsungexynos8890; en_US; 138226743)"
+  value_template: "{{ value_json.data.user.edge_followed_by.count }}"
+  json_attributes:
+    - "data"
+  scan_interval: 7200

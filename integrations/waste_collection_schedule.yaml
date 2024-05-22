@@ -1,0 +1,8 @@
+waste_collection_schedule:
+  sources:
+    - name: insert_it_de
+      args:
+        municipality: Luebeck
+        street: Marliring
+        hnr: 74
+        location_id: 108913

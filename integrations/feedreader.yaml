@@ -1,0 +1,6 @@
+feedreader:
+  urls:
+    - https://hasspodcast.io/feed/podcast
+  scan_interval:
+    minutes: 30
+  max_entries: 5

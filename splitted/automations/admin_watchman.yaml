@@ -1,0 +1,14 @@
+action:
+- data:
+    create_file: true
+    parse_config: true
+  metadata: {}
+  service: watchman.report
+alias: Admin - Watchman
+condition: []
+description: ''
+id: '1713209693062'
+mode: single
+trigger:
+- hours: '3'
+  platform: time_pattern

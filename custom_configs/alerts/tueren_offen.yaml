@@ -1,0 +1,10 @@
+tueren_offen:
+  name: Es sind noch Türen geöffnet
+  done_message: Die Türen sind geschlossen
+  entity_id: input_boolean.doors_open
+  state: "on"
+  repeat: 10
+  can_acknowledge: true
+  skip_first: false
+  notifiers:
+    - mobile_app_iphone_von_florian

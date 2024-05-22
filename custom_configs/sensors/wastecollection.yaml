@@ -1,0 +1,2 @@
+- platform: waste_collection_schedule
+  name: next_collection

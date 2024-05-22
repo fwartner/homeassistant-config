@@ -1,0 +1,14 @@
+powercalc:
+  force_update_frequency: 00:01:00
+  power_sensor_naming: "{} Power Sensor"
+  power_sensor_friendly_naming: "{} Power Sensor"
+  energy_sensor_naming: "{} Energy Sensor"
+  energy_sensor_friendly_naming: "{} Energy Sensor"
+  enable_autodiscovery: true
+  create_energy_sensors: true
+  create_utility_meters: true
+  create_domain_groups:
+    - light
+    - media_player
+    - switch
+    - fan

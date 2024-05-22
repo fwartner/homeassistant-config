@@ -1,0 +1,97 @@
+##########
+# This Blueprint is created by Smart Home Junkie
+# (c) copyright 2023 by Smart Home Junkie. You may not copy, reproduce, distribute, transmit, modify, create derivative works,
+# or in any other way exploit any part of copyrighted material without the prior written permission from Smart Home Junkie
+##########
+
+blueprint:
+  name: Awtrix Toggle Stock App
+  description: Toggle a stock app on the Ulanzi Clock
+  domain: automation
+  author: Smart Home Junkie
+  input:
+    awtrix_displays:
+      name: Awtrix Displays
+      description: Select the target Awtrix displays.
+      selector:
+        device:
+          integration: mqtt
+          manufacturer: Blueforcer
+          model: AWTRIX 3
+          multiple: true
+    toggle_helper:
+      name: Toggle Helper
+      description: Select the Toggle Helper that will toggle the App on or off.
+      selector:
+        entity:
+          domain: input_boolean
+    stock_app:
+      name: Sensor
+      description: Select the stock app that you'd like to toggle.
+      selector:
+        select:
+          options:
+            - label: "Time"
+              value: "Time"
+            - label: "Date"
+              value: "Date"
+            - label: "Temperature"
+              value: "Temperature"
+            - label: "Humidity"
+              value: "Humidity"
+            - label: "Battery"
+              value: "Battery"
+          mode: list
+
+mode: queued
+
+trigger:
+  - platform: state
+    entity_id: !input toggle_helper
+    to: "on"
+    id: "On"
+  - platform: state
+    entity_id: !input toggle_helper
+    to: "off"
+    id: "Off"
+
+variables:
+  device_ids: !input awtrix_displays
+  devices: >-
+    {% macro get_device(device_id) %}
+      {{ states((device_entities(device_id) | select('search','device_topic') | list)[0] | default('unknown')) }}
+    {% endmacro %}
+
+    {% set ns = namespace(devices=[]) %}
+    {% for device_id in device_ids %}
+      {% set device=get_device(device_id)|replace(' ','')|replace('\n','') %}
+      {% set ns.devices = ns.devices + [ device ] %}
+    {% endfor %}
+    {{ ns.devices | reject('match','unavailable|unknown') | list }}
+  stock_app: !input stock_app
+  my_toggle_helper: toggle_helper
+
+action:
+  - if:
+      - condition: trigger
+        id: "On"
+    then:
+      - repeat:
+          for_each: "{{ devices }}"
+          sequence:
+            - service: mqtt.publish
+              data:
+                qos: 0
+                retain: false
+                topic: "{{repeat.item}}/apps"
+                payload: '[  {    "name": "{{stock_app}}",    "show": true  }]'
+    else:
+      - repeat:
+          for_each: "{{ devices }}"
+          sequence:
+            - service: mqtt.publish
+              data:
+                qos: 0
+                retain: false
+                topic: "{{repeat.item}}/apps"
+                payload: '[  {    "name": "{{stock_app}}",    "show": false  }]'

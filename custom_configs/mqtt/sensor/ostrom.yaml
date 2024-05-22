@@ -1,0 +1,4 @@
+- name: "Ostrom Next Hour Price"
+  unique_id: ostrom_next_hour_price
+  state_topic: "ostrom/next_hour"
+  unit_of_measurement: EUR/kWh

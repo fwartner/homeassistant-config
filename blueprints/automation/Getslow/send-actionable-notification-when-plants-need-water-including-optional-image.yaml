@@ -1,0 +1,120 @@
+blueprint:
+  name: Reminder to water a plant
+  description: Sends a daily notification with a water reminder for plants, until
+    the plants have been watered. An optional image can be attached to help identify
+    the plant.
+  domain: automation
+  input:
+    plant_date:
+      name: Date sensor
+      description: This entity will hold the date of the next time a plant needs watering.
+        It needs to be an input_datetime helper entity set to 'Date'.
+      selector:
+        entity:
+          domain: input_datetime
+          multiple: false
+    plant_image:
+      name: Image of the plant
+      description: 'An image of the plant to be watered. Image needs to be in the
+        www folder: ''/www/plant.png'' will need ''/local/plant.png'' to be filled
+        in. Smaller images load faster in the notification.'
+      default: []
+      selector:
+        text: {}
+    reminder_time:
+      name: Reminder time
+      description: 'Time when the reminder should be sent. Advice: water plants in
+        the evening.'
+      default: '20:00'
+      selector:
+        time: {}
+    interval_days:
+      name: Interval in days
+      description: The interval between the watering of the plant
+      default: 7
+      selector:
+        number:
+          min: 0.0
+          max: 50.0
+          mode: slider
+          unit_of_measurement: days
+          step: 1.0
+    notification_title:
+      name: Title of the notfication
+      description: Title of the notification that will be sent.
+      default: Plant needs water!
+      selector:
+        text: {}
+    notification_message:
+      name: Message of the notfication
+      description: Message of the notification that will be sent.
+      default: Give just enough water to make the soil a bit moist. Make sure the
+        leaves don't get wet.
+      selector:
+        text: {}
+    action_name:
+      name: Name of the action
+      description: Name of the action in the actionable notification.
+      default: The plant just had water
+      selector:
+        text: {}
+    notify_device:
+      name: Notify device
+      description: The device where the notification should be sent to.
+      selector:
+        device: {}
+  source_url: https://community.home-assistant.io/t/send-actionable-notification-when-plants-need-water-including-optional-image/366568
+variables:
+  datetime_entity: !input plant_date
+  interval: !input interval_days
+  identifier: '{{ datetime_entity.split(''.'')[1] }}
+
+    '
+trigger:
+- platform: time
+  at: !input reminder_time
+  id: trigger_time
+- platform: event
+  event_type: mobile_app_notification_action
+  id: trigger_app
+condition:
+- condition: template
+  value_template: '{{ states(datetime_entity) <= now().strftime("%Y-%m-%d")}}
+
+    '
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id: trigger_app
+    - condition: template
+      value_template: '{{ trigger.event.data.action == identifier  }}
+
+        '
+    sequence:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: '{{ datetime_entity }}
+
+          '
+      data:
+        date: '{{ as_timestamp( now() + timedelta(days=interval) ) | timestamp_custom(''%Y-%m-%d'')
+          }}
+
+          '
+  - conditions:
+    - condition: trigger
+      id: trigger_time
+    sequence:
+    - domain: mobile_app
+      type: notify
+      device_id: !input notify_device
+      title: !input notification_title
+      message: !input notification_message
+      data:
+        actions:
+        - title: !input action_name
+          action: '{{ identifier }}
+
+            '
+        image: !input plant_image

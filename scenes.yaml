@@ -1,0 +1,251 @@
+- id: '1693826667643'
+  name: 3 Minuten Bettzeit
+  entities:
+    script.3_minuten_bettzeit:
+      last_triggered: '2023-09-04T08:21:32.786654+00:00'
+      mode: single
+      current: 0
+      icon: mdi:bed-clock
+      friendly_name: 3 Minuten Bettzeit
+      state: 'off'
+  icon: mdi:bed
+  metadata:
+    script.3_minuten_bettzeit:
+      entity_only: true
+- id: '1700176197523'
+  name: Movietime
+  entities:
+    number.sync_box_brightness:
+      min: 1
+      max: 100
+      step: 1
+      mode: auto
+      unit_of_measurement: '%'
+      icon: mdi:brightness-5
+      friendly_name: Sync Box Brightness
+      state: '100'
+    select.sync_box_hdmi_input:
+      options:
+      - 'Apple TV '
+      - PlayStation 5
+      - Nintendo Switch
+      - Vodafone
+      icon: mdi:hdmi-port
+      friendly_name: Sync Box HDMI Input
+      state: PlayStation 5
+    select.sync_box_intensity:
+      options:
+      - subtle
+      - moderate
+      - high
+      - intense
+      icon: mdi:sine-wave
+      friendly_name: Sync Box Intensity
+      state: high
+    select.sync_box_sync_mode:
+      options:
+      - video
+      - music
+      - game
+      friendly_name: Sync Box Sync mode
+      state: video
+    switch.sync_box_power:
+      icon: mdi:power
+      friendly_name: Sync Box Power
+      state: 'on'
+    switch.sync_box_light_sync:
+      icon: mdi:television-ambient-light
+      friendly_name: Sync Box Light Sync
+      state: 'on'
+    light.tv_bank:
+      supported_color_modes:
+      - brightness
+      color_mode:
+      brightness:
+      mode: normal
+      dynamics: none
+      friendly_name: TV Bank
+      supported_features: 40
+      state: 'off'
+    input_boolean.movietime:
+      editable: true
+      icon: mdi:theater
+      friendly_name: Movietime
+      state: 'on'
+    media_player.sonos_ray:
+      group_members:
+      - media_player.sonos_ray
+      volume_level: 0.12
+      is_volume_muted: false
+      media_content_id: x-sonos-htastream:RINCON_F0F6C1F0FCCC01400:spdif
+      media_content_type: music
+      media_title: TV
+      source: TV
+      shuffle: false
+      repeat: 'off'
+      queue_size: 1
+      device_class: speaker
+      icon: phu:sonos-beam
+      friendly_name: Sonos Ray
+      supported_features: 4127295
+      state: playing
+  icon: mdi:popcorn
+  metadata:
+    input_boolean.movietime:
+      entity_only: true
+- id: '1713182234223'
+  name: Polly Füttern
+  entities:
+    lock.aqara_futterautomat_child_lock:
+      friendly_name: Aqara Futterautomat Child lock
+      supported_features: 0
+      state: unlocked
+    number.aqara_futterautomat_portion_weight:
+      min: 1
+      max: 20
+      step: 1
+      mode: auto
+      unit_of_measurement: g
+      friendly_name: Aqara Futterautomat Portion weight
+      state: '9'
+    number.aqara_futterautomat_serving_size:
+      min: 1
+      max: 10
+      step: 1
+      mode: auto
+      unit_of_measurement: portion
+      friendly_name: Aqara Futterautomat Serving size
+      state: '1'
+    select.aqara_futterautomat_feed:
+      options:
+      - ''
+      - START
+      friendly_name: Aqara Futterautomat Feed
+      state: ''
+    switch.aqara_futterautomat:
+      friendly_name: Aqara Futterautomat
+      state: 'off'
+  icon: phu:aqara-pet-feeder-c1
+  metadata: {}
+- id: '1716114516321'
+  name: Flirty
+  entities:
+    light.bett:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: xy
+      brightness: 153
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 9.231
+      - 66.275
+      rgb_color:
+      - 255
+      - 112
+      - 86
+      xy_color:
+      - 0.589
+      - 0.329
+      mode: normal
+      dynamics: none
+      friendly_name: Bett
+      supported_features: 40
+      state: 'on'
+    media_player.spotify_florian:
+      source_list:
+      - Echo Schlafzimmer
+      - Echo Büro
+      - Überall
+      - Echo Show Wohnzimmer
+      - Echo Flur
+      friendly_name: Spotify Florian
+      supported_features: 444983
+      volume_level: 0.2
+      media_content_id: spotify:track:6tNQ70jh4OwmPGpYy6R2o9
+      media_content_type: music
+      media_duration: 180.304
+      media_position: 48.048
+      media_position_updated_at: '2024-05-19T10:28:20.169685+00:00'
+      media_title: Beautiful Things
+      media_artist: Benson Boone
+      media_album_name: Beautiful Things
+      media_track: 1
+      media_playlist: Frühlingsgefühle
+      source: Echo Schlafzimmer
+      shuffle: false
+      repeat: 'off'
+      entity_picture: /api/media_player_proxy/media_player.spotify_florian?token=298171f261d0bdd199554c31ecebd387dc686079aa0ad285ae7394e49b746fc4&cache=3b993e4c06b3a728
+      state: playing
+    cover.rollos_schlafzimmer:
+      current_position: 0
+      entity_id:
+      - cover.ikea_rollo_links_schlafzimmer
+      - cover.ikea_rollo_rechts_schlafzimmer
+      friendly_name: Rollos Schlafzimmer
+      supported_features: 15
+      state: closed
+    switch.steckdose_tv_schlafzimmer:
+      device_class: outlet
+      icon: mdi:power
+      friendly_name: Steckdose TV Schlafzimmer
+      state: 'off'
+  icon: mdi:account-heart
+  metadata:
+    media_player.spotifyplus_florian:
+      entity_only: true
+    media_player.spotify_florian:
+      entity_only: true
+    cover.rollos_schlafzimmer:
+      entity_only: true
+- id: '1716114597259'
+  name: Lesen Schlafzimmer
+  entities:
+    light.bett:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: color_temp
+      brightness: 255
+      color_temp_kelvin: 5025
+      color_temp: 199
+      hs_color:
+      - 27.028
+      - 18.905
+      rgb_color:
+      - 255
+      - 228
+      - 206
+      xy_color:
+      - 0.371
+      - 0.349
+      mode: normal
+      dynamics: none
+      friendly_name: Bett
+      supported_features: 40
+      state: 'on'
+    light.stehlampe:
+      effect_list:
+      - None
+      - candle
+      supported_color_modes:
+      - brightness
+      effect: None
+      color_mode: brightness
+      brightness: 128
+      mode: normal
+      dynamics: none
+      friendly_name: Stehlampe
+      supported_features: 44
+      state: 'on'
+  icon: phu:other-reading
+  metadata: {}

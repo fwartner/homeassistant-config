@@ -1,0 +1,11 @@
+action:
+- data: {}
+  service: script.1699263899938
+alias: Speedtest
+condition: []
+description: Alle 2 Minuten
+id: '1699291427370'
+mode: single
+trigger:
+- minutes: /2
+  platform: time_pattern

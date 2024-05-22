@@ -1,0 +1,58 @@
+action:
+- data:
+    message: <speak><audio src="https://minio.srv.wartner.io/homeassistant/NdNhCow5-wecker.mp3"
+      /></speak>
+  service: notify.alexa_media_echo_schlafzimmer
+- data:
+    message: "{{ [   \"Guten Morgen!\",   \"Morgen!\",   \"Auf einen sch\xF6nen Tag!\"\
+      ,   \"Wie hast du geschlafen?\",   \"Na, gut ausgeschlafen?\",   \"Bereit f\xFC\
+      r einen neuen Tag?\",   \"Frisch und munter?\",   \"Hoffe, du hast s\xFC\xDF\
+      \ getr\xE4umt!\",   \"Einen wundersch\xF6nen guten Morgen!\",   \"Es ist Zeit\
+      \ f\xFCr Kaffee!\",   \"Freue mich, dich zu sehen!\",   \"Was f\xFCr ein herrlicher\
+      \ Morgen!\",   \"Bist du auch schon so aufgeregt f\xFCr heute?\",   \"Hast du\
+      \ gut tr\xE4umen k\xF6nnen?\",   \"Guten Morgen, Sonnenschein!\",   \"Los geht\u2019\
+      s, der Tag wartet!\",   \"Sch\xF6n, dass du da bist!\",   \"Guten Morgen, Welt!\"\
+      ,   \"Ich hoffe, du f\xFChlst dich heute gro\xDFartig!\",   \"Lasst uns diesen\
+      \ Tag rocken!\",   \"Ein neuer Morgen, ein neuer Anfang!\",   \"Guten Morgen,\
+      \ lasst uns den Tag beginnen!\" ] | random }}  Es ist {{ states('sensor.time')\
+      \ }}.  Es sind gerade {{ state_attr('weather.forecast_home', 'temperature')\
+      \ | round }} Grad in L\xFCbeck mit einer Luftfeuchtigkeit von {{ state_attr('weather.forecast_home',\
+      \ 'humidity') | round }} Prozent. Der heutige Vorschlag f\xFCr dein Mittagessen\
+      \ w\xE4re leckeres {{ states('sensor.mealie_heutiges_gericht') }}."
+  service: notify.alexa_media_echo_schlafzimmer
+- data:
+    url: https://ha.wartner.cloud/dashboard-nspanel/1
+  service: fully_kiosk.load_url
+  target:
+    device_id: 3738295208de8496912ccf373503aa6c
+- device_id: bb8a84cf268277f3d38063aee6ce698e
+  domain: lock
+  entity_id: 7b91d36587ba4469f26de8a280995404
+  type: unlock
+- if:
+  - condition: state
+    entity_id: input_boolean.auto_wecker
+    state: 'off'
+  then:
+  - data: {}
+    metadata: {}
+    service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.wecker_an_aus
+alias: Wecker
+condition:
+- condition: and
+  conditions:
+  - condition: state
+    entity_id: input_boolean.wecker_an_aus
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.nicht_storen
+    state: 'off'
+description: ''
+id: '1712525174898'
+mode: single
+trigger:
+- at: input_datetime.wecker
+  enabled: true
+  platform: time

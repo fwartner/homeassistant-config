@@ -21,5 +21,7 @@ www/alexa_tts/
 ps52mqtt/
 .ssh/
 custom_components/
+addons_config/
+addons_autoscripts/
 .vscode/
 .history/

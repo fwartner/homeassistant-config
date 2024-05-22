@@ -11,4 +11,4 @@ echo "$COMMIT_MESSAGE"
 
 git add .
 git commit -m "$COMMIT_MESSAGE"
-git push
+git push --set-upstream origin main

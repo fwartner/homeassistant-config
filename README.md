@@ -150,6 +150,7 @@ Number of binary sensors | 214
 - [Fold Entity Row](https://github.com/thomasloven/lovelace-fold-entity-row)
 - [Frigate Card](https://github.com/dermotduffy/frigate-hass-card)
 - [Ha Dashboard](https://github.com/wassy92x/lovelace-ha-dashboard)
+- [Ha Floorplan 🖌🎨   Your Imagination Just Become The New Limit](https://github.com/ExperienceLovelace/ha-floorplan)
 - [Hass Hue Icons](https://github.com/arallsopp/hass-hue-icons)
 - [Header Cards](https://github.com/gadgetchnnel/lovelace-header-cards)
 - [Horizon Card](https://github.com/rejuvenate/lovelace-horizon-card)

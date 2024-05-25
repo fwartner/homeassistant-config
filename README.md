@@ -18,13 +18,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2710
-Number of sensors | 1460
+Number of entities | 2674
+Number of sensors | 1441
 Number of automations | 75
 Number of scripts | 36
 Number of scenes | 29
 Number of zones | 20
-Number of binary sensors | 214
+Number of binary sensors | 204
 
 ## Demo of my dashboard
 ![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)
@@ -210,6 +210,7 @@ Number of binary sensors | 214
 - [Catppuccin Theme](https://github.com/catppuccin/home-assistant)
 - [Mushroom Themes](https://github.com/piitaya/lovelace-mushroom-themes)
 - [Noctis](https://github.com/aFFekopp/noctis)
+- [Rounded Themes](https://github.com/lovelace-rounded/theme)
 
 ***
 

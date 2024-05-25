@@ -1,0 +1,11 @@
+- sensor:
+    - name: "Temperature Feels Like"
+      unit_of_measurement: "°C"
+      unique_id: temp_feels_like
+      state: >
+        {% set E = 'weather.forecast_home' %}
+        {% set T = (state_attr(E, 'temperature') | float) %}
+        {% set K = (state_attr(E, 'wind_speed') | float)/3.6 %}
+        {% set V = (K/1000*60*60) %}
+        {% set A = 13.12 + 0.6215*T - 11.37*(V**0.16) + 0.3965*T*(V**0.16) %}
+        {{ (A) | round(1) }}

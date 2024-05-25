@@ -30,3 +30,14 @@ utility_meter: !include_dir_merge_list custom_configs/utility_meter/
 mqtt:
   sensor: !include_dir_merge_list custom_configs/mqtt/sensor/
 command_line: !include_dir_merge_list custom_configs/command_line/
+
+frontend:
+  themes: !include_dir_merge_named themes/
+  javascript_version: latest
+    - /hacsfiles/hass-hue-icons/hass-hue-icons.js
+    - /local/community/custom-brand-icons/custom-brand-icons.js
+  extra_module_url:
+    - /hacsfiles/hass-hue-icons/hass-hue-icons.js
+    - /hacsfiles/custom-brand-icons/custom-brand-icons.js
+    - /hacsfiles/lovelace-card-mod/card-mod.js
+    - /hacsfiles/Bubble-Card/bubble-pop-up-fix.js

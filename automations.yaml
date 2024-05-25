@@ -3137,5 +3137,24 @@
     at: 06:00:00
     id: eveningOff
   condition: []
-  action: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - eveningOn
+      sequence:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.abend
+        data: {}
+    - conditions:
+      - condition: trigger
+        id:
+        - eveningOff
+      sequence:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.abend
+        data: {}
   mode: single

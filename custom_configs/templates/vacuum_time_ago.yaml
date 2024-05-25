@@ -3,11 +3,13 @@
       unique_id: "vacuum_ago"
       state: ok
       attributes:
-        livingroom: >
+        wohnzimmer: >
           {{ state_attr('script.staubsauger_wohnzimmer_reinigen', 'last_triggered') | relative_time }}
-        bathroom: >
+        badezimmer: >
           {{ state_attr('script.staubsauger_badezimmer_reinigen', 'last_triggered') | relative_time }}
-        hallway: >
+        flur: >
           {{ state_attr('script.staubsauger_flur_reinigen', 'last_triggered') | relative_time }}
-        kitchen: >
+        kuche: >
           {{ state_attr('script.staubsauger_kuche_reinigen', 'last_triggered') | relative_time }}
+        schlafzimmer: >
+          {{ state_attr('script.staubsauger_schlafzimmer_reinigen', 'last_triggered') | relative_time }}

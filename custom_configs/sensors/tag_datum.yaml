@@ -1,0 +1,8 @@
+platform: template
+sensors:
+  day:
+    value_template: "{{ ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'][now().weekday()] }}"
+  date:
+    value_template: "{% set months = ['jan', 'feb', 'märz', 'april', 'mai', 'juni', 'juli', 'aug', 'sept', 'okt', 'november', 'dez'] %} {{ now().day | string + ' ' + months[now().month-1]}}"
+  time:
+    value_template: "{{ now().strftime('%H') }}:{{ now().strftime('%M')}}"

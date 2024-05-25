@@ -1,4 +1,3 @@
-![github_banner_ha-config](https://github.com/fwartner/homeassistant-config/assets/6692500/355988a6-df78-4ab3-9f46-9004a31387e0)
 [![Home Assistant CI](https://github.com/fwartner/homeassistant-config/actions/workflows/check_ha.yml/badge.svg)](https://github.com/fwartner/homeassistant-config/actions/workflows/check_ha.yml)
 
 # Home Assistant Configuration

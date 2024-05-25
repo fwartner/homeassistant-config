@@ -3126,3 +3126,16 @@
       - sensor.openuv_aktueller_uv_wert
     data: {}
   mode: single
+- id: '1716668889277'
+  alias: Toggle Abend / Morgen
+  description: ''
+  trigger:
+  - platform: time
+    at: '20:00:00'
+    id: eveningOn
+  - platform: time
+    at: 06:00:00
+    id: eveningOff
+  condition: []
+  action: []
+  mode: single

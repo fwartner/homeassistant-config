@@ -1,0 +1,13 @@
+action: []
+alias: Toggle Abend / Morgen
+condition: []
+description: ''
+id: '1716668889277'
+mode: single
+trigger:
+- at: '20:00:00'
+  id: eveningOn
+  platform: time
+- at: 06:00:00
+  id: eveningOff
+  platform: time

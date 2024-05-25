@@ -19,13 +19,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2711
-Number of sensors | 1462
+Number of entities | 2707
+Number of sensors | 1457
 Number of automations | 75
 Number of scripts | 36
 Number of scenes | 29
 Number of zones | 20
-Number of binary sensors | 213
+Number of binary sensors | 214
 
 ## Demo of my dashboard
 ![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)

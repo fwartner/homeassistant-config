@@ -1,0 +1,13 @@
+- sensor:
+    - name: "Vacuum Time Ago"
+      unique_id: "vacuum_ago"
+      state: ok
+      attributes:
+        livingroom: >
+          {{ state_attr('script.staubsauger_wohnzimmer_reinigen', 'last_triggered') | relative_time }}
+        bathroom: >
+          {{ state_attr('script.staubsauger_badezimmer_reinigen', 'last_triggered') | relative_time }}
+        hallway: >
+          {{ state_attr('script.staubsauger_flur_reinigen', 'last_triggered') | relative_time }}
+        kitchen: >
+          {{ state_attr('script.staubsauger_kuche_reinigen', 'last_triggered') | relative_time }}

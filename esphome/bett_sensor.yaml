@@ -10,7 +10,7 @@ logger:
 
 api:
   encryption:
-    key: !secret encryption_key
+    key: XhhWPI8IP+dyZYa6mNW//PmEHbRuXcvql9gXz0hlpks=
 
 ota:
   password: !secret ota_password

@@ -18,13 +18,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2685
-Number of sensors | 1444
+Number of entities | 2687
+Number of sensors | 1445
 Number of automations | 76
 Number of scripts | 36
 Number of scenes | 29
 Number of zones | 20
-Number of binary sensors | 203
+Number of binary sensors | 204
 
 ## Demo of my dashboard
 ![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)
@@ -90,6 +90,7 @@ Number of binary sensors | 203
 - [Nuki Lock](https://github.com/kvj/hass_nuki_ng)
 - [Office 365](https://github.com/RogerSelwyn/O365-HomeAssistant)
 - [Openmediavault](https://github.com/tomaae/homeassistant-openmediavault)
+- [Openwakeword Installer](https://github.com/fwartner/ha-openwakeword-installer)
 - [Philips Hue Play Hdmi Sync Box](https://github.com/mvdwetering/huesyncbox)
 - [Powercalc](https://github.com/bramstroker/homeassistant-powercalc)
 - [Pyscript](https://github.com/custom-components/pyscript)

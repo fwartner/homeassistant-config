@@ -90,6 +90,7 @@ Number of binary sensors | 204
 - [Nuki Lock](https://github.com/kvj/hass_nuki_ng)
 - [Office 365](https://github.com/RogerSelwyn/O365-HomeAssistant)
 - [Openmediavault](https://github.com/tomaae/homeassistant-openmediavault)
+- [Openwakeword Installer](https://github.com/fwartner/ha-openwakeword-installer)
 - [Philips Hue Play Hdmi Sync Box](https://github.com/mvdwetering/huesyncbox)
 - [Powercalc](https://github.com/bramstroker/homeassistant-powercalc)
 - [Pyscript](https://github.com/custom-components/pyscript)

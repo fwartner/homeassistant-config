@@ -10,6 +10,10 @@ frigate:
   labels:
     - person
     - cat
+    
+  zones:
+    - flur
+    - wohnzimmer
 
   attempts:
     latest: 10

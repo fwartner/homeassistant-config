@@ -1,0 +1,30 @@
+frigate:
+  url: http://10.182.1.149:5000
+
+  update_sub_labels: true
+  stop_on_match: true
+  min_area: 0
+
+  labels:
+    - person
+
+  attempts:
+    latest: 10
+    snapshot: 10
+    mqtt: true
+    delay: 0
+
+  cameras:
+    - Flur
+    - Wohnzimmer-Ecke
+
+mqtt:
+  host: 10.182.1.101
+  username: homeassistant
+  password: homeassistant
+  client_id: doubletake
+  topics:
+    frigate: frigate/events
+    homeassistant: homeassistant
+    matches: double-take/matches
+    cameras: double-take/cameras

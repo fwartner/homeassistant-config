@@ -9,6 +9,7 @@ frigate:
 
   labels:
     - person
+    - cat
 
   attempts:
     latest: 10

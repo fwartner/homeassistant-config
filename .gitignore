@@ -26,5 +26,6 @@ addons_autoscripts/
 .vscode/
 .history/
 
-double-take/.auth
-/double-take/.auth
+double-take/
+double-take
+/double-take/

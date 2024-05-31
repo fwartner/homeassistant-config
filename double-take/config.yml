@@ -23,8 +23,8 @@ frigate:
 
 mqtt:
   host: 10.182.1.101
-  username: homeassistant
-  password: homeassistant
+  username: !secret mqtt_username
+  password: !secret mqtt_password
   client_id: doubletake
   topics:
     frigate: frigate/events

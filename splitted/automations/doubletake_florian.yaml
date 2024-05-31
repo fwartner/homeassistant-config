@@ -23,8 +23,13 @@ action:
   service: notify.mobile_app_iphone_von_florian
 alias: Doubletake Florian
 condition:
-- condition: template
-  value_template: '{{ trigger.to_state.state != trigger.from_state.state }}'
+- condition: and
+  conditions:
+  - condition: template
+    value_template: '{{ trigger.to_state.state != trigger.from_state.state }}'
+  - below: 1
+    condition: numeric_state
+    entity_id: sensor.people_home
 description: ''
 id: '1717147835711'
 max: 10

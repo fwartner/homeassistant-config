@@ -25,3 +25,5 @@ addons_config/
 addons_autoscripts/
 .vscode/
 .history/
+
+double-take/.auth

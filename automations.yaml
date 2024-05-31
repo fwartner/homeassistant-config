@@ -3167,8 +3167,13 @@
   - platform: state
     entity_id: sensor.double_take_unknown
   condition:
-  - condition: template
-    value_template: '{{ trigger.to_state.state != trigger.from_state.state }}'
+  - condition: and
+    conditions:
+    - condition: template
+      value_template: '{{ trigger.to_state.state != trigger.from_state.state }}'
+    - condition: numeric_state
+      entity_id: sensor.people_home
+      below: 1
   action:
   - service: notify.mobile_app_iphone_von_florian
     data:

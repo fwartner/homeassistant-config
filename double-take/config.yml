@@ -17,8 +17,8 @@ frigate:
     delay: 0
 
   cameras:
-    - Flur
-    - Wohnzimmer-Ecke
+    - flur
+    - wohnzimmer_ecke
 
 mqtt:
   host: 10.182.1.101
@@ -37,5 +37,5 @@ detectors:
     timeout: 15
     opencv_face_required: false
     cameras:
-    - Flur
-    - Wohnzimmer-Eck
+    - flur
+    - wohnzimmer_ecke

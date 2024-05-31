@@ -31,13 +31,9 @@ mqtt:
     
 detectors:
   deepstack:
-    url:
-    key:
-    # number of seconds before the request times out and is aborted
+    url: http://10.182.1.241:5001
     timeout: 15
-    # require opencv to find a face before processing with detector
     opencv_face_required: false
-    # only process images from specific cameras, if omitted then all cameras will be processed
-    # cameras:
-    #   - front-door
-    #   - garage
+    cameras:
+    - Flur
+    - Wohnzimmer-Eck

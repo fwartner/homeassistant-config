@@ -18,7 +18,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2738
+Number of entities | 2739
 Number of sensors | 1483
 Number of automations | 76
 Number of scripts | 36
@@ -36,6 +36,7 @@ Number of binary sensors | 207
 - AirCast
 - AirSonos
 - Binance Trading Bot
+- DeepStack (CPU)
 - Double Take
 - ESPHome
 - Home Assistant Google Drive Backup

@@ -3183,14 +3183,14 @@
         sec\n{% endif %}"
       data:
         attachment:
-          url: "{% if trigger.to_state.attributes.match is defined %}\n  http://c7657554-double-take/api/storage/matches/{{trigger.to_state.attributes.match.filename}}?box=true&token={{trigger.to_state.attributes.token}}\n{%
-            elif trigger.to_state.attributes.unknown is defined %}\n   http://c7657554-double-take/api/storage/matches/{{trigger.to_state.attributes.unknown.filename}}?box=true&token={{trigger.to_state.attributes.token}}\n{%
+          url: "{% if trigger.to_state.attributes.match is defined %}\n  https://doubletake.wartner.cloud/api/storage/matches/{{trigger.to_state.attributes.match.filename}}?box=true&token={{trigger.to_state.attributes.token}}\n{%
+            elif trigger.to_state.attributes.unknown is defined %}\n   https://doubletake.wartner.cloud/api/storage/matches/{{trigger.to_state.attributes.unknown.filename}}?box=true&token={{trigger.to_state.attributes.token}}\n{%
             endif %}"
         actions:
         - action: URI
           title: View Image
-          uri: "{% if trigger.to_state.attributes.match is defined %}\n  http://c7657554-double-take/api/storage/matches/{{trigger.to_state.attributes.match.filename}}?box=true&token={{trigger.to_state.attributes.token}}\n{%
-            elif trigger.to_state.attributes.unknown is defined %}\n   http://c7657554-double-take/api/storage/matches/{{trigger.to_state.attributes.unknown.filename}}?box=true&token={{trigger.to_state.attributes.token}}\n{%
+          uri: "{% if trigger.to_state.attributes.match is defined %}\n  https://doubletake.wartner.cloud/api/storage/matches/{{trigger.to_state.attributes.match.filename}}?box=true&token={{trigger.to_state.attributes.token}}\n{%
+            elif trigger.to_state.attributes.unknown is defined %}\n   https://doubletake.wartner.cloud/api/storage/matches/{{trigger.to_state.attributes.unknown.filename}}?box=true&token={{trigger.to_state.attributes.token}}\n{%
             endif %}"
   mode: parallel
   max: 10

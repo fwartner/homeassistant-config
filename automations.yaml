@@ -35,8 +35,11 @@
     input:
       action_sensor: sensor.aqara_taster_schlafzimmer_action
       double_action:
-      - service: script.3_minuten_bettzeit
-        data: {}
+      - parallel:
+        - service: script.3_minuten_bettzeit
+          data: {}
+        - service: script.10_minuten_boost_wohnzimmer
+          data: {}
       single_action:
       - if:
         - condition: or
@@ -219,6 +222,7 @@
     - fri
     - sat
     - sun
+    after: 09:00:00
   action:
   - choose:
     - conditions:

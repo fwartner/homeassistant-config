@@ -3,10 +3,10 @@
   name: "Apple Watch von Florian Presence"
   state_topic: "espresense/devices/fe4c883e4c700511e3a937bf6c17fe5a"
   timeout: 10
-  away_timeout: 120
+  away_timeout: 30
 - platform: mqtt_room
   device_id: "apple:1007:11-12"
   name: "iPhone von Florian Presence"
   state_topic: "espresense/devices/apple:1007:11-12"
   timeout: 10
-  away_timeout: 120
+  away_timeout: 30

@@ -1,5 +1,0 @@
-template:
-  - sensor:
-    - name: "Date and time"
-      state: "{{ as_timestamp(states('sensor.date_time_iso')) | timestamp_custom('%A %B %-d, %I:%M %p') }}"
-      icon: "mdi:calendar-clock"

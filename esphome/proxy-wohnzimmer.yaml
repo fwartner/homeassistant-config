@@ -14,7 +14,7 @@ api:
     key: "bZb4jouiuIrl3KuPAsGIShm73a7fIFcR7kD7rOok+xE="
 
 ota:
-  password: "a8b6c7eca92656c1d0c999eafe0df828"
+  password: !secret ota_password
 
 wifi:
   ssid: !secret wifi_ssid
@@ -37,7 +37,7 @@ bluetooth_proxy:
 
 binary_sensor:
   - platform: ble_presence
-    mac_address: AC:37:43:77:5F:4C
-    name: "ESP32 BLE Presence Google Home Mini"
+    mac_address: 4C:E6:C0:F2:D4:03
+    name: "iPhone von Florian BLE"
 
     

@@ -1,18 +1,36 @@
 logbook:
-  include:
-    domains:
-      - climate
-      - light
-      - media_player
-      - switch
-      - person
-      - sensor
-      - automation
-      - zone
   exclude:
     domains:
-      - sun
+      - alarm_control_panel
+      - alert
+      - automation
+      - binary_sensor
+      - button
+      - calendar
+      - climate
+      - device_tracker
+      - fan
       - group
+      - input_boolean
+      - input_button
+      - input_datetime
+      - input_number
+      - input_select
+      - input_text
+      - light
+      - media_player
+      - number
+      - person
+      - schedule
+      - script
+      - select
+      - sensor
+      - switch
+      - timer
       - weather
+      - zone
+
     entities:
       - sensor.date
+      - sensor.date_time
+      - sensor.time

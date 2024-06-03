@@ -18,7 +18,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2792
+Number of entities | 2793
 Number of sensors | 1488
 Number of automations | 77
 Number of scripts | 36
@@ -39,6 +39,7 @@ Number of binary sensors | 238
 - DeepStack (CPU)
 - Double Take
 - ESPHome
+- Fusion
 - Home Assistant Google Drive Backup
 - Matter Server
 - Music Assistant BETA

@@ -1,6 +1,7 @@
 http:
   use_x_forwarded_for: true
   trusted_proxies:
+    - 10.182.1.23
     - 10.182.1.224
     - 10.182.1.103
     - 90.187.195.137

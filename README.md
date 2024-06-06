@@ -18,7 +18,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2794
+Number of entities | 2793
 Number of sensors | 1486
 Number of automations | 77
 Number of scripts | 36
@@ -35,6 +35,7 @@ Number of binary sensors | 237
 - Advanced SSH & Web Terminal
 - AirCast
 - AirSonos
+- Assist Microphone
 - DeepStack (CPU)
 - Double Take
 - ESPHome

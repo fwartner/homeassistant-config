@@ -35,7 +35,6 @@ Number of binary sensors | 237
 - Advanced SSH & Web Terminal
 - AirCast
 - AirSonos
-- Binance Trading Bot
 - DeepStack (CPU)
 - Double Take
 - ESPHome

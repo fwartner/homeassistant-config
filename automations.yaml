@@ -355,9 +355,14 @@
       minutes: 2
       seconds: 0
   condition:
-  - condition: state
-    entity_id: input_boolean.zu_warm
-    state: 'off'
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.zu_warm
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.guestmode
+      state: 'off'
   action:
   - choose:
     - conditions:

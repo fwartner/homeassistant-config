@@ -25,9 +25,14 @@ action:
     sequence: []
 alias: "Rollos schlie\xDFen wenn zu hell"
 condition:
-- condition: state
-  entity_id: input_boolean.zu_warm
-  state: 'off'
+- condition: and
+  conditions:
+  - condition: state
+    entity_id: input_boolean.zu_warm
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.guestmode
+    state: 'off'
 description: ''
 id: '1691320563612'
 mode: single

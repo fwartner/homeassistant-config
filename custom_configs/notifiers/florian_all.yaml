@@ -2,5 +2,5 @@
 platform: group
 name: florian_all
 services:
-  - service: mobile_app_iphone_
-  - service: mobile_app_tbiphone15promax
+  - service: mobile_app_iphone_von_florian
+  - service: mobile_app_macbook_pro_von_florian

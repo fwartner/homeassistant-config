@@ -24,6 +24,11 @@ ignore: |
   storage-lovelace-ui.yaml
   scripts.yaml
   splitted/
+  scenes.yaml
+  double-take/
+  templates/
+  .github/
+  
 rules:
   braces:
     level: error

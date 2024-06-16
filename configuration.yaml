@@ -1,4 +1,4 @@
---
+---
 homeassistant:
   packages: !include_dir_named integrations
   time_zone: Europe/Berlin

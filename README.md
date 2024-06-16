@@ -1,5 +1,4 @@
-[![Home Assistant CI](https://github.com/fwartner/homeassistant-config/actions/workflows/check_ha.yml/badge.svg)](https://github.com/fwartner/homeassistant-config/actions/workflows/check_ha.yml)
-
+[![Home Assistant CI](https://github.com/fwartner/homeassistant-config/actions/workflows/homeassistant.yaml/badge.svg)](https://github.com/fwartner/homeassistant-config/actions/workflows/homeassistant.yaml)
 # Home Assistant Configuration
 My personal home assistant configuation files.
 

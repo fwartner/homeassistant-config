@@ -675,3 +675,13 @@ store_mqtt_sensor:
           topic: custom/sensor/{{ name }}/attributes
           payload: '{{ attributes | default("none") }}'
           retain: true
+wassertank_aufgefullt_2:
+  alias: Wassertank Aufgefüllt
+  sequence:
+  - service: input_datetime.set_datetime
+    data:
+      datetime: '{{ utcnow() | as_datetime }}'
+    target:
+      entity_id: input_datetime.wassertank_aufgefullt
+  description: ''
+  icon: mdi:water

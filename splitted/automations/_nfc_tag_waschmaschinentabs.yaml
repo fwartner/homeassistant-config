@@ -1,0 +1,14 @@
+action:
+- data: {}
+  service: counter.decrement
+  target:
+    entity_id:
+    - counter.waschmaschinentabs
+alias: '[NFC Tag] Waschmaschinentabs'
+condition: []
+description: ''
+id: '1718549485698'
+mode: single
+trigger:
+- platform: tag
+  tag_id: waschmaschinentabs

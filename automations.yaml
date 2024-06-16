@@ -3173,3 +3173,31 @@
   - service: timer.cancel
     data:
       entity_id: timer.z2m_permit_join
+- id: '1718549422662'
+  alias: '[NFC Tag] Staubsauger Wassertank'
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: staubsauger_wassertank
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.staubsauger_wassertank
+  mode: single
+- id: '1718549485698'
+  alias: '[NFC Tag] Waschmaschinentabs'
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: waschmaschinentabs
+  condition: []
+  action:
+  - service: counter.decrement
+    target:
+      entity_id:
+      - counter.waschmaschinentabs
+    data: {}
+  mode: single

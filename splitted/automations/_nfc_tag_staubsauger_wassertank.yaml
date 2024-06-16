@@ -1,0 +1,14 @@
+action:
+- data: {}
+  metadata: {}
+  service: input_boolean.turn_off
+  target:
+    entity_id: input_boolean.staubsauger_wassertank
+alias: '[NFC Tag] Staubsauger Wassertank'
+condition: []
+description: ''
+id: '1718549422662'
+mode: single
+trigger:
+- platform: tag
+  tag_id: staubsauger_wassertank

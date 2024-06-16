@@ -1,0 +1,15 @@
+action:
+- data:
+    item: "Sp\xFClmaschinentabs"
+  metadata: {}
+  service: todo.add_item
+  target:
+    entity_id: todo.einkaufsliste
+alias: "[NFC Tag] Sp\xFClmaschinentabs Einkaufsliste"
+condition: []
+description: ''
+id: '1718561731942'
+mode: single
+trigger:
+- platform: tag
+  tag_id: spuelmaschinentabs

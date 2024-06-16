@@ -1,0 +1,15 @@
+action:
+- data:
+    item: Kaffeebohnen
+  metadata: {}
+  service: todo.add_item
+  target:
+    entity_id: todo.einkaufsliste
+alias: '[NFC Tag] Kaffeebohnen Einkaufsliste'
+condition: []
+description: ''
+id: '1718561693469'
+mode: single
+trigger:
+- platform: tag
+  tag_id: kaffeebohnen

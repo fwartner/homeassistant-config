@@ -1,0 +1,15 @@
+action:
+- data:
+    item: Waschmaschinentabs
+  metadata: {}
+  service: todo.add_item
+  target:
+    entity_id: todo.einkaufsliste
+alias: '[NFC Tag] Waschmaschinentabs Einkaufsliste'
+condition: []
+description: ''
+id: '1718561772346'
+mode: single
+trigger:
+- platform: tag
+  tag_id: waschmaschinentabs

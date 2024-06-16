@@ -3291,3 +3291,48 @@
               title: Zur Einkaufsliste
               uri: /todo?entity_id=todo.einkaufsliste
   mode: single
+- id: '1718561693469'
+  alias: '[NFC Tag] Kaffeebohnen Einkaufsliste'
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: kaffeebohnen
+  condition: []
+  action:
+  - service: todo.add_item
+    metadata: {}
+    data:
+      item: Kaffeebohnen
+    target:
+      entity_id: todo.einkaufsliste
+  mode: single
+- id: '1718561731942'
+  alias: '[NFC Tag] Spülmaschinentabs Einkaufsliste'
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: spuelmaschinentabs
+  condition: []
+  action:
+  - service: todo.add_item
+    metadata: {}
+    data:
+      item: Spülmaschinentabs
+    target:
+      entity_id: todo.einkaufsliste
+  mode: single
+- id: '1718561772346'
+  alias: '[NFC Tag] Waschmaschinentabs Einkaufsliste'
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: waschmaschinentabs
+  condition: []
+  action:
+  - service: todo.add_item
+    metadata: {}
+    data:
+      item: Waschmaschinentabs
+    target:
+      entity_id: todo.einkaufsliste
+  mode: single

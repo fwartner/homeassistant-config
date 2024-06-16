@@ -1,3 +1,4 @@
+---
 platform: threshold
 name: Updater Addons
 entity_id: sensor.supervisor_updates

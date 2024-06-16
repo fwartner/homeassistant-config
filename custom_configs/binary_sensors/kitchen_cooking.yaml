@@ -1,3 +1,4 @@
+---
 - platform: bayesian
   name: Kochen
   prior: 0

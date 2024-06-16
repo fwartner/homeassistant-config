@@ -1,3 +1,4 @@
+---
 - platform: bayesian
   name: TV im Wohnzimmer
   prior: 0

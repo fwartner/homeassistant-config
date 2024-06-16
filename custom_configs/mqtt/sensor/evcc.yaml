@@ -1,3 +1,4 @@
+---
 - name: "EVCC Grid Power"
   unique_id: evcc_grid_power
   state_topic: "evcc/site/gridPower"

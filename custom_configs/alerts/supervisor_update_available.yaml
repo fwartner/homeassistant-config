@@ -1,3 +1,4 @@
+---
 supervisor_update_available:
   name: Der Supervisor hat ein Update
   entity_id: binary_sensor.updater_supervisor

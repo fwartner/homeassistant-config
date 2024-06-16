@@ -1,3 +1,4 @@
+---
 - resource: http://reddit.com/user/wartnerio/about.json
   sensor:
     name: reddit_profile_wartnerio

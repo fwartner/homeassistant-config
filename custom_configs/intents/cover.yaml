@@ -1,3 +1,4 @@
+---
 OpenCoverBalkonWohnzimmerIntent:
   action:
     service: cover.open_cover

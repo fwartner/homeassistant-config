@@ -1,3 +1,4 @@
+---
 blueprint:
   name: Awtrix random effect
   description: This blueprint allows you to select the effects, which should be randomly displayed on your Awtrix light

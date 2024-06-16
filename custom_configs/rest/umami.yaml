@@ -1,3 +1,4 @@
+---
 - resource: "https://umami-tosc08s.srv.wartner.io/api/websites/3d084592-54d1-4670-b0ba-6835ddd04914/stats"
   headers:
     Authorization: !secret umami_token

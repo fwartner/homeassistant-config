@@ -1,3 +1,4 @@
+---
 - name: Home Assistant
   port: 21068
   filter:

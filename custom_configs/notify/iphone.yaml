@@ -1,3 +1,4 @@
+---
 notify:
   - platform: group
     name: all_iphones

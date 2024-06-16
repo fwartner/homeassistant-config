@@ -1,0 +1,15 @@
+---
+- platform: feedparser
+  name: Heise News
+  feed_url: "https://www.heise.de/rss/heise.rdf"
+  date_format: "%a, %d %b %Y %H:%M:%S %Z"
+  scan_interval:
+    hours: 3
+  inclusions:
+    - title
+  exclusions:
+    - link
+    - description
+    - image
+    - published
+  show_topn: 1

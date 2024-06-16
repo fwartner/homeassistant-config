@@ -3354,27 +3354,23 @@
   alias: Klo Besetzt
   description: ''
   trigger:
-  - type: value
-    platform: device
-    device_id: c694224843b355e2fe902f8f0b1ca01f
-    entity_id: 640c9ed86b559b09fa537ed55c846ee2
-    domain: sensor
-    above: 10
-    id: kloBesetztAn
-  - type: value
-    platform: device
-    device_id: c694224843b355e2fe902f8f0b1ca01f
-    entity_id: 640c9ed86b559b09fa537ed55c846ee2
-    domain: sensor
-    id: kloBesetztAus
-    below: 10
+  - platform: numeric_state
+    entity_id:
+    - sensor.aqara_vibrate_katzenklo_angle_y
+    id: kloAn
+    above: -5
+  - platform: numeric_state
+    entity_id:
+    - sensor.aqara_vibrate_katzenklo_angle_y
+    below: -5
+    id: kloAus
   condition: []
   action:
   - choose:
     - conditions:
       - condition: trigger
         id:
-        - kloBesetztAn
+        - kloAn
       sequence:
       - service: input_boolean.turn_on
         metadata: {}
@@ -3384,7 +3380,7 @@
     - conditions:
       - condition: trigger
         id:
-        - kloBesetztAus
+        - kloAus
       sequence:
       - service: input_boolean.turn_off
         metadata: {}

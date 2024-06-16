@@ -3,7 +3,7 @@ action:
   - conditions:
     - condition: trigger
       id:
-      - kloBesetztAn
+      - kloAn
     sequence:
     - data: {}
       metadata: {}
@@ -13,7 +13,7 @@ action:
   - conditions:
     - condition: trigger
       id:
-      - kloBesetztAus
+      - kloAus
     sequence:
     - data: {}
       metadata: {}
@@ -26,17 +26,13 @@ description: ''
 id: '1718565264616'
 mode: single
 trigger:
-- above: 10
-  device_id: c694224843b355e2fe902f8f0b1ca01f
-  domain: sensor
-  entity_id: 640c9ed86b559b09fa537ed55c846ee2
-  id: kloBesetztAn
-  platform: device
-  type: value
-- below: 10
-  device_id: c694224843b355e2fe902f8f0b1ca01f
-  domain: sensor
-  entity_id: 640c9ed86b559b09fa537ed55c846ee2
-  id: kloBesetztAus
-  platform: device
-  type: value
+- above: -5
+  entity_id:
+  - sensor.aqara_vibrate_katzenklo_angle_y
+  id: kloAn
+  platform: numeric_state
+- below: -5
+  entity_id:
+  - sensor.aqara_vibrate_katzenklo_angle_y
+  id: kloAus
+  platform: numeric_state

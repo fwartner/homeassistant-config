@@ -9,7 +9,6 @@
 - name: "EVCC PV Power"
   unique_id: evcc_pv_power
   state_topic: "evcc/site/pvPower"
-  #value_template: "{{ value | round(1) }}"
   unit_of_measurement: W
   device_class: power
   availability_topic: "evcc/status"

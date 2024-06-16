@@ -17,13 +17,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2904
-Number of sensors | 1493
+Number of entities | 2872
+Number of sensors | 1506
 Number of automations | 83
 Number of scripts | 36
 Number of scenes | 29
 Number of zones | 20
-Number of binary sensors | 241
+Number of binary sensors | 240
 
 ## Demo of my dashboard
 ![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)
@@ -68,6 +68,7 @@ Number of binary sensors | 241
 - [Blitzortung.Org Lightning Detector](https://github.com/mrk-its/homeassistant-blitzortung)
 - [Brewdog](https://github.com/custom-components/brewdog)
 - [Browser Mod](https://github.com/thomasloven/hass-browser_mod)
+- [Cupertino Icons](https://github.com/menahishayan/HomeAssistant-Cupertino-Icons)
 - [Daily Schedule](https://github.com/amitfin/daily_schedule)
 - [Daily Sensor](https://github.com/jeroenterheerdt/HADailySensor)
 - [Deutsche Bahn](https://github.com/FaserF/ha-deutschebahn)
@@ -87,8 +88,8 @@ Number of binary sensors | 241
 - [Hoymiles](https://github.com/suaveolent/ha-hoymiles-wifi)
 - [Hvac Group](https://github.com/tetele/hvac_group)
 - [Icloud3 V3 Idevice Tracker](https://github.com/gcobb321/icloud3)
-- [Local Llm Conversation](https://github.com/acon96/home-llm)
 - [Local Llm Conversation](https://github.com/fixtse/home-llm)
+- [Local Llm Conversation](https://github.com/acon96/home-llm)
 - [Mail And Packages](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages)
 - [Music Assistant](https://github.com/music-assistant/hass-music-assistant)
 - [Network Scanner](https://github.com/parvez/network_scanner)

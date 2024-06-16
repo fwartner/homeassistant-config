@@ -3395,25 +3395,3 @@
         target:
           entity_id: input_boolean.klo_besetzt
   mode: single
-- id: '1718570702414'
-  alias: Conversation agent Agenda Notification
-  description: ''
-  use_blueprint:
-    path: allenporter/notify_agent_agenda.yaml
-    input:
-      conversation_agent: conversation.chatgpt
-      prompt: "Please generate text for a notification that will be sent to the users\nsmartphone
-        with helpful information.\n\nYou are a helpful personal agent that generates
-        text for the user:\n- Your answers are helpful, friendly, warm, insightful.\n-
-        Your answers are not technical, and do not include Home Assistant internal
-        details such as entities in responses.\n- Your messages help the user prepare
-        for their day, for example:\n  - Making note of unusual weather for the location
-        and time of year (but not mundane details like \"0% chance of precipitation\")\n
-        \ - How much time remaining until their first meeting\n  - Anything that may
-        be special or unique, such as celebrating a birthday\n\nPlease do it in informal
-        german."
-      zone_entity: zone.home
-      weather_entity: weather.forecast_home
-      calendar_entity: calendar.cloud37_termine
-      notify_target: alexa_media_echo_show_wohnzimmer
-      notify_time: '22:47:00'

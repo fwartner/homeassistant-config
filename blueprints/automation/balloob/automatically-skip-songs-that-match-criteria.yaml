@@ -1,0 +1,57 @@
+blueprint:
+  name: Media Player song skipper
+  description: 'Automatically skip certain songs on selected media player.
+
+    Note that this can get expensive depending on the used model and the amount of
+    music you listen to.
+
+    Inspired by https://www.reddit.com/r/homeautomation/comments/1at0re0/out_of_my_42_automations_this_is_my_best_one_by/
+
+    '
+  domain: automation
+  input:
+    media_player:
+      name: Media players
+      description: The media players to monitor
+      selector:
+        entity:
+          multiple: true
+          filter:
+          - domain:
+            - media_player
+    conversation_agent:
+      name: AI Agent
+      description: The AI agent to test if the song matches the criteria. Does not
+        require API access.
+      selector:
+        conversation_agent: {}
+    criteria:
+      name: Song criteria
+      description: Any song matching this criteria will be skipped
+      default: country
+      selector:
+        text: {}
+  source_url: https://community.home-assistant.io/t/automatically-skip-songs-that-match-criteria/736522
+mode: single
+max_exceeded: silent
+trigger:
+- platform: state
+  entity_id: !input media_player
+condition: '{{ trigger.to_state.state == ''playing'' }}'
+action:
+- variables:
+    criteria: !input criteria
+- service: conversation.process
+  data:
+    agent_id: !input conversation_agent
+    text: "You are passed the state of a media player and have to answer \"yes\" if
+      the song is {{ criteria }}:\n  \n{{ trigger.to_state }}"
+  response_variable: response
+- if:
+  - condition: template
+    value_template: '{{ response.response.speech.plain.speech.lower().startswith("yes")
+      }}'
+  then:
+  - service: media_player.media_next_track
+    target:
+      entity_id: '{{ trigger.entity_id }}'

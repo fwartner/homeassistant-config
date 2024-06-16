@@ -17,8 +17,8 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2935
-Number of sensors | 1541
+Number of entities | 2942
+Number of sensors | 1548
 Number of automations | 93
 Number of scripts | 37
 Number of scenes | 29
@@ -77,6 +77,7 @@ Number of binary sensors | 260
 - [Energyscore](https://github.com/knudsvik/EnergyScore)
 - [Expose Camera Stream Source](https://github.com/felipecrs/hass-expose-camera-stream-source)
 - [Extended Openai Conversation](https://github.com/jekalmin/extended_openai_conversation)
+- [Feedparser](https://github.com/custom-components/feedparser)
 - [Flightradar24](https://github.com/AlexandrErohin/home-assistant-flightradar24)
 - [Fontawesome](https://github.com/thomasloven/hass-fontawesome)
 - [Frigate](https://github.com/blakeblackshear/frigate-hass-integration)

@@ -1,0 +1,15 @@
+---
+- platform: feedparser
+  name: ntv Politik
+  feed_url: "https://www.n-tv.de/politik/rss"
+  date_format: "%a, %d %b %Y %H:%M:%S %Z"
+  scan_interval:
+    hours: 3
+  inclusions:
+    - title
+  exclusions:
+    - link
+    - description
+    - image
+    - published
+  show_topn: 1

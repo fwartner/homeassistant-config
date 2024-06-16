@@ -1,0 +1,85 @@
+---
+name: Home Assistant CI
+
+# yamllint disable-line rule:truthy
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 12 * * *
+
+jobs:
+  yamllint:
+    name: 🧹 YAML Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⤵️ Check out code from GitHub
+        uses: actions/checkout@v4.1.5
+      - name: 🚀 Run yamllint
+        uses: frenck/action-yamllint@v1.5.0
+        with:
+          config: ./.yamllint
+
+  remarklint:
+    name: 🧹 Remark Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⤵️ Check out code from GitHub
+        uses: actions/checkout@v4.1.5
+      - name: 🚀 Run Remark Lint
+        uses: "docker://pipelinecomponents/remark-lint:latest"
+        continue-on-error: true
+        with:
+          args: "remark --no-stdout --color --frail --use preset-lint-recommended ."
+
+  version_env:
+    name: Get Installed Version for Testing
+    runs-on: ubuntu-latest
+    outputs:
+      current_version: ${{ steps.currentver.outputs.current_version }}
+    steps:
+      - name: Get config from GitHub
+        uses: actions/checkout@v4.1.5
+      - name: Get Installed Version from .HA_VERSION
+        id: currentver
+        run: |
+          HA_VERSION=$(<.HA_VERSION)
+          echo $HA_VERSION
+          echo "{current_version}={$HA_VERSION}" >> $GITHUB_OUTPUT
+
+  home_assistant:
+    name: "🏠 Home Assistant Core ${{ matrix.version }} Configuration Check"
+    runs-on: ubuntu-latest
+    needs: [yamllint, remarklint, version_env]
+    outputs:
+      config_location: ${{ steps.currlocn.outputs.config_location }}
+    strategy:
+      matrix:
+        version: [
+            "${{needs.version_env.outputs.current_version}}",
+            "stable",
+            "beta",
+            "dev",
+          ]
+    steps:
+      - name: ⤵️  Check out configuration from GitHub
+        uses: actions/checkout@v4.1.5
+      - name: ➕  Create dummy files
+        run: |
+          touch home-assistant.log
+      - name: Move files
+        run: |
+          (mkdir config && mv -f -v * config && cd config) || true
+      - name: Config Locn
+        id: currlocn
+        run: |
+          cd config
+          echo $PWD
+          echo "{config_location}={$PWD}" >> $GITHUB_OUTPUT
+      - name: 🚀  Run Home Assistant Configuration Check
+        uses: frenck/action-home-assistant@v1.4
+        with:
+          path: "./config"
+          secrets: fake_secrets.yaml
+          version: "${{ matrix.version }}"

@@ -66,28 +66,6 @@ polly_futtern:
     option: START
   mode: single
   icon: mdi:cat
-anni_musik:
-  alias: Anni Musik
-  sequence:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.nest_kuche
-    data:
-      media_content_id: spotify://71c55d65e0fb83ea97ebfd495afe5ed5/spotify:playlist:0cxlQu2hr6yFYZXds7HK6h
-      media_content_type: spotify://playlist
-    metadata:
-      title: "Musik zum aufstehen \U0001F31E"
-      thumbnail: https://i.scdn.co/image/ab67706c0000bebb4c8c729ddff49692ef888a62
-      media_class: playlist
-      children_media_class: track
-      navigateIds:
-      - {}
-      - media_content_type: spotify://library
-        media_content_id: spotify://71c55d65e0fb83ea97ebfd495afe5ed5
-      - media_content_type: spotify://current_user_playlists
-        media_content_id: spotify://71c55d65e0fb83ea97ebfd495afe5ed5/current_user_playlists
-  mode: single
-  icon: mdi:account-music
 zahneputzen:
   alias: Zähneputzen
   sequence:
@@ -685,3 +663,28 @@ wassertank_aufgefullt_2:
       date: '{{ states(''sensor.date'') }}'
   description: ''
   icon: mdi:water
+briefing:
+  alias: Briefing
+  sequence:
+  - service: conversation.process
+    metadata: {}
+    data:
+      language: german
+      agent_id: conversation.chatgpt
+      text: 'Acting as a personal assistant, summarize the following information in
+        an concise and humourous manner. Try to make sure that the information fits
+        in 8 sentences. It''s {{ as_timestamp(now()) | timestamp_custom(''%H:%M'')
+        }} Currently {{ states.weather.openweathermap }}°C outside, high of {{ states.sensor.weather_temp_high.state
+        }}°C and a low of {{ states.sensor.weather_temp_low.state}}°C   The current
+        headlines are:  {% for items in expand(states.feedreader) %}   {{ items }}
+        {%- endfor -%}  Calendar for today: {% for cal_events in expand(states.calendar.florian_wartner_io)
+        %} {% if cal_events.attributes.all_day == False %} {{ as_timestamp(cal_events.attributes.start_time)
+        | timestamp_custom(''%H:%M'') }} @ {{ cal_events.attributes.message }} {%
+        endif %} {%- endfor -%}'
+    response_variable: briefing_answer
+  - service: notify.alexa_media_echo_show_wohnzimmer
+    metadata: {}
+    data: '{{ briefing_answer }}'
+  fields: {}
+  description: ''
+  icon: mdi:newspaper

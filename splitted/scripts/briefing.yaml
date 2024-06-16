@@ -1,0 +1,25 @@
+briefing:
+  alias: Briefing
+  description: ''
+  fields: {}
+  icon: mdi:newspaper
+  sequence:
+  - data:
+      agent_id: conversation.chatgpt
+      language: german
+      text: "Acting as a personal assistant, summarize the following information in\
+        \ an concise and humourous manner. Try to make sure that the information fits\
+        \ in 8 sentences. It's {{ as_timestamp(now()) | timestamp_custom('%H:%M')\
+        \ }} Currently {{ states.weather.openweathermap }}\xB0C outside, high of {{\
+        \ states.sensor.weather_temp_high.state }}\xB0C and a low of {{ states.sensor.weather_temp_low.state}}\xB0\
+        C   The current headlines are:  {% for items in expand(states.feedreader)\
+        \ %}   {{ items }} {%- endfor -%}  Calendar for today: {% for cal_events in\
+        \ expand(states.calendar.florian_wartner_io) %} {% if cal_events.attributes.all_day\
+        \ == False %} {{ as_timestamp(cal_events.attributes.start_time) | timestamp_custom('%H:%M')\
+        \ }} @ {{ cal_events.attributes.message }} {% endif %} {%- endfor -%}"
+    metadata: {}
+    response_variable: briefing_answer
+    service: conversation.process
+  - data: '{{ briefing_answer }}'
+    metadata: {}
+    service: notify.alexa_media_echo_show_wohnzimmer

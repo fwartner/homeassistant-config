@@ -1730,6 +1730,18 @@
         device_id: 3c45a70c459e2e66b166dca5891180c6
         entity_id: eb4d372310f986822d024a05f2007c03
         domain: switch
+      - service: notify.mobile_app_iphone_von_florian
+        data:
+          title: "\U0001F9FA Wäsche ist fertig"
+          message: '{{ [                 "Waschmaschine ist fertig, bitte ausräumen!",                 "Die
+            Wäsche ist fertig, bitte aus der Maschine holen.",                 "Zeit,
+            die Waschmaschine auszuräumen!",                 "Waschmaschine ausräumen
+            nicht vergessen!",                 "Die Wäsche wartet, bitte die Maschine
+            leeren.",                 "Hol die Wäsche aus der Waschmaschine!",                 "Die
+            Waschmaschine hat ihren Job getan, jetzt bist du dran.",                 "Bitte
+            Waschmaschine ausräumen, die Wäsche ist fertig.",                 "Wäsche
+            aus der Waschmaschine nehmen nicht vergessen!",                 "Waschmaschine
+            ist fertig, Wäsche rausnehmen!"                 ] | random }}'
     - conditions:
       - condition: trigger
         id:
@@ -1739,6 +1751,19 @@
         device_id: 4a05cd597a16be48ba279a90d1ba5c18
         entity_id: 6a36fb96527589eaed3672a9978a3393
         domain: switch
+      - service: notify.mobile_app_iphone_von_florian
+        data:
+          title: "\U0001F37D️ Geschirr ist sauber"
+          message: "{{ [\n            \"Spülmaschine ist fertig, bitte ausräumen!\",\n
+            \           \"Die Geschirrspülmaschine ist fertig, bitte leeren.\",\n
+            \           \"Zeit, die Spülmaschine auszuräumen!\",\n            \"Spülmaschine
+            ausräumen nicht vergessen!\",\n            \"Das Geschirr wartet, bitte
+            die Maschine leeren.\",\n            \"Hol das Geschirr aus der Spülmaschine!\",\n
+            \           \"Die Spülmaschine hat ihren Job getan, jetzt bist du dran.\",\n
+            \           \"Bitte Spülmaschine ausräumen, das Geschirr ist sauber.\",\n
+            \           \"Geschirr aus der Spülmaschine nehmen nicht vergessen!\",\n
+            \           \"Spülmaschine ist fertig, Geschirr rausnehmen!\"\n            ]
+            | random }}"
   mode: single
 - id: '1712525174898'
   alias: Wecker

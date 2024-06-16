@@ -3201,3 +3201,31 @@
       - counter.waschmaschinentabs
     data: {}
   mode: single
+- id: '1718550615267'
+  alias: '[NFC Tag] Waschmaschinentabs'
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: waschmaschinentabs
+  condition: []
+  action:
+  - service: input_number.decrement
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_number.waschmaschinentabs
+  mode: single
+- id: '1718550657718'
+  alias: '[NFC Tag] Spülmaschinentabs'
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: spuelmaschinentabs
+  condition: []
+  action:
+  - service: input_number.decrement
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_number.spulmaschinentabs
+  mode: single

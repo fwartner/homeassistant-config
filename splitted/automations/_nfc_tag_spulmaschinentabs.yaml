@@ -3,12 +3,12 @@ action:
   metadata: {}
   service: input_number.decrement
   target:
-    entity_id: input_number.waschmaschinentabs
-alias: '[NFC Tag] Waschmaschinentabs'
+    entity_id: input_number.spulmaschinentabs
+alias: "[NFC Tag] Sp\xFClmaschinentabs"
 condition: []
 description: ''
-id: '1718550615267'
+id: '1718550657718'
 mode: single
 trigger:
 - platform: tag
-  tag_id: waschmaschinentabs
+  tag_id: spuelmaschinentabs

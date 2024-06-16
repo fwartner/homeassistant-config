@@ -2567,10 +2567,7 @@
       minutes: 0
       seconds: 3
     id: hlkKuecheOff
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.people_home
-    above: 0
+  condition: []
   action:
   - choose:
     - conditions:

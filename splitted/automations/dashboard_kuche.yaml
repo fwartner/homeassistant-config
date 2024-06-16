@@ -30,10 +30,7 @@ action:
       target:
         device_id: aaa0eae9a416510075db748a0b6262dc
 alias: "Dashboard K\xFCche"
-condition:
-- above: 0
-  condition: numeric_state
-  entity_id: sensor.people_home
+condition: []
 description: ''
 id: '1713259440389'
 mode: single

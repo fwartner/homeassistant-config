@@ -9,18 +9,19 @@ briefing:
       language: german
       text: "Acting as a personal assistant, summarize the following information in\
         \ an concise and humourous manner. Try to make sure that the information fits\
-        \ in 12 sentences.\n  It's {{ as_timestamp(now()) | timestamp_custom('%H:%M')\
-        \ }}\n  Currently {{ states.weather.forecast_home }}\xB0C outside, high of\
-        \ {{ states.weather.forecast_home }}\xB0C and a low of {{ states.weather.forecast_home\
-        \ }}\xB0C \n  \n  The current headlines are: \n  {{ states.sensor.ntv_politik\
-        \ }}\n  {{ states.sensor.heise_news }}\n  {{ states.sensor.heise_security_news\
-        \ }}\n  \n  Calendar for today:\n  {% for cal_events in expand(states.calendar.florian_wartner_io)\
-        \ %}\n  {% if cal_events.attributes.all_day == False %}\n  {{ as_timestamp(cal_events.attributes.start_time)\
-        \ | timestamp_custom('%H:%M') }} @ {{ cal_events.attributes.message }}\n \
-        \ {% endif %}\n  {%- endfor -%}"
+        \ in 12 sentences. It's {{ as_timestamp(now()) | timestamp_custom('%H:%M')\
+        \ }} Currently {{ states.weather.forecast_home }}\xB0C outside, high of {{\
+        \ states.weather.forecast_home }}\xB0C and a low of {{ states.weather.forecast_home\
+        \ }}\xB0C \nThe current headlines are:  {{ states.sensor.ntv_politik }} {{\
+        \ states.sensor.heise_news }} {{ states.sensor.heise_security_news }}\nCalendar\
+        \ for today: {% for cal_events in expand(states.calendar.florian_wartner_io)\
+        \ %} {% if cal_events.attributes.all_day == False %} {{ as_timestamp(cal_events.attributes.start_time)\
+        \ | timestamp_custom('%H:%M') }} @ {{ cal_events.attributes.message }} {%\
+        \ endif %} {%- endfor -%}"
     metadata: {}
-    response_variable: briefing_answer
+    response_variable: briefing
     service: conversation.process
-  - data: '{{ briefing_answer }}'
+  - data:
+      message: '{{ briefing.speech }}'
     metadata: {}
     service: notify.alexa_media_echo_show_wohnzimmer

@@ -1,0 +1,42 @@
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - kloBesetztAn
+    sequence:
+    - data: {}
+      metadata: {}
+      service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.klo_besetzt
+  - conditions:
+    - condition: trigger
+      id:
+      - kloBesetztAus
+    sequence:
+    - data: {}
+      metadata: {}
+      service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.klo_besetzt
+alias: Klo Besetzt
+condition: []
+description: ''
+id: '1718565264616'
+mode: single
+trigger:
+- above: 10
+  device_id: c694224843b355e2fe902f8f0b1ca01f
+  domain: sensor
+  entity_id: 640c9ed86b559b09fa537ed55c846ee2
+  id: kloBesetztAn
+  platform: device
+  type: value
+- below: 10
+  device_id: c694224843b355e2fe902f8f0b1ca01f
+  domain: sensor
+  entity_id: 640c9ed86b559b09fa537ed55c846ee2
+  id: kloBesetztAus
+  platform: device
+  type: value

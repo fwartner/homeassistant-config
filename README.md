@@ -19,7 +19,7 @@ Description | Count
 -- | --
 Number of entities | 2982
 Number of sensors | 1540
-Number of automations | 92
+Number of automations | 93
 Number of scripts | 37
 Number of scenes | 29
 Number of zones | 20

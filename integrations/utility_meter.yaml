@@ -1,3 +1,4 @@
+---
 utility_meter:
   energy_import_daily:
     source: sensor.energy_import_sum

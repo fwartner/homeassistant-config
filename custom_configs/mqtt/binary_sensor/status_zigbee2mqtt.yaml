@@ -1,3 +1,4 @@
+---
 - name: status_zigbee2mqtt
   unique_id: status_zigbee2mqtt
   state_topic: "zigbee2mqtt/bridge/state"

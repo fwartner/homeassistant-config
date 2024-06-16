@@ -1,3 +1,4 @@
+---
 waste_collection_schedule:
   sources:
     - name: insert_it_de

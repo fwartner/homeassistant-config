@@ -1,3 +1,4 @@
+---
 intent_script:
   GetWohnzimmerTemperature:
     speech:

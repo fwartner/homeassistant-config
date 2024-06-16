@@ -1,3 +1,4 @@
+---
 influxdb:
   api_version: 2
   ssl: false

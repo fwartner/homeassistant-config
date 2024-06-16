@@ -1,3 +1,4 @@
+---
 powercalc:
   force_update_frequency: 00:01:00
   power_sensor_naming: "{} Power Sensor"

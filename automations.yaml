@@ -3205,7 +3205,7 @@
             endif %}"
   mode: parallel
   max: 10
-- id: '1717147835711'
+- id: '1717347835711'
   alias: '[HA] Shutdown'
   description: ''
   trigger:
@@ -3285,3 +3285,14 @@
       logger: '{{ this.entity_id }}'
       level: critical
       message: '**** HOME ASSISTANT STARTUP COMPLETE ****'
+- id: ha_restart
+  alias: '[HA] Restart'
+  description: ''
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: restart_ha
+  action:
+  - service: homeassistant.restart
+  max_exceeded: silent

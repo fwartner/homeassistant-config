@@ -25,7 +25,7 @@ action:
     service: notify.mobile_app_iphone_von_florian
 alias: '[HA] Shutdown'
 description: ''
-id: '1717147835711'
+id: '1717347835711'
 trigger:
 - event: shutdown
   platform: homeassistant

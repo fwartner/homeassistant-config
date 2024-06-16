@@ -20,15 +20,6 @@ jobs:
         uses: frenck/action-yamllint@v1.5.0
         with:
           config: ./.yamllint
-      - name: Reformat YAML Files
-        uses: credfeto/action-yaml-format@v1.3.2
-      - name: Commit files
-        run: |
-          git config --local user.email "<fwartner>@users.noreply.github.com"
-          git config --local user.name "YAML Reformat Bot"
-          git commit --all -m"Reformat YAML Files to common format." || true
-      - name: Push
-        run: git push "https://${{github.actor}}:${{secrets.SOURCE_PUSH_TOKEN}}@github.com/${{github.repository}}.git" "HEAD:${{ env.GIT_BRANCH }}"
 
   remarklint:
     name: 🧹 Remark Lint

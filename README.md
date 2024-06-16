@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2875
+Number of entities | 2877
 Number of sensors | 1490
 Number of automations | 83
 Number of scripts | 36
@@ -54,9 +54,11 @@ Number of binary sensors | 241
 ### Custom integrations
 - [Adaptive Cover](https://github.com/basbruss/adaptive-cover)
 - [Adaptive Lighting](https://github.com/basnijholt/adaptive-lighting)
+- [Adsb.Lol For Homeassistant](https://github.com/vingerha/ha_adsb_lol)
 - [Alarmo](https://github.com/nielsfaber/alarmo)
 - [Alexa Media Player](https://github.com/alandtse/alexa_media_player)
 - [Anniversaries](https://github.com/pinkywafer/Anniversaries)
+- [Apparent Temperature](https://github.com/Limych/ha-apparent-temperature)
 - [Attributes Extractor](https://github.com/pilotak/homeassistant-attributes)
 - [Auto Backup](https://github.com/jcwillox/hass-auto-backup)
 - [Average Sensor](https://github.com/Limych/ha-average)
@@ -78,6 +80,7 @@ Number of binary sensors | 241
 - [Fontawesome](https://github.com/thomasloven/hass-fontawesome)
 - [Frigate](https://github.com/blakeblackshear/frigate-hass-integration)
 - [Generate Readme](https://github.com/custom-components/readme)
+- [Google Home](https://github.com/leikoilja/ha-google-home)
 - [Grocy Custom Component](https://github.com/custom-components/grocy)
 - [HACS](https://github.com/hacs/integration)
 - [Header Authentication](https://github.com/BeryJu/hass-auth-header)
@@ -88,6 +91,7 @@ Number of binary sensors | 241
 - [Local Llm Conversation](https://github.com/fixtse/home-llm)
 - [Mail And Packages](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages)
 - [Music Assistant](https://github.com/music-assistant/hass-music-assistant)
+- [Network Scanner](https://github.com/parvez/network_scanner)
 - [Node Red Companion](https://github.com/zachowj/hass-node-red)
 - [Nuki Lock](https://github.com/kvj/hass_nuki_ng)
 - [Office 365](https://github.com/RogerSelwyn/O365-HomeAssistant)

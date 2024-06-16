@@ -26,12 +26,12 @@ description: ''
 id: '1718565264616'
 mode: single
 trigger:
-- above: -5
+- below: -5
   entity_id:
   - sensor.aqara_vibrate_katzenklo_angle_y
   id: kloAn
   platform: numeric_state
-- below: -5
+- above: -5
   entity_id:
   - sensor.aqara_vibrate_katzenklo_angle_y
   id: kloAus

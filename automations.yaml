@@ -551,20 +551,7 @@
     - binary_sensor.mmwave_badezimmer
     to: 'off'
     id: badezimmerOff
-  condition:
-  - condition: and
-    conditions:
-    - condition: or
-      conditions:
-      - condition: sun
-        before: sunrise
-        after: sunset
-        after_offset: '1'
-        enabled: true
-      - condition: state
-        entity_id: input_boolean.guestmode
-        state: 'off'
-        enabled: false
+  condition: []
   action:
   - choose:
     - conditions:
@@ -582,10 +569,30 @@
         id:
         - badezimmerOff
       sequence:
-      - service: light.turn_off
+      - service: input_boolean.turn_off
+        metadata: {}
         data: {}
         target:
-          device_id: 6e5322a0a9b03a5d8858879bbead49bf
+          entity_id: input_boolean.klo_besetzt
+      - if:
+        - condition: and
+          conditions:
+          - condition: or
+            conditions:
+            - condition: sun
+              before: sunrise
+              after: sunset
+              after_offset: '1'
+              enabled: true
+            - condition: state
+              entity_id: input_boolean.guestmode
+              state: 'off'
+              enabled: false
+        then:
+        - service: light.turn_off
+          data: {}
+          target:
+            device_id: 6e5322a0a9b03a5d8858879bbead49bf
   mode: single
 - id: '1692084370120'
   alias: Verlassen
@@ -3358,12 +3365,12 @@
     entity_id:
     - sensor.aqara_vibrate_katzenklo_angle_y
     id: kloAn
-    above: -5
+    below: -5
   - platform: numeric_state
     entity_id:
     - sensor.aqara_vibrate_katzenklo_angle_y
-    below: -5
     id: kloAus
+    above: -5
   condition: []
   action:
   - choose:

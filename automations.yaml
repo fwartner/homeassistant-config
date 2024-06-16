@@ -2295,14 +2295,6 @@
       entities: '{{ states.calendar|map(attribute=''entity_id'')|list|sort }}'
   - service: group.set
     data_template:
-      object_id: calendars_sport
-      name: '[Group] Calendars (Sport)'
-      icon: mdi:calendar
-      entities: "{{ states.calendar\n  |selectattr('entity_id','search','calendar.ical_*')\n
-        \ |rejectattr('entity_id','search','home_assistant*')\n  |map(attribute='entity_id')|list|sort
-        }}"
-  - service: group.set
-    data_template:
       object_id: geo_location
       name: '[Group] Geo Locations'
       icon: mdi:map-marker-alert
@@ -2354,105 +2346,12 @@
         \   |map(attribute='entity_id')|list|sort }}\n"
   - service: group.set
     data:
-      object_id: people
-      name: '[Group] People'
-      icon: mdi:account-multiple
-      entities: '{{ states.person|map(attribute=''entity_id'')|list|sort }}
-
-        '
-  - service: group.set
-    data:
       object_id: waqi
       name: '[Group] WAQI'
       icon: mdi:smog
       entities: "{{ states\n  |selectattr('entity_id','search','waqi*')\n  |rejectattr('entity_id','search','alert*')\n
         \ |rejectattr('entity_id','search','group*')\n  |map(attribute='entity_id')|list|sort
         }}\n"
-  - service: group.set
-    data:
-      object_id: docker_pi4srv_containers
-      name: '[Group] Docker Pi4Srv Containers'
-      icon: mdi:docker
-      entities: "{{states.sensor\n      |selectattr('entity_id','search','sensor.pi4srv_monitordocker_')\n
-        \     |rejectattr('entity_id','search','_1cpu')\n      |rejectattr('entity_id','search','_containers_')\n
-        \     |rejectattr('entity_id','search','_cpu')\n      |rejectattr('entity_id','search','_images')\n
-        \     |rejectattr('entity_id','search','_memory')\n      |rejectattr('entity_id','search','_version')\n
-        \     |map(attribute='entity_id')\n      |list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: docker_pi4srv_switches
-      name: '[Group] Docker Pi4Srv Switches'
-      icon: mdi:docker
-      entities: "{{states.switch\n      |selectattr('entity_id','search','pi4srv_monitordocker_')\n
-        \     |map(attribute='entity_id')\n      |list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: docker_tbsh1_containers
-      name: '[Group] Docker tbsh1 Containers'
-      icon: mdi:docker
-      entities: "{{states.sensor\n      |selectattr('entity_id','search','sensor.tbsh1_monitordocker_')\n
-        \     |rejectattr('entity_id','search','_1cpu')\n      |rejectattr('entity_id','search','_containers_')\n
-        \     |rejectattr('entity_id','search','_cpu')\n      |rejectattr('entity_id','search','_images')\n
-        \     |rejectattr('entity_id','search','_memory')\n      |rejectattr('entity_id','search','_version')\n
-        \     |map(attribute='entity_id')\n      |list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: docker_tbsh1_switches
-      name: '[Group] Docker tbsh1 Switches'
-      icon: mdi:docker
-      entities: "{{states.switch\n      |selectattr('entity_id','search','tbsh1_monitordocker_')\n
-        \     |map(attribute='entity_id')\n      |list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: docker_tbsh2_containers
-      name: '[Group] Docker tbsh2 Containers'
-      icon: mdi:docker
-      entities: "{{states.sensor\n      |selectattr('entity_id','search','sensor.tbsh2_monitordocker_')\n
-        \     |rejectattr('entity_id','search','_1cpu')\n      |rejectattr('entity_id','search','_containers_')\n
-        \     |rejectattr('entity_id','search','_cpu')\n      |rejectattr('entity_id','search','_images')\n
-        \     |rejectattr('entity_id','search','_memory')\n      |rejectattr('entity_id','search','_version')\n
-        \     |map(attribute='entity_id')\n      |list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: docker_tbsh2_switches
-      name: '[Group] Docker tbsh2 Switches'
-      icon: mdi:docker
-      entities: "{{states.switch\n      |selectattr('entity_id','search','tbsh2_monitordocker_')\n
-        \     |map(attribute='entity_id')\n      |list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: docker_tbsh3_containers
-      name: '[Group] Docker tbsh3 Containers'
-      icon: mdi:docker
-      entities: "{{states.sensor\n      |selectattr('entity_id','search','sensor.tbsh3_monitordocker_')\n
-        \     |rejectattr('entity_id','search','_1cpu')\n      |rejectattr('entity_id','search','_containers_')\n
-        \     |rejectattr('entity_id','search','_cpu')\n      |rejectattr('entity_id','search','_images')\n
-        \     |rejectattr('entity_id','search','_memory')\n      |rejectattr('entity_id','search','_version')\n
-        \     |map(attribute='entity_id')\n      |list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: docker_tbsh3_switches
-      name: '[Group] Docker tbsh3 Switches'
-      icon: mdi:docker
-      entities: "{{states.switch\n      |selectattr('entity_id','search','tbsh3_monitordocker_')\n
-        \     |map(attribute='entity_id')\n      |list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: docker_tbsh5_containers
-      name: '[Group] Docker tbsh5 Containers'
-      icon: mdi:docker
-      entities: "{{states.sensor\n      |selectattr('entity_id','search','sensor.tbsh5_monitordocker_')\n
-        \     |rejectattr('entity_id','search','_1cpu')\n      |rejectattr('entity_id','search','_containers_')\n
-        \     |rejectattr('entity_id','search','_cpu')\n      |rejectattr('entity_id','search','_images')\n
-        \     |rejectattr('entity_id','search','_memory')\n      |rejectattr('entity_id','search','_version')\n
-        \     |map(attribute='entity_id')\n      |list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: docker_tbsh5_switches
-      name: '[Group] Docker tbsh5 Switches'
-      icon: mdi:docker
-      entities: "{{states.switch\n      |selectattr('entity_id','search','tbsh5_monitordocker_')\n
-        \     |map(attribute='entity_id')\n      |list|sort }}\n"
   - service: group.set
     data:
       object_id: updates_homeassistant
@@ -2467,20 +2366,6 @@
       icon: mdi:home-assistant
       entities: "{{expand(integration_entities('hacs'))\n  |selectattr('domain', 'eq',
         'update')\n  |map(attribute='entity_id')\n  |list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: updates_docker
-      name: '[Updates] Docker'
-      icon: mdi:docker
-      entities: "{{states.update\n  |selectattr('entity_id', 'search', 'wud')\n  |map(attribute='entity_id')\n
-        \ |list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: updates_unifi
-      name: '[Updates] Unifi'
-      icon: si:ubiquiti
-      entities: "{{expand(integration_entities('unifi'))\n  |selectattr('domain',
-        'eq', 'update')\n  |map(attribute='entity_id')\n  |list|sort }}\n"
   - service: group.set
     data:
       object_id: updates_zigbee2mqtt
@@ -2500,13 +2385,6 @@
         \ |map(attribute='entity_id')\n  |list|sort }}\n"
   - service: group.set
     data:
-      object_id: qbittorrent
-      name: '[Group] qbittorrent'
-      icon: mdi:download-box
-      entities: "{{ states\n  |selectattr('entity_id','search','qbittorrent_')\n  |map(attribute='entity_id')\n
-        \ |list|sort }}\n"
-  - service: group.set
-    data:
       object_id: rssfeeds
       name: '[Group] RSS Feeds'
       icon: mdi:rss-box
@@ -2518,54 +2396,6 @@
       name: '[Group] Add-on Switches'
       icon: mdi:toggle-switch
       entities: "{{ states\n    |selectattr('entity_id','search','switch.addon_*')\n
-        \   |map(attribute='entity_id')|list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: upcomingsport_withevents
-      name: '[Group] Upcoming Sport, With Events'
-      icon: mdi:soccer
-      entities: "{{ states|selectattr('entity_id','search','sensor.upcoming_sport_')\n
-        \       |rejectattr('entity_id','search','this_week')\n        |rejectattr('entity_id','search','next_24_hours')\n
-        \       |rejectattr('attributes.remaining_events','eq',0)\n        |map(attribute='entity_id')|list|sort
-        }}\n"
-  - service: group.set
-    data:
-      object_id: upcomingsport_withoutevents
-      name: '[Group] Upcoming Sport, Without Events'
-      icon: mdi:soccer
-      entities: "{{ states|selectattr('entity_id','search','sensor.upcoming_sport_')\n
-        \       |rejectattr('entity_id','search','this_week')\n        |rejectattr('entity_id','search','next_24_hours')\n
-        \       |selectattr('attributes.remaining_events','eq',0)\n        |map(attribute='entity_id')|list|sort
-        }}\n"
-  - service: group.set
-    data:
-      object_id: upcomingsport_thisweek
-      name: '[Group] Upcoming Sport, This Week'
-      icon: mdi:soccer
-      entities: "{{ states|selectattr('entity_id','search','sensor.upcoming_sport_')\n
-        \       |rejectattr('entity_id','search','this_week')\n        |rejectattr('entity_id','search','next_24_hours')\n
-        \       |rejectattr('attributes.remaining_events','==',0)\n        |selectattr('attributes.nextevent_timeto','<=',7)\n
-        \       |map(attribute='entity_id')|list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: livetrafficnsw
-      name: '[Group] Live Traffic NSW'
-      icon: mdi:dump-truck
-      entities: "{{ states|selectattr('entity_id','search','sensor.getdata_livetrafficnsw_')\n
-        \       |map(attribute='entity_id')|list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: automations_sonos_playlists
-      name: '[Group] Automations, Sonos Playlists'
-      icon: si:sonos
-      entities: "{{ states\n    |selectattr('entity_id','search','automation.sonos_playlist_*')\n
-        \   |map(attribute='entity_id')|list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: hibp_breaches
-      name: '[Group] Have I Been Pwned (HIBP) Breach Data'
-      icon: mdi:virus-outline
-      entities: "{{ states\n    |selectattr('entity_id','search','sensor.breaches_*')\n
         \   |map(attribute='entity_id')|list|sort }}\n"
   mode: restart
 - id: '1713259440389'

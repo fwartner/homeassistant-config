@@ -3336,3 +3336,17 @@
     target:
       entity_id: todo.einkaufsliste
   mode: single
+- id: '1718562692032'
+  alias: '[NFC Tag] Staubsauger Wassertank nachgefüllt'
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: staubsauger_wassertank
+  condition: []
+  action:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.wassertank_aufgefullt
+    data:
+      date: '{{ states(''sensor.date'') }}'
+  mode: single

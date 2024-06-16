@@ -679,9 +679,9 @@ wassertank_aufgefullt_2:
   alias: Wassertank Aufgefüllt
   sequence:
   - service: input_datetime.set_datetime
-    data:
-      datetime: '{{ utcnow() | as_datetime }}'
     target:
       entity_id: input_datetime.wassertank_aufgefullt
+    data:
+      date: '{{ states(''sensor.date'') }}'
   description: ''
   icon: mdi:water

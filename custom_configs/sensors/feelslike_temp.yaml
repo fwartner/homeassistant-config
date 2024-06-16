@@ -38,5 +38,9 @@
 - platform: apparent_temperature
   name: "Gefühlte Kinderzimmer Temperatur"
   source:
-    - sensor.wohnzimmer_temperature
-    - sensor.wohnzimmer_humidity
+    - sensor.kinderzimmer_temperature
+    - sensor.kinderzimmer_humidity
+
+- platform: apparent_temperature
+  name: "Gefühlte Stadt Temperatur"
+  source: weather.home

@@ -4,19 +4,6 @@ action:
 - data: {}
   response_variable: backup_response
   service: shell_command.run_chores
-- else:
-  - data:
-      message: '{{ backup_response[''stderr''] }}'
-      title: "\u274C Backup failed"
-    service: notify.notify
-  if:
-  - condition: template
-    value_template: '{{ backup_response[''returncode''] == 0 }}'
-  then:
-  - data:
-      message: '{{ backup_response[''stdout''] }}'
-      title: "\u2705 Backup successful"
-    service: notify.notify
 alias: Run Chores
 condition: []
 description: ''

@@ -2145,19 +2145,6 @@
   - service: shell_command.run_chores
     data: {}
     response_variable: backup_response
-  - if:
-    - condition: template
-      value_template: '{{ backup_response[''returncode''] == 0 }}'
-    then:
-    - service: notify.notify
-      data:
-        title: ✅ Backup successful
-        message: '{{ backup_response[''stdout''] }}'
-    else:
-    - service: notify.notify
-      data:
-        title: ❌ Backup failed
-        message: '{{ backup_response[''stderr''] }}'
   mode: single
 - id: '1713209693062'
   alias: Admin - Watchman

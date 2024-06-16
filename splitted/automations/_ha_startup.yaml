@@ -1,0 +1,49 @@
+action:
+- data:
+    level: critical
+    logger: '{{ this.entity_id }}'
+    message: '**** HOME ASSISTANT START ****'
+  service: system_log.write
+- data:
+    message: Waiting for startup to complete.
+    notification_id: hass_restart
+    title: Automation Startup
+  service: persistent_notification.create
+- entity_id: input_boolean.ha_startup_pending
+  service: input_boolean.turn_off
+- data:
+    message: HA started at {{ now().strftime('%-I:%M %p') }}.
+    notification_id: hass_restart
+    title: Home Assistant Started
+  service: persistent_notification.create
+- if:
+  - condition: state
+    entity_id: input_boolean.alerts_ha
+    state: 'on'
+  then:
+  - data:
+      data:
+        presentation_options:
+        - alert
+        - badge
+        push:
+          badge: 1
+          interruption-level: time-sensitive
+          sound: none
+      message: HA started at {{ now().strftime('%-I:%M %p') }}.
+      title: Home Assistant Started
+    service: notify.mobile_app_iphone_von_florian
+- data:
+    notification_id: hass_restart
+  service: persistent_notification.dismiss
+- data:
+    level: critical
+    logger: '{{ this.entity_id }}'
+    message: '**** HOME ASSISTANT STARTUP COMPLETE ****'
+  service: system_log.write
+alias: '[HA] Startup'
+description: ''
+id: '1717147845711'
+trigger:
+- event: start
+  platform: homeassistant

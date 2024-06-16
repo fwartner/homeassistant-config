@@ -366,7 +366,7 @@ staubsauger_wohnzimmer_reinigen:
       entity_id: vacuum.roborock_s7_maxv
     data:
       segments:
-      - 17
+      - 21
       repeats: 1
   mode: single
   icon: phu:roborock
@@ -416,7 +416,7 @@ staubsauger_badezimmer_reinigen:
       entity_id: vacuum.roborock_s7_maxv
     data:
       segments:
-      - 16
+      - 19
       repeats: 1
   mode: single
   icon: phu:roborock
@@ -441,7 +441,7 @@ staubsauger_kuche_reinigen:
       entity_id: vacuum.roborock_s7_maxv
     data:
       segments:
-      - 19
+      - 20
       repeats: 1
   mode: single
   icon: phu:roborock
@@ -466,7 +466,7 @@ staubsauger_flur_reinigen:
       entity_id: vacuum.roborock_s7_maxv
     data:
       segments:
-      - 18
+      - 17
       repeats: 1
   mode: single
   icon: phu:roborock

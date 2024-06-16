@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 python3 bin/split_automations.py
 python3 bin/split_scripts.py
 python3 bin/split_scenes.py

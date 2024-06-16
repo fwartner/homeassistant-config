@@ -3285,14 +3285,49 @@
       logger: '{{ this.entity_id }}'
       level: critical
       message: '**** HOME ASSISTANT STARTUP COMPLETE ****'
-- id: ha_restart
-  alias: '[HA] Restart'
+- id: '1717147815711'
+  alias: '[Zigbee2MQTT] Enable Z2M Join'
+  description: ''
+  trigger:
+    platform: state
+    entity_id: input_boolean.z2m_permit_join
+    to: 'on'
+  action:
+  - service: mqtt.publish
+    data:
+      topic: zigbee2mqtt/bridge/config/permit_join
+      payload: 'true'
+  - service: timer.start
+    data:
+      entity_id: timer.z2m_permit_join
+- id: z2m_disable_join_timer
+  alias: '[Zigbee2MQTT] Disable Z2M Join (By Timer)'
   description: ''
   trigger:
   - platform: event
-    event_type: mobile_app_notification_action
+    event_type: timer.z2m_permit_join
     event_data:
-      action: restart_ha
+      entity_id: timer.z2m_permit_join
   action:
-  - service: homeassistant.restart
-  max_exceeded: silent
+  - service: mqtt.publish
+    data:
+      topic: zigbee2mqtt/bridge/config/permit_join
+      payload: 'false'
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.z2m_permit_join
+- id: '1717147845731'
+  alias: '[Zigbee2MQTT] Disable Z2M Join'
+  description: ''
+  trigger:
+    platform: state
+    entity_id: input_boolean.z2m_permit_join
+    to: 'off'
+  action:
+  - service: mqtt.publish
+    data:
+      topic: zigbee2mqtt/bridge/config/permit_join
+      payload: 'false'
+  - service: timer.cancel
+    data:
+      entity_id: timer.z2m_permit_join

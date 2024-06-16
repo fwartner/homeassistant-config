@@ -1,5 +1,1 @@
-notify:
-  - platform: html5
-    vapid_pub_key: !secret vapid_pub_key
-    vapid_prv_key: !secret vapid_prv_key
-    vapid_email: !secret vapid_email
+notify: !include_dir_merge_list /custom_configs/notifiers/

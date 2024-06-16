@@ -1,0 +1,6 @@
+---
+platform: group
+name: florian_all
+services:
+  - service: mobile_app_iphone_
+  - service: mobile_app_tbiphone15promax

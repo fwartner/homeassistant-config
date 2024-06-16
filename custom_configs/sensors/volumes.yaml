@@ -1,3 +1,4 @@
+---
 - platform: template
   sensors:
     tv_schlafzimmer_volume:

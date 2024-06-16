@@ -1,3 +1,4 @@
+---
 energy_import_daily:
   source: sensor.energy_import_sum
   name: Energy Import Daily

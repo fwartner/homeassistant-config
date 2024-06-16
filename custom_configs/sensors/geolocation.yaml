@@ -1,3 +1,4 @@
+---
 - platform: rest
   name: geolocation_moonrise
   resource_template: 'https://api.ipgeolocation.io/astronomy?lat=53.867031&long=10.722530&apiKey={{ states("input_text.input_text.ip_geolocation_key") }}'

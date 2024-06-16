@@ -1,3 +1,4 @@
+---
 - platform: mqtt_room
   device_id: "fe4c883e4c700511e3a937bf6c17fe5a"
   name: "Apple Watch von Florian Presence"

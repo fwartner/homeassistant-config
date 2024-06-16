@@ -1,3 +1,4 @@
+---
 - platform: mold_indicator
   indoor_temp_sensor: sensor.temperatur_wohnzimmer
   indoor_humidity_sensor: sensor.luftfeuchtigkeit_wohnzimmer

@@ -1,3 +1,4 @@
+---
 - platform: tgtg
   email: "florian@wartner.io"
   access_token: !secret tgtg_access_token

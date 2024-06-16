@@ -1,3 +1,4 @@
+---
 - platform: template
   sensors:
     dash_day:

@@ -1,3 +1,4 @@
+---
 - platform: polling
   api_key: !secret telegram_token
   allowed_chat_ids:

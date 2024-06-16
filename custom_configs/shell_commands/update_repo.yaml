@@ -1,3 +1,4 @@
+---
 shell_command:
   gen_fakesecrets: /root/homeassistant/bin/make_fake_secrets.sh
   run_chores: /root/homeassistant/chores

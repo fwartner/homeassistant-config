@@ -1,3 +1,4 @@
+---
 - platform: rest
   name: instagram_api
   resource_template: "https://i.instagram.com/api/v1/users/web_profile_info/?username=fwartner"

@@ -1,3 +1,4 @@
+---
 - platform: rest
   resource: "https://mealie.wartner.cloud/api/groups/mealplans/today"
   method: GET

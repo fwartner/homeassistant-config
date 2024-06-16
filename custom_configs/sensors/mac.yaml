@@ -1,3 +1,4 @@
+---
 - platform: template
   sensors:
     macs_camera_on:

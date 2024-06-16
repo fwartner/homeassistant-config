@@ -1,3 +1,4 @@
+---
 - platform: sql
   db_url: !secret db_url
   queries:

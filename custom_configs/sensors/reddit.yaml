@@ -1,3 +1,4 @@
+---
 #- platform: reddit
 #  username: !secret reddit_username
 #  password: !secret reddit_password

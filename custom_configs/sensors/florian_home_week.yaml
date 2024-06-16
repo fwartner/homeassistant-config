@@ -1,3 +1,4 @@
+---
 - platform: history_stats
   name: historystats_florian_home_week
   entity_id: person.florian

@@ -1,3 +1,4 @@
+---
 - sensor:
     - name: "Temperature Feels Like"
       unit_of_measurement: "°C"

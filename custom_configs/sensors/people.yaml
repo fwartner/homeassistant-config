@@ -1,3 +1,4 @@
+---
 - platform: template
   sensors:
     people_home:

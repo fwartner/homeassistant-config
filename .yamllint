@@ -23,6 +23,7 @@ ignore: |
   .shortumations/
   storage-lovelace-ui.yaml
   scripts.yaml
+  splitted/
 rules:
   braces:
     level: error

@@ -19,9 +19,9 @@ briefing:
         \ | timestamp_custom('%H:%M') }} @ {{ cal_events.attributes.message }} {%\
         \ endif %} {%- endfor -%}"
     metadata: {}
-    response_variable: briefing
+    response_variable: agent
     service: conversation.process
   - data:
-      message: '{{ briefing.speech }}'
+      message: '{{ agent.response.speech.plain.speech }}'
     metadata: {}
     service: notify.alexa_media_echo_show_wohnzimmer

@@ -681,11 +681,11 @@ briefing:
         %} {% if cal_events.attributes.all_day == False %} {{ as_timestamp(cal_events.attributes.start_time)
         | timestamp_custom('%H:%M') }} @ {{ cal_events.attributes.message }} {% endif
         %} {%- endfor -%}"
-    response_variable: briefing
+    response_variable: agent
   - service: notify.alexa_media_echo_show_wohnzimmer
     metadata: {}
     data:
-      message: '{{ briefing.speech }}'
+      message: '{{ agent.response.speech.plain.speech }}'
   fields: {}
   description: ''
   icon: mdi:newspaper

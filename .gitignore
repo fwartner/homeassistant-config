@@ -26,7 +26,7 @@ addons_config/
 addons_autoscripts/
 .vscode/
 .history/
-custom_config/rest/dhl_packstation.yaml
+custom_configs/rest/dhl_packstation.yaml
 
 double-take/*
 double-take

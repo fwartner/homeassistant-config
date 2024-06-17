@@ -28,6 +28,7 @@ intent_script: !include_dir_merge_list custom_configs/intents/
 shell_command: !include_dir_merge_list custom_configs/shell_commands/
 automation: !include automations.yaml
 utility_meter: !include_dir_merge_list custom_configs/utility_meter/
+notify: !include_dir_merge_list custom_configs/notify/
 mqtt:
   sensor: !include_dir_merge_list custom_configs/mqtt/sensor/
   binary_sensor: !include_dir_merge_list custom_configs/mqtt/sensor/

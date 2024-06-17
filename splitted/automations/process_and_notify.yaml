@@ -2,15 +2,15 @@ action:
 - data:
     agent_id: conversation.chatgpt_butler
     language: german
-    text: '{% set original_message = trigger.event.data.service_data.message %} {{
-      original_message }}
+    text: 'Briefly tell me that my {{ trigger.event.data.service_data.message }} in
+      a country accent but in german
 
       '
   metadata: {}
   response_variable: generated_response
   service: conversation.process
 - data:
-    message: '{{ states(''input_text.processed_message'') }}'
+    message: '{{ generated_response.response.speech.plain.speech }}'
     title: '{{ trigger.event.data.service_data.title }}'
   metadata: {}
   service: notify.all_devices

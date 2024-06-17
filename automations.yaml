@@ -1871,7 +1871,7 @@
         id:
         - bkwSunPower
       sequence:
-      - service: notify.mobile_app_iphone_von_florian
+      - service: notify.home_ai
         metadata: {}
         data:
           title: ☀️ Die Sonne scheint prächtig!
@@ -3484,8 +3484,8 @@
   - service: conversation.process
     metadata: {}
     data:
-      text: '{% set original_message = trigger.event.data.service_data.message %}
-        {{ original_message }}
+      text: 'Briefly tell me that my {{ trigger.event.data.service_data.message }}
+        in a country accent but in german
 
         '
       agent_id: conversation.chatgpt_butler
@@ -3494,6 +3494,6 @@
   - service: notify.all_devices
     metadata: {}
     data:
-      message: '{{ states(''input_text.processed_message'') }}'
+      message: '{{ generated_response.response.speech.plain.speech }}'
       title: '{{ trigger.event.data.service_data.title }}'
   mode: single

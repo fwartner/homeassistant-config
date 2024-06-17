@@ -22,7 +22,7 @@ action:
           \ einschalten?"
         title: "\u2600\uFE0F Die Sonne scheint pr\xE4chtig!"
       metadata: {}
-      service: notify.mobile_app_iphone_von_florian
+      service: notify.home_ai
   - conditions:
     - condition: trigger
       id:

@@ -17,6 +17,7 @@ zigbee*
 *.log.1
 *.log.fault
 tts/
+*.json
 www/alexa_tts/
 ps52mqtt/
 .ssh/
@@ -25,6 +26,7 @@ addons_config/
 addons_autoscripts/
 .vscode/
 .history/
+custom_config/rest/dhl_packstation.yaml
 
 double-take/*
 double-take

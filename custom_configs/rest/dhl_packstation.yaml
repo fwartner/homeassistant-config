@@ -1,6 +1,6 @@
 ---
 rest:
-  - resource: "https://api.dhl.com/location-finder/v1/locations/888-142"
+  - resource: "https://api.dhl.com/location-finder/v1/locations/8007-423566142"
     scan_interval: 240
     headers:
       DHL-API-Key: !secret dhl_api_key

@@ -1,5 +1,6 @@
 ---
 - platform: group
   name: all_iphones
+  unique_id: all_iphones
   services:
     - service: mobile_app_iphone_von_florian

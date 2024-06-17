@@ -3410,7 +3410,7 @@
     event_type: call_service
     event_data:
       domain: notify
-      service: all_devices
+      service: home_ai
   action:
   - choose:
     - conditions:

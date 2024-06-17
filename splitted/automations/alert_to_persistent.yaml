@@ -69,7 +69,7 @@ trigger:
   platform: event
 - event_data:
     domain: notify
-    service: all_devices
+    service: home_ai
   event_type: call_service
   id: create-ai
   platform: event

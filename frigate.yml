@@ -1,4 +1,4 @@
 mqtt:
   host: 10.182.1.123:1883
-  user: !secret mqtt_user
-  password: !secret mqtt_password
+  user: homeassistant
+  password: homeassistant

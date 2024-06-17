@@ -2,7 +2,7 @@
 auth: true
 
 frigate:
-  url: http://10.182.1.149:5000
+  url: http://10.182.1.50:5000
 
   update_sub_labels: true
   stop_on_match: true

@@ -44,3 +44,5 @@ frontend:
     - /hacsfiles/custom-brand-icons/custom-brand-icons.js
     - /hacsfiles/lovelace-card-mod/card-mod.js
     - /hacsfiles/Bubble-Card/bubble-pop-up-fix.js
+
+ffmpeg:

@@ -17,8 +17,8 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2997
-Number of sensors | 1568
+Number of entities | 2963
+Number of sensors | 1560
 Number of automations | 94
 Number of scripts | 37
 Number of scenes | 29
@@ -41,6 +41,7 @@ Number of binary sensors | 260
 - Frigate (Full Access)
 - Home Assistant Google Drive Backup
 - Matter Server
+- Matterbridge
 - Music Assistant BETA
 - openWakeWord
 - Piper

@@ -3470,3 +3470,30 @@
         data:
           notification_id: '{{ trigger.event.data.service_data.data.tag }}'
   mode: queued
+- id: '1718614598599'
+  alias: Process and Notify
+  description: ''
+  trigger:
+  - platform: event
+    event_type: call_service
+    event_data:
+      domain: notify
+      service: home_ai
+  condition: []
+  action:
+  - service: conversation.process
+    metadata: {}
+    data:
+      text: '{% set original_message = trigger.event.data.service_data.message %}
+        {{ original_message }}
+
+        '
+      agent_id: conversation.chatgpt_butler
+      language: german
+    response_variable: generated_response
+  - service: notify.all_devices
+    metadata: {}
+    data:
+      message: '{{ states(''input_text.processed_message'') }}'
+      title: '{{ trigger.event.data.service_data.title }}'
+  mode: single

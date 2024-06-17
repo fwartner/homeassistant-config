@@ -1,5 +1,0 @@
----
-platform: group
-name: thomas_iphone
-services:
-  - service: mobile_app_iphone_von_florian

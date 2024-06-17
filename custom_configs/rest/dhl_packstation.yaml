@@ -3,7 +3,7 @@ rest:
   - resource: "https://api.dhl.com/location-finder/v1/locations/8007-423566142"
     scan_interval: 240
     headers:
-      DHL-API-Key: dhl_packstation
+      DHL-API-Key: !secret dhl_api_key
     sensor:
       - name: "DHL Packstation Montag"
         value_template: >-

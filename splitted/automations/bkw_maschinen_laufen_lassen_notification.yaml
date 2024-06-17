@@ -19,7 +19,7 @@ action:
             title: Beides
         message: "Du erzeugst gerade so viel Energie, du k\xF6nntest doch glatt die\
           \ Waschmaschine oder die Sp\xFClmaschine laufen lassen! Soll ich die Steckdosen\
-          \ einschalten?"
+          \ einschalten? (Ignoriere die Temperatur in der K\xFCche)"
         title: "\u2600\uFE0F Die Sonne scheint pr\xE4chtig!"
       metadata: {}
       service: notify.home_ai

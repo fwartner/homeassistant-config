@@ -1864,7 +1864,7 @@
           title: ☀️ Die Sonne scheint prächtig!
           message: Du erzeugst gerade so viel Energie, du könntest doch glatt die
             Waschmaschine oder die Spülmaschine laufen lassen! Soll ich die Steckdosen
-            einschalten?
+            einschalten? (Ignoriere die Temperatur in der Küche)
           data:
             actions:
             - action: IOS_BKW_WASCHMASCHINE_AN

@@ -39,7 +39,7 @@ cameras:
   wohnzimmer_ecke:
     ffmpeg:
       inputs:
-        - path: camera.wohnzimmer_ecke
+        - path: rtsp://ccab4aaf-frigate-fa:5000/wohnzimmer_ecke
           roles:
             - audio
             - detect

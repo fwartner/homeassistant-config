@@ -7,7 +7,7 @@ mqtt:
   client_id: frigate
 
 database:
-  path: /homeassistant/frigate.db
+  path: /config/frigate.db
 
 detectors:
   coral:
@@ -31,11 +31,17 @@ record:
 
 birdseye:
   enabled: True
-
+  
 ffmpeg:
-  hwaccel_args: preset-vaapi
+  hwaccel_args: preset-intel-qsv-h264
+
 
 cameras:
   wohnzimmer_ecke:
     ffmpeg:
-      inputs: camera.kamera_wohnzimmer_ecke
+      inputs:
+        - path: camera.wohnzimmer_ecke
+          roles:
+            - audio
+            - detect
+            - record

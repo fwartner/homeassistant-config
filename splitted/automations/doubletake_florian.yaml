@@ -20,7 +20,7 @@ action:
       \ by {{trigger.to_state.attributes.unknown.detector}}:{{trigger.to_state.attributes.unknown.type}}\
       \ taking {{trigger.to_state.attributes.attempts}} attempt(s) @ {{trigger.to_state.attributes.duration}}\
       \ sec\n{% endif %}"
-  service: notify.mobile_app_iphone_von_florian
+  service: notify.home_ai
 alias: Doubletake Florian
 condition:
 - condition: and

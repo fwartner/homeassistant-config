@@ -21,7 +21,7 @@ action:
         message: Deine Waschmaschine hat bald keine Tabs mehr. Geh doch mal wieder
           welche einkaufen.
         title: "\U0001F6D2 Waschmaschinentabs sind fast leer "
-      service: notify.mobile_app_iphone_von_florian
+      service: notify.home_ai
   - conditions:
     - condition: trigger
       id:
@@ -43,7 +43,7 @@ action:
         message: "Deine Sp\xFClmaschine hat bald keine Tabs mehr. Geh doch mal wieder\
           \ welche einkaufen."
         title: "\U0001F6D2 Sp\xFClmaschinentabs sind fast leer "
-      service: notify.mobile_app_iphone_von_florian
+      service: notify.home_ai
 alias: Tabs bald leer
 condition: []
 description: ''

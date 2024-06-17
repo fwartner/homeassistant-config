@@ -4,7 +4,7 @@ action:
       \ sie doch mal auf."
     title: "\U0001FAAB Deine Quest 2 ist bald leer"
   metadata: {}
-  service: notify.mobile_app_iphone_von_florian
+  service: notify.home_ai
 alias: 'Quest 2: Akku bald leer'
 condition:
 - below: 15

@@ -1,0 +1,73 @@
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id: create
+    - condition: not
+      conditions:
+      - condition: template
+        value_template: '{{ trigger.event.data.service_data.message == ''clear_notification''
+          }}'
+    sequence:
+    - data:
+        message: '{{ trigger.event.data.service_data.message }}'
+        notification_id: '{{ trigger.event.data.service_data.data.tag }}'
+        title: '{{ trigger.event.data.service_data.title }}'
+      service: persistent_notification.create
+  - conditions:
+    - condition: trigger
+      id: create-ai
+    - condition: not
+      conditions:
+      - condition: template
+        value_template: '{{ trigger.event.data.service_data.message == ''clear_notification''
+          }}'
+    sequence:
+    - data:
+        prompt: Briefly tell me that my {{ trigger.event.data.service_data.message
+          }} in a country accent and please in german
+      response_variable: generated_content
+      service: google_generative_ai_conversation.generate_content
+    - data:
+        data:
+          tag: '{{ trigger.event.data.service_data.data.tag }}'
+        message: '{{ generated_content[''text''] }}'
+        title: '{{ trigger.event.data.service_data.title }}'
+      service: notify.mobile_app_iphone_von_florian
+  - conditions:
+    - condition: trigger
+      id: create-ai
+    - condition: template
+      value_template: '{{ trigger.event.data.service_data.message == ''clear_notification''
+        }}'
+    sequence:
+    - data:
+        data:
+          tag: '{{ trigger.event.data.service_data.data.tag }}'
+        message: clear_notification
+      service: notify.mobile_app_iphone_von_florian
+  - conditions:
+    - condition: template
+      value_template: '{{ trigger.event.data.service_data.message == ''clear_notification''
+        }}'
+    sequence:
+    - data:
+        notification_id: '{{ trigger.event.data.service_data.data.tag }}'
+      service: persistent_notification.dismiss
+alias: Alert to Persistent
+description: ''
+id: '1818561693469'
+mode: queued
+trigger:
+- event_data:
+    domain: notify
+    service: mobile_app_iphone_von_florian
+  event_type: call_service
+  id: create
+  platform: event
+- event_data:
+    domain: notify
+    service: home_ai
+  event_type: call_service
+  id: create-ai
+  platform: event

@@ -3395,3 +3395,76 @@
         target:
           entity_id: input_boolean.klo_besetzt
   mode: single
+- id: '1818561693469'
+  alias: Alert to Persistent
+  description: ''
+  trigger:
+  - platform: event
+    id: create
+    event_type: call_service
+    event_data:
+      domain: notify
+      service: mobile_app_iphone_von_florian
+  - platform: event
+    id: create-ai
+    event_type: call_service
+    event_data:
+      domain: notify
+      service: home_ai
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: create
+      - condition: not
+        conditions:
+        - condition: template
+          value_template: '{{ trigger.event.data.service_data.message == ''clear_notification''
+            }}'
+      sequence:
+      - service: persistent_notification.create
+        data:
+          message: '{{ trigger.event.data.service_data.message }}'
+          title: '{{ trigger.event.data.service_data.title }}'
+          notification_id: '{{ trigger.event.data.service_data.data.tag }}'
+    - conditions:
+      - condition: trigger
+        id: create-ai
+      - condition: not
+        conditions:
+        - condition: template
+          value_template: '{{ trigger.event.data.service_data.message == ''clear_notification''
+            }}'
+      sequence:
+      - service: google_generative_ai_conversation.generate_content
+        data:
+          prompt: Briefly tell me that my {{ trigger.event.data.service_data.message
+            }} in a country accent and please in german
+        response_variable: generated_content
+      - service: notify.mobile_app_iphone_von_florian
+        data:
+          message: '{{ generated_content[''text''] }}'
+          title: '{{ trigger.event.data.service_data.title }}'
+          data:
+            tag: '{{ trigger.event.data.service_data.data.tag }}'
+    - conditions:
+      - condition: trigger
+        id: create-ai
+      - condition: template
+        value_template: '{{ trigger.event.data.service_data.message == ''clear_notification''
+          }}'
+      sequence:
+      - service: notify.mobile_app_iphone_von_florian
+        data:
+          message: clear_notification
+          data:
+            tag: '{{ trigger.event.data.service_data.data.tag }}'
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.event.data.service_data.message == ''clear_notification''
+          }}'
+      sequence:
+      - service: persistent_notification.dismiss
+        data:
+          notification_id: '{{ trigger.event.data.service_data.data.tag }}'
+  mode: queued

@@ -18,7 +18,7 @@ action:
         \ bevor du gehst."
       title: "Es sind noch T\xFCren offen"
     metadata: {}
-    service: notify.mobile_app_iphone_von_florian
+    service: notify.home_ai
 - data:
     message: "Es sieht so aus, als w\xE4ren noch eine oder mehrere T\xFCren offen.\
       \ Pr\xFCfe doch mal nach, welche das sein k\xF6nnten und schlie\xDFe sie gegebenenfalls\

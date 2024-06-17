@@ -10,19 +10,9 @@ action:
       entity_id: eb4d372310f986822d024a05f2007c03
       type: turn_off
     - data:
-        message: "{{ [                 \"Waschmaschine ist fertig, bitte ausr\xE4\
-          umen!\",                 \"Die W\xE4sche ist fertig, bitte aus der Maschine\
-          \ holen.\",                 \"Zeit, die Waschmaschine auszur\xE4umen!\"\
-          ,                 \"Waschmaschine ausr\xE4umen nicht vergessen!\",     \
-          \            \"Die W\xE4sche wartet, bitte die Maschine leeren.\",     \
-          \            \"Hol die W\xE4sche aus der Waschmaschine!\",             \
-          \    \"Die Waschmaschine hat ihren Job getan, jetzt bist du dran.\",   \
-          \              \"Bitte Waschmaschine ausr\xE4umen, die W\xE4sche ist fertig.\"\
-          ,                 \"W\xE4sche aus der Waschmaschine nehmen nicht vergessen!\"\
-          ,                 \"Waschmaschine ist fertig, W\xE4sche rausnehmen!\"  \
-          \               ] | random }}"
+        message: "Die W\xE4sche ist fertig."
         title: "\U0001F9FA W\xE4sche ist fertig"
-      service: notify.mobile_app_iphone_von_florian
+      service: notify.home_ai
   - conditions:
     - condition: trigger
       id:
@@ -33,18 +23,9 @@ action:
       entity_id: 6a36fb96527589eaed3672a9978a3393
       type: turn_off
     - data:
-        message: "{{ [\n            \"Sp\xFClmaschine ist fertig, bitte ausr\xE4umen!\"\
-          ,\n            \"Die Geschirrsp\xFClmaschine ist fertig, bitte leeren.\"\
-          ,\n            \"Zeit, die Sp\xFClmaschine auszur\xE4umen!\",\n        \
-          \    \"Sp\xFClmaschine ausr\xE4umen nicht vergessen!\",\n            \"\
-          Das Geschirr wartet, bitte die Maschine leeren.\",\n            \"Hol das\
-          \ Geschirr aus der Sp\xFClmaschine!\",\n            \"Die Sp\xFClmaschine\
-          \ hat ihren Job getan, jetzt bist du dran.\",\n            \"Bitte Sp\xFC\
-          lmaschine ausr\xE4umen, das Geschirr ist sauber.\",\n            \"Geschirr\
-          \ aus der Sp\xFClmaschine nehmen nicht vergessen!\",\n            \"Sp\xFC\
-          lmaschine ist fertig, Geschirr rausnehmen!\"\n            ] | random }}"
+        message: "Sp\xFClmaschine ist fertig."
         title: "\U0001F37D\uFE0F Geschirr ist sauber"
-      service: notify.mobile_app_iphone_von_florian
+      service: notify.home_ai
 alias: "K\xFCche Steckdosen Power Management"
 description: ''
 id: '1711970540815'

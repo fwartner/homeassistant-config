@@ -8,7 +8,7 @@ action:
     message: "Eine {{trigger.payload_json[\"after\"][\"label\"]}} wurde von \n   \
       \       {{trigger.payload_json[\"after\"][\"camera\"]}} erfasst."
     title: Jemand befindet sich in deiner Wohnung
-  service: notify.mobile_app_iphone_von_florian
+  service: notify.home_ai
 alias: 'Frigate: Person erfasst'
 condition:
 - below: 1

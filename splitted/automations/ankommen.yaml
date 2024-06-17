@@ -25,7 +25,7 @@ action:
     - data:
         message: Ich habe die Musik von deinem iPhone auf Sonos Ray gestellt
         title: "Willkommen Zuhause \U0001F3E0"
-      service: notify.mobile_app_iphone_von_florian
+      service: notify.home_ai
     - data:
         source: Spotify Connect
       service: media_player.select_source

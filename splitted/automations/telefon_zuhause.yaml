@@ -2,7 +2,7 @@ action:
 - data:
     message: Jemand ruft dich an.
     title: Das Telefon klingelt
-  service: notify.mobile_app_iphone_von_florian
+  service: notify.home_ai
 alias: Telefon Zuhause
 condition: []
 description: ''

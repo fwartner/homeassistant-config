@@ -33,7 +33,7 @@ action:
       - data:
           message: Alle Heizungen wurden erfolgreich ausgeschaltet.
           title: "\u2139\uFE0F Alle Heizungen ausgeschaltet"
-        service: notify.mobile_app_iphone_von_florian
+        service: notify.home_ai
   - conditions:
     - condition: trigger
       id:
@@ -45,9 +45,9 @@ action:
           hvac_mode: heat
         service: climate.set_hvac_mode
       - data:
-          message: Alle Heizungen wurden erfolgreich ausgeschaltet.
-          title: "\u2139\uFE0F Alle Heizungen ausgeschaltet"
-        service: notify.mobile_app_iphone_von_florian
+          message: Alle Heizungen wurden erfolgreich eingeschaltet.
+          title: "\u2139\uFE0F Alle Heizungen eingeschaltet"
+        service: notify.home_ai
 alias: Heizung Toggle
 condition: []
 description: ''

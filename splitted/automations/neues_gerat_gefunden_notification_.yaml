@@ -2,7 +2,7 @@ action:
 - data:
     message: "Home Assistant hat ein neues Ger\xE4t gefunden:             {{trigger.event.data.entity_id}}"
     title: "Neues Ger\xE4t gefunden"
-  service: notify.mobile_app_iphone_von_florian
+  service: notify.home_ai
 alias: "Neues Ger\xE4t gefunden (Notification)"
 condition:
 - condition: state

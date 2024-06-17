@@ -20,7 +20,7 @@ action:
               volume: 1
         message: "Das BKW scheint zu \xFCberhitzen. Wie willst du vorgehen?"
         title: "\u26A0\uFE0F Probleme mit dem BKW"
-      service: notify.mobile_app_iphone_von_florian
+      service: notify.home_ai
   - conditions:
     - condition: trigger
       id:

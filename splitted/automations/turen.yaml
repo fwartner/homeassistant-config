@@ -8,9 +8,6 @@ action:
         id:
         - zoneHomeOn
         - nukiRingOn
-      - above: 0.05
-        condition: numeric_state
-        entity_id: sensor.historystats_florian_away_minutes
     sequence:
     - data:
         data:
@@ -23,7 +20,7 @@ action:
             title: "Wohnungst\xFCr \xF6ffnen"
         message: "M\xF6chtest du die T\xFCr \xF6ffnen?"
         title: "\U0001F510 T\xFCren \xF6ffnen"
-      service: notify.mobile_app_iphone_von_florian
+      service: notify.home_ai
   - alias: "Haust\xFCr \xD6ffnen"
     conditions:
     - condition: trigger

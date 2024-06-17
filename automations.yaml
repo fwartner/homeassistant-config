@@ -482,7 +482,7 @@
           }}'
         enabled: true
       sequence:
-      - service: notify.mobile_app_iphone_von_florian
+      - service: notify.home_ai
         data:
           title: "Willkommen Zuhause \U0001F3E0"
           message: Ich habe die Musik von deinem iPhone auf Sonos Ray gestellt
@@ -1132,7 +1132,7 @@
     path: sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
     input:
       actions:
-      - service: notify.mobile_app_iphone_von_florian
+      - service: notify.home_ai
         data:
           message: Einige Batterien schein fast oder ganz leer zu sein. Guck doch
             mal nach.
@@ -1277,7 +1277,7 @@
             - afd3d4982d793f98224ce76064298198
             - a71ccaedb801d2e7e89232f60fea1706
             - 5106942131c1dfe9055cba838a26b47b
-        - service: notify.mobile_app_iphone_von_florian
+        - service: notify.home_ai
           data:
             title: ℹ️ Alle Heizungen ausgeschaltet
             message: Alle Heizungen wurden erfolgreich ausgeschaltet.
@@ -1291,10 +1291,10 @@
         - service: climate.set_hvac_mode
           data:
             hvac_mode: heat
-        - service: notify.mobile_app_iphone_von_florian
+        - service: notify.home_ai
           data:
-            title: ℹ️ Alle Heizungen ausgeschaltet
-            message: Alle Heizungen wurden erfolgreich ausgeschaltet.
+            title: ℹ️ Alle Heizungen eingeschaltet
+            message: Alle Heizungen wurden erfolgreich eingeschaltet.
   mode: single
 - id: '1702645776967'
   alias: Bett Belegung
@@ -1426,11 +1426,8 @@
           id:
           - zoneHomeOn
           - nukiRingOn
-        - condition: numeric_state
-          entity_id: sensor.historystats_florian_away_minutes
-          above: 0.05
       sequence:
-      - service: notify.mobile_app_iphone_von_florian
+      - service: notify.home_ai
         data:
           message: Möchtest du die Tür öffnen?
           title: "\U0001F510 Türen öffnen"
@@ -1527,7 +1524,7 @@
     to: ringing
   condition: []
   action:
-  - service: notify.mobile_app_iphone_von_florian
+  - service: notify.home_ai
     data:
       title: Das Telefon klingelt
       message: Jemand ruft dich an.
@@ -1572,7 +1569,7 @@
         - bkwIssueNotificationOverpowering
         - bkwIssueNotificationOvervoltage
       sequence:
-      - service: notify.mobile_app_iphone_von_florian
+      - service: notify.home_ai
         data:
           message: Das BKW scheint zu überhitzen. Wie willst du vorgehen?
           title: ⚠️ Probleme mit dem BKW
@@ -1737,18 +1734,10 @@
         device_id: 3c45a70c459e2e66b166dca5891180c6
         entity_id: eb4d372310f986822d024a05f2007c03
         domain: switch
-      - service: notify.mobile_app_iphone_von_florian
+      - service: notify.home_ai
         data:
           title: "\U0001F9FA Wäsche ist fertig"
-          message: '{{ [                 "Waschmaschine ist fertig, bitte ausräumen!",                 "Die
-            Wäsche ist fertig, bitte aus der Maschine holen.",                 "Zeit,
-            die Waschmaschine auszuräumen!",                 "Waschmaschine ausräumen
-            nicht vergessen!",                 "Die Wäsche wartet, bitte die Maschine
-            leeren.",                 "Hol die Wäsche aus der Waschmaschine!",                 "Die
-            Waschmaschine hat ihren Job getan, jetzt bist du dran.",                 "Bitte
-            Waschmaschine ausräumen, die Wäsche ist fertig.",                 "Wäsche
-            aus der Waschmaschine nehmen nicht vergessen!",                 "Waschmaschine
-            ist fertig, Wäsche rausnehmen!"                 ] | random }}'
+          message: Die Wäsche ist fertig.
     - conditions:
       - condition: trigger
         id:
@@ -1758,19 +1747,10 @@
         device_id: 4a05cd597a16be48ba279a90d1ba5c18
         entity_id: 6a36fb96527589eaed3672a9978a3393
         domain: switch
-      - service: notify.mobile_app_iphone_von_florian
+      - service: notify.home_ai
         data:
           title: "\U0001F37D️ Geschirr ist sauber"
-          message: "{{ [\n            \"Spülmaschine ist fertig, bitte ausräumen!\",\n
-            \           \"Die Geschirrspülmaschine ist fertig, bitte leeren.\",\n
-            \           \"Zeit, die Spülmaschine auszuräumen!\",\n            \"Spülmaschine
-            ausräumen nicht vergessen!\",\n            \"Das Geschirr wartet, bitte
-            die Maschine leeren.\",\n            \"Hol das Geschirr aus der Spülmaschine!\",\n
-            \           \"Die Spülmaschine hat ihren Job getan, jetzt bist du dran.\",\n
-            \           \"Bitte Spülmaschine ausräumen, das Geschirr ist sauber.\",\n
-            \           \"Geschirr aus der Spülmaschine nehmen nicht vergessen!\",\n
-            \           \"Spülmaschine ist fertig, Geschirr rausnehmen!\"\n            ]
-            | random }}"
+          message: Spülmaschine ist fertig.
   mode: single
 - id: '1712525174898'
   alias: Wecker
@@ -1932,7 +1912,7 @@
     entity_id: input_boolean.nicht_storen
     state: 'off'
   action:
-  - service: notify.mobile_app_iphone_von_florian
+  - service: notify.home_ai
     data:
       title: Neues Gerät gefunden
       message: 'Home Assistant hat ein neues Gerät gefunden:             {{trigger.event.data.entity_id}}'
@@ -1960,7 +1940,7 @@
     entity_id: input_boolean.nicht_storen
     state: 'off'
   action:
-  - service: notify.mobile_app_iphone_von_florian
+  - service: notify.home_ai
     data:
       title: Jemand befindet sich in deiner Wohnung
       message: "Eine {{trigger.payload_json[\"after\"][\"label\"]}} wurde von \n          {{trigger.payload_json[\"after\"][\"camera\"]}}
@@ -2086,7 +2066,7 @@
       entity_id: input_boolean.nicht_storen
       state: 'off'
     then:
-    - service: notify.mobile_app_iphone_von_florian
+    - service: notify.home_ai
       metadata: {}
       data:
         message: Es sieht so aus, als wären noch eine oder mehrere Türen offen. Prüfe

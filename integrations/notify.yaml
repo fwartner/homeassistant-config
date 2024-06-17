@@ -1,2 +1,0 @@
----
-notify: !include_dir_merge_list /custom_configs/notifiers/

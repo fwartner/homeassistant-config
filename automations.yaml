@@ -3371,6 +3371,11 @@
         data: {}
         target:
           entity_id: input_boolean.klo_besetzt
+      - service: counter.increment
+        metadata: {}
+        data: {}
+        target:
+          entity_id: counter.toiletten_sitzungen
     - conditions:
       - condition: trigger
         id:

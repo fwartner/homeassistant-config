@@ -3395,81 +3395,6 @@
         target:
           entity_id: input_boolean.klo_besetzt
   mode: single
-- id: '1818561693469'
-  alias: Alert to Persistent
-  description: ''
-  trigger:
-  - platform: event
-    id: create
-    event_type: call_service
-    event_data:
-      domain: notify
-      service: all_devices
-  - platform: event
-    id: create-ai
-    event_type: call_service
-    event_data:
-      domain: notify
-      service: home_ai
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: create
-      - condition: not
-        conditions:
-        - condition: template
-          value_template: '{{ trigger.event.data.service_data.message == ''clear_notification''
-            }}'
-      sequence:
-      - service: persistent_notification.create
-        data:
-          message: '{{ trigger.event.data.service_data.message }}'
-          title: '{{ trigger.event.data.service_data.title }}'
-          notification_id: '{{ trigger.event.data.service_data.data.tag }}'
-    - conditions:
-      - condition: trigger
-        id: create-ai
-      - condition: not
-        conditions:
-        - condition: template
-          value_template: '{{ trigger.event.data.service_data.message == ''clear_notification''
-            }}'
-      sequence:
-      - service: conversation.process
-        data:
-          language: german
-          agent_id: conversation.chatgpt_butler
-          text: Briefly tell me that my {{ trigger.event.data.service_data.message
-            }} in a country accent and please in german
-        response_variable: generated_content
-      - service: notify.all_devices
-        data:
-          message: '{{ generated_content[''text''] }}'
-          title: '{{ trigger.event.data.service_data.title }}'
-          data:
-            tag: '{{ trigger.event.data.service_data.data.tag }}'
-    - conditions:
-      - condition: trigger
-        id: create-ai
-      - condition: template
-        value_template: '{{ trigger.event.data.service_data.message == ''clear_notification''
-          }}'
-      sequence:
-      - service: notify.all_devices
-        data:
-          message: clear_notification
-          data:
-            tag: '{{ trigger.event.data.service_data.data.tag }}'
-    - conditions:
-      - condition: template
-        value_template: '{{ trigger.event.data.service_data.message == ''clear_notification''
-          }}'
-      sequence:
-      - service: persistent_notification.dismiss
-        data:
-          notification_id: '{{ trigger.event.data.service_data.data.tag }}'
-  mode: queued
 - id: '1718614598599'
   alias: Process and Notify
   description: ''
@@ -3485,15 +3410,18 @@
     metadata: {}
     data:
       text: 'Briefly tell me that my {{ trigger.event.data.service_data.message }}
-        in a country accent but in german
+        in a humorous way. Always in german. Always make sure that the message fits
+        into 2 sentences.
 
         '
       agent_id: conversation.chatgpt_butler
       language: german
     response_variable: generated_response
-  - service: notify.all_devices
+  - service: notify.all_iphones
     metadata: {}
     data:
       message: '{{ generated_response.response.speech.plain.speech }}'
       title: '{{ trigger.event.data.service_data.title }}'
+      data:
+        actions: '{{ trigger.event.data.service_data.data.actions }}'
   mode: single

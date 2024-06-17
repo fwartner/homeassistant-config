@@ -31,3 +31,5 @@ addons_autoscripts/
 double-take/*
 double-take
 /double-take/*
+
+frigate.yml

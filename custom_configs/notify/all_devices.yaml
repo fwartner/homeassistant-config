@@ -3,6 +3,5 @@
   name: all_devices
   unique_id: all_devices
   services:
+    - service: mobile_app_macbook_pro_von_florian
     - service: mobile_app_iphone_von_florian
-    - service: macbook_pro_von_florian
-    - service: florians_iphone

@@ -24,16 +24,18 @@ action:
           }}'
     sequence:
     - data:
-        prompt: Briefly tell me that my {{ trigger.event.data.service_data.message
-          }} in a country accent and please in german
+        agent_id: conversation.chatgpt_butler
+        language: german
+        text: Briefly tell me that my {{ trigger.event.data.service_data.message }}
+          in a country accent and please in german
       response_variable: generated_content
-      service: google_generative_ai_conversation.generate_content
+      service: conversation.process
     - data:
         data:
           tag: '{{ trigger.event.data.service_data.data.tag }}'
         message: '{{ generated_content[''text''] }}'
         title: '{{ trigger.event.data.service_data.title }}'
-      service: notify.mobile_app_iphone_von_florian
+      service: notify.all_devices
   - conditions:
     - condition: trigger
       id: create-ai
@@ -45,7 +47,7 @@ action:
         data:
           tag: '{{ trigger.event.data.service_data.data.tag }}'
         message: clear_notification
-      service: notify.mobile_app_iphone_von_florian
+      service: notify.all_devices
   - conditions:
     - condition: template
       value_template: '{{ trigger.event.data.service_data.message == ''clear_notification''
@@ -61,13 +63,13 @@ mode: queued
 trigger:
 - event_data:
     domain: notify
-    service: mobile_app_iphone_von_florian
+    service: all_devices
   event_type: call_service
   id: create
   platform: event
 - event_data:
     domain: notify
-    service: home_ai
+    service: all_devices
   event_type: call_service
   id: create-ai
   platform: event

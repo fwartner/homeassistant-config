@@ -2,21 +2,30 @@ action:
 - data:
     agent_id: conversation.chatgpt_butler
     language: german
-    text: 'Briefly tell me that my {{ trigger.event.data.service_data.message }} in
-      a humorous way. Always in german. Always make sure that the message fits into
-      2 sentences.
+    text: 'Briefly tell me that my {{ trigger.event.data.service_data.message }}.
+      Always make sure that the message fits into 2 sentences.
 
       '
   metadata: {}
   response_variable: generated_response
   service: conversation.process
-- data:
-    data:
-      actions: '{{ trigger.event.data.service_data.data.actions }}'
-    message: '{{ generated_response.response.speech.plain.speech }}'
-    title: '{{ trigger.event.data.service_data.title }}'
-  metadata: {}
-  service: notify.all_iphones
+- else:
+  - data:
+      message: '{{ generated_response.response.speech.plain.speech }}'
+      title: '{{ trigger.event.data.service_data.title }}'
+    metadata: {}
+    service: notify.all_iphones
+  if:
+  - condition: template
+    value_template: '{{ trigger.event.data.service_data.data.actions != null }}'
+  then:
+  - data:
+      data:
+        actions: '{{ trigger.event.data.service_data.data.actions }}'
+      message: '{{ generated_response.response.speech.plain.speech }}'
+      title: '{{ trigger.event.data.service_data.title }}'
+    metadata: {}
+    service: notify.all_iphones
 alias: Process and Notify
 condition: []
 description: ''

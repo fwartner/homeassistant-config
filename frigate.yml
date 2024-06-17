@@ -34,3 +34,8 @@ birdseye:
 
 ffmpeg:
   hwaccel_args: preset-vaapi
+
+cameras:
+  wohnzimmer_ecke:
+    ffmpeg:
+      inputs: camera.kamera_wohnzimmer_ecke

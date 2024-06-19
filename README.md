@@ -17,8 +17,8 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3097
-Number of sensors | 1674
+Number of entities | 3047
+Number of sensors | 1620
 Number of automations | 97
 Number of scripts | 37
 Number of scenes | 29
@@ -87,8 +87,8 @@ Number of binary sensors | 264
 - [Hoymiles](https://github.com/suaveolent/ha-hoymiles-wifi)
 - [Hvac Group](https://github.com/tetele/hvac_group)
 - [Icloud3 V3 Idevice Tracker](https://github.com/gcobb321/icloud3)
-- [Local Llm Conversation](https://github.com/acon96/home-llm)
 - [Local Llm Conversation](https://github.com/fixtse/home-llm)
+- [Local Llm Conversation](https://github.com/acon96/home-llm)
 - [Mail And Packages](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages)
 - [Music Assistant](https://github.com/music-assistant/hass-music-assistant)
 - [Network Scanner](https://github.com/parvez/network_scanner)
@@ -107,6 +107,7 @@ Number of binary sensors | 264
 - [Samsungtv Smart](https://github.com/ollo69/ha-samsungtv-smart)
 - [Scheduler Component](https://github.com/nielsfaber/scheduler-component)
 - [Simpleicons](https://github.com/vigonotion/hass-simpleicons)
+- [Sonoff Lan](https://github.com/AlexxIT/SonoffLAN)
 - [Spook 👻 Your Homie](https://github.com/frenck/spook)
 - [Spotcast](https://github.com/fondberg/spotcast)
 - [Spotifyplus](https://github.com/thlucas1/homeassistantcomponent_spotifyplus)

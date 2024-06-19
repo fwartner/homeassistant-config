@@ -14,3 +14,7 @@ api:
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
+
+ota:
+  - platform: http_request
+    password: !secret ota_password

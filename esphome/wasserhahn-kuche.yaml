@@ -24,11 +24,7 @@ wifi:
 
 captive_portal:
 
-output:
+switch:
   - platform: gpio
     pin: D6
-    id: 'generic_out'
-switch:
-  - platform: output
     name: "Wasserhahn"
-    output: 'generic_out'

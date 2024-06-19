@@ -1,0 +1,14 @@
+action:
+- data: {}
+  metadata: {}
+  service: lock.open
+  target:
+    device_id: bb8a84cf268277f3d38063aee6ce698e
+alias: "NFC Tag Wohnungst\xFCr 2 ist gescannt"
+condition: []
+description: ''
+id: '1718795119448'
+mode: single
+trigger:
+- platform: tag
+  tag_id: 404d5b6e-d798-418d-876c-912aa6c049c7

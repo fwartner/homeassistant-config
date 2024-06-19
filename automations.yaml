@@ -3398,3 +3398,59 @@
         message: '{{ generated_response.response.speech.plain.speech }}'
         title: '{{ trigger.event.data.service_data.title }}'
   mode: single
+- id: '1718794962925'
+  alias: NFC Tag Wohnungstür ist gescannt
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: 80174732-d4b2-4c77-9e71-a05ff997192a
+  condition: []
+  action:
+  - service: lock.open
+    metadata: {}
+    data: {}
+    target:
+      device_id: bb8a84cf268277f3d38063aee6ce698e
+  mode: single
+- id: '1718794967135'
+  alias: NFC Tag Wohnungstür ist gescannt
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: 80174732-d4b2-4c77-9e71-a05ff997192a
+  condition: []
+  action:
+  - service: lock.open
+    metadata: {}
+    data: {}
+    target:
+      device_id: bb8a84cf268277f3d38063aee6ce698e
+  mode: single
+- id: '1718795112357'
+  alias: NFC Tag Wohnungstür 2 ist gescannt
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: 404d5b6e-d798-418d-876c-912aa6c049c7
+  condition: []
+  action:
+  - service: lock.open
+    metadata: {}
+    data: {}
+    target:
+      device_id: bb8a84cf268277f3d38063aee6ce698e
+  mode: single
+- id: '1718795119448'
+  alias: NFC Tag Wohnungstür 2 ist gescannt
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: 404d5b6e-d798-418d-876c-912aa6c049c7
+  condition: []
+  action:
+  - service: lock.open
+    metadata: {}
+    data: {}
+    target:
+      device_id: bb8a84cf268277f3d38063aee6ce698e
+  mode: single

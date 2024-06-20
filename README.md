@@ -17,8 +17,8 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3056
-Number of sensors | 1619
+Number of entities | 3063
+Number of sensors | 1626
 Number of automations | 97
 Number of scripts | 37
 Number of scenes | 29
@@ -109,6 +109,7 @@ Number of binary sensors | 264
 - [Simpleicons](https://github.com/vigonotion/hass-simpleicons)
 - [Sonoff Lan](https://github.com/AlexxIT/SonoffLAN)
 - [Spook 👻 Your Homie](https://github.com/frenck/spook)
+- [Spoolman](https://github.com/Disane87/spoolman-homeassistant)
 - [Spotcast](https://github.com/fondberg/spotcast)
 - [Spotifyplus](https://github.com/thlucas1/homeassistantcomponent_spotifyplus)
 - [Stream Assist](https://github.com/AlexxIT/StreamAssist)

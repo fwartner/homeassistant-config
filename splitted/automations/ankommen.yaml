@@ -30,7 +30,7 @@ action:
         source: Spotify Connect
       service: media_player.select_source
       target:
-        entity_id: media_player.sonos_ray
+        entity_id: media_player.sonos_ray_wohnzimmer
     - data:
         source: Sonos Ray
       service: media_player.select_source
@@ -39,7 +39,7 @@ action:
     - data: {}
       service: media_player.media_play
       target:
-        entity_id: media_player.sonos_ray
+        entity_id: media_player.sonos_ray_wohnzimmer
   - conditions:
     - condition: trigger
       id:

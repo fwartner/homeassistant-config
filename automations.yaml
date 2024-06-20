@@ -490,7 +490,7 @@
         data:
           source: Spotify Connect
         target:
-          entity_id: media_player.sonos_ray
+          entity_id: media_player.sonos_ray_wohnzimmer
       - service: media_player.select_source
         data:
           source: Sonos Ray
@@ -499,7 +499,7 @@
       - service: media_player.media_play
         data: {}
         target:
-          entity_id: media_player.sonos_ray
+          entity_id: media_player.sonos_ray_wohnzimmer
     - conditions:
       - condition: trigger
         id:

@@ -46,6 +46,26 @@ action:
         entity_id: '{{ states(''input_text.last_media_player'') }}
 
           '
+  - conditions:
+    - condition: trigger
+      id:
+      - selectedPlayerHomePodTrigger
+    sequence:
+    - data:
+        value: media_player.homepod_wohnzimmer_ma
+      service: input_text.set_value
+      target:
+        entity_id: input_text.last_media_player
+  - conditions:
+    - condition: trigger
+      id:
+      - selectedPlayerSonosRayTrigger
+    sequence:
+    - data:
+        value: media_player.sonos_ray_wohnzimmer_ma
+      service: input_text.set_value
+      target:
+        entity_id: input_text.last_media_player
 alias: Current Media Player Controls
 condition: []
 description: ''
@@ -75,3 +95,13 @@ trigger:
   id: prevTrigger
   platform: state
   to: null
+- entity_id:
+  - input_select.selected_media_player
+  id: selectedPlayerHomePodTrigger
+  platform: state
+  to: HomePod Wohnzimmer
+- entity_id:
+  - input_select.selected_media_player
+  id: selectedPlayerSonosRayTrigger
+  platform: state
+  to: Sonos Ray Wohnzimmer

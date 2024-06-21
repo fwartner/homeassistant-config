@@ -3481,6 +3481,16 @@
     to:
     enabled: true
     id: prevTrigger
+  - platform: state
+    entity_id:
+    - input_select.selected_media_player
+    to: HomePod Wohnzimmer
+    id: selectedPlayerHomePodTrigger
+  - platform: state
+    entity_id:
+    - input_select.selected_media_player
+    to: Sonos Ray Wohnzimmer
+    id: selectedPlayerSonosRayTrigger
   condition: []
   action:
   - choose:
@@ -3530,4 +3540,24 @@
           entity_id: '{{ states(''input_text.last_media_player'') }}
 
             '
+    - conditions:
+      - condition: trigger
+        id:
+        - selectedPlayerHomePodTrigger
+      sequence:
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.last_media_player
+        data:
+          value: media_player.homepod_wohnzimmer_ma
+    - conditions:
+      - condition: trigger
+        id:
+        - selectedPlayerSonosRayTrigger
+      sequence:
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.last_media_player
+        data:
+          value: media_player.sonos_ray_wohnzimmer_ma
   mode: single

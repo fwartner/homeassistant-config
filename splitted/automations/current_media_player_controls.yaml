@@ -1,0 +1,36 @@
+action:
+- data: {}
+  enabled: false
+  metadata: {}
+  service: media_player.media_play_pause
+  target:
+    entity_id: '{{ states(''sensor.current_media_player'') }}
+
+      '
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - currentPlayerChange
+    sequence:
+    - data:
+        value: '{{ states(''sensor.current_media_player'') }}'
+      service: input_text.set_value
+      target:
+        entity_id: input_text.last_media_player
+alias: Current Media Player Controls
+condition: []
+description: ''
+id: '1718970747624'
+mode: single
+trigger:
+- enabled: false
+  entity_id:
+  - input_button.play_pause
+  platform: state
+  to: null
+- entity_id:
+  - sensor.current_media_player
+  id: currentPlayerChange
+  platform: state
+  to: null

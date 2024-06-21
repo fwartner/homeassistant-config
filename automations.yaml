@@ -3454,3 +3454,39 @@
     target:
       device_id: bb8a84cf268277f3d38063aee6ce698e
   mode: single
+- id: '1718970747624'
+  alias: Current Media Player Controls
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_button.play_pause
+    to:
+    enabled: false
+  - platform: state
+    entity_id:
+    - sensor.current_media_player
+    to:
+    id: currentPlayerChange
+  condition: []
+  action:
+  - service: media_player.media_play_pause
+    metadata: {}
+    data: {}
+    target:
+      entity_id: '{{ states(''sensor.current_media_player'') }}
+
+        '
+    enabled: false
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - currentPlayerChange
+      sequence:
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.last_media_player
+        data:
+          value: '{{ states(''sensor.current_media_player'') }}'
+  mode: single

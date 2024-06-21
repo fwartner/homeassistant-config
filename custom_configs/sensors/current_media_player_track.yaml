@@ -4,5 +4,5 @@
     current_media_player_track:
       value_template: >
         {% if is_state("sensor.current_media_player", "playing") and is_state_attr("sensor.current_media_player", "media_content_type", "music") -%}
-          {{ states('sensor.current_media_player_track') }}
+          {{ state_attr('sensor.current_media_player', 'media_title') }}
         {%- endif %}

@@ -3460,24 +3460,29 @@
   trigger:
   - platform: state
     entity_id:
-    - input_button.play_pause
-    to:
-    enabled: false
-  - platform: state
-    entity_id:
     - sensor.current_media_player
     to:
     id: currentPlayerChange
+  - platform: state
+    entity_id:
+    - input_button.play_pause
+    to:
+    enabled: true
+    id: playPauseTrigger
+  - platform: state
+    entity_id:
+    - input_button.next_track
+    to:
+    enabled: true
+    id: nextTrigger
+  - platform: state
+    entity_id:
+    - input_button.prev_track
+    to:
+    enabled: true
+    id: prevTrigger
   condition: []
   action:
-  - service: media_player.media_play_pause
-    metadata: {}
-    data: {}
-    target:
-      entity_id: '{{ states(''sensor.current_media_player'') }}
-
-        '
-    enabled: false
   - choose:
     - conditions:
       - condition: trigger
@@ -3489,4 +3494,40 @@
           entity_id: input_text.last_media_player
         data:
           value: '{{ states(''sensor.current_media_player'') }}'
+    - conditions:
+      - condition: trigger
+        id:
+        - playPauseTrigger
+      sequence:
+      - service: media_player.media_play_pause
+        metadata: {}
+        data: {}
+        target:
+          entity_id: '{{ states(''input_text.last_media_player'') }}
+
+            '
+        enabled: true
+    - conditions:
+      - condition: trigger
+        id:
+        - nextTrigger
+      sequence:
+      - service: media_player.media_next_track
+        metadata: {}
+        data: {}
+        target:
+          entity_id: '{{ states(''input_text.last_media_player'') }}
+
+            '
+    - conditions:
+      - condition: trigger
+        id:
+        - prevTrigger
+      sequence:
+      - service: media_player.media_previous_track
+        data: {}
+        target:
+          entity_id: '{{ states(''input_text.last_media_player'') }}
+
+            '
   mode: single

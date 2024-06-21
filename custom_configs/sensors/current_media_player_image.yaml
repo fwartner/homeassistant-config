@@ -3,6 +3,7 @@
   sensors:
     current_media_player_image:
       value_template: >
-        {% if is_state("sensor.current_media_player", "playing") and is_state_attr("sensor.current_media_player", "media_content_type", "music") -%}
-          {{ state_attr('sensor.current_media_player', 'entity_picture') }}
+        {% set activePlayer = states('sensor.current_media_player') %}
+        {% if is_state(activePlayer, "playing") and is_state_attr(activePlayer, "media_content_type", "music") -%}
+          {{ state_attr(activePlayer, 'entity_picture') }}
         {%- endif %}

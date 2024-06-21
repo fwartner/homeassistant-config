@@ -3,7 +3,7 @@
   media_players:
     current_player:
       friendly_name: Current Player
-      device_class: media_player
+      device_class: speaker
       current_source_template: "{{ states('sensor.current_media_player') }}"
       album_art_template: "{{ states('sensor.current_media_player_image') }}"
       title_template: "{{ states('sensor.current_media_player_title') }}"

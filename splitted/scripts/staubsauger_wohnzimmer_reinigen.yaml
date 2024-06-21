@@ -19,7 +19,7 @@ staubsauger_wohnzimmer_reinigen:
   - data:
       repeats: 1
       segments:
-      - 21
+      - 18
     service: roborock.vacuum_clean_segment
     target:
       entity_id: vacuum.roborock_s7_maxv

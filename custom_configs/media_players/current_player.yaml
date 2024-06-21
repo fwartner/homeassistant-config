@@ -1,0 +1,5 @@
+---
+- platform: universal
+  name: Current Player
+  children:
+    - sensor.current_media_player

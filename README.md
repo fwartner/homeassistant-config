@@ -17,13 +17,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3065
-Number of sensors | 1630
+Number of entities | 3067
+Number of sensors | 1632
 Number of automations | 97
 Number of scripts | 37
 Number of scenes | 29
 Number of zones | 20
-Number of binary sensors | 268
+Number of binary sensors | 267
 
 ## Demo of my dashboard
 ![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)
@@ -87,8 +87,8 @@ Number of binary sensors | 268
 - [Hoymiles](https://github.com/suaveolent/ha-hoymiles-wifi)
 - [Hvac Group](https://github.com/tetele/hvac_group)
 - [Icloud3 V3 Idevice Tracker](https://github.com/gcobb321/icloud3)
-- [Local Llm Conversation](https://github.com/acon96/home-llm)
 - [Local Llm Conversation](https://github.com/fixtse/home-llm)
+- [Local Llm Conversation](https://github.com/acon96/home-llm)
 - [Mail And Packages](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages)
 - [Music Assistant](https://github.com/music-assistant/hass-music-assistant)
 - [Network Scanner](https://github.com/parvez/network_scanner)

@@ -1,0 +1,12 @@
+---
+- platform: template
+  sensors:
+    current_media_player_image:
+      value_template: >
+        {% if is_state("media_player.homepod_wohnzimmer_ma", "playing") and is_state_attr("media_player.homepod_wohnzimmer_ma", "media_content_type", "music") -%}
+          {{ state_attr('media_player.homepod_wohnzimmer_ma', 'entity_picture_local') }}
+        {% elif is_state("media_player.sonost_ray_wohnzimmer_ma", "playing") and is_state_attr("media_player.sonost_ray_wohnzimmer_ma", "media_content_type", "music") -%}
+          {{ state_attr('media_player.sonost_ray_wohnzimmer_ma', 'entity_picture_local') }}
+        {% elif is_state("media_player.appletv_wohnzimmer", "playing") and is_state_attr("media_player.appletv_wohnzimmer", "media_content_type", "music") -%}
+          {{ state_attr('media_player.appletv_wohnzimmer', 'entity_picture_local') }}
+        {%- endif %}

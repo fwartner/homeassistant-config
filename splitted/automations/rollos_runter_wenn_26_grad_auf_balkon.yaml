@@ -29,8 +29,8 @@ action:
         - cover.rollos_wohnzimmer_fensterbank
 alias: Rollos runter wenn 26 Grad auf Balkon
 condition:
-- after: '21:00:00'
-  before: 09:00:00
+- after: 09:00:00
+  before: '21:00:00'
   condition: time
   weekday:
   - mon

@@ -3377,7 +3377,7 @@
         Always make sure that the message fits into 2 sentences.
 
         '
-      agent_id: conversation.llama3
+      agent_id: conversation.chatgpt_assist
       language: german
     response_variable: generated_response
   - if:

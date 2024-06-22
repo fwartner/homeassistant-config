@@ -1,6 +1,6 @@
 action:
 - data:
-    agent_id: conversation.llama3
+    agent_id: conversation.chatgpt_assist
     language: german
     text: 'Briefly tell me that my {{ trigger.event.data.service_data.message }}.
       Always make sure that the message fits into 2 sentences.

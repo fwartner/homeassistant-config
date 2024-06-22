@@ -874,6 +874,16 @@
           entity_id: person.florian_wartner
           zone: zone.home
       sequence:
+      - service: conversation.process
+        metadata: {}
+        data:
+          text: 'Briefly tell me that my {{ trigger.event.data.service_data.message
+            }}. Always make sure that the message fits into 2 sentences.
+
+            '
+          agent_id: conversation.chatgpt_assist
+          language: german
+        response_variable: generated_response
       - service: notify.alexa_media_echo_show_wohnzimmer
         data:
           title: '{{  state_attr(''binary_sensor.warning_lubeck_hansestadt_1'', ''headline'')
@@ -881,6 +891,7 @@
           message: '"Es gibt eine Warnung!" {{  state_attr(''binary_sensor.warning_lubeck_hansestadt_1'',
             ''description'') }} {{  state_attr(''binary_sensor.warning_lubeck_hansestadt_1'',
             ''recommended_actions'') }}'
+        enabled: true
   mode: single
 - id: a7c427e6-ce03-49eb-9a23-c5bbe7625aa4
   alias: Admin - Generate README.md

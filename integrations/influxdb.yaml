@@ -4,7 +4,7 @@ influxdb:
   ssl: false
   host: 10.182.1.206
   port: 8086
-  organization: 10.182.1.206
+  organization: !secret unfluxdb_org_id
   bucket: homeassistant
   token: !secret influxdb_token
   default_measurement: state
@@ -32,6 +32,7 @@ influxdb:
     entities:
       - sensor.stromverbrauch_aktuell
       - person.florian_wartner
+      - person.steffi
       - weather.openweathermap
     entity_globs:
       - sensor.aqara_thermo_*_temperature

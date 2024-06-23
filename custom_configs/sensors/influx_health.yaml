@@ -11,6 +11,7 @@
     - name: "Heartrate Florian"
       unit_of_measurement: bpm
       value_template: "{{ value | float }}"
+      range_start: "-1h"
       group_function: last
       query: >
         filter(fn: (r) => r["_measurement"] == "bpm")
@@ -22,6 +23,7 @@
     - name: "Heartrate Variability Florian"
       unit_of_measurement: ms
       value_template: "{{ value | float }}"
+      range_start: "-30m"
       group_function: last
       query: >
         filter(fn: (r) => r["_measurement"] == "ms")
@@ -33,6 +35,7 @@
     - name: "Body Temperature Florian"
       unit_of_measurement: °C
       value_template: "{{ value | float }}"
+      range_start: "-30m"
       group_function: last
       query: >
         filter(fn: (r) => r["_measurement"] == "ºC")
@@ -44,6 +47,7 @@
     - name: "Blood Oxygen Saturation Florian"
       unit_of_measurement: "%"
       value_template: "{{ value | float }}"
+      range_start: "-30m"
       group_function: last
       query: >
         filter(fn: (r) => r["_measurement"] == "%")
@@ -55,6 +59,7 @@
     - name: "Weight Body Mass Florian"
       unit_of_measurement: kg
       value_template: "{{ value | float }}"
+      range_start: "-30m"
       group_function: last
       query: >
         filter(fn: (r) => r["_measurement"] == "kg")

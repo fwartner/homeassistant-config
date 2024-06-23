@@ -2,7 +2,7 @@
 - platform: mqtt_room
   device_id: "fe4c883e4c700511e3a937bf6c17fe5a"
   name: "Apple Watch von Florian Presence"
-  state_topic: "espresense/devices/irk:6ceec6e52cd53b16ebe3de0316d077c5"
+  state_topic: "espresense/devices/fe4c883e4c700511e3a937bf6c17fe5a"
   timeout: 10
   away_timeout: 30
 - platform: mqtt_room

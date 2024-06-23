@@ -15,8 +15,10 @@
       query: >
         filter(fn: (r) => r["_measurement"] == "bpm")
           |> filter(fn: (r) => r["entity_id"] == "healthexport_heart_rate")
+          |> filter(fn: (r) => r["source"] == "HA")
           |> filter(fn: (r) => r["_field"] == "value")
           |> filter(fn: (r) => r["domain"] == "hae")
+          |> yield(name: "last")
     - name: "Heartrate Variability Florian"
       unit_of_measurement: ms
       value_template: "{{ value | float }}"
@@ -27,30 +29,37 @@
           |> filter(fn: (r) => r["_field"] == "value")
           |> filter(fn: (r) => r["domain"] == "hae")
           |> filter(fn: (r) => r["entity_id"] == "healthexport_heart_rate_variability")
+          |> yield(name: "last")
     - name: "Body Temperature Florian"
       unit_of_measurement: °C
       value_template: "{{ value | float }}"
       group_function: last
       query: >
         filter(fn: (r) => r["_measurement"] == "ºC")
+          |> filter(fn: (r) => r["source"] == "HA")
           |> filter(fn: (r) => r["_field"] == "value")
           |> filter(fn: (r) => r["domain"] == "hae")
           |> filter(fn: (r) => r["entity_id"] == "healthexport_body_temperature")
+          |> yield(name: "last")
     - name: "Blood Oxygen Saturation Florian"
       unit_of_measurement: "%"
       value_template: "{{ value | float }}"
       group_function: last
       query: >
         filter(fn: (r) => r["_measurement"] == "%")
+          |> filter(fn: (r) => r["source"] == "HA")
           |> filter(fn: (r) => r["_field"] == "value")
           |> filter(fn: (r) => r["domain"] == "hae")
           |> filter(fn: (r) => r["entity_id"] == "healthexport_blood_oxygen_saturation")
+          |> yield(name: "last")
     - name: "Weight Body Mass Florian"
       unit_of_measurement: kg
       value_template: "{{ value | float }}"
       group_function: last
       query: >
         filter(fn: (r) => r["_measurement"] == "kg")
+          |> filter(fn: (r) => r["source"] == "HA")
           |> filter(fn: (r) => r["_field"] == "value")
           |> filter(fn: (r) => r["domain"] == "hae")
           |> filter(fn: (r) => r["entity_id"] == "healthexport_weight_body_mass")
+          |> yield(name: "last")

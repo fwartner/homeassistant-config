@@ -1,0 +1,15 @@
+---
+- platform: influxdb  
+  host: 192.168.xx.xx  # Replace with the host where InfluxDB is running
+  port: 8086       # Default InfluxDB port
+  username: xxxx
+  password: xxx
+  database: homeassistant
+  queries:
+    - name: "Thames_Daily_Water_Consumption"
+      unit_of_measurement: "L"  # Update with appropriate unit
+      value_template: '{{ value_json }}'
+      group_function: last
+      where: "ticker='dailywaterusage'"
+      measurement:  "homeassistant.autogen.thames_daily_water_usage" 
+      field: "Consumption"

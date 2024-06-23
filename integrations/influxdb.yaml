@@ -67,3 +67,4 @@ influxdb:
       - sensor.co2_in_*
       - sensor.pm25_in_*
       - sensor.pm10_in_*
+      - hae.*

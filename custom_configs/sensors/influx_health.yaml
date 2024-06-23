@@ -4,12 +4,9 @@
   host: 10.182.1.206
   port: 8086
   organization: !secret unfluxdb_org_id
-  #bucket: homeassistant
   token: !secret influxdb_token
   queries_flux:
     - group_function: last
-      imports:
-        - strings
       name: "Heartrate Florian"
       query: >
         from(bucket: "homeassistant")
@@ -22,16 +19,46 @@
           |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)
           |> yield(name: "last")
     - group_function: last
-      imports:
-        - strings
-      name: "Heartrate Florian"
+      name: "Heartrate Variability Florian"
       query: >
         from(bucket: "homeassistant")
           |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
-          |> filter(fn: (r) => r["_measurement"] == "bpm")
-          |> filter(fn: (r) => r["entity_id"] == "healthexport_heart_rate")
+          |> filter(fn: (r) => r["_measurement"] == "ms")
           |> filter(fn: (r) => r["source"] == "HA")
           |> filter(fn: (r) => r["_field"] == "value")
           |> filter(fn: (r) => r["domain"] == "hae")
-          |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)
+          |> filter(fn: (r) => r["entity_id"] == "healthexport_heart_rate_variability")
+          |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)
+          |> yield(name: "last")
+    - group_function: last
+      name: "Body Temperature Florian"
+      query: >
+        from(bucket: "homeassistant")
+          |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+          |> filter(fn: (r) => r["_measurement"] == "ºC")
+          |> filter(fn: (r) => r["_field"] == "value")
+          |> filter(fn: (r) => r["domain"] == "hae")
+          |> filter(fn: (r) => r["entity_id"] == "healthexport_body_temperature")
+          |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)
+          |> yield(name: "last")
+    - group_function: last
+      name: "Blood Oxygen Saturation Florian"
+      query: >
+        from(bucket: "homeassistant")
+          |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+          |> filter(fn: (r) => r["_measurement"] == "%")
+          |> filter(fn: (r) => r["_field"] == "value")
+          |> filter(fn: (r) => r["domain"] == "hae")
+          |> filter(fn: (r) => r["entity_id"] == "healthexport_blood_oxygen_saturation")
+          |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)
+          |> yield(name: "last")
+    - group_function: last
+      name: "Weight Body Mass Florian"
+      query: >
+        from(bucket: "homeassistant")
+          |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+          |> filter(fn: (r) => r["_measurement"] == "kg")
+          |> filter(fn: (r) => r["domain"] == "hae")
+          |> filter(fn: (r) => r["entity_id"] == "healthexport_weight_body_mass")
+          |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)
           |> yield(name: "last")

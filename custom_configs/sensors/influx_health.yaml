@@ -3,7 +3,7 @@
   api_version: 2
   host: 10.182.1.206
   port: 8086
-  verify_ssl: fal
+  ssl: false
   bucket: homeassistant
   organization: !secret unfluxdb_org_id
   token: !secret influxdb_token

@@ -16,5 +16,5 @@ wifi:
   password: !secret wifi_password
 
 ota:
-  - platform: http_request
+  - platform: esphome
     password: !secret ota_password

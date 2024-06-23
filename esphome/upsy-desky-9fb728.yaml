@@ -1,6 +1,6 @@
 substitutions:
   name: upsy-desky-9fb728
-  friendly_name: Upsy Desky 9fb728
+  friendly_name: Schreibtisch
 packages:
   tj_horner.upsy_desky: github://tjhorner/upsy-desky/firmware/stock.yaml@v2.0.0
 esphome:

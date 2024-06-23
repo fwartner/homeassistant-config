@@ -11,7 +11,7 @@
     - name: "Heartrate Florian"
       unit_of_measurement: bpm
       value_template: "{{ value | float }}"
-      range_start: "-1h"
+      range_start: "-30m"
       group_function: last
       query: >
         filter(fn: (r) => r["_measurement"] == "bpm")

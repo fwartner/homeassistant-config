@@ -13,11 +13,8 @@
       query: >
         filter(fn: (r) => r["_measurement"] == "bpm")
           |> filter(fn: (r) => r["entity_id"] == "healthexport_heart_rate")
-          |> filter(fn: (r) => r["source"] == "HA")
           |> filter(fn: (r) => r["_field"] == "value")
           |> filter(fn: (r) => r["domain"] == "hae")
-          |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)
-          |> yield(name: "last")
     - name: "Heartrate Variability Florian"
       unit_of_measurement: ms
       query: >
@@ -26,8 +23,6 @@
           |> filter(fn: (r) => r["_field"] == "value")
           |> filter(fn: (r) => r["domain"] == "hae")
           |> filter(fn: (r) => r["entity_id"] == "healthexport_heart_rate_variability")
-          |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)
-          |> yield(name: "last")
     - name: "Body Temperature Florian"
       unit_of_measurement: °C
       query: >
@@ -35,8 +30,6 @@
           |> filter(fn: (r) => r["_field"] == "value")
           |> filter(fn: (r) => r["domain"] == "hae")
           |> filter(fn: (r) => r["entity_id"] == "healthexport_body_temperature")
-          |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)
-          |> yield(name: "last")
     - name: "Blood Oxygen Saturation Florian"
       unit_of_measurement: "%"
       query: >
@@ -44,13 +37,10 @@
           |> filter(fn: (r) => r["_field"] == "value")
           |> filter(fn: (r) => r["domain"] == "hae")
           |> filter(fn: (r) => r["entity_id"] == "healthexport_blood_oxygen_saturation")
-          |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)
-          |> yield(name: "last")
     - name: "Weight Body Mass Florian"
       unit_of_measurement: kg
       query: >
         filter(fn: (r) => r["_measurement"] == "kg")
+          |> filter(fn: (r) => r["_field"] == "value")
           |> filter(fn: (r) => r["domain"] == "hae")
           |> filter(fn: (r) => r["entity_id"] == "healthexport_weight_body_mass")
-          |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)
-          |> yield(name: "last")

@@ -3,11 +3,14 @@
   api_version: 2
   host: 10.182.1.206
   port: 8086
+  verify_ssl: fal
+  bucket: homeassistant
   organization: !secret unfluxdb_org_id
   token: !secret influxdb_token
   queries_flux:
-    - group_function: last
-      name: "Heartrate Florian"
+    - name: "Heartrate Florian"
+      bucket: homeassistant
+      unit_of_measurement: bpm
       query: >
         from(bucket: "homeassistant")
           |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
@@ -18,8 +21,9 @@
           |> filter(fn: (r) => r["domain"] == "hae")
           |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)
           |> yield(name: "last")
-    - group_function: last
-      name: "Heartrate Variability Florian"
+    - name: "Heartrate Variability Florian"
+      bucket: homeassistant
+      unit_of_measurement: ms
       query: >
         from(bucket: "homeassistant")
           |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
@@ -30,8 +34,9 @@
           |> filter(fn: (r) => r["entity_id"] == "healthexport_heart_rate_variability")
           |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)
           |> yield(name: "last")
-    - group_function: last
-      name: "Body Temperature Florian"
+    - name: "Body Temperature Florian"
+      bucket: homeassistant
+      unit_of_measurement: °C
       query: >
         from(bucket: "homeassistant")
           |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
@@ -41,8 +46,9 @@
           |> filter(fn: (r) => r["entity_id"] == "healthexport_body_temperature")
           |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)
           |> yield(name: "last")
-    - group_function: last
-      name: "Blood Oxygen Saturation Florian"
+    - name: "Blood Oxygen Saturation Florian"
+      bucket: homeassistant
+      unit_of_measurement: "%"
       query: >
         from(bucket: "homeassistant")
           |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
@@ -52,8 +58,9 @@
           |> filter(fn: (r) => r["entity_id"] == "healthexport_blood_oxygen_saturation")
           |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)
           |> yield(name: "last")
-    - group_function: last
-      name: "Weight Body Mass Florian"
+    - name: "Weight Body Mass Florian"
+      bucket: homeassistant
+      unit_of_measurement: kg
       query: >
         from(bucket: "homeassistant")
           |> range(start: v.timeRangeStart, stop: v.timeRangeStop)

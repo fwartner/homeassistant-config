@@ -711,24 +711,6 @@
           title: "\U0001F514 Klingeling!"
           message: Jemand hat an der Tür geklingelt
   mode: single
-- id: '1692135326497'
-  alias: iPhone im WLAN
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.florians_iphone_ssid
-    to: Florians Homebase
-    id: iphoneWLANOn
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - iphoneWLANOn
-      sequence: []
-  mode: single
 - id: '1692310400644'
   alias: Aufstehen
   description: ''

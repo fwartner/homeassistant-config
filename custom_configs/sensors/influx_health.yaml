@@ -1,1 +1,75 @@
 ---
+- platform: influxdb
+  api_version: 2
+  host: 10.182.1.206
+  port: 8086
+  ssl: false
+  bucket: homeassistant
+  organization: !secret unfluxdb_org_id
+  token: !secret influxdb_token
+  queries_flux:
+    - name: "Heartrate Florian"
+      unit_of_measurement: bpm
+      value_template: "{{ value | float }}"
+      range_start: "-80m"
+      group_function: last
+      query: >
+        filter(fn: (r) => r["_measurement"] == "bpm")
+          |> filter(fn: (r) => r["entity_id"] == "healthexport_heart_rate")
+          |> filter(fn: (r) => r["source"] == "HA")
+          |> filter(fn: (r) => r["_field"] == "value")
+          |> filter(fn: (r) => r["domain"] == "hae")
+          |> yield(name: "last")
+          |> last()
+    - name: "Heartrate Variability Florian"
+      unit_of_measurement: ms
+      value_template: "{{ value | float }}"
+      range_start: "-80m"
+      group_function: last
+      query: >
+        filter(fn: (r) => r["_measurement"] == "ms")
+          |> filter(fn: (r) => r["source"] == "HA")
+          |> filter(fn: (r) => r["_field"] == "value")
+          |> filter(fn: (r) => r["domain"] == "hae")
+          |> filter(fn: (r) => r["entity_id"] == "healthexport_heart_rate_variability")
+          |> yield(name: "last")
+          |> last()
+    - name: "Body Temperature Florian"
+      unit_of_measurement: °C
+      value_template: "{{ value | float }}"
+      range_start: "-80m"
+      group_function: last
+      query: >
+        filter(fn: (r) => r["_measurement"] == "ºC")
+          |> filter(fn: (r) => r["source"] == "HA")
+          |> filter(fn: (r) => r["_field"] == "value")
+          |> filter(fn: (r) => r["domain"] == "hae")
+          |> filter(fn: (r) => r["entity_id"] == "healthexport_body_temperature")
+          |> yield(name: "last")
+          |> last()
+    - name: "Blood Oxygen Saturation Florian"
+      unit_of_measurement: "%"
+      value_template: "{{ value | float }}"
+      range_start: "-80m"
+      group_function: last
+      query: >
+        filter(fn: (r) => r["_measurement"] == "%")
+          |> filter(fn: (r) => r["source"] == "HA")
+          |> filter(fn: (r) => r["_field"] == "value")
+          |> filter(fn: (r) => r["domain"] == "hae")
+          |> filter(fn: (r) => r["entity_id"] == "healthexport_blood_oxygen_saturation")
+          |> yield(name: "last")
+          |> last()
+    - name: "Weight Body Mass Florian"
+      unit_of_measurement: kg
+      value_template: "{{ value | float }}"
+      range_start: "-80m"
+      group_function: last
+      query: >
+        filter(fn: (r) => r["_measurement"] == "kg")
+          |> filter(fn: (r) => r["source"] == "HA")
+          |> filter(fn: (r) => r["_field"] == "value")
+          |> filter(fn: (r) => r["domain"] == "hae")
+          |> filter(fn: (r) => r["entity_id"] == "healthexport_weight_body_mass")
+          |> yield(name: "last")
+          |> last()

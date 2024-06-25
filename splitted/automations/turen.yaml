@@ -1,6 +1,6 @@
 action:
 - choose:
-  - alias: Notification
+  - alias: Notification Florian
     conditions:
     - condition: and
       conditions:
@@ -21,6 +21,27 @@ action:
         message: "M\xF6chtest du die T\xFCr \xF6ffnen?"
         title: "\U0001F510 T\xFCren \xF6ffnen"
       service: notify.home_ai
+  - alias: Notification Steffi
+    conditions:
+    - condition: and
+      conditions:
+      - condition: trigger
+        id:
+        - nukiRingOn
+        - zoneHomeOnSteffi
+    sequence:
+    - data:
+        data:
+          actions:
+          - action: UNLOCK_HOUSE
+            icon: sfsymbols:lock.open.fill
+            title: "Haust\xFCr \xF6ffnen"
+          - action: UNLOCK_APARTMENT
+            icon: sfsymbols:lock.open.fill
+            title: "Wohnungst\xFCr \xF6ffnen"
+        message: "M\xF6chtest du die T\xFCr \xF6ffnen?"
+        title: "\U0001F510 T\xFCren \xF6ffnen"
+      service: notify.mobile_app_22041219ny
   - alias: "Haust\xFCr \xD6ffnen"
     conditions:
     - condition: trigger
@@ -67,3 +88,8 @@ trigger:
   event_type: mobile_app_notification_action
   id: unlockApartment
   platform: event
+- entity_id: person.steffi
+  event: enter
+  id: zoneHomeOnSteffi
+  platform: zone
+  zone: zone.home

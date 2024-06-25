@@ -1416,6 +1416,11 @@
     event_data:
       action: UNLOCK_APARTMENT
     id: unlockApartment
+  - platform: zone
+    entity_id: person.steffi
+    zone: zone.home
+    event: enter
+    id: zoneHomeOnSteffi
   condition: []
   action:
   - choose:
@@ -1439,7 +1444,28 @@
             - action: UNLOCK_APARTMENT
               title: Wohnungstür öffnen
               icon: sfsymbols:lock.open.fill
-      alias: Notification
+      alias: Notification Florian
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id:
+          - nukiRingOn
+          - zoneHomeOnSteffi
+      sequence:
+      - service: notify.mobile_app_22041219ny
+        data:
+          message: Möchtest du die Tür öffnen?
+          title: "\U0001F510 Türen öffnen"
+          data:
+            actions:
+            - action: UNLOCK_HOUSE
+              title: Haustür öffnen
+              icon: sfsymbols:lock.open.fill
+            - action: UNLOCK_APARTMENT
+              title: Wohnungstür öffnen
+              icon: sfsymbols:lock.open.fill
+      alias: Notification Steffi
     - conditions:
       - condition: trigger
         id:

@@ -17,8 +17,8 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3212
-Number of sensors | 1647
+Number of entities | 3135
+Number of sensors | 1648
 Number of automations | 98
 Number of scripts | 37
 Number of scenes | 29
@@ -35,11 +35,15 @@ Number of binary sensors | 242
 - AirCast
 - AirSonos
 - Assist Microphone
+- Changedetection.io
+- EMQX
 - ESPHome
 - eufy-security-ws
+- go2rtc
 - Home Assistant Google Drive Backup
 - Matter Server
 - Music Assistant BETA
+- Node-RED
 - openWakeWord
 - Piper
 - PS5 MQTT
@@ -49,6 +53,7 @@ Number of binary sensors | 242
 - Spotify Connect
 - Studio Code Server
 - TasmoAdmin
+- Uptime Kuma
 - Whisper
 
 ### Custom integrations

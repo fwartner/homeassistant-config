@@ -1,0 +1,17 @@
+action:
+- data: {}
+  metadata: {}
+  service: button.press
+  target:
+    entity_id: button.unifi_express_restart
+- data: {}
+  metadata: {}
+  service: homeassistant.restart
+alias: Restart Nightly
+condition: []
+description: ''
+id: '1719501882967'
+mode: single
+trigger:
+- at: 04:00:00
+  platform: time

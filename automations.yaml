@@ -3624,3 +3624,20 @@
       - 171cf6e6bd2c823a2a91c916b23b3e25
       - 3d2124b0362a0b5d69b4f905ec8a36c5
   mode: single
+- id: '1719501882967'
+  alias: Restart Nightly
+  description: ''
+  trigger:
+  - platform: time
+    at: 04:00:00
+  condition: []
+  action:
+  - service: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id: button.unifi_express_restart
+  - service: homeassistant.restart
+    metadata: {}
+    data: {}
+  mode: single

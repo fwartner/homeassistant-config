@@ -5,10 +5,15 @@ action:
       id:
       - bkwInverterOff
     sequence:
-    - device_id: 25e8395680cf11660d43d6d06ecb2d14
-      domain: switch
-      entity_id: c2b543703b09163eb220f8b8a0eb4830
-      type: turn_off
+    - if:
+      - below: 20
+        condition: numeric_state
+        entity_id: sensor.mi_light_sensor_wohnzimmer_illuminance_lux
+      then:
+      - device_id: 25e8395680cf11660d43d6d06ecb2d14
+        domain: switch
+        entity_id: c2b543703b09163eb220f8b8a0eb4830
+        type: turn_off
   - conditions:
     - condition: trigger
       id:

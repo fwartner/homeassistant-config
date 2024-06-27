@@ -1,7 +1,7 @@
 ---
 - platform: influxdb
   api_version: 2
-  host: 10.182.1.206
+  host: 10.0.1.12
   port: 8086
   ssl: false
   bucket: homeassistant

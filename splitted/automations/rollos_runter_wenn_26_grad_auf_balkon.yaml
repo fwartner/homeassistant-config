@@ -10,7 +10,6 @@ action:
       target:
         entity_id:
         - cover.rollos_schlafzimmer
-        - cover.rollos_wohnzimmer_fensterbank
   - conditions:
     - condition: trigger
       id:
@@ -26,7 +25,6 @@ action:
       target:
         entity_id:
         - cover.rollos_schlafzimmer
-        - cover.rollos_wohnzimmer_fensterbank
 alias: Rollos runter wenn 26 Grad auf Balkon
 condition:
 - after: 09:00:00

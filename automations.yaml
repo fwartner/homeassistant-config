@@ -235,7 +235,6 @@
         target:
           entity_id:
           - cover.rollos_schlafzimmer
-          - cover.rollos_wohnzimmer_fensterbank
     - conditions:
       - condition: trigger
         id:
@@ -250,7 +249,6 @@
         target:
           entity_id:
           - cover.rollos_schlafzimmer
-          - cover.rollos_wohnzimmer_fensterbank
         data: {}
   mode: single
 - id: '1690625427032'

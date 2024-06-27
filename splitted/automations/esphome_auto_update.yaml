@@ -2,6 +2,14 @@ action:
 - data: {}
   metadata: {}
   service: script.esphome_update_all_devices
+- delay:
+    hours: 0
+    milliseconds: 0
+    minutes: 10
+    seconds: 0
+- data:
+    addon: 5c53de3b_esphome
+  service: hassio.addon_restart
 alias: ESPHome Auto-Update
 condition: []
 description: ''

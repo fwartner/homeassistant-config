@@ -13,3 +13,8 @@ esphome_update_all_devices:
           entity_id: '{{ repeat.item }}'
       - continue_on_timeout: true
         wait_template: '{{ is_state(repeat.item, ''off'') }}'
+      - delay:
+          hours: 0
+          milliseconds: 0
+          minutes: 3
+          seconds: 0

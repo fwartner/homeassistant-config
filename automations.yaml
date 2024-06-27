@@ -2584,6 +2584,14 @@
   - service: script.esphome_update_all_devices
     metadata: {}
     data: {}
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - service: hassio.addon_restart
+    data:
+      addon: 5c53de3b_esphome
   mode: single
 - id: '1713867813081'
   alias: Starte WELT Livestream morgens

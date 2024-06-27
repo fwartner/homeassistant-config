@@ -5,8 +5,14 @@ action:
   target:
     entity_id: button.unifi_express_restart
 - data: {}
-  metadata: {}
-  service: homeassistant.restart
+  service: hassio.host_shutdown
+- delay:
+    hours: 0
+    milliseconds: 0
+    minutes: 20
+    seconds: 0
+- data: {}
+  service: homeassistant.reload_all
 alias: Restart Nightly
 condition: []
 description: ''

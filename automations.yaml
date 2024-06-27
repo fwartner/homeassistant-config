@@ -1501,17 +1501,6 @@
     target:
       entity_id: lock.nuki_wohnungstur_lock
   mode: single
-- id: '1710012823581'
-  alias: Reboot
-  description: ''
-  trigger:
-  - platform: time_pattern
-    hours: '2'
-  condition: []
-  action:
-  - service: hassio.host_reboot
-    data: {}
-  mode: single
 - id: '1710345991689'
   alias: Futterautomat
   description: ''
@@ -3637,7 +3626,13 @@
     data: {}
     target:
       entity_id: button.unifi_express_restart
-  - service: homeassistant.restart
-    metadata: {}
+  - service: hassio.host_shutdown
+    data: {}
+  - delay:
+      hours: 0
+      minutes: 20
+      seconds: 0
+      milliseconds: 0
+  - service: homeassistant.reload_all
     data: {}
   mode: single

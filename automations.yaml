@@ -3621,16 +3621,11 @@
     at: 04:00:00
   condition: []
   action:
-  - service: button.press
-    metadata: {}
-    data: {}
-    target:
-      entity_id: button.unifi_express_restart
   - service: hassio.host_shutdown
     data: {}
   - delay:
       hours: 0
-      minutes: 20
+      minutes: 10
       seconds: 0
       milliseconds: 0
   - service: homeassistant.reload_all

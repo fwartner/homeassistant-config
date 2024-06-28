@@ -10,7 +10,9 @@
     - service: switch.turn_off
       data: {}
       target:
-        entity_id: switch.dashboard_bildschirm
+        entity_id:
+        - switch.dashboard_flur_bildschirm
+        - switch.lenovo_tab_m10_bildschirm
     - service: lock.lock
       target:
         entity_id: lock.nuki_wohnungstur_lock

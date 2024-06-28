@@ -8,7 +8,9 @@ action:
     - data: {}
       service: switch.turn_on
       target:
-        entity_id: switch.dashboard_bildschirm
+        entity_id:
+        - switch.dashboard_flur_bildschirm
+        - switch.lenovo_tab_m10_bildschirm
 alias: Aufstehen
 condition: []
 description: ''

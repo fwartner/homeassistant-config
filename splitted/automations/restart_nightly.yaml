@@ -1,6 +1,6 @@
 action:
 - data: {}
-  service: hassio.host_shutdown
+  service: hassio.host_reboot
 - delay:
     hours: 0
     milliseconds: 0

@@ -3619,7 +3619,7 @@
     at: 04:00:00
   condition: []
   action:
-  - service: hassio.host_shutdown
+  - service: hassio.host_reboot
     data: {}
   - delay:
       hours: 0

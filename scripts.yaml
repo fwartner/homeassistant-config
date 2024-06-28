@@ -696,3 +696,147 @@ briefing:
   fields: {}
   description: ''
   icon: mdi:newspaper
+deckenventilator_power:
+  alias: Deckenventilator Power
+  sequence:
+  - service: remote.send_command
+    metadata: {}
+    data:
+      device: deckenventilator_schlafzimmer
+      command: power
+    target:
+      device_id: 4ed17b33e4a244aaabf58d21cbfc92db
+  description: ''
+  icon: mdi:ceiling-fan
+deckenventilator_level_1:
+  alias: Deckenventilator Level 1
+  sequence:
+  - service: remote.send_command
+    metadata: {}
+    data:
+      device: deckenventilator_schlafzimmer
+      command: level_1
+    target:
+      device_id: 4ed17b33e4a244aaabf58d21cbfc92db
+  description: ''
+  icon: mdi:ceiling-fan
+deckenventilator_level_2:
+  alias: Deckenventilator Level 2
+  sequence:
+  - service: remote.send_command
+    metadata: {}
+    data:
+      device: deckenventilator_schlafzimmer
+      command: level_2
+    target:
+      device_id: 4ed17b33e4a244aaabf58d21cbfc92db
+  description: ''
+  icon: mdi:ceiling-fan
+deckenventilator_level_3:
+  alias: Deckenventilator Level 3
+  sequence:
+  - service: remote.send_command
+    metadata: {}
+    data:
+      device: deckenventilator_schlafzimmer
+      command: level_3
+    target:
+      device_id: 4ed17b33e4a244aaabf58d21cbfc92db
+  description: ''
+  icon: mdi:ceiling-fan
+deckenventilator_level_4:
+  alias: Deckenventilator Level 4
+  sequence:
+  - service: remote.send_command
+    metadata: {}
+    data:
+      device: deckenventilator_schlafzimmer
+      command: level_4
+    target:
+      device_id: 4ed17b33e4a244aaabf58d21cbfc92db
+  description: ''
+  icon: mdi:ceiling-fan
+deckenventilator_level_5:
+  alias: Deckenventilator Level 5
+  sequence:
+  - service: remote.send_command
+    metadata: {}
+    data:
+      device: deckenventilator_schlafzimmer
+      command: level_5
+    target:
+      device_id: 4ed17b33e4a244aaabf58d21cbfc92db
+  description: ''
+  icon: mdi:ceiling-fan
+deckenventilator_level_6:
+  alias: Deckenventilator Level 6
+  sequence:
+  - service: remote.send_command
+    metadata: {}
+    data:
+      device: deckenventilator_schlafzimmer
+      command: level_6
+    target:
+      device_id: 4ed17b33e4a244aaabf58d21cbfc92db
+  description: ''
+  icon: mdi:ceiling-fan
+deckenventilator_breeze:
+  alias: Deckenventilator Breeze
+  sequence:
+  - service: remote.send_command
+    metadata: {}
+    data:
+      device: deckenventilator_schlafzimmer
+      command: breeze
+    target:
+      device_id: 4ed17b33e4a244aaabf58d21cbfc92db
+  description: ''
+  icon: mdi:ceiling-fan
+deckenventilator_timer_1h:
+  alias: Deckenventilator Timer 1h
+  sequence:
+  - service: remote.send_command
+    metadata: {}
+    data:
+      device: deckenventilator_schlafzimmer
+      command: timer_1
+    target:
+      device_id: 4ed17b33e4a244aaabf58d21cbfc92db
+  description: ''
+  icon: mdi:ceiling-fan
+deckenventilator_timer_2h:
+  alias: Deckenventilator Timer 2h
+  sequence:
+  - service: remote.send_command
+    metadata: {}
+    data:
+      device: deckenventilator_schlafzimmer
+      command: timer_2
+    target:
+      device_id: 4ed17b33e4a244aaabf58d21cbfc92db
+  description: ''
+  icon: mdi:ceiling-fan
+deckenventilator_timer_4h:
+  alias: Deckenventilator Timer 4h
+  sequence:
+  - service: remote.send_command
+    metadata: {}
+    data:
+      device: deckenventilator_schlafzimmer
+      command: timer_4
+    target:
+      device_id: 4ed17b33e4a244aaabf58d21cbfc92db
+  description: ''
+  icon: mdi:ceiling-fan
+deckenventilator_timer_8h:
+  alias: Deckenventilator Timer 8h
+  sequence:
+  - service: remote.send_command
+    metadata: {}
+    data:
+      device: deckenventilator_schlafzimmer
+      command: timer_8
+    target:
+      device_id: 4ed17b33e4a244aaabf58d21cbfc92db
+  description: ''
+  icon: mdi:ceiling-fan

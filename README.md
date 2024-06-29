@@ -17,8 +17,8 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3101
-Number of sensors | 1653
+Number of entities | 3100
+Number of sensors | 1652
 Number of automations | 98
 Number of scripts | 49
 Number of scenes | 29
@@ -67,7 +67,6 @@ Number of binary sensors | 244
 - [Attributes Extractor](https://github.com/pilotak/homeassistant-attributes)
 - [Auto Backup](https://github.com/jcwillox/hass-auto-backup)
 - [Average Sensor](https://github.com/Limych/ha-average)
-- [Avm Fritz!Box Device Access Profiles](https://github.com/mithomas/ha-fritzprofiles)
 - [Battery Notes](https://github.com/andrew-codechimp/HA-Battery-Notes)
 - [Better Thermostat](https://github.com/KartoffelToby/better_thermostat)
 - [Blitzortung.Org Lightning Detector](https://github.com/mrk-its/homeassistant-blitzortung)

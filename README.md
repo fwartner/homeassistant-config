@@ -17,13 +17,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3096
-Number of sensors | 1649
+Number of entities | 3069
+Number of sensors | 1653
 Number of automations | 98
 Number of scripts | 49
-Number of scenes | 29
+Number of scenes | 30
 Number of zones | 22
-Number of binary sensors | 239
+Number of binary sensors | 238
 
 ## Demo of my dashboard
 ![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)
@@ -40,9 +40,10 @@ Number of binary sensors | 239
 - eufy-security-ws
 - go2rtc
 - Home Assistant Google Drive Backup
+- MariaDB
 - Matter Server
 - Mosquitto broker
-- Music Assistant BETA
+- Music Assistant Server (beta)
 - Node-RED
 - openWakeWord
 - Piper
@@ -94,8 +95,8 @@ Number of binary sensors | 239
 - [Hoymiles](https://github.com/suaveolent/ha-hoymiles-wifi)
 - [Hvac Group](https://github.com/tetele/hvac_group)
 - [Icloud3 V3 Idevice Tracker](https://github.com/gcobb321/icloud3)
-- [Local Llm Conversation](https://github.com/acon96/home-llm)
 - [Local Llm Conversation](https://github.com/fixtse/home-llm)
+- [Local Llm Conversation](https://github.com/acon96/home-llm)
 - [Mail And Packages](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages)
 - [Media Player Template](https://github.com/Sennevds/media_player.template)
 - [Music Assistant](https://github.com/music-assistant/hass-music-assistant)
@@ -167,7 +168,7 @@ Number of binary sensors | 239
 - [Fold Entity Row](https://github.com/thomasloven/lovelace-fold-entity-row)
 - [Frigate Card](https://github.com/dermotduffy/frigate-hass-card)
 - [Ha Dashboard](https://github.com/wassy92x/lovelace-ha-dashboard)
-- [Ha Floorplan 🖌🎨   Your Imagination Just Become The New Limit](https://github.com/ExperienceLovelace/ha-floorplan)
+- [Ha Floorplan 🖌🎨 | Your Imagination Just Became The New Limit](https://github.com/ExperienceLovelace/ha-floorplan)
 - [Hass Hue Icons](https://github.com/arallsopp/hass-hue-icons)
 - [Header Cards](https://github.com/gadgetchnnel/lovelace-header-cards)
 - [Horizon Card](https://github.com/rejuvenate/lovelace-horizon-card)

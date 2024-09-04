@@ -17,13 +17,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3229
-Number of sensors | 1658
+Number of entities | 3146
+Number of sensors | 1576
 Number of automations | 98
 Number of scripts | 49
 Number of scenes | 30
 Number of zones | 22
-Number of binary sensors | 238
+Number of binary sensors | 239
 
 ## Demo of my dashboard
 ![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)
@@ -197,7 +197,6 @@ Number of binary sensors | 238
 - [Qr Code Generator Card](https://github.com/igor-panteleev/lovelace-qr-code-card)
 - [Refreshable Picture Card](https://github.com/dimagoltsman/refreshable-picture-card)
 - [Rgb Light Card](https://github.com/bokub/rgb-light-card)
-- [Room Card](https://github.com/marcokreeft87/room-card)
 - [Scheduler Card](https://github.com/nielsfaber/scheduler-card)
 - [Search Card](https://github.com/postlund/search-card)
 - [Secondaryinfo Entity Row](https://github.com/custom-cards/secondaryinfo-entity-row)

@@ -17,13 +17,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3148
-Number of sensors | 1579
+Number of entities | 3088
+Number of sensors | 1533
 Number of automations | 98
 Number of scripts | 49
 Number of scenes | 30
 Number of zones | 22
-Number of binary sensors | 239
+Number of binary sensors | 219
 
 ## Demo of my dashboard
 ![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)
@@ -34,10 +34,8 @@ Number of binary sensors | 239
 - Advanced SSH & Web Terminal
 - AirCast
 - AirSonos
-- Assist Microphone
 - Changedetection.io
 - ESPHome
-- eufy-security-ws
 - go2rtc
 - Home Assistant Google Drive Backup
 - MariaDB
@@ -45,7 +43,6 @@ Number of binary sensors | 239
 - Mosquitto broker
 - Music Assistant Server (beta)
 - Node-RED
-- openWakeWord
 - Piper
 - PS5 MQTT
 - RTSP Simple Server Add-on

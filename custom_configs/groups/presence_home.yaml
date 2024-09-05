@@ -1,5 +1,0 @@
----
-presence_home:
-  name: Presence Home
-  entities:
-    - person.florian_wartner

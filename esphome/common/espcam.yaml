@@ -1,0 +1,53 @@
+esp32_camera:
+  name: Camera
+  external_clock:
+    pin: GPIO0
+    frequency: 10MHz
+  i2c_pins:
+    sda: GPIO26
+    scl: GPIO27
+  data_pins: [GPIO5, GPIO18, GPIO19, GPIO21, GPIO36, GPIO39, GPIO34, GPIO35]
+  vsync_pin: GPIO25
+  href_pin: GPIO23
+  pixel_clock_pin: GPIO22
+  power_down_pin: GPIO32
+  resolution: 800x600
+  jpeg_quality: 60
+  max_framerate: 1.0fps
+  idle_framerate: 0.2fps
+  vertical_flip: true
+  horizontal_mirror: false
+  brightness: 2
+  contrast: 1
+  special_effect: none
+  aec_mode: auto
+  aec2: false
+  ae_level: 0
+  aec_value: 300
+  agc_mode: auto
+  agc_gain_ceiling: 2x
+  agc_value: 0
+  wb_mode: auto
+output:
+  - platform: ledc
+    channel: 2
+    pin: GPIO4
+    id: espCamLED
+  - platform: gpio
+    pin:
+      number: GPIO33
+      inverted: True
+    id: gpio_33
+light:
+  - platform: monochromatic
+    output: espCamLED
+    name: light
+  - platform: binary
+    output: gpio_33
+    name: led
+switch:
+  - platform: restart
+    name: restart
+binary_sensor:
+  - platform: status
+    name: status

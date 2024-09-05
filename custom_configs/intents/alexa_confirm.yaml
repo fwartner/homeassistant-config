@@ -1,0 +1,18 @@
+---
+text: >
+  {{ [
+    "In Ordnung"
+    "Sicher"
+    "Wenn du darauf bestehst"
+    "Erledigt"
+    "Keine Sorge"
+    "Ich kann das tun"
+    "Überlass es mir"
+    "Betrachte es als erledigt"
+    "Wie du wünschst"
+    "Nach deinem Befehl"
+    "Ja, oh verehrter/e Verehrte/r"
+    "Ich werde"
+    "Wie du befielst, so sei es"
+    "Kein Problem"
+  ] | random }}

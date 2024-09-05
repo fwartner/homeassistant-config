@@ -1,0 +1,11 @@
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: ${node_name}
+    password: !secret wifi_password
+  manual_ip:
+    gateway: 10.182.1.1
+    subnet: 255.255.255.0
+
+captive_portal:

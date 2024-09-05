@@ -2,6 +2,7 @@
 recorder:
   db_url: !secret db_url
   purge_keep_days: 14
+  commit_interval: 30
   include:
     domains:
       - sensor
@@ -15,6 +16,7 @@ recorder:
     entities:
       - sensor.last_boot
       - sensor.date
+      - sensor.icloud3_event_log
     entity_globs:
       - sensor.weather_*
       - sensor.flightradar24_*

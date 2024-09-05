@@ -1,0 +1,38 @@
+substitutions:
+  node_name: bett-proxy-sensor
+  friendly_name: Bett Proxy (Sensor)
+
+api:
+  encryption:
+    key: "llUIQKHn1gU3zq84TI/0ysV3kHmqdG1o7SAQ3prZrBY="
+
+packages:
+  base: !include common/base_32.yaml
+  ble: !include common/ble_gateway.yaml
+
+wifi:
+  manual_ip:
+    static_ip: 10.182.1.135
+
+web_server:
+  version: 2
+  include_internal: true
+
+binary_sensor:
+  - platform: gpio
+    id: bett_links
+    pin:
+      number: GPIO5
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "Bett Links"
+    icon: mdi:bed
+  
+  - platform: gpio
+    id: bett_rechts
+    pin:
+      number: GPIO18
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "Bett Rechts"
+    icon: mdi:bed

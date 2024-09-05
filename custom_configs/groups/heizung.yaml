@@ -1,0 +1,8 @@
+---
+heizung:
+  name: Alle Heizungen
+  entities:
+    - climate.heizung_wohnzimmer
+    - climate.heizung_badezimmer
+    - climate.heizung_schlafzimmer
+    - climate.heizung_buro

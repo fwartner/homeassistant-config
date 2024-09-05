@@ -1,0 +1,61 @@
+esphome:
+  name: ${node_name}
+  friendly_name: ${friendly_name}
+
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf
+
+logger:
+
+time:
+  - platform: homeassistant
+    id: hass_time
+    timezone: 'Europe/Berlin'
+  - platform: sntp
+    id: net_time
+    timezone: 'Europe/Berlin'
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+<<: !include wifi.yaml
+
+text_sensor:
+  - platform: version
+    name: ESPHome Version
+    disabled_by_default: true
+    hide_timestamp: true
+
+  - platform: wifi_info
+    ip_address:
+      name: "IP Address"
+      disabled_by_default: true
+    ssid:
+      name: "SSID"
+      disabled_by_default: true
+    bssid:
+      name: "BSSID"
+      disabled_by_default: true
+    mac_address:
+      name: "MAC Address"
+      disabled_by_default: true
+
+sensor:
+  - platform: wifi_signal
+    name: "WiFi Signal dB"
+    id: wifi_signal_db
+    update_interval: 60s
+    entity_category: "diagnostic"
+
+binary_sensor:
+  - platform: status
+    name: "Status"
+    disabled_by_default: false
+
+button:
+  - platform: restart
+    id: restart_button
+    name: "Restart"

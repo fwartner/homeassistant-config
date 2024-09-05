@@ -3,8 +3,8 @@
   sensors:
     appletv_image:
       value_template: >
-        {% if is_state('media_player.apple_tv_wohnzimmer', 'playing') %}
-          {{ state_attr('media_player.apple_tv_wohnzimmer', 'entity_picture') }}
+        {% if is_state('media_player.appletv_wohnzimmer', 'playing') %}
+          {{ state_attr('media_player.appletv_wohnzimmer', 'entity_picture') }}
         {% else %}
           https://www.nicepng.com/png/detail/209-2094976_apple-tv-logo-vector-apple-tv.png
         {% endif %}

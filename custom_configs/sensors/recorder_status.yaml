@@ -1,0 +1,10 @@
+---
+- platform: template
+  sensors:
+    recorder_status:
+      value_template: >
+        {% if is_state('sensor.recorder_uptime', 'unknown') %}
+          problem
+        {% else %}
+          running
+        {% endif %}

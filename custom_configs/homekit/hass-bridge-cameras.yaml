@@ -1,0 +1,16 @@
+---
+- name: Home Assistant Cameras
+  port: 21069
+  filter:
+    include_entities:
+      - camera.kamera_flur
+      - camera.kamera_buro
+      - camera.kamera_haustur
+      - camera.peephole_esp32_cam_camera
+  entity_config:
+    camera.kamera_haustur:
+      support_audio: false
+      linked_doorbell_sensor: binary_sensor.nuki_haustur_ring_action
+    camera.peephole_esp32_cam_camera:
+      support_audio: false
+      linked_doorbell_sensor: binary_sensor.nuki_haustur_ring_action

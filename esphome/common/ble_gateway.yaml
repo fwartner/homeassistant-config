@@ -1,0 +1,30 @@
+external_components:
+  - source: github://ilarrain/esphome-components
+
+esp32_ble_tracker:
+  scan_parameters:
+    active: True
+    interval: 320ms
+    window: 300ms
+
+bluetooth_proxy:
+  active: true
+
+ble_gateway:
+  id: blegateway
+  discovery: true
+  on_ble_advertise:
+    then:
+      homeassistant.event:
+        event: esphome.on_ble_advertise
+        data:
+          packet: !lambda return packet;
+
+text_sensor:
+  - platform: homeassistant
+    id: ble_gateway_devices
+    entity_id: binary_sensor.ble_gateway
+    attribute: devices
+    on_value:
+      then:
+        lambda: id(blegateway).set_devices(x);

@@ -1,0 +1,8 @@
+---
+- name: Home Assistant Climate
+  port: 21060
+  filter:
+    include_entities:
+      - climate.luftreiniger_wohnzimmer
+      - climate.luftreiniger_schlafzimmer
+      - fan.ventilator_wohnzimmer

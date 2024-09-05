@@ -1,0 +1,10 @@
+---
+presence_mode:
+  name: Presence Mode
+  icon: mdi:account
+  options:
+    - Zuhause
+    - Nacht
+    - Unterwegs
+    - Gast
+    - Urlaub

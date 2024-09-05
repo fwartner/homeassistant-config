@@ -1,0 +1,7 @@
+---
+- name: Home Assistant Locks
+  port: 21049
+  filter:
+    include_entities:
+      - lock.nuki_haustur_lock
+      - lock.nuki_wohnungstur_lock

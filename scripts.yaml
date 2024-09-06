@@ -704,6 +704,7 @@ deckenventilator_power:
     data:
       device: deckenventilator_schlafzimmer
       command: power
+      num_repeats: 1
     target:
       device_id: 4ed17b33e4a244aaabf58d21cbfc92db
   description: ''
@@ -716,6 +717,7 @@ deckenventilator_level_1:
     data:
       device: deckenventilator_schlafzimmer
       command: level_1
+      num_repeats: 1
     target:
       device_id: 4ed17b33e4a244aaabf58d21cbfc92db
   description: ''
@@ -728,6 +730,7 @@ deckenventilator_level_2:
     data:
       device: deckenventilator_schlafzimmer
       command: level_2
+      num_repeats: 1
     target:
       device_id: 4ed17b33e4a244aaabf58d21cbfc92db
   description: ''
@@ -740,6 +743,7 @@ deckenventilator_level_3:
     data:
       device: deckenventilator_schlafzimmer
       command: level_3
+      num_repeats: 1
     target:
       device_id: 4ed17b33e4a244aaabf58d21cbfc92db
   description: ''
@@ -752,6 +756,7 @@ deckenventilator_level_4:
     data:
       device: deckenventilator_schlafzimmer
       command: level_4
+      num_repeats: 1
     target:
       device_id: 4ed17b33e4a244aaabf58d21cbfc92db
   description: ''
@@ -764,6 +769,7 @@ deckenventilator_level_5:
     data:
       device: deckenventilator_schlafzimmer
       command: level_5
+      num_repeats: 1
     target:
       device_id: 4ed17b33e4a244aaabf58d21cbfc92db
   description: ''
@@ -776,6 +782,7 @@ deckenventilator_level_6:
     data:
       device: deckenventilator_schlafzimmer
       command: level_6
+      num_repeats: 1
     target:
       device_id: 4ed17b33e4a244aaabf58d21cbfc92db
   description: ''
@@ -800,6 +807,7 @@ deckenventilator_timer_1h:
     data:
       device: deckenventilator_schlafzimmer
       command: timer_1
+      num_repeats: 1
     target:
       device_id: 4ed17b33e4a244aaabf58d21cbfc92db
   description: ''
@@ -812,6 +820,7 @@ deckenventilator_timer_2h:
     data:
       device: deckenventilator_schlafzimmer
       command: timer_2
+      num_repeats: 1
     target:
       device_id: 4ed17b33e4a244aaabf58d21cbfc92db
   description: ''
@@ -824,6 +833,7 @@ deckenventilator_timer_4h:
     data:
       device: deckenventilator_schlafzimmer
       command: timer_4
+      num_repeats: 1
     target:
       device_id: 4ed17b33e4a244aaabf58d21cbfc92db
   description: ''
@@ -836,7 +846,50 @@ deckenventilator_timer_8h:
     data:
       device: deckenventilator_schlafzimmer
       command: timer_8
+      num_repeats: 1
     target:
       device_id: 4ed17b33e4a244aaabf58d21cbfc92db
   description: ''
   icon: mdi:ceiling-fan
+polly_wasser_5_minuten:
+  alias: Polly Wasser 5 Minuten
+  sequence:
+  - service: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.petlibro_plwf105_pump
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - service: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.petlibro_plwf105_pump
+  fields: {}
+  description: ''
+  icon: mdi:fountain
+polly_wasser_15_minuten:
+  alias: Polly Wasser 15 Minuten
+  sequence:
+  - service: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.petlibro_plwf105_pump
+  - delay:
+      hours: 0
+      minutes: 15
+      seconds: 0
+      milliseconds: 0
+  - service: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.petlibro_plwf105_pump
+  fields: {}
+  description: ''
+  icon: mdi:fountain

@@ -35,9 +35,14 @@ action:
         entity_id: fan.ventilator_wohnzimmer
 alias: Ventilator
 condition:
-- condition: state
-  entity_id: input_boolean.ventilator
-  state: 'on'
+- condition: and
+  conditions:
+  - condition: state
+    entity_id: input_boolean.ventilator
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
 description: "An: Wenn \xFCber 26 Grad\nAus: Wenn unter 24 Grad"
 id: '1686557247104'
 mode: single

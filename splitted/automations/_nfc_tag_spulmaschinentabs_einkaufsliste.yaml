@@ -6,7 +6,10 @@ action:
   target:
     entity_id: todo.einkaufsliste
 alias: "[NFC Tag] Sp\xFClmaschinentabs Einkaufsliste"
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1718561731942'
 mode: single

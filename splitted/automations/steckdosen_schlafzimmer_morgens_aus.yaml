@@ -9,7 +9,10 @@ action:
     entity_id: 107487a20fd417d6c27308fc10f3df40
     type: turn_off
 alias: Steckdosen Schlafzimmer Morgens Aus
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1713444564715'
 mode: single

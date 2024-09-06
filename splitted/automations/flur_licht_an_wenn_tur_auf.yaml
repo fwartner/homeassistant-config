@@ -14,10 +14,15 @@ action:
   type: turn_off
 alias: "Flur: Licht an wenn T\xFCr auf"
 condition:
-- after: sunset
-  after_offset: '1'
-  before: sunrise
-  condition: sun
+- condition: and
+  conditions:
+  - after: sunset
+    after_offset: '1'
+    before: sunrise
+    condition: sun
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
 description: ''
 id: '1669632865548'
 mode: single

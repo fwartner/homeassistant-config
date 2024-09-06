@@ -15,7 +15,10 @@ action:
         entity_id:
         - switch.alle_steckdosen
 alias: Verlassen
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1692084370120'
 mode: single

@@ -14,7 +14,10 @@ action:
   metadata: {}
   service: mqtt.publish
 alias: 'AWTRIX: Speedtest'
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1715341229281'
 mode: single

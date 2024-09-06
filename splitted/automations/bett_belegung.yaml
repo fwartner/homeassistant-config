@@ -45,14 +45,17 @@ action:
         device_id: []
         entity_id: input_boolean.bett_links
 alias: Bett Belegung
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1702645776967'
 mode: single
 trigger:
 - alias: Bett Rechts An
   entity_id:
-  - binary_sensor.bett_sensor_bett_rechts
+  - binary_sensor.bett_proxy_sensor_bett_rechts
   for:
     hours: 0
     minutes: 1
@@ -63,7 +66,7 @@ trigger:
   to: 'on'
 - alias: Bett Links An
   entity_id:
-  - binary_sensor.bett_sensor_bett_links
+  - binary_sensor.bett_proxy_sensor_bett_links
   for:
     hours: 0
     minutes: 1
@@ -74,7 +77,7 @@ trigger:
   to: 'on'
 - alias: Bett Rechts Aus
   entity_id:
-  - binary_sensor.bett_sensor_bett_rechts
+  - binary_sensor.bett_proxy_sensor_bett_rechts
   for:
     hours: 0
     minutes: 1
@@ -85,7 +88,7 @@ trigger:
   to: 'off'
 - alias: Bett Links Aus
   entity_id:
-  - binary_sensor.bett_sensor_bett_links
+  - binary_sensor.bett_proxy_sensor_bett_links
   for:
     hours: 0
     minutes: 1

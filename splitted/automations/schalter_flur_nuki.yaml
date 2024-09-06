@@ -58,7 +58,10 @@ action:
       entity_id: 55c2f5c9869bcfbeac0ed4d2dfbc4567
       type: turn_off
 alias: Schalter Flur Nuki
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1713885934064'
 mode: single

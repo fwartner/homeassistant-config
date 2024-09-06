@@ -5,7 +5,10 @@ action:
   target:
     entity_id: input_number.waschmaschinentabs
 alias: '[NFC Tag] Waschmaschinentabs'
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1718550615267'
 mode: single

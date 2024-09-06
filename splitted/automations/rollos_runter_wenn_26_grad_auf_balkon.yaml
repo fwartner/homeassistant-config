@@ -27,17 +27,22 @@ action:
         - cover.rollos_schlafzimmer
 alias: Rollos runter wenn 26 Grad auf Balkon
 condition:
-- after: 09:00:00
-  before: '21:00:00'
-  condition: time
-  weekday:
-  - mon
-  - tue
-  - wed
-  - thu
-  - fri
-  - sat
-  - sun
+- condition: and
+  conditions:
+  - after: 09:00:00
+    before: '21:00:00'
+    condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+    - sun
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
 description: ''
 id: '1686661353814'
 mode: single

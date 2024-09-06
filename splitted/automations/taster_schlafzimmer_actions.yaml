@@ -5,39 +5,49 @@ use_blueprint:
   input:
     action_sensor: sensor.aqara_taster_schlafzimmer_action
     double_action:
-    - parallel:
-      - data: {}
-        service: script.3_minuten_bettzeit
-      - data: {}
-        service: script.10_minuten_boost_wohnzimmer
+    - if:
+      - condition: state
+        entity_id: input_boolean.wartung
+        state: 'off'
+      then:
+      - parallel:
+        - data: {}
+          service: script.3_minuten_bettzeit
+        - data: {}
+          service: script.10_minuten_boost_wohnzimmer
     single_action:
-    - else:
-      - if:
+    - if:
+      - condition: state
+        entity_id: input_boolean.wartung
+        state: 'off'
+      then:
+      - else:
+        - if:
+          - condition: or
+            conditions:
+            - condition: state
+              entity_id: cover.rollos_schlafzimmer
+              state: opening
+            - condition: state
+              entity_id: cover.rollos_schlafzimmer
+              state: open
+          then:
+          - data: {}
+            service: cover.close_cover
+            target:
+              entity_id: cover.rollos_schlafzimmer
+        if:
         - condition: or
           conditions:
           - condition: state
             entity_id: cover.rollos_schlafzimmer
-            state: opening
+            state: closing
           - condition: state
             entity_id: cover.rollos_schlafzimmer
-            state: open
+            state: closed
         then:
         - data: {}
-          service: cover.close_cover
+          service: cover.open_cover
           target:
             entity_id: cover.rollos_schlafzimmer
-      if:
-      - condition: or
-        conditions:
-        - condition: state
-          entity_id: cover.rollos_schlafzimmer
-          state: closing
-        - condition: state
-          entity_id: cover.rollos_schlafzimmer
-          state: closed
-      then:
-      - data: {}
-        service: cover.open_cover
-        target:
-          entity_id: cover.rollos_schlafzimmer
   path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml

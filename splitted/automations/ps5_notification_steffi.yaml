@@ -1,0 +1,18 @@
+action:
+- data:
+    data:
+      priority: high
+      ttl: 0
+    message: "Du solltest ihn jetzt lieber nicht st\xF6ren. Ich meine es nur gut \U0001F618"
+    title: "\U0001F3AE Florian zockt gerade!"
+  metadata: {}
+  service: notify.mobile_app_22041219ny
+alias: PS5 Notification Steffi
+condition: []
+description: ''
+id: '1721670059050'
+mode: single
+trigger:
+- platform: template
+  value_template: "{% if is_state('switch.playstation_5_power', 'on') %}\n  {{ is_state_attr('sensor.playstation_5_activity',\
+    \ 'activity', 'playing') }}\n{%- endif -%}"

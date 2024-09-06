@@ -47,7 +47,10 @@ action:
           target:
             device_id: 6e5322a0a9b03a5d8858879bbead49bf
 alias: Nachtlicht Badezimmer
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1691786451171'
 mode: single

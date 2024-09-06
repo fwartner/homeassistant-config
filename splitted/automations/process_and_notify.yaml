@@ -27,7 +27,10 @@ action:
     metadata: {}
     service: notify.all_iphones
 alias: Process and Notify
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1718614598599'
 mode: single

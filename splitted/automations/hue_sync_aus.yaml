@@ -18,7 +18,10 @@ action:
     target:
       entity_id: switch.sync_box_light_sync
 alias: Hue Sync Aus
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1713900000210'
 mode: single

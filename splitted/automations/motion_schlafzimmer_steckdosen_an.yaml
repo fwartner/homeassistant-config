@@ -18,17 +18,22 @@ action:
       type: turn_on
 alias: 'Motion: Schlafzimmer Steckdosen An'
 condition:
-- after: '21:00:00'
-  before: 00:00:00
-  condition: time
-  weekday:
-  - mon
-  - fri
-  - sat
-  - sun
-  - tue
-  - wed
-  - thu
+- condition: and
+  conditions:
+  - after: '21:00:00'
+    before: 00:00:00
+    condition: time
+    weekday:
+    - mon
+    - fri
+    - sat
+    - sun
+    - tue
+    - wed
+    - thu
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
 description: ''
 id: '1713444406391'
 mode: single

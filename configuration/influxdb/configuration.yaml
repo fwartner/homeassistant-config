@@ -1,0 +1,16 @@
+---
+api_version: 2
+ssl: false
+host: 10.0.1.12
+port: 8086
+organization: !secret unfluxdb_org_id
+bucket: homeassistant
+token: !secret influxdb_token
+default_measurement: state
+tags:
+  source: HA
+tags_attributes:
+  - friendly_name
+ignore_attributes: !include ignore_attributes.yaml
+include: !include includes.yaml
+exclude: !include excludes.yaml

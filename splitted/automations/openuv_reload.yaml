@@ -8,9 +8,14 @@ action:
     - sensor.openuv_aktueller_uv_wert
 alias: 'OpenUV: Reload'
 condition:
-- after: sunrise
-  before: sunset
-  condition: sun
+- condition: and
+  conditions:
+  - after: sunrise
+    before: sunset
+    condition: sun
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
 description: ''
 id: '1716151253982'
 mode: single

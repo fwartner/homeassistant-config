@@ -2,7 +2,10 @@ action:
 - data: {}
   service: script.1699263899938
 alias: Speedtest
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: Alle 2 Minuten
 id: '1699291427370'
 mode: single

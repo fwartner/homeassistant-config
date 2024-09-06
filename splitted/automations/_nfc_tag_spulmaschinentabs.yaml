@@ -5,7 +5,10 @@ action:
   target:
     entity_id: input_number.spulmaschinentabs
 alias: "[NFC Tag] Sp\xFClmaschinentabs"
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1718550657718'
 mode: single

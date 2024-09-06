@@ -5,7 +5,10 @@ action:
   target:
     entity_id: lock.nuki_wohnungstur_lock
 alias: "Wohnungst\xFCr (NFC Tag)"
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1707472829981'
 mode: single

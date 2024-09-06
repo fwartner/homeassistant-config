@@ -5,7 +5,10 @@ action:
   response_variable: backup_response
   service: shell_command.run_chores
 alias: Run Chores
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1713209575955'
 mode: single

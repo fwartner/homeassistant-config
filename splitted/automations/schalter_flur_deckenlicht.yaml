@@ -39,7 +39,10 @@ action:
         entity_id:
         - switch.flur_schalter_decke
 alias: Schalter Flur Deckenlicht
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1713448133488'
 mode: single

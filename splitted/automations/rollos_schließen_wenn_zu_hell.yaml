@@ -33,18 +33,21 @@ condition:
   - condition: state
     entity_id: input_boolean.guestmode
     state: 'off'
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
 description: ''
 id: '1691320563612'
 mode: single
 trigger:
-- above: 10000
+- above: 6000
   device_id: cc409c26cddb1137902b367f0bbcc342
   domain: sensor
   entity_id: 92fbba10867e030bf34955d6b0015ff3
   id: wohnzimmerRollosOn
   platform: device
   type: illuminance
-- below: 5000
+- below: 4500
   device_id: cc409c26cddb1137902b367f0bbcc342
   domain: sensor
   entity_id: 92fbba10867e030bf34955d6b0015ff3

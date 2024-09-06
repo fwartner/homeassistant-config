@@ -19,7 +19,10 @@ action:
       target:
         entity_id: input_boolean.urlaubsmodus
 alias: Urlaubsmodus nach Kalender
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1673948568537'
 mode: single

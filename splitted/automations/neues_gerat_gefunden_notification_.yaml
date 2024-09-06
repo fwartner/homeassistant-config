@@ -5,9 +5,14 @@ action:
   service: notify.home_ai
 alias: "Neues Ger\xE4t gefunden (Notification)"
 condition:
-- condition: state
-  entity_id: input_boolean.nicht_storen
-  state: 'off'
+- condition: and
+  conditions:
+  - condition: state
+    entity_id: input_boolean.nicht_storen
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
 description: ''
 id: '1712905210678'
 mode: single

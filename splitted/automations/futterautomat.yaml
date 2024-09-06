@@ -6,17 +6,22 @@ action:
     entity_id: script.polly_futtern
 alias: Futterautomat
 condition:
-- after: 06:00:00
-  before: '22:00:00'
-  condition: time
-  weekday:
-  - mon
-  - tue
-  - wed
-  - fri
-  - sat
-  - sun
-  - thu
+- condition: and
+  conditions:
+  - after: 06:00:00
+    before: '22:00:00'
+    condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - fri
+    - sat
+    - sun
+    - thu
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
 description: ''
 id: '1710345991689'
 mode: single

@@ -1,0 +1,138 @@
+- entities:
+    light.hugo_rechts:
+      brightness: 102
+      color_mode: color_temp
+      color_temp: 284
+      color_temp_kelvin: 3521
+      dynamics: none
+      effect: None
+      effect_list:
+      - None
+      - candle
+      - fire
+      - prism
+      - sparkle
+      - opal
+      - glisten
+      friendly_name: Hugo Rechts
+      hs_color:
+      - 27.152
+      - 44.32
+      max_color_temp_kelvin: 6535
+      max_mireds: 500
+      min_color_temp_kelvin: 2000
+      min_mireds: 153
+      mode: normal
+      rgb_color:
+      - 255
+      - 193
+      - 141
+      state: 'on'
+      supported_color_modes:
+      - color_temp
+      - xy
+      supported_features: 44
+      xy_color:
+      - 0.453
+      - 0.374
+    light.regal:
+      brightness: 102
+      color_mode: color_temp
+      color_temp: 284
+      color_temp_kelvin: 3521
+      dynamics: none
+      friendly_name: Regal
+      hs_color:
+      - 27.152
+      - 44.32
+      max_color_temp_kelvin: 6535
+      max_mireds: 500
+      min_color_temp_kelvin: 2000
+      min_mireds: 153
+      mode: normal
+      rgb_color:
+      - 255
+      - 193
+      - 141
+      state: 'on'
+      supported_color_modes:
+      - color_temp
+      - xy
+      supported_features: 40
+      xy_color:
+      - 0.453
+      - 0.374
+    light.tv:
+      brightness: 102
+      color_mode: color_temp
+      color_temp: 284
+      color_temp_kelvin: 3521
+      dynamics: none
+      effect: None
+      effect_list:
+      - None
+      - candle
+      - fire
+      - prism
+      - sparkle
+      - opal
+      - glisten
+      - sunrise
+      - unknown
+      friendly_name: TV
+      hs_color:
+      - 27.152
+      - 44.32
+      max_color_temp_kelvin: 6535
+      max_mireds: 500
+      min_color_temp_kelvin: 2000
+      min_mireds: 153
+      mode: normal
+      rgb_color:
+      - 255
+      - 193
+      - 141
+      state: 'on'
+      supported_color_modes:
+      - color_temp
+      - xy
+      supported_features: 44
+      xy_color:
+      - 0.453
+      - 0.374
+    light.tv_bank:
+      brightness: 102
+      color_mode: brightness
+      dynamics: none
+      friendly_name: TV Bank
+      mode: normal
+      state: 'on'
+      supported_color_modes:
+      - brightness
+      supported_features: 40
+    media_player.sonos_ray_wohnzimmer:
+      device_class: speaker
+      entity_picture: /api/media_player_proxy/media_player.sonos_ray_wohnzimmer?token=fba104519b041ecfe24b9f92fe096cdcb2f68a149a4e7a1230a9dc9afbc98988&cache=c2b389479ba73689
+      friendly_name: Sonos Ray Wohnzimmer
+      group_members:
+      - media_player.sonos_ray_wohnzimmer
+      icon: phu:sonos-ray
+      is_volume_muted: false
+      media_album_name: Stay by My Side
+      media_artist: SRTW
+      media_content_id: x-sonos-spotify:spotify%3atrack%3a2wk7mBr6JlorYMwESY7lyi?sid=9&flags=8232&sn=2
+      media_content_type: music
+      media_duration: 111
+      media_position: 0
+      media_position_updated_at: '2024-07-08T12:11:55.582512+00:00'
+      media_title: Stay by My Side
+      queue_position: 1
+      queue_size: 100
+      repeat: 'off'
+      shuffle: false
+      state: playing
+      supported_features: 4127295
+      volume_level: 0.12
+  id: '1720440801295'
+  metadata: {}
+  name: Chill

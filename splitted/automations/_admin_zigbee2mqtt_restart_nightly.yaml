@@ -3,7 +3,10 @@ action:
   metadata: {}
   service: script.1699263855216
 alias: '[Admin] Zigbee2MQTT Restart Nightly'
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1713443188220'
 mode: single

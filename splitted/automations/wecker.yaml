@@ -49,6 +49,9 @@ condition:
   - condition: state
     entity_id: input_boolean.nicht_storen
     state: 'off'
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
 description: ''
 id: '1712525174898'
 mode: single

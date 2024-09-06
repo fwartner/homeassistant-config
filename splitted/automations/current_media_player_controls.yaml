@@ -67,7 +67,10 @@ action:
       target:
         entity_id: input_text.last_media_player
 alias: Current Media Player Controls
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1718970747624'
 mode: single

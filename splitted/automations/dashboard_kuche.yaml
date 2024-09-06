@@ -30,7 +30,10 @@ action:
       target:
         device_id: aaa0eae9a416510075db748a0b6262dc
 alias: "Dashboard K\xFCche"
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1713259440389'
 mode: single

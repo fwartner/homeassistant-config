@@ -5,11 +5,16 @@ action:
   service: recorder.purge
 alias: System - Database Repack (Weekly)
 condition:
-- condition: time
-  weekday:
-  - sun
-  - tue
-  - thu
+- condition: and
+  conditions:
+  - condition: time
+    weekday:
+    - sun
+    - tue
+    - thu
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
 description: ''
 id: database_repack
 mode: single

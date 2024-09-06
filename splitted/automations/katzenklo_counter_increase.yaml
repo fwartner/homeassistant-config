@@ -9,7 +9,10 @@ action:
   target:
     entity_id: counter.katzenklo_counter
 alias: Katzenklo Counter Increase
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1710933026215'
 mode: single

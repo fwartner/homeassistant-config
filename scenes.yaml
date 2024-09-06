@@ -249,3 +249,141 @@
       state: 'on'
   icon: phu:other-reading
   metadata: {}
+- id: '1720440801295'
+  name: Chill
+  entities:
+    light.tv:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - None
+      - candle
+      - fire
+      - prism
+      - sparkle
+      - opal
+      - glisten
+      - sunrise
+      - unknown
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect: None
+      color_mode: color_temp
+      brightness: 102
+      color_temp_kelvin: 3521
+      color_temp: 284
+      hs_color:
+      - 27.152
+      - 44.32
+      rgb_color:
+      - 255
+      - 193
+      - 141
+      xy_color:
+      - 0.453
+      - 0.374
+      mode: normal
+      dynamics: none
+      friendly_name: TV
+      supported_features: 44
+      state: 'on'
+    media_player.sonos_ray_wohnzimmer:
+      group_members:
+      - media_player.sonos_ray_wohnzimmer
+      volume_level: 0.12
+      is_volume_muted: false
+      media_content_id: x-sonos-spotify:spotify%3atrack%3a2wk7mBr6JlorYMwESY7lyi?sid=9&flags=8232&sn=2
+      media_content_type: music
+      media_title: Stay by My Side
+      shuffle: false
+      repeat: 'off'
+      queue_size: 100
+      device_class: speaker
+      icon: phu:sonos-ray
+      friendly_name: Sonos Ray Wohnzimmer
+      supported_features: 4127295
+      media_duration: 111
+      media_position: 0
+      media_position_updated_at: '2024-07-08T12:11:55.582512+00:00'
+      media_artist: SRTW
+      media_album_name: Stay by My Side
+      queue_position: 1
+      entity_picture: /api/media_player_proxy/media_player.sonos_ray_wohnzimmer?token=fba104519b041ecfe24b9f92fe096cdcb2f68a149a4e7a1230a9dc9afbc98988&cache=c2b389479ba73689
+      state: playing
+    light.hugo_rechts:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - None
+      - candle
+      - fire
+      - prism
+      - sparkle
+      - opal
+      - glisten
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect: None
+      color_mode: color_temp
+      brightness: 102
+      color_temp_kelvin: 3521
+      color_temp: 284
+      hs_color:
+      - 27.152
+      - 44.32
+      rgb_color:
+      - 255
+      - 193
+      - 141
+      xy_color:
+      - 0.453
+      - 0.374
+      mode: normal
+      dynamics: none
+      friendly_name: Hugo Rechts
+      supported_features: 44
+      state: 'on'
+    light.tv_bank:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 102
+      mode: normal
+      dynamics: none
+      friendly_name: TV Bank
+      supported_features: 40
+      state: 'on'
+    light.regal:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: color_temp
+      brightness: 102
+      color_temp_kelvin: 3521
+      color_temp: 284
+      hs_color:
+      - 27.152
+      - 44.32
+      rgb_color:
+      - 255
+      - 193
+      - 141
+      xy_color:
+      - 0.453
+      - 0.374
+      mode: normal
+      dynamics: none
+      friendly_name: Regal
+      supported_features: 40
+      state: 'on'
+  metadata: {}

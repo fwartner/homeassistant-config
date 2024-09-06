@@ -19,7 +19,10 @@ action:
       target:
         entity_id: cover.aqara_rollo_kuche
 alias: "Rollo K\xFCche"
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1693489965780'
 mode: single

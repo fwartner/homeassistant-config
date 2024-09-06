@@ -3,7 +3,10 @@ action:
     keep_days: 2
   service: auto_backup.backup_full
 alias: Daily Backup
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1690625427032'
 mode: single

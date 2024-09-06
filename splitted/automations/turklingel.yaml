@@ -66,12 +66,17 @@ action:
       service: notify.mobile_app_macbook_pro_von_florian
 alias: "T\xFCrklingel"
 condition:
-- above: 0
-  condition: numeric_state
-  entity_id: sensor.people_home
-- condition: state
-  entity_id: input_boolean.nicht_storen
-  state: 'off'
+- condition: and
+  conditions:
+  - condition: state
+    entity_id: input_boolean.nicht_storen
+    state: 'off'
+  - above: 0
+    condition: numeric_state
+    entity_id: sensor.people_home
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
 description: ''
 id: '1692134639284'
 mode: single

@@ -1,0 +1,21 @@
+polly_wasser_15_minuten:
+  alias: Polly Wasser 15 Minuten
+  description: ''
+  fields: {}
+  icon: mdi:fountain
+  sequence:
+  - data: {}
+    metadata: {}
+    service: switch.turn_on
+    target:
+      entity_id: switch.petlibro_plwf105_pump
+  - delay:
+      hours: 0
+      milliseconds: 0
+      minutes: 15
+      seconds: 0
+  - data: {}
+    metadata: {}
+    service: switch.turn_off
+    target:
+      entity_id: switch.petlibro_plwf105_pump

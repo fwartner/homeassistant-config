@@ -29,7 +29,10 @@ action:
       enabled: true
       service: notify.alexa_media_echo_show_wohnzimmer
 alias: Nina Alarm
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1697834117670'
 mode: single

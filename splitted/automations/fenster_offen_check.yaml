@@ -24,9 +24,14 @@ action:
   service: notify.alexa_media_echo_flur
 alias: Fenster Offen Check
 condition:
-- condition: state
-  entity_id: input_boolean.urlaubsmodus
-  state: 'on'
+- condition: and
+  conditions:
+  - condition: state
+    entity_id: input_boolean.urlaubsmodus
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
 description: ''
 id: '1713181882652'
 mode: single

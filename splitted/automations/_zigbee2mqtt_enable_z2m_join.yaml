@@ -7,9 +7,14 @@ action:
     entity_id: timer.z2m_permit_join
   service: timer.start
 alias: '[Zigbee2MQTT] Enable Z2M Join'
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1717147815711'
 trigger:
-  entity_id: input_boolean.z2m_permit_join
+- entity_id:
+  - input_boolean.z2m_permit_join
   platform: state
   to: 'on'

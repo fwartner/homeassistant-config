@@ -7,9 +7,14 @@ action:
     - binary_sensor.openuv_schutzfenster
 alias: Update OpenUV every 59 minutes during the daytime
 condition:
-- after: sunrise
-  before: sunset
-  condition: sun
+- condition: and
+  conditions:
+  - after: sunrise
+    before: sunset
+    condition: sun
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
 description: ''
 id: 90a76832-88a6-4da3-94f6-975154c297ff
 trigger:

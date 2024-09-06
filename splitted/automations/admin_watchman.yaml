@@ -5,7 +5,10 @@ action:
   metadata: {}
   service: watchman.report
 alias: Admin - Watchman
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1713209693062'
 mode: single

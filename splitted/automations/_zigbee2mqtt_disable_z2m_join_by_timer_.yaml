@@ -7,6 +7,10 @@ action:
     entity_id: input_boolean.z2m_permit_join
   service: input_boolean.turn_off
 alias: '[Zigbee2MQTT] Disable Z2M Join (By Timer)'
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: z2m_disable_join_timer
 trigger:

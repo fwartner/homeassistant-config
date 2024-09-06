@@ -1,0 +1,26 @@
+action:
+- data: {}
+  enabled: false
+  metadata: {}
+  service: lock.unlock
+  target:
+    entity_id: lock.nuki_wohnungstur_lock
+- data: {}
+  metadata: {}
+  service: lock.open
+  target:
+    entity_id: lock.nuki_wohnungstur_lock
+alias: Nuki HK Unlock
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
+description: ''
+id: '1720954073872'
+mode: single
+trigger:
+- device_id: 7edb79fb004aba98e2b2ac8255721369
+  domain: lock
+  entity_id: c565fe90272c792aa53d7392307037b8
+  platform: device
+  type: unlocked

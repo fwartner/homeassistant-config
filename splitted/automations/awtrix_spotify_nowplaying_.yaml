@@ -31,6 +31,10 @@ action:
         topic: awtrix_wohnzimmer/custom/spotify
       service: mqtt.publish
 alias: "Awtrix Spotify NowPlaying \U0001F3B9"
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1715341461660'
 trigger:

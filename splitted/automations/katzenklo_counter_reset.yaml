@@ -40,9 +40,14 @@ action:
       entity_id: vacuum.roborock_s7_maxv
 alias: Katzenklo Counter Reset
 condition:
-- condition: state
-  entity_id: input_boolean.staubsauger_reinigung_erlaubt
-  state: 'on'
+- condition: and
+  conditions:
+  - condition: state
+    entity_id: input_boolean.staubsauger_reinigung_erlaubt
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
 description: ''
 id: '1710933790796'
 mode: single

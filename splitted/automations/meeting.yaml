@@ -40,7 +40,10 @@ action:
       entity_id: bda91f0704e155ce5c10002606ca8909
       type: turn_off
 alias: Meeting
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1697199027134'
 mode: single

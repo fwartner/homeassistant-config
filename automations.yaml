@@ -8,10 +8,15 @@
     entity_id: 9a9c1257a5aa466af0aaed31c0e7735d
     domain: binary_sensor
   condition:
-  - condition: sun
-    after: sunset
-    before: sunrise
-    after_offset: '1'
+  - condition: and
+    conditions:
+    - condition: sun
+      after: sunset
+      before: sunrise
+      after_offset: '1'
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
   action:
   - type: turn_on
     device_id: 4b04528f90d6106276926f279e2d4cb6
@@ -35,41 +40,51 @@
     input:
       action_sensor: sensor.aqara_taster_schlafzimmer_action
       double_action:
-      - parallel:
-        - service: script.3_minuten_bettzeit
-          data: {}
-        - service: script.10_minuten_boost_wohnzimmer
-          data: {}
+      - if:
+        - condition: state
+          entity_id: input_boolean.wartung
+          state: 'off'
+        then:
+        - parallel:
+          - service: script.3_minuten_bettzeit
+            data: {}
+          - service: script.10_minuten_boost_wohnzimmer
+            data: {}
       single_action:
       - if:
-        - condition: or
-          conditions:
-          - condition: state
-            entity_id: cover.rollos_schlafzimmer
-            state: closing
-          - condition: state
-            entity_id: cover.rollos_schlafzimmer
-            state: closed
+        - condition: state
+          entity_id: input_boolean.wartung
+          state: 'off'
         then:
-        - service: cover.open_cover
-          data: {}
-          target:
-            entity_id: cover.rollos_schlafzimmer
-        else:
         - if:
           - condition: or
             conditions:
             - condition: state
               entity_id: cover.rollos_schlafzimmer
-              state: opening
+              state: closing
             - condition: state
               entity_id: cover.rollos_schlafzimmer
-              state: open
+              state: closed
           then:
-          - service: cover.close_cover
+          - service: cover.open_cover
             data: {}
             target:
               entity_id: cover.rollos_schlafzimmer
+          else:
+          - if:
+            - condition: or
+              conditions:
+              - condition: state
+                entity_id: cover.rollos_schlafzimmer
+                state: opening
+              - condition: state
+                entity_id: cover.rollos_schlafzimmer
+                state: open
+            then:
+            - service: cover.close_cover
+              data: {}
+              target:
+                entity_id: cover.rollos_schlafzimmer
 - id: '1673948568537'
   alias: Urlaubsmodus nach Kalender
   description: ''
@@ -84,7 +99,10 @@
     offset: 0:0:0
     entity_id: calendar.personio_cloud37_abwesenheiten_mein_kalender_remote_d_schleswig_holstein_cloud_infrastructure_d
     id: urlaubOff
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - choose:
     - conditions:
@@ -117,9 +135,14 @@
     at: '11:30:00'
     id: kaffeemaschineOff
   condition:
-  - condition: state
-    entity_id: sensor.people_home
-    state: '1'
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: sensor.people_home
+      state: '1'
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
   action:
   - choose:
     - conditions:
@@ -158,9 +181,14 @@
     id: fanOff
     below: 23
   condition:
-  - condition: state
-    entity_id: input_boolean.ventilator
-    state: 'on'
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.ventilator
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
   action:
   - choose:
     - conditions:
@@ -212,17 +240,22 @@
     id: tooHotBalconyOff
     below: 23
   condition:
-  - condition: time
-    before: '21:00:00'
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-    - sat
-    - sun
-    after: 09:00:00
+  - condition: and
+    conditions:
+    - condition: time
+      before: '21:00:00'
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+      - sat
+      - sun
+      after: 09:00:00
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
   action:
   - choose:
     - conditions:
@@ -261,7 +294,10 @@
     command:
     - Mache ein Backup
     - Mach ein Backup
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: auto_backup.backup_full
     data:
@@ -276,7 +312,10 @@
     - sensor.people_home
     from: '0'
     to: '1'
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: cover.open_cover
     data: {}
@@ -303,11 +342,16 @@
     to: 'off'
     id: kucheOff
   condition:
-  - condition: sun
-    after: sunset
-    after_offset: '1'
-    before: sunrise
-    before_offset: '1'
+  - condition: and
+    conditions:
+    - condition: sun
+      after: sunset
+      after_offset: '1'
+      before: sunrise
+      before_offset: '1'
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
   action:
   - choose:
     - conditions:
@@ -339,7 +383,7 @@
     device_id: cc409c26cddb1137902b367f0bbcc342
     entity_id: 92fbba10867e030bf34955d6b0015ff3
     domain: sensor
-    above: 10000
+    above: 6000
     id: wohnzimmerRollosOn
   - type: illuminance
     platform: device
@@ -347,7 +391,7 @@
     entity_id: 92fbba10867e030bf34955d6b0015ff3
     domain: sensor
     id: wohnzimmerRollosOff
-    below: 5000
+    below: 4500
     for:
       hours: 0
       minutes: 2
@@ -360,6 +404,9 @@
       state: 'off'
     - condition: state
       entity_id: input_boolean.guestmode
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.wartung
       state: 'off'
   action:
   - choose:
@@ -403,11 +450,16 @@
     from: 'on'
     id: flurOff
   condition:
-  - condition: sun
-    after: sunset
-    after_offset: '1'
-    before: sunrise
-    before_offset: '1'
+  - condition: and
+    conditions:
+    - condition: sun
+      after: sunset
+      after_offset: '1'
+      before: sunrise
+      before_offset: '1'
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
   action:
   - choose:
     - conditions:
@@ -525,16 +577,21 @@
     input:
       action_sensor: sensor.aqara_taster_badezimmer_action
       single_action:
-      - condition: state
-        entity_id: input_boolean.jonas_ist_da
-        state: 'on'
-      - service: script.zahneputzen
-        data: {}
-      - condition: time
-        weekday:
-        - fri
-        - sat
-        before: '20:00:00'
+      - if:
+        - condition: state
+          entity_id: input_boolean.wartung
+          state: 'off'
+        then:
+        - condition: state
+          entity_id: input_boolean.jonas_ist_da
+          state: 'on'
+        - service: script.zahneputzen
+          data: {}
+        - condition: time
+          weekday:
+          - fri
+          - sat
+          before: '20:00:00'
 - id: '1691786451171'
   alias: Nachtlicht Badezimmer
   description: ''
@@ -549,7 +606,10 @@
     - binary_sensor.mmwave_badezimmer
     to: 'off'
     id: badezimmerOff
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - if:
     - condition: sun
@@ -608,7 +668,10 @@
     - sensor.people_home
     to: '0'
     id: anyoneHomeOff
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - choose:
     - conditions:
@@ -636,12 +699,17 @@
     to: 'on'
     id: ringOn
   condition:
-  - condition: numeric_state
-    entity_id: sensor.people_home
-    above: 0
-  - condition: state
-    entity_id: input_boolean.nicht_storen
-    state: 'off'
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.nicht_storen
+      state: 'off'
+    - condition: numeric_state
+      entity_id: sensor.people_home
+      above: 0
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
   action:
   - choose:
     - conditions:
@@ -716,7 +784,10 @@
   - platform: time
     at: 07:30:00
     id: timeOn
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - choose:
     - conditions:
@@ -743,7 +814,10 @@
     event: sunrise
     offset: '1'
     id: coverKucheOpen
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - choose:
     - conditions:
@@ -791,7 +865,10 @@
     - binary_sensor.macbook_pro_von_florian_camera_in_use
     to: 'off'
     id: macbookCameraOff
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - choose:
     - conditions:
@@ -843,7 +920,10 @@
     - binary_sensor.warning_lubeck_hansestadt_1
     to: 'on'
     id: luebeckWarningOn1
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - choose:
     - conditions:
@@ -881,9 +961,13 @@
   trigger:
   - platform: time
     at: 05:00:00
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: readme.generate
+    data: {}
   initial_state: true
 - id: '1699291427370'
   alias: Speedtest
@@ -891,7 +975,10 @@
   trigger:
   - platform: time_pattern
     minutes: /2
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: script.1699263899938
     data: {}
@@ -910,7 +997,10 @@
     at: '20:30:00'
     alias: Luftreiniger Schlafzimmer Abends
     id: timeEveningPure
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - choose:
     - conditions:
@@ -978,8 +1068,13 @@
     input:
       action_sensor: sensor.aqara_taster_badezimmer_action
       double_action:
-      - service: script.duschen_vorbereiten
-        data: {}
+      - if:
+        - condition: state
+          entity_id: input_boolean.wartung
+          state: 'off'
+        then:
+        - service: script.duschen_vorbereiten
+          data: {}
 - id: '1700299340055'
   alias: Duschen vorbereiten
   description: ''
@@ -988,13 +1083,18 @@
     input:
       action_sensor: sensor.aqara_taster_badezimmer_action
       double_action:
-      - service: script.duschen_vorbereiten
-        data: {}
-      - service: climate.set_hvac_mode
-        data:
-          hvac_mode: 'off'
-        target:
-          entity_id: climate.heizung_badezimmer
+      - if:
+        - condition: state
+          entity_id: input_boolean.wartung
+          state: 'off'
+        then:
+        - service: script.duschen_vorbereiten
+          data: {}
+        - service: climate.set_hvac_mode
+          data:
+            hvac_mode: 'off'
+          target:
+            entity_id: climate.heizung_badezimmer
 - id: '1700299914747'
   alias: Duschen Ankündigen
   description: ''
@@ -1004,9 +1104,14 @@
     - sensor.badezimmer_temperature
     above: 22
   condition:
-  - condition: state
-    entity_id: input_boolean.duschen_vorbereiten
-    state: 'on'
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.duschen_vorbereiten
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
   action:
   - service: notify.alexa_media
     data:
@@ -1058,8 +1163,8 @@
     id: luftfeuchtigkeitBadezimmerHoch
   condition:
   - condition: state
-    entity_id: input_boolean.duschen_besetzt
-    state: 'on'
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - choose:
     - conditions:
@@ -1138,96 +1243,6 @@
             mal nach.
           title: "\U0001FAAB Niedriger Batterie Status"
       day: 1
-- id: '1701771967706'
-  alias: Heizung
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.fenster_badezimmer
-    from: 'off'
-    to: 'on'
-    id: fensterBadezimmerAuf
-  - platform: state
-    entity_id:
-    - binary_sensor.fenster_schlafzimmer
-    from: 'off'
-    to: 'on'
-    id: fensterSchlafzimmerAuf
-  - platform: state
-    entity_id:
-    - binary_sensor.fenster_wohnzimmer
-    from: 'off'
-    to: 'on'
-    id: fensterWohnzimmerAuf
-  - platform: state
-    entity_id:
-    - binary_sensor.aqara_contact_balkontur_contact
-    from: 'off'
-    to: 'on'
-    id: fensterWohnzimmer2Auf
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: and
-        conditions:
-        - condition: trigger
-          id:
-          - fensterBadezimmerAuf
-        - condition: device
-          device_id: 90ee15e301be363c6e674cb006400119
-          domain: climate
-          entity_id: 03daa9c5cdca12b2bf1eb23b40f1d940
-          type: is_hvac_mode
-          hvac_mode: heat
-      sequence:
-      - device_id: 90ee15e301be363c6e674cb006400119
-        domain: climate
-        entity_id: 03daa9c5cdca12b2bf1eb23b40f1d940
-        type: set_hvac_mode
-        hvac_mode: 'off'
-      alias: Heizung Badezimmer Aus
-    - conditions:
-      - condition: and
-        conditions:
-        - condition: trigger
-          id:
-          - fensterSchlafzimmerAuf
-        - condition: device
-          device_id: a71ccaedb801d2e7e89232f60fea1706
-          domain: climate
-          entity_id: a499efc97a3a60b89a6cb823e8587346
-          type: is_hvac_mode
-          hvac_mode: heat
-      sequence:
-      - device_id: a71ccaedb801d2e7e89232f60fea1706
-        domain: climate
-        entity_id: a499efc97a3a60b89a6cb823e8587346
-        type: set_hvac_mode
-        hvac_mode: 'off'
-      alias: Heizung Schlafzimmer Aus
-    - conditions:
-      - condition: and
-        conditions:
-        - condition: trigger
-          id:
-          - fensterWohnzimmerAuf
-          - fensterWohnzimmer2Auf
-        - condition: device
-          device_id: 5106942131c1dfe9055cba838a26b47b
-          domain: climate
-          entity_id: 3faa59886c33a1ae38e91b758a6c7bd4
-          type: is_hvac_mode
-          hvac_mode: heat
-      sequence:
-      - device_id: 5106942131c1dfe9055cba838a26b47b
-        domain: climate
-        entity_id: 3faa59886c33a1ae38e91b758a6c7bd4
-        type: set_hvac_mode
-        hvac_mode: 'off'
-      alias: Heizung Wohnzimmer Aus
-  mode: single
 - id: '1701773191392'
   alias: Heizung Toggle
   description: ''
@@ -1244,7 +1259,10 @@
     to: 'on'
     id: alleHeizungenAn
     from: 'off'
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - choose:
     - conditions:
@@ -1300,9 +1318,10 @@
   alias: Bett Belegung
   description: ''
   trigger:
-  - platform: state
+  - alias: Bett Rechts An
+    platform: state
     entity_id:
-    - binary_sensor.bett_sensor_bett_rechts
+    - binary_sensor.bett_proxy_sensor_bett_rechts
     from: 'off'
     to: 'on'
     id: bettRechtsAn
@@ -1310,10 +1329,10 @@
       hours: 0
       minutes: 1
       seconds: 0
-    alias: Bett Rechts An
-  - platform: state
+  - alias: Bett Links An
+    platform: state
     entity_id:
-    - binary_sensor.bett_sensor_bett_links
+    - binary_sensor.bett_proxy_sensor_bett_links
     from: 'off'
     to: 'on'
     id: bettLinksAn
@@ -1321,10 +1340,10 @@
       hours: 0
       minutes: 1
       seconds: 0
-    alias: Bett Links An
-  - platform: state
+  - alias: Bett Rechts Aus
+    platform: state
     entity_id:
-    - binary_sensor.bett_sensor_bett_rechts
+    - binary_sensor.bett_proxy_sensor_bett_rechts
     from: 'on'
     to: 'off'
     id: bettRechtsAus
@@ -1332,11 +1351,10 @@
       hours: 0
       minutes: 1
       seconds: 0
-    alias: Bett Rechts Aus
   - alias: Bett Links Aus
     platform: state
     entity_id:
-    - binary_sensor.bett_sensor_bett_links
+    - binary_sensor.bett_proxy_sensor_bett_links
     from: 'on'
     to: 'off'
     id: bettLinksAus
@@ -1344,7 +1362,10 @@
       hours: 0
       minutes: 1
       seconds: 0
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - choose:
     - conditions:
@@ -1421,7 +1442,10 @@
     zone: zone.home
     event: enter
     id: zoneHomeOnSteffi
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - choose:
     - conditions:
@@ -1493,7 +1517,10 @@
   trigger:
   - platform: tag
     tag_id: 2db7a52e-e2b8-464e-a411-1cedff09524c
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: lock.open
     metadata: {}
@@ -1511,38 +1538,28 @@
     entity_id: calendar.polly
     enabled: true
   condition:
-  - condition: time
-    after: 06:00:00
-    weekday:
-    - mon
-    - tue
-    - wed
-    - fri
-    - sat
-    - sun
-    - thu
-    before: '22:00:00'
+  - condition: and
+    conditions:
+    - condition: time
+      after: 06:00:00
+      weekday:
+      - mon
+      - tue
+      - wed
+      - fri
+      - sat
+      - sun
+      - thu
+      before: '22:00:00'
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
   action:
   - service: script.toggle
     metadata: {}
     data: {}
     target:
       entity_id: script.polly_futtern
-  mode: single
-- id: '1710416045878'
-  alias: Telefon Zuhause
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.fritz_box_6591_cable_kdg_anrufmonitor_telefonbuch
-    to: ringing
-  condition: []
-  action:
-  - service: notify.home_ai
-    data:
-      title: Das Telefon klingelt
-      message: Jemand ruft dich an.
   mode: single
 - id: '1710602590906'
   alias: BKW Steckdose Probleme
@@ -1572,9 +1589,14 @@
       action: SWITCH_OFF_BKW
     id: bkwIssueNotificationEventListener
   condition:
-  - condition: state
-    entity_id: input_boolean.nicht_storen
-    state: 'off'
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.nicht_storen
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
   action:
   - choose:
     - conditions:
@@ -1617,7 +1639,10 @@
     - binary_sensor.aqara_contact_katzenklo_contact
     from: 'off'
     to: 'on'
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - delay:
       hours: 0
@@ -1638,9 +1663,14 @@
     - counter.katzenklo_counter
     to: '11'
   condition:
-  - condition: state
-    entity_id: input_boolean.staubsauger_reinigung_erlaubt
-    state: 'on'
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.staubsauger_reinigung_erlaubt
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
   action:
   - service: counter.reset
     target:
@@ -1687,12 +1717,15 @@
   description: ''
   trigger:
   - platform: time
-    at: sensor.sun_next_setting
-    id: bkwInverterOff
-  - platform: time
     at: sensor.sun_next_rising
     id: bkwInverterOn
-  condition: []
+  - platform: time
+    at: '21:30:00'
+    id: bkwInverterOff
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - choose:
     - conditions:
@@ -1700,10 +1733,7 @@
         id:
         - bkwInverterOff
       sequence:
-      - if:
-        - condition: numeric_state
-          entity_id: sensor.mi_light_sensor_wohnzimmer_illuminance_lux
-          below: 20
+      - if: []
         then:
         - type: turn_off
           device_id: 25e8395680cf11660d43d6d06ecb2d14
@@ -1735,7 +1765,7 @@
     from:
   - platform: state
     entity_id:
-    - sensor.steckdose_spuhlmaschine_energy_power
+    - sensor.steckdose_spulmaschine_energy_power
     for:
       hours: 0
       minutes: 2
@@ -1743,6 +1773,10 @@
     id: dishWasherOffAfterTime
     to: '0'
     from:
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - choose:
     - conditions:
@@ -1787,6 +1821,9 @@
       state: 'on'
     - condition: state
       entity_id: input_boolean.nicht_storen
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.wartung
       state: 'off'
   action:
   - service: notify.alexa_media_echo_schlafzimmer
@@ -1858,12 +1895,17 @@
       action: IOS_BKW_ALLES_AN
     id: bkwIOSALLESAn
   condition:
-  - condition: zone
-    entity_id: person.florian_wartner
-    zone: zone.home
-  - condition: state
-    entity_id: input_boolean.nicht_storen
-    state: 'off'
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.nicht_storen
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
+    - condition: numeric_state
+      entity_id: sensor.people_home
+      above: 0.3
   action:
   - choose:
     - conditions:
@@ -1928,48 +1970,19 @@
   - platform: event
     event_type: device_tracker_new_device
   condition:
-  - condition: state
-    entity_id: input_boolean.nicht_storen
-    state: 'off'
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.nicht_storen
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
   action:
   - service: notify.home_ai
     data:
       title: Neues Gerät gefunden
       message: 'Home Assistant hat ein neues Gerät gefunden:             {{trigger.event.data.entity_id}}'
-  mode: single
-- id: '1713084625685'
-  alias: 'Frigate: Person erfasst'
-  description: ''
-  trigger:
-  - type: occupied
-    platform: device
-    device_id: 58d5751a575da55de44805455265fbe1
-    entity_id: 88626c253fc68a961eda8090dd829438
-    domain: binary_sensor
-  - type: occupied
-    platform: device
-    device_id: 328d9642040f6cf98392dcf5e15227d7
-    entity_id: 51cac45251a7a5294e47082835a20b4a
-    domain: binary_sensor
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.people_home
-    below: 1
-    enabled: true
-  - condition: state
-    entity_id: input_boolean.nicht_storen
-    state: 'off'
-  action:
-  - service: notify.home_ai
-    data:
-      title: Jemand befindet sich in deiner Wohnung
-      message: "Eine {{trigger.payload_json[\"after\"][\"label\"]}} wurde von \n          {{trigger.payload_json[\"after\"][\"camera\"]}}
-        erfasst."
-      data:
-        photo:
-        - url: https://ha.wartner.cloud/api/frigate/notifications/{{trigger.payload_json["after"]["id"]}}/snapshot.jpg?box=1
-          caption: Eine {{trigger.payload_json["after"]["label"]}} wurde von  {{trigger.payload_json["after"]["camera"]}}
-            erfasst.
   mode: single
 - id: '1713180340302'
   alias: Fenster und Türen Alert
@@ -2010,12 +2023,17 @@
     from: 'on'
     to: 'off'
   condition:
-  - condition: state
-    entity_id: input_boolean.nicht_storen
-    state: 'off'
-  - condition: numeric_state
-    entity_id: sensor.people_home
-    below: 1
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
+    - condition: numeric_state
+      entity_id: sensor.people_home
+      below: 1
+    - condition: state
+      entity_id: input_boolean.nicht_storen
+      state: 'off'
   action:
   - choose:
     - conditions:
@@ -2069,9 +2087,14 @@
     subtype: 1
     unique_id: f88e3a46-3b79-423c-868f-7ad7944c62bc
   condition:
-  - condition: state
-    entity_id: input_boolean.urlaubsmodus
-    state: 'on'
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.urlaubsmodus
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
   action:
   - wait_template: "{% set fenster = [\n            'binary_sensor.aqara_contact_badezimmer_contact',\n
       \           'binary_sensor.aqara_contact_balkontur_contact',\n            'binary_sensor.aqara_contact_kinderzimmer_contact',\n
@@ -2111,9 +2134,14 @@
     subtype: 2
     unique_id: 8d3f7a5f-3828-4f9f-96c9-fcc402888bfc
   condition:
-  - condition: state
-    entity_id: input_boolean.urlaubsmodus
-    state: 'on'
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.urlaubsmodus
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
   action:
   - wait_template: "{% set fenster = [\n            'binary_sensor.eve_contact_schlafzimmer_fenster_rechts',\n
       \           'binary_sensor.aqara_contact_balkontur_contact'\n            ] %}\n
@@ -2145,7 +2173,10 @@
   trigger:
   - platform: time_pattern
     minutes: /10
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: readme.generate
     data: {}
@@ -2159,7 +2190,10 @@
   trigger:
   - platform: time_pattern
     hours: '3'
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: watchman.report
     metadata: {}
@@ -2174,196 +2208,22 @@
   - platform: time
     at: 02:00
   condition:
-  - condition: time
-    weekday:
-    - sun
-    - tue
-    - thu
+  - condition: and
+    conditions:
+    - condition: time
+      weekday:
+      - sun
+      - tue
+      - thu
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
   action:
   - service: recorder.purge
     data:
       apply_filter: true
       repack: true
   mode: single
-- id: '1713210053705'
-  alias: '[HA] Update Groups Automatically'
-  description: ''
-  trigger:
-  - platform: homeassistant
-    id: startup
-    event: start
-  - platform: state
-    entity_id: input_boolean.ha_startup_pending
-    to: 'off'
-  - platform: event
-    event_type: call_service
-    event_data:
-      domain: group
-      service: reload
-  - platform: time_pattern
-    minutes: /15
-  action:
-  - if:
-    - condition: template
-      value_template: '{{ trigger.id == ''startup'' }}'
-    then:
-    - delay: 240
-  - service: group.set
-    data_template:
-      object_id: battery_devices
-      name: '[Group] Battery Devices'
-      icon: mdi:battery
-      entities: "{%-\n  for state in states.sensor\n    if is_state_attr(state.entity_id,
-        'device_class', 'battery') and\n    (state.entity_id.endswith(\"_battery\")
-        or state.entity_id.endswith(\"_power\"))\n%} {{ state.entity_id }}{%- if not
-        loop.last -%}, {%- endif -%} {%- endfor %}"
-  - service: group.set
-    data_template:
-      object_id: media_players
-      name: '[Group] Media Players'
-      icon: mdi:media-network
-      entities: '{{ states.media_player|map(attribute=''entity_id'')|list|sort }}'
-  - service: group.set
-    data:
-      object_id: lights
-      name: '[Group] Lights'
-      icon: mdi:lamps
-      entities: "{{ states.light\n    |map(attribute='entity_id')|list|sort }}\n"
-  - service: group.set
-    data_template:
-      object_id: automations
-      name: '[Group] Automations'
-      icon: mdi:home-automation
-      entities: '{{ states.automation|map(attribute=''entity_id'')|list|sort }}'
-  - service: group.set
-    data_template:
-      object_id: remotes
-      name: '[Group] Remotes'
-      icon: mdi:remote
-      entities: '{{ states.remote|map(attribute=''entity_id'')|list|sort }}'
-  - service: group.set
-    data_template:
-      object_id: scripts
-      name: '[Group] Scripts'
-      icon: mdi:script
-      entities: '{{ states.script|map(attribute=''entity_id'')|list|sort }}'
-  - service: group.set
-    data_template:
-      object_id: switches
-      name: '[Group] Switches'
-      icon: mdi:script
-      entities: '{{ states.switch|map(attribute=''entity_id'')|list|sort }}'
-  - service: group.set
-    data_template:
-      object_id: calendars
-      name: '[Group] Calendars'
-      icon: mdi:calendar
-      entities: '{{ states.calendar|map(attribute=''entity_id'')|list|sort }}'
-  - service: group.set
-    data_template:
-      object_id: geo_location
-      name: '[Group] Geo Locations'
-      icon: mdi:map-marker-alert
-      entities: '{{ states.geo_location|map(attribute=''entity_id'')|list|sort }}'
-  - service: group.set
-    data_template:
-      object_id: weather
-      name: '[Group] Weather'
-      icon: mdi:weather-cloudy-clock
-      entities: '{{ states.weather|map(attribute=''entity_id'')|list|sort }}'
-  - service: group.set
-    data_template:
-      object_id: people
-      name: '[Group] People'
-      icon: mdi:account-group
-      entities: '{{ states.person|map(attribute=''entity_id'')|list|sort }}'
-  - service: group.set
-    data_template:
-      object_id: cameras
-      name: '[Group] Cameras'
-      icon: mdi:cctv
-      entities: '{{ states.camera|map(attribute=''entity_id'')|list|sort }}'
-  - service: group.set
-    data:
-      object_id: alert_controls
-      name: '[Group] Alert Controls'
-      icon: mdi:alert-decagram
-      entities: "{{ states\n    |selectattr('entity_id','search','input_boolean.alerts_*')\n
-        \   |map(attribute='entity_id')|list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: alert_monitors
-      name: '[Group] Alert Monitors'
-      icon: mdi:alert-decagram
-      entities: "{{ states\n    |selectattr('entity_id','search','binary_sensor.alerts_*')\n
-        \   |map(attribute='entity_id')|list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: alerts
-      name: '[Group] Alerts'
-      icon: mdi:alert-decagram
-      entities: "{{ states.alert\n    |map(attribute='entity_id')|list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: connectivity_monitors
-      name: '[Group] Connectivity Monitors'
-      icon: mdi:connection
-      entities: "{{ states\n    |selectattr('entity_id','search','binary_sensor.connected_*')\n
-        \   |map(attribute='entity_id')|list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: waqi
-      name: '[Group] WAQI'
-      icon: mdi:smog
-      entities: "{{ states\n  |selectattr('entity_id','search','waqi*')\n  |rejectattr('entity_id','search','alert*')\n
-        \ |rejectattr('entity_id','search','group*')\n  |map(attribute='entity_id')|list|sort
-        }}\n"
-  - service: group.set
-    data:
-      object_id: updates_homeassistant
-      name: '[Updates] Home Assistant'
-      icon: mdi:home-assistant
-      entities: "{{expand(integration_entities('Supervisor'))\n  |selectattr('domain',
-        'eq', 'update')\n  |map(attribute='entity_id')\n  |list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: updates_hacs
-      name: '[Updates] HA Community Store'
-      icon: mdi:home-assistant
-      entities: "{{expand(integration_entities('hacs'))\n  |selectattr('domain', 'eq',
-        'update')\n  |map(attribute='entity_id')\n  |list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: updates_zigbee2mqtt
-      name: '[Updates] Zigbee2MQTT'
-      icon: mdi:zigbee
-      entities: "{{states.update\n  |selectattr('entity_id', 'search', 'z2m')\n  |map(attribute='entity_id')\n
-        \ |list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: updates_other
-      name: '[Updates] Other'
-      icon: mdi:update
-      entities: "{{states.update\n  |rejectattr('entity_id', 'search', 'wud')\n  |rejectattr('entity_id',
-        'search', 'z2m')\n  |rejectattr('entity_id', 'in', expand(integration_entities('hacs'))|map(attribute='entity_id')|list)\n
-        \ |rejectattr('entity_id', 'in', expand(integration_entities('Supervisor'))|map(attribute='entity_id')|list)\n
-        \ |rejectattr('entity_id', 'in', expand(integration_entities('unifi'))|map(attribute='entity_id')|list)\n
-        \ |map(attribute='entity_id')\n  |list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: rssfeeds
-      name: '[Group] RSS Feeds'
-      icon: mdi:rss-box
-      entities: "{{ states\n  |selectattr('entity_id','search','rssfeed_')\n  |map(attribute='entity_id')\n
-        \ |list|sort }}\n"
-  - service: group.set
-    data:
-      object_id: addon_switch
-      name: '[Group] Add-on Switches'
-      icon: mdi:toggle-switch
-      entities: "{{ states\n    |selectattr('entity_id','search','switch.addon_*')\n
-        \   |map(attribute='entity_id')|list|sort }}\n"
-  mode: restart
 - id: '1713259440389'
   alias: Dashboard Küche
   description: ''
@@ -2388,7 +2248,10 @@
       minutes: 0
       seconds: 3
     id: hlkKuecheOff
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - choose:
     - conditions:
@@ -2427,7 +2290,10 @@
   trigger:
   - platform: time
     at: 00:00:00
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: script.1699263855216
     metadata: {}
@@ -2443,17 +2309,22 @@
     entity_id: 94bfc27f3b165fc352e2cc04541190d1
     domain: binary_sensor
   condition:
-  - condition: time
-    after: '21:00:00'
-    weekday:
-    - mon
-    - fri
-    - sat
-    - sun
-    - tue
-    - wed
-    - thu
-    before: 00:00:00
+  - condition: and
+    conditions:
+    - condition: time
+      after: '21:00:00'
+      weekday:
+      - mon
+      - fri
+      - sat
+      - sun
+      - tue
+      - wed
+      - thu
+      before: 00:00:00
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
   action:
   - if:
     - condition: state
@@ -2479,7 +2350,10 @@
   trigger:
   - platform: time
     at: 08:00:00
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - parallel:
     - type: turn_off
@@ -2519,7 +2393,10 @@
     entity_id: 95eab0e0f096de60d69cc6204752c455
     domain: light
     id: deckeFlurAn
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - choose:
     - conditions:
@@ -2568,8 +2445,15 @@
   - platform: template
     value_template: '{{ integration_entities(''esphome'') | select(''match'', ''^update.'')
       | select(''is_state'', ''on'') | list | count > 0 }}'
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
+  - type: turn_on
+    device_id: ecebaf73a60aa0461a4709ead7d7c698
+    entity_id: a4472801d90a581649f903138a92e29c
+    domain: switch
   - service: script.esphome_update_all_devices
     metadata: {}
     data: {}
@@ -2581,6 +2465,15 @@
   - service: hassio.addon_restart
     data:
       addon: 5c53de3b_esphome
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - type: turn_off
+    device_id: ecebaf73a60aa0461a4709ead7d7c698
+    entity_id: a4472801d90a581649f903138a92e29c
+    domain: switch
   mode: single
 - id: '1713867813081'
   alias: Starte WELT Livestream morgens
@@ -2613,6 +2506,9 @@
     - condition: state
       entity_id: input_boolean.nachrichten
       state: 'on'
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
     enabled: true
   action:
   - type: turn_on
@@ -2666,7 +2562,10 @@
     from: 'on'
     to: 'off'
     id: nukiOff
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - choose:
     - conditions:
@@ -2727,26 +2626,6 @@
         entity_id: 55c2f5c9869bcfbeac0ed4d2dfbc4567
         domain: switch
   mode: single
-- id: '1713893524835'
-  alias: 'Quest 2: Akku bald leer'
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id:
-    - sensor.quest_2_battery_level
-    below: 15
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.quest_2_battery_level
-    below: 15
-  action:
-  - service: notify.home_ai
-    metadata: {}
-    data:
-      title: "\U0001FAAB Deine Quest 2 ist bald leer"
-      message: Es sieht so aus, als wäre der Akku deiner Quest 2 bald leer. Lad sie
-        doch mal auf.
-  mode: single
 - id: '1713900000210'
   alias: Hue Sync Aus
   description: ''
@@ -2761,7 +2640,10 @@
     device_id: d30e5e22fdee4494285af01c47713091
     entity_id: 05785b4428b8cdd9ff015195221899c8
     domain: switch
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - parallel:
     - service: light.turn_off
@@ -2788,7 +2670,10 @@
   trigger:
   - platform: time_pattern
     minutes: /2
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: person.reload
     data: {}
@@ -2828,6 +2713,10 @@
   trigger:
   - platform: time_pattern
     minutes: /5
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: mqtt.publish
     metadata: {}
@@ -2838,39 +2727,16 @@
       payload: '{"icon": "instagram", "text": "{{ states(''sensor.instagram_api'')}}
         Follower", "duration": 5 }'
   mode: single
-- id: '1715339962526'
-  alias: AWTRIX Solar Energy Monitor
-  description: ''
-  use_blueprint:
-    path: fwartner/awtrix_solar.yaml
-    input:
-      awtrix:
-      - d38bf268bb3c77086e7266ea05234aea
-      power_source: sensor.shelly_bkw_power
-      skip_if_zero_watts: true
-      skip_during_night_hours: true
-      night_starts_after_time: '22:00:00'
-      night_ends_after_time: 07:00:00
-- id: '1715340480884'
-  alias: "AWTRIX Weather ⛈️ + Forecast + \U0001F315️"
-  description: ''
-  use_blueprint:
-    path: blueforcer/flow_6RpwLAMGOlZ4.yaml
-    input:
-      awtrix:
-      - d38bf268bb3c77086e7266ea05234aea
-      forecast_var: weather.openweathermap
-      forecast_temp_field: temperature
-      current_temp_var: sensor.openweathermap_feels_like_temperature
-      moon: sensor.moon_phase
-      moon_rise_set: sensor.geolocation_moonrise
 - id: '1715341229281'
   alias: 'AWTRIX: Speedtest'
   description: ''
   trigger:
   - platform: time_pattern
     minutes: /10
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: mqtt.publish
     metadata: {}
@@ -2893,6 +2759,10 @@
   trigger:
   - platform: state
     entity_id: media_player.spotify_florian
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - choose:
     - conditions:
@@ -2932,9 +2802,14 @@
   - minutes: 59
     platform: time_pattern
   condition:
-  - after: sunrise
-    before: sunset
-    condition: sun
+  - condition: and
+    conditions:
+    - after: sunrise
+      before: sunset
+      condition: sun
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
   action:
   - service: homeassistant.update_entity
     data: {}
@@ -2949,9 +2824,14 @@
   - platform: time_pattern
     hours: /12
   condition:
-  - after: sunrise
-    before: sunset
-    condition: sun
+  - condition: and
+    conditions:
+    - after: sunrise
+      before: sunset
+      condition: sun
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
   action:
   - service: homeassistant.update_entity
     target:
@@ -2971,7 +2851,10 @@
   - platform: time
     at: 06:00:00
     id: eveningOff
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - choose:
     - conditions:
@@ -2993,53 +2876,16 @@
           entity_id: input_boolean.abend
         data: {}
   mode: single
-- id: '1717147835711'
-  alias: Doubletake Florian
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: sensor.double_take_florian
-  - platform: state
-    entity_id: sensor.double_take_unknown
-  condition:
-  - condition: and
-    conditions:
-    - condition: template
-      value_template: '{{ trigger.to_state.state != trigger.from_state.state }}'
-    - condition: numeric_state
-      entity_id: sensor.people_home
-      below: 1
-  action:
-  - service: notify.home_ai
-    data:
-      message: "{% if trigger.to_state.attributes.match is defined %}\n  {{trigger.to_state.attributes.friendly_name}}
-        is near the {{trigger.to_state.state}} @ {{trigger.to_state.attributes.match.confidence}}%
-        by {{trigger.to_state.attributes.match.detector}}:{{trigger.to_state.attributes.match.type}}
-        taking {{trigger.to_state.attributes.attempts}} attempt(s) @ {{trigger.to_state.attributes.duration}}
-        sec\n{% elif trigger.to_state.attributes.unknown is defined %}\n  unknown
-        is near the {{trigger.to_state.state}} @ {{trigger.to_state.attributes.unknown.confidence}}%
-        by {{trigger.to_state.attributes.unknown.detector}}:{{trigger.to_state.attributes.unknown.type}}
-        taking {{trigger.to_state.attributes.attempts}} attempt(s) @ {{trigger.to_state.attributes.duration}}
-        sec\n{% endif %}"
-      data:
-        attachment:
-          url: "{% if trigger.to_state.attributes.match is defined %}\n  https://doubletake.wartner.cloud/api/storage/matches/{{trigger.to_state.attributes.match.filename}}?box=true&token={{trigger.to_state.attributes.token}}\n{%
-            elif trigger.to_state.attributes.unknown is defined %}\n   https://doubletake.wartner.cloud/api/storage/matches/{{trigger.to_state.attributes.unknown.filename}}?box=true&token={{trigger.to_state.attributes.token}}\n{%
-            endif %}"
-        actions:
-        - action: URI
-          title: View Image
-          uri: "{% if trigger.to_state.attributes.match is defined %}\n  https://doubletake.wartner.cloud/api/storage/matches/{{trigger.to_state.attributes.match.filename}}?box=true&token={{trigger.to_state.attributes.token}}\n{%
-            elif trigger.to_state.attributes.unknown is defined %}\n   https://doubletake.wartner.cloud/api/storage/matches/{{trigger.to_state.attributes.unknown.filename}}?box=true&token={{trigger.to_state.attributes.token}}\n{%
-            endif %}"
-  mode: parallel
-  max: 10
 - id: '1717347835711'
   alias: '[HA] Shutdown'
   description: ''
   trigger:
   - platform: homeassistant
     event: shutdown
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: system_log.write
     data:
@@ -3071,6 +2917,10 @@
   trigger:
   - platform: homeassistant
     event: start
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: system_log.write
     data:
@@ -3118,9 +2968,14 @@
   alias: '[Zigbee2MQTT] Enable Z2M Join'
   description: ''
   trigger:
-    platform: state
-    entity_id: input_boolean.z2m_permit_join
+  - platform: state
+    entity_id:
+    - input_boolean.z2m_permit_join
     to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: mqtt.publish
     data:
@@ -3137,6 +2992,10 @@
     event_type: timer.z2m_permit_join
     event_data:
       entity_id: timer.z2m_permit_join
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: mqtt.publish
     data:
@@ -3149,9 +3008,14 @@
   alias: '[Zigbee2MQTT] Disable Z2M Join'
   description: ''
   trigger:
-    platform: state
-    entity_id: input_boolean.z2m_permit_join
+  - platform: state
+    entity_id:
+    - input_boolean.z2m_permit_join
     to: 'off'
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: mqtt.publish
     data:
@@ -3166,7 +3030,10 @@
   trigger:
   - platform: tag
     tag_id: staubsauger_wassertank
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: input_boolean.turn_off
     metadata: {}
@@ -3180,7 +3047,10 @@
   trigger:
   - platform: tag
     tag_id: waschmaschinentabs
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: counter.decrement
     target:
@@ -3194,7 +3064,10 @@
   trigger:
   - platform: tag
     tag_id: waschmaschinentabs
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: input_number.decrement
     metadata: {}
@@ -3208,7 +3081,10 @@
   trigger:
   - platform: tag
     tag_id: spuelmaschinentabs
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: input_number.decrement
     metadata: {}
@@ -3230,7 +3106,10 @@
     - input_number.spulmaschinentabs
     below: 5
     id: spuelmaschinenTabsCounterLow
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - choose:
     - conditions:
@@ -3284,7 +3163,10 @@
   trigger:
   - platform: tag
     tag_id: kaffeebohnen
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: todo.add_item
     metadata: {}
@@ -3299,7 +3181,10 @@
   trigger:
   - platform: tag
     tag_id: spuelmaschinentabs
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: todo.add_item
     metadata: {}
@@ -3314,7 +3199,10 @@
   trigger:
   - platform: tag
     tag_id: waschmaschinentabs
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: todo.add_item
     metadata: {}
@@ -3329,7 +3217,10 @@
   trigger:
   - platform: tag
     tag_id: staubsauger_wassertank
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: input_datetime.set_datetime
     target:
@@ -3351,7 +3242,10 @@
     - sensor.aqara_vibrate_katzenklo_angle_y
     id: kloAus
     above: -5
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - choose:
     - conditions:
@@ -3389,7 +3283,10 @@
     event_data:
       domain: notify
       service: home_ai
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: conversation.process
     metadata: {}
@@ -3418,62 +3315,6 @@
       data:
         message: '{{ generated_response.response.speech.plain.speech }}'
         title: '{{ trigger.event.data.service_data.title }}'
-  mode: single
-- id: '1718794962925'
-  alias: NFC Tag Wohnungstür ist gescannt
-  description: ''
-  trigger:
-  - platform: tag
-    tag_id: 80174732-d4b2-4c77-9e71-a05ff997192a
-  condition: []
-  action:
-  - service: lock.open
-    metadata: {}
-    data: {}
-    target:
-      device_id: bb8a84cf268277f3d38063aee6ce698e
-  mode: single
-- id: '1718794967135'
-  alias: NFC Tag Wohnungstür ist gescannt
-  description: ''
-  trigger:
-  - platform: tag
-    tag_id: 80174732-d4b2-4c77-9e71-a05ff997192a
-  condition: []
-  action:
-  - service: lock.open
-    metadata: {}
-    data: {}
-    target:
-      device_id: bb8a84cf268277f3d38063aee6ce698e
-  mode: single
-- id: '1718795112357'
-  alias: NFC Tag Wohnungstür 2 ist gescannt
-  description: ''
-  trigger:
-  - platform: tag
-    tag_id: 404d5b6e-d798-418d-876c-912aa6c049c7
-  condition: []
-  action:
-  - service: lock.open
-    metadata: {}
-    data: {}
-    target:
-      device_id: bb8a84cf268277f3d38063aee6ce698e
-  mode: single
-- id: '1718795119448'
-  alias: NFC Tag Wohnungstür 2 ist gescannt
-  description: ''
-  trigger:
-  - platform: tag
-    tag_id: 404d5b6e-d798-418d-876c-912aa6c049c7
-  condition: []
-  action:
-  - service: lock.open
-    metadata: {}
-    data: {}
-    target:
-      device_id: bb8a84cf268277f3d38063aee6ce698e
   mode: single
 - id: '1718970747624'
   alias: Current Media Player Controls
@@ -3512,7 +3353,10 @@
     - input_select.selected_media_player
     to: Sonos Ray Wohnzimmer
     id: selectedPlayerSonosRayTrigger
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - choose:
     - conditions:
@@ -3601,6 +3445,9 @@
       state: 'on'
     - condition: sun
       after: sunset
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
   action:
   - service: light.turn_on
     metadata: {}
@@ -3619,7 +3466,10 @@
   trigger:
   - platform: time
     at: 04:00:00
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   action:
   - service: hassio.host_reboot
     data: {}
@@ -3630,4 +3480,172 @@
       milliseconds: 0
   - service: homeassistant.reload_all
     data: {}
+  mode: single
+- id: '1720006679551'
+  alias: DWD Warnung Notification Mobile
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id:
+    - sensor.stadt_lubeck_vorwarnstufe
+    above: 0
+    id: florianVorWarnstufe
+  - platform: numeric_state
+    entity_id:
+    - sensor.stadt_lubeck_aktuelle_warnstufe
+    above: 0
+    id: florianAktuelleWarnstufe
+  - platform: numeric_state
+    entity_id:
+    - sensor.hamburg_eimsbuttel_vorwarnstufe
+    above: 0
+    id: steffiVorWarnstufe
+  - platform: numeric_state
+    entity_id:
+    - sensor.hamburg_eimsbuttel_aktuelle_warnstufe
+    above: 0
+    id: steffiAktuelleWarnstufe
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - florianVorWarnstufe
+        - florianAktuelleWarnstufe
+      sequence:
+      - service: notify.mobile_app_iphone_von_florian
+        data:
+          title: ⚠️ Es gibt eine Wetterwarnung
+          message: Es scheint eine neue Wetterwarnung vom Deutschen Wetterdienst zu
+            geben. Pass besser auf.
+    - conditions:
+      - condition: trigger
+        id:
+        - steffiVorWarnstufe
+        - steffiAktuelleWarnstufe
+      sequence:
+      - service: notify.mobile_app_22041219ny
+        data:
+          title: ⚠️ Es gibt eine Wetterwarnung
+          message: Es scheint eine neue Wetterwarnung vom Deutschen Wetterdienst zu
+            geben. Pass besser auf.
+  mode: single
+- id: '1720118766760'
+  alias: Taster Wohnzimmer Laustärke Sonos Ray
+  description: ''
+  use_blueprint:
+    path: EPMatt/ikea_e1766.yaml
+    input:
+      integration: Zigbee2MQTT
+      controller_device: f26bff9b79e4740036fe7b46bb3ed1d0
+      controller_entity: sensor.ikea_taster_fensterbank_wohnzimmer_action
+      helper_last_controller_event: input_text.last_controller
+      action_button_up_short:
+      - if:
+        - condition: state
+          entity_id: input_boolean.wartung
+          state: 'off'
+        then:
+        - service: media_player.volume_up
+          target:
+            device_id: 9d14dca47a5773d55c5f7f9d16c58476
+          data: {}
+      action_button_up_release: []
+      action_button_down_short:
+      - if:
+        - condition: state
+          entity_id: input_boolean.wartung
+          state: 'off'
+        then:
+        - service: media_player.volume_down
+          target:
+            device_id:
+            - 9d14dca47a5773d55c5f7f9d16c58476
+          data: {}
+      action_button_up_double: []
+      button_up_double_press: false
+      button_down_double_press: false
+      helper_double_press_delay: 500
+- id: '1720638395327'
+  alias: Polly Wasser alle 15 Minuten
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
+  action:
+  - service: script.polly_wasser_5_minuten
+    metadata: {}
+    data: {}
+  mode: single
+- id: '1720954055780'
+  alias: Nuki HK Lock
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 7edb79fb004aba98e2b2ac8255721369
+    domain: lock
+    entity_id: c565fe90272c792aa53d7392307037b8
+    type: locked
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
+  action:
+  - service: lock.lock
+    metadata: {}
+    data: {}
+    target:
+      entity_id: lock.nuki_wohnungstur_lock
+  mode: single
+- id: '1720954073872'
+  alias: Nuki HK Unlock
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 7edb79fb004aba98e2b2ac8255721369
+    domain: lock
+    entity_id: c565fe90272c792aa53d7392307037b8
+    type: unlocked
+  condition:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
+  action:
+  - service: lock.unlock
+    metadata: {}
+    data: {}
+    target:
+      entity_id: lock.nuki_wohnungstur_lock
+    enabled: false
+  - service: lock.open
+    metadata: {}
+    data: {}
+    target:
+      entity_id: lock.nuki_wohnungstur_lock
+  mode: single
+- id: '1721670059050'
+  alias: PS5 Notification Steffi
+  description: ''
+  trigger:
+  - platform: template
+    value_template: "{% if is_state('switch.playstation_5_power', 'on') %}\n  {{ is_state_attr('sensor.playstation_5_activity',
+      'activity', 'playing') }}\n{%- endif -%}"
+  condition: []
+  action:
+  - service: notify.mobile_app_22041219ny
+    metadata: {}
+    data:
+      data:
+        ttl: 0
+        priority: high
+      title: "\U0001F3AE Florian zockt gerade!"
+      message: "Du solltest ihn jetzt lieber nicht stören. Ich meine es nur gut \U0001F618"
   mode: single

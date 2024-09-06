@@ -1,7 +1,11 @@
 action:
-- service: readme.generate
+- data: {}
+  service: readme.generate
 alias: Admin - Generate README.md
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: a7c427e6-ce03-49eb-9a23-c5bbe7625aa4
 initial_state: true

@@ -9,7 +9,10 @@ action:
 - data: {}
   service: homeassistant.reload_all
 alias: Restart Nightly
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1719501882967'
 mode: single

@@ -41,12 +41,17 @@ action:
         entity_id: input_boolean.doors_open
 alias: "Fenster und T\xFCren Alert"
 condition:
-- condition: state
-  entity_id: input_boolean.nicht_storen
-  state: 'off'
-- below: 1
-  condition: numeric_state
-  entity_id: sensor.people_home
+- condition: and
+  conditions:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
+  - below: 1
+    condition: numeric_state
+    entity_id: sensor.people_home
+  - condition: state
+    entity_id: input_boolean.nicht_storen
+    state: 'off'
 description: ''
 id: '1713180340302'
 mode: single

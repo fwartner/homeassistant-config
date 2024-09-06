@@ -63,7 +63,10 @@ action:
       target:
         entity_id: lock.nuki_wohnungstur_lock
 alias: "T\xFCren"
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1702827571661'
 mode: single

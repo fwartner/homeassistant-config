@@ -5,6 +5,11 @@ use_blueprint:
   input:
     action_sensor: sensor.aqara_taster_badezimmer_action
     double_action:
-    - data: {}
-      service: script.duschen_vorbereiten
+    - if:
+      - condition: state
+        entity_id: input_boolean.wartung
+        state: 'off'
+      then:
+      - data: {}
+        service: script.duschen_vorbereiten
   path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml

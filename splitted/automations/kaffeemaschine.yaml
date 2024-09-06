@@ -20,9 +20,14 @@ action:
       type: turn_off
 alias: Kaffeemaschine
 condition:
-- condition: state
-  entity_id: sensor.people_home
-  state: '1'
+- condition: and
+  conditions:
+  - condition: state
+    entity_id: sensor.people_home
+    state: '1'
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
 description: "F\xFC vier Stunden"
 id: '1674670778068'
 mode: single

@@ -21,6 +21,9 @@ condition:
     state: 'on'
   - after: sunset
     condition: sun
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
 description: ''
 id: '1719174034446'
 mode: single

@@ -16,6 +16,7 @@ input_text: !include_dir_merge_named custom_configs/input_texts/
 rest_command: !include_dir_merge_named custom_configs/rest_commands/
 sensor: !include_dir_merge_list custom_configs/sensors/
 camera: !include_dir_merge_list custom_configs/cameras/
+homekit: !include_dir_merge_list custom_configs/homekit/
 group: !include_dir_merge_list custom_configs/groups/
 template: !include_dir_merge_list custom_configs/templates/
 binary_sensor: !include_dir_merge_list custom_configs/binary_sensors/
@@ -34,6 +35,8 @@ mqtt:
   binary_sensor: !include_dir_merge_list custom_configs/mqtt/sensor/
 command_line: !include_dir_merge_list custom_configs/command_line/
 media_player: !include_dir_merge_list custom_configs/media_players/
+influxdb: !include configuration/influxdb/configuration.yaml
+multiscrape: !include_dir_list configuration/multiscrape
 
 frontend:
   themes: !include_dir_merge_named themes/
@@ -45,5 +48,4 @@ frontend:
     - /hacsfiles/custom-brand-icons/custom-brand-icons.js
     - /hacsfiles/lovelace-card-mod/card-mod.js
     - /hacsfiles/Bubble-Card/bubble-pop-up-fix.js
-
-ffmpeg:
+    - /hacsfiles/fontawesome/main.js

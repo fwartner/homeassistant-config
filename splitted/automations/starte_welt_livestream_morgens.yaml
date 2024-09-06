@@ -40,6 +40,9 @@ condition:
   - condition: state
     entity_id: input_boolean.nachrichten
     state: 'on'
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   enabled: true
 description: ''
 id: '1713867813081'

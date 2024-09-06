@@ -32,9 +32,14 @@ action:
       type: turn_off
 alias: BKW Steckdose Probleme
 condition:
-- condition: state
-  entity_id: input_boolean.nicht_storen
-  state: 'off'
+- condition: and
+  conditions:
+  - condition: state
+    entity_id: input_boolean.nicht_storen
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
 description: ''
 id: '1710602590906'
 mode: single

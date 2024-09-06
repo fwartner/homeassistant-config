@@ -65,8 +65,8 @@ action:
 alias: Duschen
 condition:
 - condition: state
-  entity_id: input_boolean.duschen_besetzt
-  state: 'on'
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1700300672837'
 mode: single

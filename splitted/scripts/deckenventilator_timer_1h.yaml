@@ -6,6 +6,7 @@ deckenventilator_timer_1h:
   - data:
       command: timer_1
       device: deckenventilator_schlafzimmer
+      num_repeats: 1
     metadata: {}
     service: remote.send_command
     target:

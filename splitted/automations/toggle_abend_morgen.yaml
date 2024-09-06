@@ -19,7 +19,10 @@ action:
       target:
         entity_id: input_boolean.abend
 alias: Toggle Abend / Morgen
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1716668889277'
 mode: single

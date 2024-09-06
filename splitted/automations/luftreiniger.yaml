@@ -57,7 +57,10 @@ action:
         entity_id:
         - climate.luftreiniger_schlafzimmer
 alias: Luftreiniger
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1700167188286'
 mode: single

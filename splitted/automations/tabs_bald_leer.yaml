@@ -45,7 +45,10 @@ action:
         title: "\U0001F6D2 Sp\xFClmaschinentabs sind fast leer "
       service: notify.home_ai
 alias: Tabs bald leer
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1718551651013'
 mode: single

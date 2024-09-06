@@ -5,7 +5,10 @@ action:
   target:
     entity_id: input_boolean.staubsauger_wassertank
 alias: '[NFC Tag] Staubsauger Wassertank'
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1718549422662'
 mode: single

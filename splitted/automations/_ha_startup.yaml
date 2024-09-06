@@ -42,6 +42,10 @@ action:
     message: '**** HOME ASSISTANT STARTUP COMPLETE ****'
   service: system_log.write
 alias: '[HA] Startup'
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1717147845711'
 trigger:

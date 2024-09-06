@@ -21,11 +21,16 @@ action:
       type: turn_off
 alias: "Nachtlicht K\xFCche"
 condition:
-- after: sunset
-  after_offset: '1'
-  before: sunrise
-  before_offset: '1'
-  condition: sun
+- condition: and
+  conditions:
+  - after: sunset
+    after_offset: '1'
+    before: sunrise
+    before_offset: '1'
+    condition: sun
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
 description: ''
 id: '1691151128778'
 mode: single

@@ -12,7 +12,10 @@ action:
         - switch.dashboard_flur_bildschirm
         - switch.lenovo_tab_m10_bildschirm
 alias: Aufstehen
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1692310400644'
 mode: single

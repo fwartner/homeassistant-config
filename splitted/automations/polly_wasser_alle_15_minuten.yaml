@@ -1,0 +1,15 @@
+action:
+- data: {}
+  metadata: {}
+  service: script.polly_wasser_5_minuten
+alias: Polly Wasser alle 15 Minuten
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
+description: ''
+id: '1720638395327'
+mode: single
+trigger:
+- minutes: /15
+  platform: time_pattern

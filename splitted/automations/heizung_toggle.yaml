@@ -49,7 +49,10 @@ action:
           title: "\u2139\uFE0F Alle Heizungen eingeschaltet"
         service: notify.home_ai
 alias: Heizung Toggle
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1701773191392'
 mode: single

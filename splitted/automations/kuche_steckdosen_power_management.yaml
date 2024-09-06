@@ -27,6 +27,10 @@ action:
         title: "\U0001F37D\uFE0F Geschirr ist sauber"
       service: notify.home_ai
 alias: "K\xFCche Steckdosen Power Management"
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1711970540815'
 mode: single
@@ -42,7 +46,7 @@ trigger:
   platform: state
   to: '0'
 - entity_id:
-  - sensor.steckdose_spuhlmaschine_energy_power
+  - sensor.steckdose_spulmaschine_energy_power
   for:
     hours: 0
     minutes: 2

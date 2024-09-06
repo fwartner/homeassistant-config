@@ -17,9 +17,14 @@ action:
     entity_id: input_boolean.duschen_vorbereiten
 alias: "Duschen Ank\xFCndigen"
 condition:
-- condition: state
-  entity_id: input_boolean.duschen_vorbereiten
-  state: 'on'
+- condition: and
+  conditions:
+  - condition: state
+    entity_id: input_boolean.duschen_vorbereiten
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
 description: ''
 id: '1700299914747'
 mode: single

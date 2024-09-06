@@ -26,7 +26,10 @@ action:
       target:
         entity_id: input_boolean.klo_besetzt
 alias: Klo Besetzt
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1718565264616'
 mode: single

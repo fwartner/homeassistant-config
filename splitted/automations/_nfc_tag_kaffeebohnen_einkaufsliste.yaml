@@ -6,7 +6,10 @@ action:
   target:
     entity_id: todo.einkaufsliste
 alias: '[NFC Tag] Kaffeebohnen Einkaufsliste'
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1718561693469'
 mode: single

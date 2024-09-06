@@ -1,4 +1,8 @@
 action:
+- device_id: ecebaf73a60aa0461a4709ead7d7c698
+  domain: switch
+  entity_id: a4472801d90a581649f903138a92e29c
+  type: turn_on
 - data: {}
   metadata: {}
   service: script.esphome_update_all_devices
@@ -10,8 +14,20 @@ action:
 - data:
     addon: 5c53de3b_esphome
   service: hassio.addon_restart
+- delay:
+    hours: 0
+    milliseconds: 0
+    minutes: 10
+    seconds: 0
+- device_id: ecebaf73a60aa0461a4709ead7d7c698
+  domain: switch
+  entity_id: a4472801d90a581649f903138a92e29c
+  type: turn_off
 alias: ESPHome Auto-Update
-condition: []
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1713785658342'
 mode: single

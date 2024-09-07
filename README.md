@@ -17,8 +17,8 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3084
-Number of sensors | 1553
+Number of entities | 3000
+Number of sensors | 1552
 Number of automations | 104
 Number of scripts | 51
 Number of scenes | 31
@@ -92,8 +92,8 @@ Number of binary sensors | 216
 - [Hoymiles](https://github.com/suaveolent/ha-hoymiles-wifi)
 - [Hvac Group](https://github.com/tetele/hvac_group)
 - [Icloud3 V3 Idevice Tracker](https://github.com/gcobb321/icloud3)
-- [Local Llm Conversation](https://github.com/acon96/home-llm)
 - [Local Llm Conversation](https://github.com/fixtse/home-llm)
+- [Local Llm Conversation](https://github.com/acon96/home-llm)
 - [Mail And Packages](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages)
 - [Media Player Template](https://github.com/Sennevds/media_player.template)
 - [Multiscrape](https://github.com/danieldotnl/ha-multiscrape)

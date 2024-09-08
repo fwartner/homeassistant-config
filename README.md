@@ -17,8 +17,8 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2766
-Number of sensors | 1413
+Number of entities | 2761
+Number of sensors | 1409
 Number of automations | 101
 Number of scripts | 51
 Number of scenes | 31
@@ -53,7 +53,6 @@ Number of binary sensors | 197
 - TasmoAdmin
 - Uptime Kuma
 - Whisper
-- Zigbee2MQTT
 
 ### Custom integrations
 - [Adaptive Cover](https://github.com/basbruss/adaptive-cover)

@@ -1765,7 +1765,7 @@
     from:
   - platform: state
     entity_id:
-    - sensor.steckdose_spulmaschine_energy_power
+    - sensor.steckdose_spuhlmaschine_energy_power
     for:
       hours: 0
       minutes: 2
@@ -1788,10 +1788,10 @@
         device_id: 3c45a70c459e2e66b166dca5891180c6
         entity_id: eb4d372310f986822d024a05f2007c03
         domain: switch
-      - service: notify.home_ai
-        data:
+      - data:
           title: "\U0001F9FA Wäsche ist fertig"
           message: Die Wäsche ist fertig.
+        action: notify.home_ai
     - conditions:
       - condition: trigger
         id:
@@ -1801,10 +1801,10 @@
         device_id: 4a05cd597a16be48ba279a90d1ba5c18
         entity_id: 6a36fb96527589eaed3672a9978a3393
         domain: switch
-      - service: notify.home_ai
-        data:
+      - data:
           title: "\U0001F37D️ Geschirr ist sauber"
           message: Spülmaschine ist fertig.
+        action: notify.home_ai
   mode: single
 - id: '1712525174898'
   alias: Wecker
@@ -3481,59 +3481,6 @@
   - service: homeassistant.reload_all
     data: {}
   mode: single
-- id: '1720006679551'
-  alias: DWD Warnung Notification Mobile
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id:
-    - sensor.stadt_lubeck_vorwarnstufe
-    above: 0
-    id: florianVorWarnstufe
-  - platform: numeric_state
-    entity_id:
-    - sensor.stadt_lubeck_aktuelle_warnstufe
-    above: 0
-    id: florianAktuelleWarnstufe
-  - platform: numeric_state
-    entity_id:
-    - sensor.hamburg_eimsbuttel_vorwarnstufe
-    above: 0
-    id: steffiVorWarnstufe
-  - platform: numeric_state
-    entity_id:
-    - sensor.hamburg_eimsbuttel_aktuelle_warnstufe
-    above: 0
-    id: steffiAktuelleWarnstufe
-  condition:
-  - condition: state
-    entity_id: input_boolean.wartung
-    state: 'off'
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - florianVorWarnstufe
-        - florianAktuelleWarnstufe
-      sequence:
-      - service: notify.mobile_app_iphone_von_florian
-        data:
-          title: ⚠️ Es gibt eine Wetterwarnung
-          message: Es scheint eine neue Wetterwarnung vom Deutschen Wetterdienst zu
-            geben. Pass besser auf.
-    - conditions:
-      - condition: trigger
-        id:
-        - steffiVorWarnstufe
-        - steffiAktuelleWarnstufe
-      sequence:
-      - service: notify.mobile_app_22041219ny
-        data:
-          title: ⚠️ Es gibt eine Wetterwarnung
-          message: Es scheint eine neue Wetterwarnung vom Deutschen Wetterdienst zu
-            geben. Pass besser auf.
-  mode: single
 - id: '1720118766760'
   alias: Taster Wohnzimmer Laustärke Sonos Ray
   description: ''
@@ -3584,52 +3531,6 @@
   - service: script.polly_wasser_5_minuten
     metadata: {}
     data: {}
-  mode: single
-- id: '1720954055780'
-  alias: Nuki HK Lock
-  description: ''
-  trigger:
-  - platform: device
-    device_id: 7edb79fb004aba98e2b2ac8255721369
-    domain: lock
-    entity_id: c565fe90272c792aa53d7392307037b8
-    type: locked
-  condition:
-  - condition: state
-    entity_id: input_boolean.wartung
-    state: 'off'
-  action:
-  - service: lock.lock
-    metadata: {}
-    data: {}
-    target:
-      entity_id: lock.nuki_wohnungstur_lock
-  mode: single
-- id: '1720954073872'
-  alias: Nuki HK Unlock
-  description: ''
-  trigger:
-  - platform: device
-    device_id: 7edb79fb004aba98e2b2ac8255721369
-    domain: lock
-    entity_id: c565fe90272c792aa53d7392307037b8
-    type: unlocked
-  condition:
-  - condition: state
-    entity_id: input_boolean.wartung
-    state: 'off'
-  action:
-  - service: lock.unlock
-    metadata: {}
-    data: {}
-    target:
-      entity_id: lock.nuki_wohnungstur_lock
-    enabled: false
-  - service: lock.open
-    metadata: {}
-    data: {}
-    target:
-      entity_id: lock.nuki_wohnungstur_lock
   mode: single
 - id: '1721670059050'
   alias: PS5 Notification Steffi

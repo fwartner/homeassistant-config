@@ -9,10 +9,10 @@ action:
       domain: switch
       entity_id: eb4d372310f986822d024a05f2007c03
       type: turn_off
-    - data:
+    - action: notify.home_ai
+      data:
         message: "Die W\xE4sche ist fertig."
         title: "\U0001F9FA W\xE4sche ist fertig"
-      service: notify.home_ai
   - conditions:
     - condition: trigger
       id:
@@ -22,10 +22,10 @@ action:
       domain: switch
       entity_id: 6a36fb96527589eaed3672a9978a3393
       type: turn_off
-    - data:
+    - action: notify.home_ai
+      data:
         message: "Sp\xFClmaschine ist fertig."
         title: "\U0001F37D\uFE0F Geschirr ist sauber"
-      service: notify.home_ai
 alias: "K\xFCche Steckdosen Power Management"
 condition:
 - condition: state
@@ -46,7 +46,7 @@ trigger:
   platform: state
   to: '0'
 - entity_id:
-  - sensor.steckdose_spulmaschine_energy_power
+  - sensor.steckdose_spuhlmaschine_energy_power
   for:
     hours: 0
     minutes: 2

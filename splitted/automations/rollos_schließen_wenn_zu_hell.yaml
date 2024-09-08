@@ -5,19 +5,23 @@ action:
       id:
       - wohnzimmerRollosOn
     sequence:
-    - data: {}
-      service: cover.close_cover
+    - action: cover.close_cover
+      data: {}
       target:
-        entity_id: cover.rollos_wohnzimmer_fensterbank
+        entity_id:
+        - cover.ikea_rollo_links_wohnzimmer
+        - cover.ikea_rollo_rechts_wohnzimmer
   - conditions:
     - condition: trigger
       id:
       - wohnzimmerRollosOff
     sequence:
-    - data: {}
-      service: cover.open_cover
+    - action: cover.open_cover
+      data: {}
       target:
-        entity_id: cover.rollos_wohnzimmer_fensterbank
+        entity_id:
+        - cover.ikea_rollo_links_wohnzimmer
+        - cover.ikea_rollo_rechts_wohnzimmer
   - conditions:
     - condition: trigger
       id:

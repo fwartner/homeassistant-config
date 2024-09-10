@@ -28,7 +28,7 @@ const SCHEMA = [
   {
     name: "refresh_interval",
     required: true,
-    selector: { number: { min: 1 } },
+    selector: { number: { min: 1, mode: "box"} },
   },
   { name: "noMargin", selector: { boolean: {} } },
 ];

@@ -2577,15 +2577,14 @@
         id:
         - nukiAutoUnlockOn
       sequence:
-      - service: switch.turn_on
-        metadata: {}
+      - metadata: {}
         data: {}
         target:
           entity_id:
           - switch.nuki_haustur_continuous_mode
         enabled: true
-      - service: notify.alexa_media_echo_flur
-        metadata: {}
+        action: switch.turn_on
+      - metadata: {}
         data:
           message: '{{ [ "Bis gleich!", "Bis gleich dann!", "Sehen uns gleich!", "Gleich
             sehen wir uns!", "Bis gleich, in ein paar Minuten!", "Bis gleich, freue
@@ -2598,19 +2597,22 @@
             sind wir wieder zusammen, bis gleich!", "Bis gleich, ich zähle die Minuten!",
             "Bis gleich, halt alles bereit!", "Bis gleich, ich freu mich schon!" ]
             | random }}'
+        action: notify.alexa_media_echo_flur
+        enabled: false
     - conditions:
       - condition: trigger
         id:
         - nukiAutoUnlockOff
       sequence:
-      - service: switch.turn_off
-        target:
+      - target:
           entity_id:
           - switch.nuki_haustur_continuous_mode
         data: {}
-      - service: notify.alexa_media_echo_flur
-        data:
+        action: switch.turn_off
+      - data:
           message: Auto-Unlock wurde abgeschaltet
+        action: notify.alexa_media_echo_flur
+        enabled: false
     - conditions:
       - condition: trigger
         id:

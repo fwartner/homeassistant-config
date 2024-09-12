@@ -1,0 +1,12 @@
+---
+platform: template
+sensors:
+  location_florian:
+    value_template: >
+      {% if is_state("person.florian_wartner", "home") %}
+        Zuhause
+      {%- elif is_state("device_tracker.iphone_von_florian") -%}
+        {{ states("device_tracker.iphone_von_florian") }}
+      {%- else -%}
+        Unterwegs
+      {%- endif %}

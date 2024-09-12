@@ -2,15 +2,9 @@
 logbook:
   exclude:
     domains:
-      - alarm_control_panel
-      - alert
       - automation
-      - binary_sensor
       - button
       - calendar
-      - climate
-      - device_tracker
-      - fan
       - group
       - input_boolean
       - input_button
@@ -18,10 +12,7 @@ logbook:
       - input_number
       - input_select
       - input_text
-      - light
-      - media_player
       - number
-      - person
       - schedule
       - script
       - select
@@ -30,7 +21,6 @@ logbook:
       - timer
       - weather
       - zone
-
     entities:
       - sensor.date
       - sensor.date_time

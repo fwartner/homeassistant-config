@@ -843,78 +843,6 @@
         target:
           entity_id: cover.aqara_rollo_kuche
   mode: single
-- id: '1697199027134'
-  alias: Meeting
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.teams_status
-    from: unknown
-    to: InACall
-    id: meetingOn
-  - platform: state
-    entity_id:
-    - sensor.teams_status
-    from: InACall
-    to: Available
-    id: meetingOff
-  - platform: state
-    entity_id:
-    - binary_sensor.macbook_pro_von_florian_camera_in_use
-    to: 'on'
-    id: macbookCameraOn
-  - platform: state
-    entity_id:
-    - binary_sensor.macbook_pro_von_florian_camera_in_use
-    to: 'off'
-    id: macbookCameraOff
-  condition:
-  - condition: state
-    entity_id: input_boolean.wartung
-    state: 'off'
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - meetingOn
-        - macbookCameraOn
-      sequence:
-      - parallel:
-        - alias: AWTRIX Publish Wohnzimmer
-          service: mqtt.publish
-          data:
-            topic: awtrix_wohnzimmer/notify
-            payload: '{   "icon":"55236",   "text": "c37", "hold": true }'
-        - alias: AWTRIX Publish Büro
-          service: mqtt.publish
-          data:
-            topic: awtrix_buro/notify
-            payload: '{   "icon":"55236",   "text": "c37", "hold": true }'
-        - service: light.turn_on
-          metadata: {}
-          data:
-            rgb_color:
-            - 240
-            - 0
-            - 0
-          target:
-            entity_id: light.wled_please_do_disturb
-    - conditions:
-      - condition: trigger
-        id:
-        - meetingOff
-        - macbookCameraOff
-      sequence:
-      - service: script.awtrix_dismiss_notification
-        metadata: {}
-        data: {}
-      - type: turn_off
-        device_id: 20ae8ae709d52ecf41d7141305fcb2b1
-        entity_id: bda91f0704e155ce5c10002606ca8909
-        domain: light
-  mode: single
 - id: '1697834117670'
   alias: Nina Alarm
   description: ''
@@ -1460,8 +1388,7 @@
           - zoneHomeOn
           - nukiRingOn
       sequence:
-      - service: notify.home_ai
-        data:
+      - data:
           message: Möchtest du die Tür öffnen?
           title: "\U0001F510 Türen öffnen"
           data:
@@ -1472,6 +1399,7 @@
             - action: UNLOCK_APARTMENT
               title: Wohnungstür öffnen
               icon: sfsymbols:lock.open.fill
+        action: notify.home_ai
       alias: Notification Florian
     - conditions:
       - condition: and
@@ -1481,8 +1409,7 @@
           - nukiRingOn
           - zoneHomeOnSteffi
       sequence:
-      - service: notify.mobile_app_22041219ny
-        data:
+      - data:
           message: Möchtest du die Tür öffnen?
           title: "\U0001F510 Türen öffnen"
           data:
@@ -1493,26 +1420,28 @@
             - action: UNLOCK_APARTMENT
               title: Wohnungstür öffnen
               icon: sfsymbols:lock.open.fill
+        action: notify.home_ai
+        enabled: false
       alias: Notification Steffi
     - conditions:
       - condition: trigger
         id:
         - unlockHouse
       sequence:
-      - service: lock.open
-        target:
+      - target:
           entity_id: lock.nuki_haustur_lock
         data: {}
+        action: lock.open
       alias: Haustür Öffnen
     - conditions:
       - condition: trigger
         id:
         - unlockApartment
       sequence:
-      - service: lock.open
-        data: {}
+      - data: {}
         target:
           entity_id: lock.nuki_wohnungstur_lock
+        action: lock.open
       alias: Wohnungstür Öffnen
   mode: single
 - id: '1707472829981'
@@ -2893,20 +2822,19 @@
     entity_id: input_boolean.wartung
     state: 'off'
   action:
-  - service: system_log.write
-    data:
+  - data:
       logger: '{{ this.entity_id }}
 
         '
       level: critical
       message: '**** HOME ASSISTANT STOP ****'
+    action: system_log.write
   - if:
     - condition: state
       entity_id: input_boolean.alerts_ha
       state: 'on'
     then:
-    - service: notify.mobile_app_iphone_von_florian
-      data:
+    - data:
         message: Home Assistant has Stopped
         title: Home Assistant Stopped
         data:
@@ -2917,6 +2845,7 @@
           presentation_options:
           - alert
           - badge
+      action: notify.mobile_app_iphone_von_florian
 - id: '1717147845711'
   alias: '[HA] Startup'
   description: ''

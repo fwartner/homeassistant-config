@@ -1,17 +1,18 @@
 action:
-- data:
+- action: system_log.write
+  data:
     level: critical
     logger: '{{ this.entity_id }}
 
       '
     message: '**** HOME ASSISTANT STOP ****'
-  service: system_log.write
 - if:
   - condition: state
     entity_id: input_boolean.alerts_ha
     state: 'on'
   then:
-  - data:
+  - action: notify.mobile_app_iphone_von_florian
+    data:
       data:
         presentation_options:
         - alert
@@ -22,7 +23,6 @@ action:
           sound: none
       message: Home Assistant has Stopped
       title: Home Assistant Stopped
-    service: notify.mobile_app_iphone_von_florian
 alias: '[HA] Shutdown'
 condition:
 - condition: state

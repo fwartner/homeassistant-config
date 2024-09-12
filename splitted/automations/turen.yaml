@@ -9,7 +9,8 @@ action:
         - zoneHomeOn
         - nukiRingOn
     sequence:
-    - data:
+    - action: notify.home_ai
+      data:
         data:
           actions:
           - action: UNLOCK_HOUSE
@@ -20,7 +21,6 @@ action:
             title: "Wohnungst\xFCr \xF6ffnen"
         message: "M\xF6chtest du die T\xFCr \xF6ffnen?"
         title: "\U0001F510 T\xFCren \xF6ffnen"
-      service: notify.home_ai
   - alias: Notification Steffi
     conditions:
     - condition: and
@@ -30,7 +30,8 @@ action:
         - nukiRingOn
         - zoneHomeOnSteffi
     sequence:
-    - data:
+    - action: notify.home_ai
+      data:
         data:
           actions:
           - action: UNLOCK_HOUSE
@@ -41,15 +42,15 @@ action:
             title: "Wohnungst\xFCr \xF6ffnen"
         message: "M\xF6chtest du die T\xFCr \xF6ffnen?"
         title: "\U0001F510 T\xFCren \xF6ffnen"
-      service: notify.mobile_app_22041219ny
+      enabled: false
   - alias: "Haust\xFCr \xD6ffnen"
     conditions:
     - condition: trigger
       id:
       - unlockHouse
     sequence:
-    - data: {}
-      service: lock.open
+    - action: lock.open
+      data: {}
       target:
         entity_id: lock.nuki_haustur_lock
   - alias: "Wohnungst\xFCr \xD6ffnen"
@@ -58,8 +59,8 @@ action:
       id:
       - unlockApartment
     sequence:
-    - data: {}
-      service: lock.open
+    - action: lock.open
+      data: {}
       target:
         entity_id: lock.nuki_wohnungstur_lock
 alias: "T\xFCren"

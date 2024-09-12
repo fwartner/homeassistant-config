@@ -20,7 +20,6 @@ camera: !include_dir_merge_list custom_configs/cameras/
 group: !include_dir_merge_list custom_configs/groups/
 template: !include_dir_merge_list custom_configs/templates/
 binary_sensor: !include_dir_merge_list custom_configs/binary_sensors/
-telegram_bot: !include_dir_merge_list custom_configs/telegram_bot/
 rest: !include_dir_merge_list custom_configs/rest/
 switch: !include_dir_merge_list custom_configs/switches/
 conversation: !include_dir_merge_list custom_configs/conversation/
@@ -36,7 +35,6 @@ mqtt:
 command_line: !include_dir_merge_list custom_configs/command_line/
 media_player: !include_dir_merge_list custom_configs/media_players/
 influxdb: !include configuration/influxdb/configuration.yaml
-multiscrape: !include_dir_list configuration/multiscrape
 
 frontend:
   themes: !include_dir_merge_named themes/

@@ -1,9 +1,0 @@
----
-- platform: template
-  sensors:
-    current_media_player_image:
-      value_template: >
-        {% set activePlayer = states('sensor.current_media_player') %}
-        {% if is_state(activePlayer, "playing") and is_state_attr(activePlayer, "media_content_type", "music") -%}
-          {{ state_attr(activePlayer, 'entity_picture') }}
-        {%- endif %}

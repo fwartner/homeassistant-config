@@ -3357,30 +3357,6 @@
     metadata: {}
     data: {}
   mode: single
-- id: '1726224315669'
-  alias: Balkontür Rollo Öffnen
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - cover.ikea_rollo_balkontur
-    to: closing
-  condition:
-  - condition: state
-    entity_id: binary_sensor.aqara_contact_balkontur_contact
-    state: 'on'
-  action:
-  - action: cover.open_cover
-    target:
-      entity_id:
-      - cover.ikea_rollo_balkontur
-    data: {}
-    enabled: false
-  - action: cover.stop_cover
-    target:
-      entity_id: cover.ikea_rollo_balkontur
-    data: {}
-  mode: single
 - id: '1726224334152'
   alias: Balkontür Rollo Öffnen
   description: ''

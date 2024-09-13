@@ -3375,6 +3375,11 @@
       entity_id:
       - cover.ikea_rollo_balkontur
     data: {}
+    enabled: false
+  - action: cover.stop_cover
+    target:
+      entity_id: cover.ikea_rollo_balkontur
+    data: {}
   mode: single
 - id: '1726224334152'
   alias: Balkontür Rollo Öffnen

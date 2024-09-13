@@ -17,13 +17,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2586
-Number of sensors | 1222
+Number of entities | 2502
+Number of sensors | 1221
 Number of automations | 100
 Number of scripts | 51
-Number of scenes | 31
+Number of scenes | 32
 Number of zones | 22
-Number of binary sensors | 178
+Number of binary sensors | 177
 
 ## Demo of my dashboard
 ![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)
@@ -92,8 +92,8 @@ Number of binary sensors | 178
 - [Hoymiles](https://github.com/suaveolent/ha-hoymiles-wifi)
 - [Hvac Group](https://github.com/tetele/hvac_group)
 - [Icloud3 V3 Idevice Tracker](https://github.com/gcobb321/icloud3)
-- [Local Llm Conversation](https://github.com/fixtse/home-llm)
 - [Local Llm Conversation](https://github.com/acon96/home-llm)
+- [Local Llm Conversation](https://github.com/fixtse/home-llm)
 - [Mail And Packages](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages)
 - [Media Player Template](https://github.com/Sennevds/media_player.template)
 - [Multiscrape](https://github.com/danieldotnl/ha-multiscrape)
@@ -219,7 +219,7 @@ Number of binary sensors | 178
 - [Vertical Stack In Card](https://github.com/ofekashery/vertical-stack-in-card)
 - [Wallpanel](https://github.com/j-a-n/lovelace-wallpanel)
 - [Weather Card](https://github.com/bramkragten/weather-card)
-- [Windrose Card](https://github.com/aukedejong/lovelace-windrose-card)
+- [Wind Rose Card](https://github.com/aukedejong/lovelace-windrose-card)
 - [Xiaomi Vacuum Map Card](https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card)
 
 ### Themes

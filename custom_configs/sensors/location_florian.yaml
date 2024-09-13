@@ -3,7 +3,11 @@
   sensors:
     location_florian:
       value_template: >
-        {{ states("device_tracker.iphone_von_florian") }}
+        {% if is_state('device_tracker.iphone_von_florian', 'home') %}
+          Zuhause
+        {% else %}
+          {{ states("device_tracker.iphone_von_florian") }}
+        {% endif %}
     location_florian_color:
       value_template: >
         {% if is_state("person.florian_wartner", "home") %}

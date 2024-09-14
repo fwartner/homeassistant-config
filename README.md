@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2539
+Number of entities | 2540
 Number of sensors | 1244
 Number of automations | 102
 Number of scripts | 51
@@ -125,6 +125,7 @@ Number of binary sensors | 178
 - [Team Tracker](https://github.com/vasqued2/ha-teamtracker)
 - [Thermal Comfort](https://github.com/dolezsa/thermal_comfort)
 - [Toogoodtogo](https://github.com/Chouffy/home_assistant_tgtg)
+- [Unifi Hotspot Manager](https://github.com/ufozone/ha-unifi-voucher)
 - [Uptime Kuma](https://github.com/meichthys/uptime_kuma)
 - [Wakeword Installer](https://github.com/fwartner/ha-openwakeword-installer)
 - [Waste Collection Schedule](https://github.com/mampfes/hacs_waste_collection_schedule)

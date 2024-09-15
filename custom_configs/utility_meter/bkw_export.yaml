@@ -1,0 +1,9 @@
+---
+energy_import_today:
+  source: sensor.energy_import_sum
+  name: Energy Import Today
+  cycle: daily
+energy_export_today:
+  source: sensor.energy_export_sum
+  name: Energy Export Today
+  cycle: daily

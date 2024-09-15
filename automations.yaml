@@ -3389,39 +3389,85 @@
         id:
         - wohnzimmerAQIBad
       sequence:
+      - data:
+          fan_mode: high
+        target:
+          entity_id: climate.luftreiniger_schlafzimmer
+        action: climate.set_fan_mode
       - delay:
           hours: 0
           minutes: 15
           seconds: 0
           milliseconds: 0
+      - data:
+          fan_mode: low
+        target:
+          entity_id:
+          - climate.luftreiniger_schlafzimmer
+        action: climate.set_fan_mode
     - conditions:
       - condition: trigger
         id:
         - wohnzimmerAQIModerate
       sequence:
+      - data:
+          fan_mode: high
+        target:
+          entity_id: climate.luftreiniger_schlafzimmer
+        action: climate.set_fan_mode
       - delay:
           hours: 0
           minutes: 10
           seconds: 0
           milliseconds: 0
+      - data:
+          fan_mode: low
+        target:
+          entity_id:
+          - climate.luftreiniger_schlafzimmer
+        action: climate.set_fan_mode
     - conditions:
       - condition: trigger
         id:
         - schlafzimmerAQIBad
       sequence:
+      - data:
+          fan_mode: high
+        target:
+          entity_id:
+          - climate.luftreiniger_wohnzimmer
+        action: climate.set_fan_mode
       - delay:
           hours: 0
           minutes: 10
           seconds: 0
           milliseconds: 0
+      - data:
+          fan_mode: low
+        target:
+          entity_id:
+          - climate.luftreiniger_wohnzimmer
+        action: climate.set_fan_mode
     - conditions:
       - condition: trigger
         id:
         - schlafzimmerAQIModerate
       sequence:
+      - data:
+          fan_mode: high
+        target:
+          entity_id:
+          - climate.luftreiniger_wohnzimmer
+        action: climate.set_fan_mode
       - delay:
           hours: 0
           minutes: 10
           seconds: 0
           milliseconds: 0
+      - data:
+          fan_mode: low
+        target:
+          entity_id:
+          - climate.luftreiniger_wohnzimmer
+        action: climate.set_fan_mode
   mode: single

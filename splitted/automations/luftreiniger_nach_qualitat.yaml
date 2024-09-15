@@ -5,41 +5,87 @@ action:
       id:
       - wohnzimmerAQIBad
     sequence:
+    - action: climate.set_fan_mode
+      data:
+        fan_mode: high
+      target:
+        entity_id: climate.luftreiniger_schlafzimmer
     - delay:
         hours: 0
         milliseconds: 0
         minutes: 15
         seconds: 0
+    - action: climate.set_fan_mode
+      data:
+        fan_mode: low
+      target:
+        entity_id:
+        - climate.luftreiniger_schlafzimmer
   - conditions:
     - condition: trigger
       id:
       - wohnzimmerAQIModerate
     sequence:
+    - action: climate.set_fan_mode
+      data:
+        fan_mode: high
+      target:
+        entity_id: climate.luftreiniger_schlafzimmer
     - delay:
         hours: 0
         milliseconds: 0
         minutes: 10
         seconds: 0
+    - action: climate.set_fan_mode
+      data:
+        fan_mode: low
+      target:
+        entity_id:
+        - climate.luftreiniger_schlafzimmer
   - conditions:
     - condition: trigger
       id:
       - schlafzimmerAQIBad
     sequence:
+    - action: climate.set_fan_mode
+      data:
+        fan_mode: high
+      target:
+        entity_id:
+        - climate.luftreiniger_wohnzimmer
     - delay:
         hours: 0
         milliseconds: 0
         minutes: 10
         seconds: 0
+    - action: climate.set_fan_mode
+      data:
+        fan_mode: low
+      target:
+        entity_id:
+        - climate.luftreiniger_wohnzimmer
   - conditions:
     - condition: trigger
       id:
       - schlafzimmerAQIModerate
     sequence:
+    - action: climate.set_fan_mode
+      data:
+        fan_mode: high
+      target:
+        entity_id:
+        - climate.luftreiniger_wohnzimmer
     - delay:
         hours: 0
         milliseconds: 0
         minutes: 10
         seconds: 0
+    - action: climate.set_fan_mode
+      data:
+        fan_mode: low
+      target:
+        entity_id:
+        - climate.luftreiniger_wohnzimmer
 alias: "Luftreiniger nach Qualit\xE4t"
 condition:
 - after: 08:00:00

@@ -17,13 +17,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2536
-Number of sensors | 1248
+Number of entities | 2535
+Number of sensors | 1247
 Number of automations | 102
 Number of scripts | 51
 Number of scenes | 32
 Number of zones | 22
-Number of binary sensors | 183
+Number of binary sensors | 182
 
 ## Demo of my dashboard
 ![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)
@@ -130,6 +130,7 @@ Number of binary sensors | 183
 - [Wakeword Installer](https://github.com/fwartner/ha-openwakeword-installer)
 - [Waste Collection Schedule](https://github.com/mampfes/hacs_waste_collection_schedule)
 - [Watchman](https://github.com/dummylabs/thewatchman)
+- [Webrtc Camera](https://github.com/AlexxIT/WebRTC)
 - [Ytube Music Player](https://github.com/KoljaWindeler/ytube_music_player)
 
 ### Lovelace plugins

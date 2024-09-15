@@ -149,8 +149,8 @@ blueprint:
           - label: "Link (\U0001F916 Android Only)"
             value: uri
           sort: false
-          custom_value: false
           multiple: false
+          custom_value: false
     confirm_action:
       name: 1️⃣ Option 1 - Action(s)
       description: 'Action(s) to run when this option is selected.
@@ -194,8 +194,8 @@ blueprint:
       selector:
         text:
           type: url
-          multiple: false
           multiline: false
+          multiple: false
     confirm_icon:
       name: 1️⃣ Option 1 - Icon
       description: "Custom icon to show on this option.  \n\nPlease refer to the [documentation
@@ -206,8 +206,8 @@ blueprint:
       selector:
         text:
           prefix: 'sfsymbols:'
-          multiple: false
           multiline: false
+          multiple: false
     confirm_is_destructive:
       name: 1️⃣ Option 1 - Destructive
       description: "Set the action's title to be red, indicating a destructive action.
@@ -259,8 +259,8 @@ blueprint:
           - label: "Link (\U0001F916 Android Only)"
             value: uri
           sort: false
-          custom_value: false
           multiple: false
+          custom_value: false
     dismiss_action:
       name: 2️⃣ Option 2 - Action(s)
       description: 'Action(s) to run when this option is selected.
@@ -304,8 +304,8 @@ blueprint:
       selector:
         text:
           type: url
-          multiple: false
           multiline: false
+          multiple: false
     dismiss_icon:
       name: 2️⃣ Option 2 - Icon
       description: "Custom icon to show on this option.  \n\nPlease refer to the [documentation
@@ -316,8 +316,8 @@ blueprint:
       selector:
         text:
           prefix: 'sfsymbols:'
-          multiple: false
           multiline: false
+          multiple: false
     dismiss_is_destructive:
       name: 2️⃣ Option 2 - Destructive
       description: "Set the action's title to be red, indicating a destructive action.
@@ -369,8 +369,8 @@ blueprint:
           - label: "Link (\U0001F916 Android Only)"
             value: uri
           sort: false
-          custom_value: false
           multiple: false
+          custom_value: false
     option_three_action:
       name: 3️⃣ Option 3 - Action(s)
       description: 'Action(s) to run when this option is selected.
@@ -414,8 +414,8 @@ blueprint:
       selector:
         text:
           type: url
-          multiple: false
           multiline: false
+          multiple: false
     option_three_icon:
       name: 3️⃣ Option 3 - Icon
       description: "Custom icon to show on this option.  \n\nPlease refer to the [documentation
@@ -426,8 +426,8 @@ blueprint:
       selector:
         text:
           prefix: 'sfsymbols:'
-          multiple: false
           multiline: false
+          multiple: false
     option_three_is_destructive:
       name: 3️⃣ Option 3 - Destructive
       description: "Set the action's title to be red, indicating a destructive action.
@@ -528,8 +528,8 @@ blueprint:
           - label: Camera
             value: camera_entity
           sort: false
-          custom_value: false
           multiple: false
+          custom_value: false
     attachment_camera_entity:
       name: "\U0001F4F8 Attachment: Camera Entity"
       description: "Camera Entity to display snapshots of on the notification.<br>\nPlease
@@ -594,8 +594,8 @@ blueprint:
           - label: Low (Makes no sound, doesn't appear in status bar)
             value: min
           sort: false
-          custom_value: false
           multiple: false
+          custom_value: false
     android_high_priority:
       name: ❕ High Priority Mode
       description: "Workaround to ensure notifications are delivered in timely fashion.
@@ -621,8 +621,8 @@ blueprint:
           - label: Critical (Overrides Focus and Mute, restricted features)
             value: critical
           sort: false
-          custom_value: false
           multiple: false
+          custom_value: false
     visibility:
       name: "\U0001F50F Notification Lockscreen Visibility"
       description: "Show or hide notification content on the lockscreen.  \nSee [documentation](https://companion.home-assistant.io/docs/notifications/notifications-basic?_highlight=tag#notification-sensitivity--lock-screen-visibility)
@@ -638,8 +638,8 @@ blueprint:
           - label: 'Secret: Always hide content on the lockscreen.'
             value: secret
           sort: false
-          custom_value: false
           multiple: false
+          custom_value: false
 fields:
   field_notify_device:
     name: "\U0001F4F2 Device to notify"

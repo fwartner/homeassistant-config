@@ -1,0 +1,79 @@
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - wohnzimmerAQIBad
+    sequence:
+    - delay:
+        hours: 0
+        milliseconds: 0
+        minutes: 15
+        seconds: 0
+  - conditions:
+    - condition: trigger
+      id:
+      - wohnzimmerAQIModerate
+    sequence:
+    - delay:
+        hours: 0
+        milliseconds: 0
+        minutes: 10
+        seconds: 0
+  - conditions:
+    - condition: trigger
+      id:
+      - schlafzimmerAQIBad
+    sequence:
+    - delay:
+        hours: 0
+        milliseconds: 0
+        minutes: 10
+        seconds: 0
+  - conditions:
+    - condition: trigger
+      id:
+      - schlafzimmerAQIModerate
+    sequence:
+    - delay:
+        hours: 0
+        milliseconds: 0
+        minutes: 10
+        seconds: 0
+alias: "Luftreiniger nach Qualit\xE4t"
+condition:
+- after: 08:00:00
+  before: '21:00:00'
+  condition: time
+  weekday:
+  - mon
+  - tue
+  - wed
+  - thu
+  - fri
+  - sat
+  - sun
+description: ''
+id: '1726392490651'
+mode: single
+trigger:
+- entity_id:
+  - sensor.luftreiniger_wohnzimmer_pm2_5
+  id: wohnzimmerAQIBad
+  platform: state
+  to: bad
+- entity_id:
+  - sensor.luftreiniger_wohnzimmer_pm2_5
+  id: wohnzimmerAQIModerate
+  platform: state
+  to: moderate
+- entity_id:
+  - sensor.luftreiniger_schlafzimmer_pm2_5
+  id: schlafzimmerAQIBad
+  platform: state
+  to: bad
+- entity_id:
+  - sensor.luftreiniger_schlafzimmer_pm2_5
+  id: schlafzimmerAQIModerate
+  platform: state
+  to: moderate

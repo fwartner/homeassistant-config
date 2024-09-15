@@ -915,83 +915,6 @@
   - service: script.1699263899938
     data: {}
   mode: single
-- id: '1700167188286'
-  alias: Luftreiniger
-  description: ''
-  trigger:
-  - alias: Luftreiniger nach Zone Trigger
-    platform: zone
-    entity_id: person.florian_wartner
-    zone: zone.home
-    event: leave
-    id: zoneLeavePure
-  - platform: time
-    at: '20:30:00'
-    alias: Luftreiniger Schlafzimmer Abends
-    id: timeEveningPure
-  condition:
-  - condition: state
-    entity_id: input_boolean.wartung
-    state: 'off'
-  action:
-  - choose:
-    - conditions:
-      - condition: and
-        conditions:
-        - condition: trigger
-          id:
-          - zoneLeavePure
-        - condition: state
-          entity_id: sensor.people_home
-          state: '0'
-          for:
-            hours: 0
-            minutes: 5
-            seconds: 0
-      sequence:
-      - service: climate.set_fan_mode
-        data:
-          fan_mode: high
-        target:
-          entity_id:
-          - climate.luftreiniger_schlafzimmer
-          - climate.luftreiniger_wohnzimmer
-      - delay:
-          hours: 0
-          minutes: 10
-          seconds: 0
-          milliseconds: 0
-      - service: climate.set_fan_mode
-        data:
-          fan_mode: low
-        target:
-          entity_id:
-          - climate.luftreiniger_schlafzimmer
-          - climate.luftreiniger_wohnzimmer
-      alias: Luftreiniger nach Zone
-    - conditions:
-      - condition: trigger
-        id:
-        - timeEveningPure
-      sequence:
-      - service: climate.set_fan_mode
-        data:
-          fan_mode: high
-        target:
-          entity_id:
-          - climate.luftreiniger_schlafzimmer
-      - delay:
-          hours: 0
-          minutes: 10
-          seconds: 0
-          milliseconds: 0
-      - service: climate.set_fan_mode
-        data:
-          fan_mode: low
-        target:
-          entity_id:
-          - climate.luftreiniger_schlafzimmer
-  mode: single
 - id: '1700299245684'
   alias: Taster Badezimmer
   description: ''
@@ -3422,4 +3345,83 @@
           entity_id: 163bf4ce33a250745098a4632c52a7e3
           type: set_hvac_mode
           hvac_mode: heat
+  mode: single
+- id: '1726392490651'
+  alias: Luftreiniger nach Qualität
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.luftreiniger_wohnzimmer_pm2_5
+    id: wohnzimmerAQIBad
+    to: bad
+  - platform: state
+    entity_id:
+    - sensor.luftreiniger_wohnzimmer_pm2_5
+    id: wohnzimmerAQIModerate
+    to: moderate
+  - platform: state
+    entity_id:
+    - sensor.luftreiniger_schlafzimmer_pm2_5
+    id: schlafzimmerAQIBad
+    to: bad
+  - platform: state
+    entity_id:
+    - sensor.luftreiniger_schlafzimmer_pm2_5
+    id: schlafzimmerAQIModerate
+    to: moderate
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+    - sun
+    before: '21:00:00'
+    after: 08:00:00
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - wohnzimmerAQIBad
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 15
+          seconds: 0
+          milliseconds: 0
+    - conditions:
+      - condition: trigger
+        id:
+        - wohnzimmerAQIModerate
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 10
+          seconds: 0
+          milliseconds: 0
+    - conditions:
+      - condition: trigger
+        id:
+        - schlafzimmerAQIBad
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 10
+          seconds: 0
+          milliseconds: 0
+    - conditions:
+      - condition: trigger
+        id:
+        - schlafzimmerAQIModerate
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 10
+          seconds: 0
+          milliseconds: 0
   mode: single

@@ -3,10 +3,10 @@
   sensors:
     location_steffi:
       value_template: >
-        {% if is_state('device_tracker.iphone_von_steffi', 'home') %}
+        {% if is_state('device_tracker.iphone_von_stephanie', 'home') %}
           Zuhause
         {% else %}
-          {{ states("device_tracker.iphone_von_steffi") }}
+          {{ states("device_tracker.iphone_von_stephanie") }}
         {% endif %}
     location_steffi_color:
       value_template: >

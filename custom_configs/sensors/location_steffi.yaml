@@ -5,6 +5,8 @@
       value_template: >
         {% if is_state('device_tracker.iphone_von_stephanie', 'home') %}
           Zuhause
+        {% elif is_state("device_tracker.iphone_von_stephanie", "not_home") %}
+          Unterwegs
         {% else %}
           {{ states("device_tracker.iphone_von_stephanie") }}
         {% endif %}

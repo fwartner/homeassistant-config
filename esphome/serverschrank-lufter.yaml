@@ -96,16 +96,6 @@ number:
     set_action: 
       lambda: id(console_thermostat).set_ki_multiplier( x );
 
-text_sensor:
-  - platform: wifi_info
-    ip_address:
-      name: $friendly_name IP Address
-
-  - platform: template
-    name: $friendly_name Uptime
-    id: uptime_human
-    icon: mdi:clock-start
-
 sensor:
   - platform: wifi_signal
     name: $friendly_name WiFi Strength

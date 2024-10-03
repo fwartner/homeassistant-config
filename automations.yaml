@@ -3471,3 +3471,49 @@
           - climate.luftreiniger_wohnzimmer
         action: climate.set_fan_mode
   mode: single
+- id: '1727982759887'
+  alias: Controller - IKEA E2001/E2002 STYRBAR Remote control
+  description: ''
+  use_blueprint:
+    path: EPMatt/ikea_e2001_e2002.yaml
+    input:
+      integration: Zigbee2MQTT
+      controller_entity: sensor.ikea_stybar_silber_wohnzimmer_action
+      action_button_left_short:
+      - action: media_player.volume_down
+        target:
+          device_id:
+          - 9d14dca47a5773d55c5f7f9d16c58476
+          - 769df0e4eb3df0faa38fb2311aa42623
+        data: {}
+      action_button_right_short:
+      - action: media_player.volume_up
+        target:
+          device_id:
+          - 9d14dca47a5773d55c5f7f9d16c58476
+          - 769df0e4eb3df0faa38fb2311aa42623
+        data: {}
+      action_button_left_long: []
+      helper_last_controller_event: input_text.last_controller
+      action_button_up_short:
+      - action: cover.open_cover
+        target:
+          device_id:
+          - 2c6903e160b7b9dfaf222a7360bc0015
+          - 5556afe8383ee4a45f5b74e6cc1d57ee
+        data: {}
+      action_button_down_short:
+      - action: cover.close_cover
+        target:
+          device_id:
+          - 2c6903e160b7b9dfaf222a7360bc0015
+          - 5556afe8383ee4a45f5b74e6cc1d57ee
+        data: {}
+- id: '1727983178880'
+  alias: IKEA Stybar Weiss Schlafzimmer
+  description: ''
+  use_blueprint:
+    path: EPMatt/ikea_e2001_e2002.yaml
+    input:
+      integration: Zigbee2MQTT
+      controller_entity: sensor.ikea_stybar_weiss_schlafzimmer_action

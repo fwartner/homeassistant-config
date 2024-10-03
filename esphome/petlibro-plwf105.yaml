@@ -1,6 +1,5 @@
 substitutions:
-#You should choose to set either hide_oz or hide_ml to true to reduce the number of sensors present in HA
-  hide_oz: "false"
+  hide_oz: "true"
   hide_ml: "false"
   
   hide_debug: "true"
@@ -19,7 +18,6 @@ esphome:
     name: petlibro.plwf105
     version: "1.1.1"
 
-
 esp32:
   board: esp32-c3-devkitm-1
   variant: ESP32C3
@@ -27,7 +25,6 @@ esp32:
     type: esp-idf
 
 api:
-# uncomment the two lines below to use an encryption key from your secret, or include your own
 #  encryption:
 #    key: !secret encryption_key
 
@@ -36,7 +33,6 @@ logger:
 
 ota:
   platform: esphome
-# uncomment the line below to use an ota password from your secret, or include your own
 #  password: !secret ota_password
 
 dashboard_import:
@@ -49,40 +45,29 @@ wifi:
 
 captive_portal:
 
-
-
 globals:
-
-#tmp variable to hold whatever value the water was at before an event is detected
   - id: drinking_event_before
     type: int
     restore_value: no
     initial_value: '0'
 
-  
-#the amount of water consumed after an event has finished  
   - id: drinking_event_amount
     type: int
     restore_value: no
 
-#This is where the total amount of water over for each hour is stored per index (24 hours total)
   - id: drinking_roll_24
     type: int[24]
     initial_value: '{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}'
     restore_value: yes
 
-#This is where the total amount of water over 24 hrs is stored
   - id: drinking_roll
     type: int
     restore_value: yes
 
-#temp var to hold the current hours total water, to be pushed into the roll at the top of each hour    
   - id: drinking_tmp
     type: int
     restore_value: yes
 
-
-# The Low level water set from calibrating it yourself
 number:
   - platform: template
     name: "Min Water level"
@@ -96,7 +81,6 @@ number:
     step: 1
     restore_value: yes
 
-# The high level water set from calibrating it yourself
   - platform: template
     name: "Max Water level"
     id: max_water_level
@@ -109,7 +93,6 @@ number:
     step: 1
     restore_value: yes
 
-# How many days you want a filter to last
   - platform: template
     name: "Filter Life (Days)"
     id: filter_life
@@ -123,7 +106,6 @@ number:
     step: 1
     restore_value: yes
 
-# This was done by taking internal water level before. Adding 2 Oz of water, then measuring after. Taking (After_wl - Before_wl) / 2
   - platform: template
     name: "Level-Oz Conversion"
     id: water_oz_conv
@@ -137,7 +119,7 @@ number:
     initial_value: 11225 
     step: 0.01
     restore_value: yes
-# This was done by taking internal water level before. Adding 100 ml of water, then measuring after. Taking (After_wl - Before_wl) / 100
+
   - platform: template
     name: "Level-mL Conversion"
     id: water_ml_conv
@@ -151,12 +133,6 @@ number:
     initial_value: 379.59 
     step: 0.01
     restore_value: yes
-
-
-
-
-
-
 
 sensor:
   - platform: pulse_counter
@@ -226,8 +202,6 @@ sensor:
         }
         return q[0];
 
-
-
   - platform: uptime
     name: Uptime
 
@@ -236,7 +210,6 @@ sensor:
     update_interval: 60s
 
 
-# This is a debug value, used to see what the initial water is before an event
   - platform: template
     name: Before event
     id: tmp_before
@@ -248,7 +221,6 @@ sensor:
     lambda: |-
         return id(drinking_event_before);
 
-# Water level in %
   - platform: template
     name: Water Level
     id: water_level_percentage
@@ -269,7 +241,6 @@ sensor:
         }
         return ((id(water_level).state - id(min_water_level).state) * 100) / (id(max_water_level).state - id(min_water_level).state);
 
-# Water level in oz, 'hidden' when $hide_oz is set to true
   - platform: template
     name: Water oz
     id: water_level_oz
@@ -285,7 +256,6 @@ sensor:
         }
         return ((id(water_level).state - id(min_water_level).state) / id(water_oz_conv).state);
 
-# Water level in ml, 'hidden' when $hide_ml is set to true
   - platform: template
     name: Water mL
     id: water_level_ml
@@ -300,7 +270,6 @@ sensor:
         }
         return ((id(water_level).state - id(min_water_level).state) / id(water_ml_conv).state);
 
-# This is the amount of water last drinken by the cat (should this blank out after a time?) Debug, OZ, and mL in that order
   - platform: template
     name: Last Drink Amount
     id: water_cons
@@ -336,7 +305,6 @@ sensor:
     lambda: |-
           return id(drinking_event_amount) / id(water_ml_conv).state;
 
-# How much water the cat has drank over the last hour, resets at the top of the hour | Debug, OZ, and mL in that order
   - platform: template
     name: Current Hour Water
     id: cur_water_hour
@@ -372,7 +340,6 @@ sensor:
     lambda: |-
           return id(drinking_tmp) / id(water_ml_conv).state;
 
-# How much water the cat has drank over the last 24hrs, it rolls at the top of each hour | Debug, OZ, and mL in that order
   - platform: template
     name: Water Consumption 24Hrs
     id: water_cons_24
@@ -396,7 +363,6 @@ sensor:
     lambda: |-
           return id(drinking_roll) / id(water_oz_conv).state;
 
-
   - platform: template
     name: Water Consumption 24Hrs ml
     id: water_cons_24_ml
@@ -409,11 +375,7 @@ sensor:
     lambda: |-
           return id(drinking_roll) / id(water_ml_conv).state;
 
-
-
 switch:
-
-# Switch to turn the pump on and off
   - platform: gpio
     name: 'Pump'
     icon: "mdi:pump"
@@ -422,17 +384,12 @@ switch:
       mode: OUTPUT
     restore_mode: ALWAYS_ON
 
-
 output:
-
-#Yellow LED
   - platform: gpio
     id: yellow_led_output
     pin:
       number: GPIO6
       mode: OUTPUT
-
-#Red LED
   - platform: gpio
     id: red_led_output
     pin: 
@@ -462,17 +419,12 @@ text_sensor:
     bssid:
       name: BSSID
 
-
 binary_sensor:
-
-#formerly the wi-fi button, but this button isn't being used for anything atm
   - platform: gpio
     name: "Front Button"
     pin: 
       number: GPIO1
       mode: INPUT
-
-# this detects if errors is above 9
   - platform: template
     name: "Empty"
     icon: "mdi:water-alert-outline"
@@ -486,8 +438,6 @@ binary_sensor:
             } else {
               id(red_led).turn_off().perform();
             }
-
-#filter expired
   - platform: template
     id: filter_exp
     name: "Filter Expired"
@@ -502,8 +452,6 @@ binary_sensor:
             } else {
                 id(yellow_led).turn_off().perform();
             }
-
-
 
 time:
   - platform: sntp
@@ -546,8 +494,6 @@ datetime:
     initial_value: "1990-12-31"
     restore_value: true
 
-
-
 button:
   - platform: template
     name: Filter Changed
@@ -559,11 +505,6 @@ button:
         date: !lambda 'return id(sntp_time).now();'
     - script.execute: 
         id: set_filter_exp
-
-
-
-
-
   - platform: template
     name: Clear 24 roll
     entity_category: config

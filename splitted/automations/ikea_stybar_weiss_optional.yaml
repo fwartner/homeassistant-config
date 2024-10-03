@@ -1,0 +1,9 @@
+alias: IKEA Stybar Weiss Optional
+description: ''
+id: '1727983350551'
+use_blueprint:
+  input:
+    controller_entity: sensor.ikea_stybar_weiss_optional_action
+    helper_last_controller_event: input_text.last_controller
+    integration: Zigbee2MQTT
+  path: EPMatt/ikea_e2001_e2002.yaml

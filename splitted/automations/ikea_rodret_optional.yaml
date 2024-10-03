@@ -1,0 +1,7 @@
+alias: IKEA Rodret Optional
+description: ''
+id: '1727983565081'
+use_blueprint:
+  input:
+    remote_name: IKEA Rodret Optional
+  path: damru/ikea-rodret_E2201_ZHA-Z2M_control-anything.yaml

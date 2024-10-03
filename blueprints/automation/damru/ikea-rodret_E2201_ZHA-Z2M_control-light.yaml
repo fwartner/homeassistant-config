@@ -1,0 +1,228 @@
+blueprint:
+  name: IKEA Rodret Dimmer Light Control (ZHA/Z2M)
+  description: '## Control Light with IKEA RODRET Dimmer remote (v1.0)
+
+
+    Only for use with [ZHA](https://www.home-assistant.io/integrations/zha/) or Zigbee2MQTT
+    (cf [MQTT](https://www.home-assistant.io/integrations/mqtt) + [Z2M addon](https://www.zigbee2mqtt.io/guide/installation/03_ha_addon.html)).
+
+
+    Available controls:
+
+    - Press the **on** button to turn on the light (Optional: set the target brightness
+    by enabling **Helper - Force Brightness** and setting a **Helper - Brightness**
+    value)
+
+    - Press the **off** button to turn off the light
+
+    - Press and hold the **on** button to increase the brightness
+
+    - Press and hold the **off** button to decrease the brightness down to 1% '
+  source_url: https://gist.github.com/damru/19ac1c8530cf744595a9e239cf5bb20f
+  domain: automation
+  input:
+    remote_device:
+      name: (ZHA) Remote
+      description: IKEA remote to use. **_Choose if you are using ZHA._**
+      default: ''
+      selector:
+        device:
+          filter:
+          - integration: zha
+            manufacturer: IKEA of Sweden
+            model: RODRET Dimmer
+          multiple: false
+    remote_name:
+      name: (Zigbee2MQTT) Remote Name
+      description: The name of the controller (e.g. IKEA Rodret). **_Choose if you
+        are using Zigbee2MQTT._**
+      default: ''
+    base_topic:
+      name: (Zigbee2MQTT) Base mqtt topic
+      description: The topic configured in [Z2M addon](https://www.zigbee2mqtt.io/guide/usage/mqtt_topics_and_messages.html).
+      default: zigbee2mqtt
+    light:
+      name: Light
+      description: Light to control
+      selector:
+        entity:
+          filter:
+          - domain:
+            - light
+          multiple: false
+    helper_force_brightness:
+      name: Helper - Force brightness
+      description: Force the brightness to value below when light turns on.
+      default: false
+      selector:
+        boolean: {}
+    helper_brightness:
+      name: Helper - Brightness
+      description: Target light brightness when turning on. Requires **Helper - Force
+        brightness** to be enabled.
+      default: 50
+      selector:
+        number:
+          unit_of_measurement: '%'
+          min: 1.0
+          max: 100.0
+          step: 1.0
+          mode: slider
+mode: restart
+max_exceeded: silent
+trigger_variables:
+  z2m_base_topic: !input base_topic
+  z2m_controller: !input remote_name
+  zha_controller: !input remote_device
+trigger:
+- platform: event
+  event_type: zha_event
+  event_data:
+    device_id: '{{ zha_controller }}'
+    command: 'on'
+    cluster_id: 6
+    endpoint_id: 1
+  id: press-on-zha
+- platform: mqtt
+  topic: '{{ z2m_base_topic ~ ''/'' ~ z2m_controller ~ ''/action'' }}'
+  payload: 'on'
+  id: press-on-z2m
+- platform: event
+  event_type: zha_event
+  event_data:
+    device_id: '{{ zha_controller }}'
+    command: 'off'
+    cluster_id: 6
+    endpoint_id: 1
+  id: press-off-zha
+- platform: mqtt
+  topic: '{{ z2m_base_topic ~ ''/'' ~ z2m_controller ~ ''/action'' }}'
+  payload: 'off'
+  id: press-off-z2m
+- platform: event
+  event_type: zha_event
+  event_data:
+    device_id: '{{ zha_controller }}'
+    command: move_with_on_off
+    cluster_id: 8
+    endpoint_id: 1
+    args:
+    - 0
+    - 83
+  id: hold-on-zha
+- platform: mqtt
+  topic: '{{ z2m_base_topic ~ ''/'' ~ z2m_controller ~ ''/action'' }}'
+  payload: brightness_move_up
+  id: hold-on-z2m
+- platform: event
+  event_type: zha_event
+  event_data:
+    device_id: '{{ zha_controller }}'
+    command: move
+    cluster_id: 8
+    endpoint_id: 1
+    args:
+    - 1
+    - 83
+    - 0
+    - 0
+  id: hold-off-zha
+- platform: mqtt
+  topic: '{{ z2m_base_topic ~ ''/'' ~ z2m_controller ~ ''/action'' }}'
+  payload: brightness_move_down
+  id: hold-off-z2m
+- platform: event
+  event_type: zha_event
+  event_data:
+    device_id: '{{ zha_controller }}'
+    command: stop_with_on_off
+    endpoint_id: 1
+    cluster_id: 8
+  id: release-zha
+- platform: mqtt
+  topic: '{{ z2m_base_topic ~ ''/'' ~ z2m_controller ~ ''/action'' }}'
+  payload: brightness_stop
+  id: release-z2m
+action:
+- variables:
+    helper_force_brightness: !input helper_force_brightness
+    helper_hold_delay: 0.05
+    helper_hold_dim_step: 5
+    light: !input light
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - press-on-zha
+      - press-on-z2m
+    sequence:
+    - choose:
+      - conditions: '{{ helper_force_brightness }}'
+        sequence:
+        - service: light.turn_on
+          target:
+            entity_id: !input light
+          data:
+            transition: 1
+            brightness_pct: !input helper_brightness
+      default:
+      - service: light.turn_on
+        target:
+          entity_id: !input light
+        data:
+          transition: 1
+  - conditions:
+    - condition: trigger
+      id:
+      - press-off-zha
+      - press-off-z2m
+    sequence:
+    - service: light.turn_off
+      target:
+        entity_id: !input light
+      data:
+        transition: 1
+  - conditions:
+    - condition: trigger
+      id:
+      - hold-on-zha
+      - hold-on-z2m
+    sequence:
+    - repeat:
+        while:
+        - condition: trigger
+          id:
+          - hold-on-zha
+          - hold-on-z2m
+        sequence:
+        - parallel:
+          - service: light.turn_on
+            target:
+              entity_id: !input light
+            data:
+              brightness_step_pct: '{{ helper_hold_dim_step }}'
+          - delay: '{{ helper_hold_delay }}'
+  - conditions:
+    - condition: trigger
+      id:
+      - hold-off-zha
+      - hold-off-z2m
+    sequence:
+    - repeat:
+        while:
+        - condition: template
+          value_template: '{{ state_attr(light, ''brightness'') | int / 255 > helper_hold_dim_step/100
+            }}'
+        sequence:
+        - parallel:
+          - service: light.turn_on
+            data:
+              brightness_step_pct: '{{ helper_hold_dim_step | int * -1 }}'
+            target:
+              entity_id: !input light
+          - delay: '{{ helper_hold_delay }}'
+    - service: light.turn_on
+      data:
+        brightness_pct: 1
+      target:
+        entity_id: !input light

@@ -1,0 +1,419 @@
+blueprint:
+  name: IKEA Rodret Dimmer Controls (ZHA/Z2M)
+  description: '## Control anything with IKEA RODRET Dimmer remote (v1.2)
+
+
+    Only for use with [ZHA](https://www.home-assistant.io/integrations/zha/) or Zigbee2MQTT
+    (cf [MQTT](https://www.home-assistant.io/integrations/mqtt) + [Z2M addon](https://www.zigbee2mqtt.io/guide/installation/03_ha_addon.html)).
+
+
+    Available controls:
+
+    - Press the **on** or **off** buttons
+
+    - Double press the **on** or **off** buttons (optional) in **Helper - Double press
+    delay** interval. When disabled, there will be no delay for the simple press actions
+
+    - Press and hold the **on**/**off** buttons. Actions will be executed every **Helper
+    - Hold delay**, but maximum **Helper - Max number of loops** times. '
+  source_url: https://gist.github.com/damru/b2c1c780ffb0ddc084952eb89db9573a
+  domain: automation
+  input:
+    remote_device:
+      name: (ZHA) Remote
+      description: IKEA remote to use. **_Choose if you are using ZHA._**
+      default: ''
+      selector:
+        device:
+          filter:
+          - integration: zha
+            manufacturer: IKEA of Sweden
+            model: RODRET Dimmer
+          multiple: false
+    remote_name:
+      name: (Zigbee2MQTT) Remote Name
+      description: The name of the controller (e.g. IKEA Rodret). **_Choose if you
+        are using Zigbee2MQTT._**
+      default: ''
+    base_topic:
+      name: (Zigbee2MQTT) Base mqtt topic
+      description: The topic configured in [Z2M addon](https://www.zigbee2mqtt.io/guide/usage/mqtt_topics_and_messages.html).
+      default: zigbee2mqtt
+    on_press_action:
+      name: On - Single press action
+      description: Choose action(s) to run when **on** button is pressed.
+      default: []
+      selector:
+        action: {}
+    off_press_action:
+      name: Off - Single press action
+      description: Choose action(s) to run when **off** button is **pressed**.
+      default: []
+      selector:
+        action: {}
+    on_hold_action:
+      name: On - Hold action
+      description: Choose action(s) to run when **on** button is **pressed and hold**.
+      default: []
+      selector:
+        action: {}
+    off_hold_action:
+      name: Off - Hold action
+      description: Choose action(s) to run when **off** button is **pressed and hold**.
+      default: []
+      selector:
+        action: {}
+    on_double_press:
+      name: On - Double press event
+      description: Choose whether or not to expose the virtual **double press** event
+        for the **on** button. Turn this on if you are providing an action for the
+        **on** button double press event.
+      default: false
+      selector:
+        boolean: {}
+    on_double_press_action:
+      name: On - Double press action
+      description: Choose action(s) to run when pressing the **on** button twice in
+        **Helper - Double press delay** interval. **On - Double press event** must
+        be exposed.
+      default: []
+      selector:
+        action: {}
+    off_double_press:
+      name: Off - Double press event
+      description: Choose whether or not to expose the virtual **double press** event
+        for the **off** button. Turn this on if you are providing an action for the
+        **off** button double press event.
+      default: false
+      selector:
+        boolean: {}
+    off_double_press_action:
+      name: Off - Double press action
+      description: Choose action(s) to run when pressing the **off** button twice
+        in **Helper - Double press delay** interval. **Off - Double press event**
+        must be exposed.
+      default: []
+      selector:
+        action: {}
+    helper_double_press_delay:
+      name: Helper - Double press delay
+      description: Max delay between the first and the second button press for the
+        **Double press events**. Provide a value only if you are using a double press
+        action. Increase this value if you notice that the double press action is
+        not triggered properly.
+      default: 250
+      selector:
+        number:
+          unit_of_measurement: milliseconds
+          min: 100.0
+          max: 5000.0
+          step: 10.0
+          mode: slider
+    helper_hold_delay:
+      name: Helper - Hold delay
+      description: Delay between the execution of the **Hold** action(s).
+      default: 250
+      selector:
+        number:
+          unit_of_measurement: milliseconds
+          min: 100.0
+          max: 5000.0
+          step: 10.0
+          mode: slider
+    helper_max_loops:
+      name: Helper - Max number of loops
+      description: Maximum number of loops when holding down a button.
+      default: 20
+      selector:
+        number:
+          min: 1.0
+          max: 1000.0
+          step: 1.0
+          mode: slider
+mode: single
+max_exceeded: silent
+trigger_variables:
+  z2m_base_topic: !input base_topic
+  z2m_controller: !input remote_name
+  zha_remote: !input remote_device
+trigger:
+- platform: event
+  event_type: zha_event
+  event_data:
+    device_id: '{{ zha_remote }}'
+    command: 'on'
+    cluster_id: 6
+    endpoint_id: 1
+  id: press-on-zha
+- platform: mqtt
+  topic: '{{ z2m_base_topic ~ ''/'' ~ z2m_controller ~ ''/action'' }}'
+  payload: 'on'
+  id: press-on-z2m
+- platform: event
+  event_type: zha_event
+  event_data:
+    device_id: '{{ zha_remote }}'
+    command: 'off'
+    cluster_id: 6
+    endpoint_id: 1
+  id: press-off-zha
+- platform: mqtt
+  topic: '{{ z2m_base_topic ~ ''/'' ~ z2m_controller ~ ''/action'' }}'
+  payload: 'off'
+  id: press-off-z2m
+- platform: event
+  event_type: zha_event
+  event_data:
+    device_id: '{{ zha_remote }}'
+    command: move_with_on_off
+    cluster_id: 8
+    endpoint_id: 1
+    args:
+    - 0
+    - 83
+  id: hold-on-zha
+- platform: mqtt
+  topic: '{{ z2m_base_topic ~ ''/'' ~ z2m_controller ~ ''/action'' }}'
+  payload: brightness_move_up
+  id: hold-on-z2m
+- platform: event
+  event_type: zha_event
+  event_data:
+    device_id: '{{ zha_remote }}'
+    command: move
+    cluster_id: 8
+    endpoint_id: 1
+    args:
+    - 1
+    - 83
+    - 0
+    - 0
+  id: hold-off-zha
+- platform: mqtt
+  topic: '{{ z2m_base_topic ~ ''/'' ~ z2m_controller ~ ''/action'' }}'
+  payload: brightness_move_down
+  id: hold-off-z2m
+- platform: event
+  event_type: zha_event
+  event_data:
+    device_id: '{{ zha_remote }}'
+    endpoint_id: 1
+    cluster_id: 8
+    command: stop_with_on_off
+  id: release-zha
+- platform: mqtt
+  topic: '{{ z2m_base_topic ~ ''/'' ~ z2m_controller ~ ''/action'' }}'
+  payload: brightness_stop
+  id: release-z2m
+action:
+- variables:
+    on_double_press: !input on_double_press
+    off_double_press: !input off_double_press
+    zha_remote: !input remote_device
+    z2m_base_topic: !input base_topic
+    z2m_controller: !input remote_name
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - press-on-zha
+      - press-on-z2m
+    sequence:
+    - if:
+      - condition: template
+        value_template: '{{ on_double_press }}'
+      then:
+      - choose:
+        - conditions:
+          - condition: trigger
+            id:
+            - press-on-zha
+          sequence:
+          - wait_for_trigger:
+            - platform: event
+              event_type: zha_event
+              event_data:
+                device_id: '{{ zha_remote }}'
+                command: 'on'
+                cluster_id: 6
+                endpoint_id: 1
+            timeout:
+              milliseconds: !input helper_double_press_delay
+            continue_on_timeout: true
+          - if:
+            - condition: template
+              value_template: '{{ wait.trigger.idx is defined }}'
+            then: !input on_double_press_action
+            else: !input on_press_action
+        - conditions:
+          - condition: trigger
+            id:
+            - press-on-z2m
+          sequence:
+          - wait_for_trigger:
+            - platform: mqtt
+              topic: '{{ z2m_base_topic ~ ''/'' ~ z2m_controller ~ ''/action'' }}'
+              payload: 'on'
+            timeout:
+              milliseconds: !input helper_double_press_delay
+            continue_on_timeout: true
+          - if:
+            - condition: template
+              value_template: '{{ wait.trigger.idx is defined }}'
+            then: !input on_double_press_action
+            else: !input on_press_action
+      else: !input on_press_action
+  - conditions:
+    - condition: trigger
+      id:
+      - press-off-zha
+      - press-off-z2m
+    sequence:
+    - if:
+      - condition: template
+        value_template: '{{ off_double_press }}'
+      then:
+      - choose:
+        - conditions:
+          - condition: trigger
+            id:
+            - press-off-zha
+          sequence:
+          - wait_for_trigger:
+            - platform: event
+              event_type: zha_event
+              event_data:
+                device_id: '{{ zha_remote }}'
+                command: 'off'
+                cluster_id: 6
+                endpoint_id: 1
+            timeout:
+              milliseconds: !input helper_double_press_delay
+            continue_on_timeout: true
+          - if:
+            - condition: template
+              value_template: '{{ wait.trigger.idx is defined }}'
+            then: !input off_double_press_action
+            else: !input off_press_action
+        - conditions:
+          - condition: trigger
+            id:
+            - press-off-z2m
+          sequence:
+          - wait_for_trigger:
+            - platform: mqtt
+              topic: '{{ z2m_base_topic ~ ''/'' ~ z2m_controller ~ ''/action'' }}'
+              payload: 'off'
+            timeout:
+              milliseconds: !input helper_double_press_delay
+            continue_on_timeout: true
+          - if:
+            - condition: template
+              value_template: '{{ wait.trigger.idx is defined }}'
+            then: !input off_double_press_action
+            else: !input off_press_action
+      else: !input off_press_action
+  - conditions:
+    - condition: trigger
+      id:
+      - hold-on-zha
+      - hold-on-z2m
+    sequence:
+    - repeat:
+        count: !input helper_max_loops
+        sequence:
+        - parallel:
+          - sequence: !input on_hold_action
+          - sequence:
+            - choose:
+              - conditions:
+                - condition: trigger
+                  id:
+                  - hold-on-zha
+                sequence:
+                - wait_for_trigger:
+                  - platform: event
+                    event_type: zha_event
+                    event_data:
+                      device_id: '{{ zha_remote }}'
+                      command: stop_with_on_off
+                      cluster_id: 8
+                      endpoint_id: 1
+                  timeout:
+                    milliseconds: !input helper_hold_delay
+                  continue_on_timeout: true
+                - if:
+                  - condition: template
+                    value_template: '{{ wait.trigger.idx is defined }}'
+                  then:
+                  - stop: button released
+              - conditions:
+                - condition: trigger
+                  id:
+                  - hold-on-z2m
+                sequence:
+                - wait_for_trigger:
+                  - platform: mqtt
+                    topic: '{{ z2m_base_topic ~ ''/'' ~ z2m_controller ~ ''/action''
+                      }}'
+                    payload: brightness_stop
+                  timeout:
+                    milliseconds: !input helper_hold_delay
+                  continue_on_timeout: true
+                - if:
+                  - condition: template
+                    value_template: '{{ wait.trigger.idx is defined }}'
+                  then:
+                  - stop: button released
+  - conditions:
+    - condition: trigger
+      id:
+      - hold-off-zha
+      - hold-off-z2m
+    sequence:
+    - repeat:
+        count: !input helper_max_loops
+        sequence:
+        - parallel:
+          - sequence: !input off_hold_action
+          - sequence:
+            - choose:
+              - conditions:
+                - condition: trigger
+                  id:
+                  - hold-off-zha
+                sequence:
+                - wait_for_trigger:
+                  - platform: event
+                    event_type: zha_event
+                    event_data:
+                      device_id: '{{ zha_remote }}'
+                      command: stop_with_on_off
+                      cluster_id: 8
+                      endpoint_id: 1
+                  timeout:
+                    milliseconds: !input helper_hold_delay
+                  continue_on_timeout: true
+                - if:
+                  - condition: template
+                    value_template: '{{ wait.trigger.idx is defined }}'
+                  then:
+                  - stop: button released
+              - conditions:
+                - condition: trigger
+                  id:
+                  - hold-off-z2m
+                sequence:
+                - wait_for_trigger:
+                  - platform: mqtt
+                    topic: '{{ z2m_base_topic ~ ''/'' ~ z2m_controller ~ ''/action''
+                      }}'
+                    payload: brightness_stop
+                  timeout:
+                    milliseconds: !input helper_hold_delay
+                  continue_on_timeout: true
+                - if:
+                  - condition: template
+                    value_template: '{{ wait.trigger.idx is defined }}'
+                  then:
+                  - stop: button released

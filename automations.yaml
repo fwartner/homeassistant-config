@@ -715,81 +715,76 @@
       entity_id: input_boolean.wartung
       state: 'off'
   actions:
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: sensor.mac_mini_von_florian_active_audio_output
-        state: PRO X
-        attribute: Active Audio Output
-      sequence:
-      - action: notify.mobile_app_mac_mini_von_florian
-        data:
-          title: Es hat geklingelt!
-          message: Jemand scheint an der Tür zu sein…
-    - conditions:
-      - condition: and
-        conditions:
-        - condition: trigger
-          id:
-          - ringOn
-        - condition: numeric_state
-          entity_id: sensor.people_home
-          below: 1
-      sequence:
-      - data:
-          message: Scheinbar hat jemand an der Tür geklingelt.
-          title: Jemand hat an der Tür geklingelt..
-        action: notify.mobile_app_iphone_von_florian
-    - conditions:
-      - condition: and
-        conditions:
-        - condition: trigger
-          id:
-          - ringOn
-        - condition: numeric_state
-          entity_id: sensor.people_home
-          above: 0
-      sequence:
-      - parallel:
-        - repeat:
-            count: '3'
-            sequence:
-            - data:
-                color_name: gold
-              target:
-                device_id: 81a05f4ea38ce123a73f5f66b8e0e3c1
-              action: light.turn_on
-            - delay:
-                hours: 0
-                minutes: 0
-                seconds: 1
-                milliseconds: 0
-            - data: {}
-              target:
-                device_id: 81a05f4ea38ce123a73f5f66b8e0e3c1
-              action: light.turn_off
-            - delay:
-                hours: 0
-                minutes: 0
-                seconds: 1
-                milliseconds: 0
+  - parallel:
+    - action: notify.mobile_app_mac_mini_von_florian
+      data:
+        title: Es hat geklingelt!
+        message: Jemand scheint an der Tür zu sein…
+    - choose:
+      - conditions:
+        - condition: and
+          conditions:
+          - condition: trigger
+            id:
+            - ringOn
+          - condition: numeric_state
+            entity_id: sensor.people_home
+            below: 1
+        sequence:
         - data:
-            message: Jemand hat an der Tür geklingelt
-          enabled: false
-          action: notify.alexa_media_echo_show_wohnzimmer
+            message: Scheinbar hat jemand an der Tür geklingelt.
+            title: Jemand hat an der Tür geklingelt..
+          action: notify.mobile_app_iphone_von_florian
+      - conditions:
+        - condition: and
+          conditions:
+          - condition: trigger
+            id:
+            - ringOn
+          - condition: numeric_state
+            entity_id: sensor.people_home
+            above: 0
+        sequence:
+        - parallel:
+          - repeat:
+              count: '3'
+              sequence:
+              - data:
+                  color_name: gold
+                target:
+                  device_id: 81a05f4ea38ce123a73f5f66b8e0e3c1
+                action: light.turn_on
+              - delay:
+                  hours: 0
+                  minutes: 0
+                  seconds: 1
+                  milliseconds: 0
+              - data: {}
+                target:
+                  device_id: 81a05f4ea38ce123a73f5f66b8e0e3c1
+                action: light.turn_off
+              - delay:
+                  hours: 0
+                  minutes: 0
+                  seconds: 1
+                  milliseconds: 0
+          - data:
+              message: Jemand hat an der Tür geklingelt
+            enabled: false
+            action: notify.alexa_media_echo_show_wohnzimmer
+          - metadata: {}
+            data: {}
+            action: script.awtrix_doorbell
+      - conditions:
+        - condition: trigger
+          id:
+          - ringOn
+        sequence:
         - metadata: {}
-          data: {}
-          action: script.awtrix_doorbell
-    - conditions:
-      - condition: trigger
-        id:
-        - ringOn
-      sequence:
-      - metadata: {}
-        data:
-          title: "\U0001F514 Klingeling!"
-          message: Jemand hat an der Tür geklingelt
-        action: notify.mobile_app_macbook_pro_von_florian
+          data:
+            title: "\U0001F514 Klingeling!"
+            message: Jemand hat an der Tür geklingelt
+          action: notify.mobile_app_macbook_pro_von_florian
   mode: single
 - id: '1692310400644'
   alias: Aufstehen

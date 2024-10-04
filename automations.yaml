@@ -3509,6 +3509,20 @@
           - 2c6903e160b7b9dfaf222a7360bc0015
           - 5556afe8383ee4a45f5b74e6cc1d57ee
         data: {}
+      action_button_right_long:
+      - action: mass.play_media
+        target:
+          device_id: 769df0e4eb3df0faa38fb2311aa42623
+        data:
+          media_id: spotify://playlist/37i9dQZF1E37gOCuPARKby
+          radio_mode: true
+          media_type: playlist
+      action_button_left_double:
+      - action: media_player.media_stop
+        target:
+          entity_id: media_player.sonos_wohnzimmer
+        data: {}
+      action_button_right_double: []
 - id: '1727983178880'
   alias: IKEA Stybar Weiss Schlafzimmer
   description: ''

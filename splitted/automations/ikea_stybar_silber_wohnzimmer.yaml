@@ -10,12 +10,13 @@ use_blueprint:
         device_id:
         - 2c6903e160b7b9dfaf222a7360bc0015
         - 5556afe8383ee4a45f5b74e6cc1d57ee
-    action_button_left_double:
+    action_button_left_double: []
+    action_button_left_long:
     - action: media_player.media_stop
       data: {}
       target:
-        entity_id: media_player.sonos_wohnzimmer
-    action_button_left_long: []
+        entity_id:
+        - media_player.sonos_wohnzimmer
     action_button_left_short:
     - action: media_player.volume_down
       data: {}

@@ -3493,7 +3493,12 @@
           - 9d14dca47a5773d55c5f7f9d16c58476
           - 769df0e4eb3df0faa38fb2311aa42623
         data: {}
-      action_button_left_long: []
+      action_button_left_long:
+      - action: media_player.media_stop
+        target:
+          entity_id:
+          - media_player.sonos_wohnzimmer
+        data: {}
       helper_last_controller_event: input_text.last_controller
       action_button_up_short:
       - action: cover.open_cover
@@ -3517,11 +3522,7 @@
           media_id: spotify://playlist/37i9dQZF1E37gOCuPARKby
           radio_mode: true
           media_type: playlist
-      action_button_left_double:
-      - action: media_player.media_stop
-        target:
-          entity_id: media_player.sonos_wohnzimmer
-        data: {}
+      action_button_left_double: []
       action_button_right_double: []
 - id: '1727983178880'
   alias: IKEA Stybar Weiss Schlafzimmer

@@ -1,5 +1,15 @@
-action:
+actions:
 - choose:
+  - conditions:
+    - attribute: Active Audio Output
+      condition: state
+      entity_id: sensor.mac_mini_von_florian_active_audio_output
+      state: PRO X
+    sequence:
+    - action: notify.mobile_app_mac_mini_von_florian
+      data:
+        message: "Jemand scheint an der T\xFCr zu sein\u2026"
+        title: Es hat geklingelt!
   - conditions:
     - condition: and
       conditions:
@@ -10,10 +20,10 @@ action:
         condition: numeric_state
         entity_id: sensor.people_home
     sequence:
-    - data:
+    - action: notify.mobile_app_iphone_von_florian
+      data:
         message: "Scheinbar hat jemand an der T\xFCr geklingelt."
         title: "Jemand hat an der T\xFCr geklingelt.."
-      service: notify.mobile_app_iphone_von_florian
   - conditions:
     - condition: and
       conditions:
@@ -28,9 +38,9 @@ action:
       - repeat:
           count: '3'
           sequence:
-          - data:
+          - action: light.turn_on
+            data:
               color_name: gold
-            service: light.turn_on
             target:
               device_id: 81a05f4ea38ce123a73f5f66b8e0e3c1
           - delay:
@@ -38,8 +48,8 @@ action:
               milliseconds: 0
               minutes: 0
               seconds: 1
-          - data: {}
-            service: light.turn_off
+          - action: light.turn_off
+            data: {}
             target:
               device_id: 81a05f4ea38ce123a73f5f66b8e0e3c1
           - delay:
@@ -47,25 +57,25 @@ action:
               milliseconds: 0
               minutes: 0
               seconds: 1
-      - data:
+      - action: notify.alexa_media_echo_show_wohnzimmer
+        data:
           message: "Jemand hat an der T\xFCr geklingelt"
         enabled: false
-        service: notify.alexa_media_echo_show_wohnzimmer
-      - data: {}
+      - action: script.awtrix_doorbell
+        data: {}
         metadata: {}
-        service: script.awtrix_doorbell
   - conditions:
     - condition: trigger
       id:
       - ringOn
     sequence:
-    - data:
+    - action: notify.mobile_app_macbook_pro_von_florian
+      data:
         message: "Jemand hat an der T\xFCr geklingelt"
         title: "\U0001F514 Klingeling!"
       metadata: {}
-      service: notify.mobile_app_macbook_pro_von_florian
 alias: "T\xFCrklingel"
-condition:
+conditions:
 - condition: and
   conditions:
   - condition: state
@@ -80,9 +90,9 @@ condition:
 description: ''
 id: '1692134639284'
 mode: single
-trigger:
+triggers:
 - entity_id:
   - binary_sensor.nuki_haustur_ring_action
   id: ringOn
-  platform: state
   to: 'on'
+  trigger: state

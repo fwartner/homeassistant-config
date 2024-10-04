@@ -696,13 +696,13 @@
 - id: '1692134639284'
   alias: Türklingel
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - binary_sensor.nuki_haustur_ring_action
     to: 'on'
     id: ringOn
-  condition:
+    trigger: state
+  conditions:
   - condition: and
     conditions:
     - condition: state
@@ -714,8 +714,18 @@
     - condition: state
       entity_id: input_boolean.wartung
       state: 'off'
-  action:
+  actions:
   - choose:
+    - conditions:
+      - condition: state
+        entity_id: sensor.mac_mini_von_florian_active_audio_output
+        state: PRO X
+        attribute: Active Audio Output
+      sequence:
+      - action: notify.mobile_app_mac_mini_von_florian
+        data:
+          title: Es hat geklingelt!
+          message: Jemand scheint an der Tür zu sein…
     - conditions:
       - condition: and
         conditions:
@@ -726,10 +736,10 @@
           entity_id: sensor.people_home
           below: 1
       sequence:
-      - service: notify.mobile_app_iphone_von_florian
-        data:
+      - data:
           message: Scheinbar hat jemand an der Tür geklingelt.
           title: Jemand hat an der Tür geklingelt..
+        action: notify.mobile_app_iphone_von_florian
     - conditions:
       - condition: and
         conditions:
@@ -744,42 +754,42 @@
         - repeat:
             count: '3'
             sequence:
-            - service: light.turn_on
-              data:
+            - data:
                 color_name: gold
               target:
                 device_id: 81a05f4ea38ce123a73f5f66b8e0e3c1
+              action: light.turn_on
             - delay:
                 hours: 0
                 minutes: 0
                 seconds: 1
                 milliseconds: 0
-            - service: light.turn_off
-              data: {}
+            - data: {}
               target:
                 device_id: 81a05f4ea38ce123a73f5f66b8e0e3c1
+              action: light.turn_off
             - delay:
                 hours: 0
                 minutes: 0
                 seconds: 1
                 milliseconds: 0
-        - service: notify.alexa_media_echo_show_wohnzimmer
-          data:
+        - data:
             message: Jemand hat an der Tür geklingelt
           enabled: false
-        - service: script.awtrix_doorbell
-          metadata: {}
+          action: notify.alexa_media_echo_show_wohnzimmer
+        - metadata: {}
           data: {}
+          action: script.awtrix_doorbell
     - conditions:
       - condition: trigger
         id:
         - ringOn
       sequence:
-      - service: notify.mobile_app_macbook_pro_von_florian
-        metadata: {}
+      - metadata: {}
         data:
           title: "\U0001F514 Klingeling!"
           message: Jemand hat an der Tür geklingelt
+        action: notify.mobile_app_macbook_pro_von_florian
   mode: single
 - id: '1692310400644'
   alias: Aufstehen

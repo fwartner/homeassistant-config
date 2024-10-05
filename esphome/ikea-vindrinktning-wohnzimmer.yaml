@@ -1,14 +1,14 @@
 esphome:
   name: ikea-vindrinktning-wohnzimmer
   friendly_name: IKEA VINDRINKTNING Wohnzimmer
+  platform: ESP8266
+  board: d1_mini
 
 esp8266:
   board: d1_mini
 
-# Enable logging
 logger:
 
-# Enable Home Assistant API
 api:
   encryption:
     key: "XMAML2LjouAD3JsI5wyjwAXT6S867eUJ+3JowI6HB6c="

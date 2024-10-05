@@ -4,9 +4,6 @@ esphome:
   platform: ESP8266
   board: d1_mini
 
-esp8266:
-  board: d1_mini
-
 logger:
 
 api:
@@ -35,7 +32,7 @@ uart:
 
 sensor:
   – platform: pm1006
-    pm_2_5:
+    pm_25:
       name: "Ikea Vindriktning Wohnzimmer PM25"
       filters:
         – sliding_window_moving_average:

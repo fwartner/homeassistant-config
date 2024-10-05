@@ -3553,3 +3553,30 @@
     path: damru/ikea-rodret_E2201_ZHA-Z2M_control-anything.yaml
     input:
       remote_name: IKEA Rodret Optional
+- id: '1728149871505'
+  alias: PM25 Test Wohnzimmer
+  description: ''
+  triggers:
+  - type: pm25
+    device_id: cc11e1fb1d90ed5a4cde9185cd2f1057
+    entity_id: c18b4cef1a9167966f680cfaa3f4c50a
+    domain: sensor
+    metadata:
+      secondary: false
+    trigger: device
+    above: 25
+  conditions:
+  - condition: state
+    entity_id: light.tv
+    state: 'on'
+  actions:
+  - action: light.turn_on
+    target:
+      entity_id: light.tv
+    data:
+      rgb_color:
+      - 97
+      - 0
+      - 133
+      flash: short
+  mode: single

@@ -31,7 +31,7 @@ uart:
 sensor:
   - platform: pm1006
     pm_2_5:
-      name: "Ikea Vindriktning PM25"
+      name: "Ikea Vindriktning Schlafzimmer PM25"
       filters:
         - sliding_window_moving_average:
             window_size: 10

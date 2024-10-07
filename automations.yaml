@@ -3580,3 +3580,11 @@
       - 133
       flash: short
   mode: single
+- id: '1728284886485'
+  alias: Home Assistant Auto-update on a schedule base
+  description: ''
+  use_blueprint:
+    path: edwardtfn/auto_update_scheduled.yaml
+    input:
+      schedule_entity: schedule.updates
+      restart_type: core

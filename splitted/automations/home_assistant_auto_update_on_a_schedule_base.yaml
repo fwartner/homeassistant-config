@@ -1,0 +1,8 @@
+alias: Home Assistant Auto-update on a schedule base
+description: ''
+id: '1728284886485'
+use_blueprint:
+  input:
+    restart_type: core
+    schedule_entity: schedule.updates
+  path: edwardtfn/auto_update_scheduled.yaml

@@ -1,0 +1,30 @@
+esphome:
+  name: ikea-vindrinktning-schlafzimmer
+  friendly_name: IKEA VINDRINKTNING Schlafzimmer
+
+esp8266:
+  board: esp01_1m
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "Txc9uePVSoy4rikaxM/ZszVZQg/J72QgM4Sw453pRWc="
+
+ota:
+  - platform: esphome
+    password: "c9888224363fed4b9dec8f74de14a3d8"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Ikea-Vindrinktning-Schlafzimmer"
+    password: "MvXA4IcncQQu"
+
+captive_portal:
+    

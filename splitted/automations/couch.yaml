@@ -1,0 +1,36 @@
+actions:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - couchFrei
+    sequence: []
+  - conditions:
+    - condition: trigger
+      id:
+      - couchBelegt
+    sequence: []
+alias: Couch
+conditions:
+- above: 0
+  condition: numeric_state
+  entity_id: sensor.people_home
+- condition: state
+  entity_id: media_player.appletv_wohnzimmer
+  state: playing
+description: ''
+id: '1728905439373'
+mode: single
+triggers:
+- device_id: 779a3e27762696ab42d6562bf3501934
+  domain: binary_sensor
+  entity_id: fc3bf20b4daf944d19c71e62a29723f8
+  id: couchFrei
+  trigger: device
+  type: not_occupied
+- device_id: 779a3e27762696ab42d6562bf3501934
+  domain: binary_sensor
+  entity_id: fc3bf20b4daf944d19c71e62a29723f8
+  id: couchBelegt
+  trigger: device
+  type: occupied

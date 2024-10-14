@@ -3595,3 +3595,39 @@
   conditions: []
   actions: []
   mode: single
+- id: '1728905439373'
+  alias: Couch
+  description: ''
+  triggers:
+  - type: not_occupied
+    device_id: 779a3e27762696ab42d6562bf3501934
+    entity_id: fc3bf20b4daf944d19c71e62a29723f8
+    domain: binary_sensor
+    trigger: device
+    id: couchFrei
+  - type: occupied
+    device_id: 779a3e27762696ab42d6562bf3501934
+    entity_id: fc3bf20b4daf944d19c71e62a29723f8
+    domain: binary_sensor
+    trigger: device
+    id: couchBelegt
+  conditions:
+  - condition: numeric_state
+    entity_id: sensor.people_home
+    above: 0
+  - condition: state
+    entity_id: media_player.appletv_wohnzimmer
+    state: playing
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - couchFrei
+      sequence: []
+    - conditions:
+      - condition: trigger
+        id:
+        - couchBelegt
+      sequence: []
+  mode: single

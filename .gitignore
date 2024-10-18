@@ -38,3 +38,4 @@ frigate.db-wal
 frigate.db-shm
 
 .vacuum
+.timeline

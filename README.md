@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2837
+Number of entities | 2838
 Number of sensors | 1408
 Number of automations | 111
 Number of scripts | 51
@@ -68,6 +68,7 @@ Number of binary sensors | 208
 - [Bambu Lab](https://github.com/greghesp/ha-bambulab)
 - [Battery Notes](https://github.com/andrew-codechimp/HA-Battery-Notes)
 - [Better Thermostat](https://github.com/KartoffelToby/better_thermostat)
+- [Blitzer.De](https://github.com/timniklas/hass-blitzerde)
 - [Blitzortung.Org Lightning Detector](https://github.com/mrk-its/homeassistant-blitzortung)
 - [Brewdog](https://github.com/custom-components/brewdog)
 - [Browser Mod](https://github.com/thomasloven/hass-browser_mod)
@@ -93,8 +94,8 @@ Number of binary sensors | 208
 - [Hoymiles](https://github.com/suaveolent/ha-hoymiles-wifi)
 - [Hvac Group](https://github.com/tetele/hvac_group)
 - [Icloud3 V3 Idevice Tracker](https://github.com/gcobb321/icloud3)
-- [Local Llm Conversation](https://github.com/fixtse/home-llm)
 - [Local Llm Conversation](https://github.com/acon96/home-llm)
+- [Local Llm Conversation](https://github.com/fixtse/home-llm)
 - [Mail And Packages](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages)
 - [Media Player Template](https://github.com/Sennevds/media_player.template)
 - [Multiscrape](https://github.com/danieldotnl/ha-multiscrape)

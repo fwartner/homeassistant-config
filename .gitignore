@@ -36,3 +36,5 @@ frigate.yml
 frigate.db
 frigate.db-wal
 frigate.db-shm
+
+.vacuum

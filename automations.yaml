@@ -1613,9 +1613,8 @@
 - id: '1711970540815'
   alias: Küche Steckdosen Power Management
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - sensor.steckdose_waschmaschine_energy_power
     for:
       hours: 0
@@ -1624,8 +1623,8 @@
     id: washingMachineOffAfterTime
     to: '0'
     from:
-  - platform: state
-    entity_id:
+    trigger: state
+  - entity_id:
     - sensor.steckdose_spuhlmaschine_energy_power
     for:
       hours: 0
@@ -1634,11 +1633,17 @@
     id: dishWasherOffAfterTime
     to: '0'
     from:
-  condition:
-  - condition: state
-    entity_id: input_boolean.wartung
-    state: 'off'
-  action:
+    trigger: state
+  conditions:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.manuell
+      state: 'off'
+  actions:
   - choose:
     - conditions:
       - condition: trigger

@@ -1,4 +1,4 @@
-action:
+actions:
 - choose:
   - conditions:
     - condition: trigger
@@ -27,14 +27,19 @@ action:
         message: "Sp\xFClmaschine ist fertig."
         title: "\U0001F37D\uFE0F Geschirr ist sauber"
 alias: "K\xFCche Steckdosen Power Management"
-condition:
-- condition: state
-  entity_id: input_boolean.wartung
-  state: 'off'
+conditions:
+- condition: and
+  conditions:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.manuell
+    state: 'off'
 description: ''
 id: '1711970540815'
 mode: single
-trigger:
+triggers:
 - entity_id:
   - sensor.steckdose_waschmaschine_energy_power
   for:
@@ -43,8 +48,8 @@ trigger:
     seconds: 0
   from: null
   id: washingMachineOffAfterTime
-  platform: state
   to: '0'
+  trigger: state
 - entity_id:
   - sensor.steckdose_spuhlmaschine_energy_power
   for:
@@ -53,5 +58,5 @@ trigger:
     seconds: 0
   from: null
   id: dishWasherOffAfterTime
-  platform: state
   to: '0'
+  trigger: state

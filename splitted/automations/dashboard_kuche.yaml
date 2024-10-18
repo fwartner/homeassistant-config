@@ -1,60 +1,60 @@
-action:
+actions:
 - choose:
   - conditions:
     - condition: trigger
       id:
       - hlkKuecheOn
     sequence:
-    - data:
+    - action: media_player.volume_mute
+      data:
         is_volume_muted: true
-      service: media_player.volume_mute
       target:
         device_id: aaa0eae9a416510075db748a0b6262dc
-    - data:
+    - action: cast.show_lovelace_view
+      data:
         dashboard_path: dashboard-kuche
         entity_id: media_player.nest_kuche
         view_path: '0'
-      service: cast.show_lovelace_view
   - conditions:
     - condition: trigger
       id:
       - hlkKuecheOff
     sequence:
-    - data: {}
-      service: media_player.turn_off
+    - action: media_player.turn_off
+      data: {}
       target:
         entity_id: media_player.nest_kuche
-    - data:
+    - action: media_player.volume_mute
+      data:
         is_volume_muted: false
-      service: media_player.volume_mute
       target:
         device_id: aaa0eae9a416510075db748a0b6262dc
 alias: "Dashboard K\xFCche"
-condition:
+conditions:
 - condition: state
   entity_id: input_boolean.wartung
   state: 'off'
 description: ''
 id: '1713259440389'
 mode: single
-trigger:
+triggers:
 - entity_id:
-  - binary_sensor.hlk_kuche_belegung
+  - binary_sensor.hlk_ld2410_7137_anwesenheit
   for:
     hours: 0
     minutes: 0
     seconds: 2
   from: 'off'
   id: hlkKuecheOn
-  platform: state
   to: 'on'
+  trigger: state
 - entity_id:
-  - binary_sensor.hlk_kuche_belegung
+  - binary_sensor.hlk_ld2410_7137_anwesenheit
   for:
     hours: 0
     minutes: 0
     seconds: 3
   from: 'on'
   id: hlkKuecheOff
-  platform: state
   to: 'off'
+  trigger: state

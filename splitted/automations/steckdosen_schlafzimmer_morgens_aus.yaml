@@ -1,4 +1,4 @@
-action:
+actions:
 - parallel:
   - device_id: cee4b3caf72c6c64e4cf9115e5ad0c40
     domain: switch
@@ -9,13 +9,18 @@ action:
     entity_id: 107487a20fd417d6c27308fc10f3df40
     type: turn_off
 alias: Steckdosen Schlafzimmer Morgens Aus
-condition:
-- condition: state
-  entity_id: input_boolean.wartung
-  state: 'off'
+conditions:
+- condition: and
+  conditions:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.manuell
+    state: 'off'
 description: ''
 id: '1713444564715'
 mode: single
-trigger:
+triggers:
 - at: 08:00:00
-  platform: time
+  trigger: time

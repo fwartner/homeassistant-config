@@ -328,20 +328,20 @@
 - id: '1691151128778'
   alias: Nachtlicht Küche
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.hlk_kuche_belegung
+  triggers:
+  - entity_id:
+    - binary_sensor.hlk_ld2410_7137_anwesenheit
     from: 'off'
     to: 'on'
     id: kucheOn
-  - platform: state
-    entity_id:
-    - binary_sensor.hlk_kuche_belegung
+    trigger: state
+  - entity_id:
+    - binary_sensor.hlk_ld2410_7137_anwesenheit
     from: 'on'
     to: 'off'
     id: kucheOff
-  condition:
+    trigger: state
+  conditions:
   - condition: and
     conditions:
     - condition: sun
@@ -352,7 +352,7 @@
     - condition: state
       entity_id: input_boolean.wartung
       state: 'off'
-  action:
+  actions:
   - choose:
     - conditions:
       - condition: trigger
@@ -2093,10 +2093,9 @@
 - id: '1713259440389'
   alias: Dashboard Küche
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.hlk_kuche_belegung
+  triggers:
+  - entity_id:
+    - binary_sensor.hlk_ld2410_7137_anwesenheit
     from: 'off'
     to: 'on'
     for:
@@ -2104,9 +2103,9 @@
       minutes: 0
       seconds: 2
     id: hlkKuecheOn
-  - platform: state
-    entity_id:
-    - binary_sensor.hlk_kuche_belegung
+    trigger: state
+  - entity_id:
+    - binary_sensor.hlk_ld2410_7137_anwesenheit
     from: 'on'
     to: 'off'
     for:
@@ -2114,41 +2113,42 @@
       minutes: 0
       seconds: 3
     id: hlkKuecheOff
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: input_boolean.wartung
     state: 'off'
-  action:
+  actions:
   - choose:
     - conditions:
       - condition: trigger
         id:
         - hlkKuecheOn
       sequence:
-      - service: media_player.volume_mute
-        target:
+      - target:
           device_id: aaa0eae9a416510075db748a0b6262dc
         data:
           is_volume_muted: true
-      - service: cast.show_lovelace_view
-        data:
+        action: media_player.volume_mute
+      - data:
           entity_id: media_player.nest_kuche
           dashboard_path: dashboard-kuche
           view_path: '0'
+        action: cast.show_lovelace_view
     - conditions:
       - condition: trigger
         id:
         - hlkKuecheOff
       sequence:
-      - service: media_player.turn_off
-        target:
+      - target:
           entity_id: media_player.nest_kuche
         data: {}
-      - service: media_player.volume_mute
-        target:
+        action: media_player.turn_off
+      - target:
           device_id: aaa0eae9a416510075db748a0b6262dc
         data:
           is_volume_muted: false
+        action: media_player.volume_mute
   mode: single
 - id: '1713443188220'
   alias: '[Admin] Zigbee2MQTT Restart Nightly'
@@ -2168,13 +2168,13 @@
 - id: '1713444406391'
   alias: 'Motion: Schlafzimmer Steckdosen An'
   description: ''
-  trigger:
+  triggers:
   - type: motion
-    platform: device
     device_id: 7166fbfe0af7d53d4673741c96c3863d
     entity_id: 94bfc27f3b165fc352e2cc04541190d1
     domain: binary_sensor
-  condition:
+    trigger: device
+  conditions:
   - condition: and
     conditions:
     - condition: time
@@ -2188,10 +2188,15 @@
       - wed
       - thu
       before: 00:00:00
-    - condition: state
-      entity_id: input_boolean.wartung
-      state: 'off'
-  action:
+    - condition: and
+      conditions:
+      - condition: state
+        entity_id: input_boolean.wartung
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.manuell
+        state: 'off'
+  actions:
   - if:
     - condition: state
       entity_id: switch.steckdose_bett
@@ -2213,14 +2218,19 @@
 - id: '1713444564715'
   alias: Steckdosen Schlafzimmer Morgens Aus
   description: ''
-  trigger:
-  - platform: time
-    at: 08:00:00
-  condition:
-  - condition: state
-    entity_id: input_boolean.wartung
-    state: 'off'
-  action:
+  triggers:
+  - at: 08:00:00
+    trigger: time
+  conditions:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.manuell
+      state: 'off'
+  actions:
   - parallel:
     - type: turn_off
       device_id: cee4b3caf72c6c64e4cf9115e5ad0c40
@@ -3187,28 +3197,43 @@
 - id: '1719174034446'
   alias: Wohnzimmer Licht wenn zu dunkel
   description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id:
+  triggers:
+  - entity_id:
     - sensor.mi_light_sensor_wohnzimmer_illuminance_lux
     below: 30
-  condition:
+    trigger: numeric_state
+  conditions:
   - condition: and
     conditions:
     - condition: numeric_state
       entity_id: sensor.people_home
-      above: 1
+      above: 0
     - condition: state
       entity_id: remote.appletv_wohnzimmer
       state: 'on'
     - condition: sun
       after: sunset
-    - condition: state
-      entity_id: input_boolean.wartung
-      state: 'off'
-  action:
-  - service: light.turn_on
-    metadata: {}
+    - condition: time
+      before: '23:00:00'
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+      - sat
+      - sun
+      after: '17:00:00'
+    - condition: and
+      conditions:
+      - condition: state
+        entity_id: input_boolean.wartung
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.manuell
+        state: 'off'
+  actions:
+  - metadata: {}
     data: {}
     target:
       device_id:
@@ -3217,6 +3242,7 @@
       - 1e74380a353e5af91767df2483e266fe
       - 171cf6e6bd2c823a2a91c916b23b3e25
       - 3d2124b0362a0b5d69b4f905ec8a36c5
+    action: light.turn_on
   mode: single
 - id: '1719501882967'
   alias: Restart Nightly
@@ -3635,4 +3661,46 @@
         id:
         - couchBelegt
       sequence: []
+  mode: single
+- id: '1729247777105'
+  alias: Rollos Schlafzimmer
+  description: ''
+  triggers:
+  - trigger: time
+    at: '21:00:00'
+    id: coverCloseSchlafzimmer
+  - trigger: time
+    at: 08:30:00
+    id: coverOpenSchlafzimmer
+  conditions:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.manuell
+      state: 'off'
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - coverCloseSchlafzimmer
+      sequence:
+      - action: cover.close_cover
+        metadata: {}
+        data: {}
+        target:
+          entity_id: cover.rollos_schlafzimmer
+    - conditions:
+      - condition: trigger
+        id:
+        - coverOpenSchlafzimmer
+      sequence:
+      - action: cover.open_cover
+        metadata: {}
+        data: {}
+        target:
+          entity_id: cover.rollos_schlafzimmer
   mode: single

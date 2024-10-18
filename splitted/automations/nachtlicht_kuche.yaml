@@ -1,4 +1,4 @@
-action:
+actions:
 - choose:
   - conditions:
     - condition: trigger
@@ -20,7 +20,7 @@ action:
       entity_id: 36aeda22c66e308e67721d47b46bf669
       type: turn_off
 alias: "Nachtlicht K\xFCche"
-condition:
+conditions:
 - condition: and
   conditions:
   - after: sunset
@@ -34,16 +34,16 @@ condition:
 description: ''
 id: '1691151128778'
 mode: single
-trigger:
+triggers:
 - entity_id:
-  - binary_sensor.hlk_kuche_belegung
+  - binary_sensor.hlk_ld2410_7137_anwesenheit
   from: 'off'
   id: kucheOn
-  platform: state
   to: 'on'
+  trigger: state
 - entity_id:
-  - binary_sensor.hlk_kuche_belegung
+  - binary_sensor.hlk_ld2410_7137_anwesenheit
   from: 'on'
   id: kucheOff
-  platform: state
   to: 'off'
+  trigger: state

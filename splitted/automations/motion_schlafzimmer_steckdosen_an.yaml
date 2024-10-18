@@ -1,4 +1,4 @@
-action:
+actions:
 - if:
   - condition: state
     entity_id: switch.steckdose_bett
@@ -17,7 +17,7 @@ action:
       entity_id: 107487a20fd417d6c27308fc10f3df40
       type: turn_on
 alias: 'Motion: Schlafzimmer Steckdosen An'
-condition:
+conditions:
 - condition: and
   conditions:
   - after: '21:00:00'
@@ -31,15 +31,20 @@ condition:
     - tue
     - wed
     - thu
-  - condition: state
-    entity_id: input_boolean.wartung
-    state: 'off'
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.manuell
+      state: 'off'
 description: ''
 id: '1713444406391'
 mode: single
-trigger:
+triggers:
 - device_id: 7166fbfe0af7d53d4673741c96c3863d
   domain: binary_sensor
   entity_id: 94bfc27f3b165fc352e2cc04541190d1
-  platform: device
+  trigger: device
   type: motion

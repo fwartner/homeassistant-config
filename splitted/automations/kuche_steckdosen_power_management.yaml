@@ -28,14 +28,9 @@ actions:
         title: "\U0001F37D\uFE0F Geschirr ist sauber"
 alias: "K\xFCche Steckdosen Power Management"
 conditions:
-- condition: and
-  conditions:
-  - condition: state
-    entity_id: input_boolean.wartung
-    state: 'off'
-  - condition: state
-    entity_id: input_boolean.manuell
-    state: 'off'
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
 description: ''
 id: '1711970540815'
 mode: single

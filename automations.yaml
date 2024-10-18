@@ -1635,14 +1635,9 @@
     from:
     trigger: state
   conditions:
-  - condition: and
-    conditions:
-    - condition: state
-      entity_id: input_boolean.wartung
-      state: 'off'
-    - condition: state
-      entity_id: input_boolean.manuell
-      state: 'off'
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
   actions:
   - choose:
     - conditions:

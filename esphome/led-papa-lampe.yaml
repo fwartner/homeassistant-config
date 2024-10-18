@@ -1,0 +1,35 @@
+esphome:
+  name: led-papa-lampe
+  friendly_name: LED Papa-Lampe
+
+esp8266:
+  board: d1_mini
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "v6ZEcloWYOItpMvV/vtWIkcr0EGd9hePpLl0Sa/TQu8="
+
+ota:
+  - platform: esphome
+    password: "bd31026d083ba80ebdb171a90b26d33a"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Led-Papa-Lampe Fallback Hotspot"
+    password: "lEtKuLt2O9xd"
+
+captive_portal:
+  
+switch:
+  - platform: gpio
+    pin: D0
+    id: relais # die ID kann optional vergeben werden
+    name: "Leuchte"

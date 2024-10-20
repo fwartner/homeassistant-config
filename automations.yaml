@@ -599,22 +599,30 @@
 - id: '1691786451171'
   alias: Nachtlicht Badezimmer
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - binary_sensor.mmwave_badezimmer
     to: 'on'
     id: badezimmerOn
-  - platform: state
-    entity_id:
+    trigger: state
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 2
+  - entity_id:
     - binary_sensor.mmwave_badezimmer
     to: 'off'
     id: badezimmerOff
-  condition:
+    trigger: state
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  conditions:
   - condition: state
     entity_id: input_boolean.wartung
     state: 'off'
-  action:
+  actions:
   - if:
     - condition: sun
       before: sunrise
@@ -628,21 +636,21 @@
           id:
           - badezimmerOn
         sequence:
-        - service: light.turn_on
-          data:
+        - data:
             brightness_pct: 30
           target:
             entity_id: light.decke_badezimmer
+          action: light.turn_on
       - conditions:
         - condition: trigger
           id:
           - badezimmerOff
         sequence:
-        - service: input_boolean.turn_off
-          metadata: {}
+        - metadata: {}
           data: {}
           target:
             entity_id: input_boolean.klo_besetzt
+          action: input_boolean.turn_off
         - if:
           - condition: and
             conditions:
@@ -658,10 +666,10 @@
                 state: 'off'
                 enabled: false
           then:
-          - service: light.turn_off
-            data: {}
+          - data: {}
             target:
               device_id: 6e5322a0a9b03a5d8858879bbead49bf
+            action: light.turn_off
   mode: single
 - id: '1692084370120'
   alias: Verlassen

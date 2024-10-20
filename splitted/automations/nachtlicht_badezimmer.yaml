@@ -1,4 +1,4 @@
-action:
+actions:
 - if:
   - after: sunset
     after_offset: '1'
@@ -12,9 +12,9 @@ action:
         id:
         - badezimmerOn
       sequence:
-      - data:
+      - action: light.turn_on
+        data:
           brightness_pct: 30
-        service: light.turn_on
         target:
           entity_id: light.decke_badezimmer
     - conditions:
@@ -22,9 +22,9 @@ action:
         id:
         - badezimmerOff
       sequence:
-      - data: {}
+      - action: input_boolean.turn_off
+        data: {}
         metadata: {}
-        service: input_boolean.turn_off
         target:
           entity_id: input_boolean.klo_besetzt
       - if:
@@ -42,26 +42,34 @@ action:
               entity_id: input_boolean.guestmode
               state: 'off'
         then:
-        - data: {}
-          service: light.turn_off
+        - action: light.turn_off
+          data: {}
           target:
             device_id: 6e5322a0a9b03a5d8858879bbead49bf
 alias: Nachtlicht Badezimmer
-condition:
+conditions:
 - condition: state
   entity_id: input_boolean.wartung
   state: 'off'
 description: ''
 id: '1691786451171'
 mode: single
-trigger:
+triggers:
 - entity_id:
   - binary_sensor.mmwave_badezimmer
+  for:
+    hours: 0
+    minutes: 0
+    seconds: 2
   id: badezimmerOn
-  platform: state
   to: 'on'
+  trigger: state
 - entity_id:
   - binary_sensor.mmwave_badezimmer
+  for:
+    hours: 0
+    minutes: 0
+    seconds: 5
   id: badezimmerOff
-  platform: state
   to: 'off'
+  trigger: state

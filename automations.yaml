@@ -3707,3 +3707,49 @@
         target:
           entity_id: cover.rollos_schlafzimmer
   mode: single
+- id: '1729514153134'
+  alias: Serverschrank Fan Controller
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.glances_proxmox_pve_01_core_temperatur
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    above: 250
+    id: coreTempOn
+  - trigger: numeric_state
+    entity_id:
+    - sensor.glances_proxmox_pve_01_core_temperatur
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    id: coreTempOff
+    below: 250
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - coreTempOn
+      sequence:
+      - action: switch.turn_on
+        metadata: {}
+        data: {}
+        target:
+          device_id: 4bd2421af39cbb87537914ffe272415d
+    - conditions:
+      - condition: trigger
+        id:
+        - coreTempOff
+      sequence:
+      - action: switch.turn_off
+        target:
+          device_id:
+          - 4bd2421af39cbb87537914ffe272415d
+        data: {}
+  mode: single

@@ -1,0 +1,46 @@
+actions:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - coreTempOn
+    sequence:
+    - action: switch.turn_on
+      data: {}
+      metadata: {}
+      target:
+        device_id: 4bd2421af39cbb87537914ffe272415d
+  - conditions:
+    - condition: trigger
+      id:
+      - coreTempOff
+    sequence:
+    - action: switch.turn_off
+      data: {}
+      target:
+        device_id:
+        - 4bd2421af39cbb87537914ffe272415d
+alias: Serverschrank Fan Controller
+conditions: []
+description: ''
+id: '1729514153134'
+mode: single
+triggers:
+- above: 250
+  entity_id:
+  - sensor.glances_proxmox_pve_01_core_temperatur
+  for:
+    hours: 0
+    minutes: 5
+    seconds: 0
+  id: coreTempOn
+  trigger: numeric_state
+- below: 250
+  entity_id:
+  - sensor.glances_proxmox_pve_01_core_temperatur
+  for:
+    hours: 0
+    minutes: 5
+    seconds: 0
+  id: coreTempOff
+  trigger: numeric_state

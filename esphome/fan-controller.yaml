@@ -1,9 +1,9 @@
 esphome:
   name: fan-controller
   friendly_name: Fan Controller
-
-esp8266:
+  platform: ESP8266
   board: nodemcu
+
 
 # Enable logging
 logger:
@@ -30,7 +30,12 @@ output:
   - platform: esp8266_pwm
     pin: D0
     frequency: 25000 Hz
-    id: pwm_output
+    id: pwm1_output
+  
+  - platform: esp8266_pwm
+    pin: D1
+    frequency: 25000 Hz
+    id: pwm2_output
 
 switch:
   - platform: gpio
@@ -40,9 +45,18 @@ switch:
 
 fan:
   - platform: speed
-    output: pwm_output
-    name: "${device_description}"
-    id: "the_fan"
+    output: pwm1_output
+    id: "fan1"
+    name: "Fan 1"
+    on_turn_on:
+    - switch.turn_on: fan_relay
+    on_turn_off:
+    - switch.turn_off: fan_relay
+
+  - platform: speed
+    output: pwm2_output
+    id: "fan2"
+    name: "Fan 2"
     on_turn_on:
     - switch.turn_on: fan_relay
     on_turn_off:

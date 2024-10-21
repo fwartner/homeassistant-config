@@ -1,0 +1,35 @@
+esphome:
+  name: fan-controller
+  friendly_name: Fan Controller
+
+esp8266:
+  board: nodemcu
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "FLykuOMwEVU8/6heAc7TFTpwPxy0LaRqWrcONbHFqrw="
+
+ota:
+  - platform: esphome
+    password: "9d1cd562f1bca962f088d8db081a110a"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Fan-Controller Fallback Hotspot"
+    password: "zD673tFO6i8c"
+
+captive_portal:
+
+switch:
+  - platform: gpio
+    pin: D6
+    id: relais
+    name: "Lüfter"

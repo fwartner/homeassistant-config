@@ -26,10 +26,24 @@ wifi:
     ssid: "Fan-Controller Fallback Hotspot"
     password: "zD673tFO6i8c"
 
-captive_portal:
+output:
+  - platform: esp8266_pwm
+    pin: D0
+    frequency: 25000 Hz
+    id: pwm_output
 
 switch:
   - platform: gpio
     pin: D6
-    id: relais
+    id: fan_relay
     name: "Lüfter"
+
+fan:
+  - platform: speed
+    output: pwm_output
+    name: "${device_description}"
+    id: "the_fan"
+    on_turn_on:
+    - switch.turn_on: fan_relay
+    on_turn_off:
+    - switch.turn_off: fan_relay

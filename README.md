@@ -17,13 +17,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2938
-Number of sensors | 1574
+Number of entities | 2937
+Number of sensors | 1573
 Number of automations | 112
 Number of scripts | 51
 Number of scenes | 32
 Number of zones | 23
-Number of binary sensors | 213
+Number of binary sensors | 212
 
 ## Demo of my dashboard
 ![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)
@@ -90,6 +90,7 @@ Number of binary sensors | 213
 - [Google Home](https://github.com/leikoilja/ha-google-home)
 - [Grocy Custom Component](https://github.com/custom-components/grocy)
 - [HACS](https://github.com/hacs/integration)
+- [Hass.Agent](https://github.com/LAB02-Research/HASS.Agent-Integration)
 - [Header Authentication](https://github.com/BeryJu/hass-auth-header)
 - [Hoymiles](https://github.com/suaveolent/ha-hoymiles-wifi)
 - [Hvac Group](https://github.com/tetele/hvac_group)

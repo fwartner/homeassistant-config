@@ -4,12 +4,22 @@ actions:
     - condition: trigger
       id:
       - couchFrei
-    sequence: []
+    sequence:
+    - action: media_player.media_pause
+      data: {}
+      metadata: {}
+      target:
+        device_id: 67feb204d2fca3cfd31e143defa33fe5
   - conditions:
     - condition: trigger
       id:
       - couchBelegt
-    sequence: []
+    sequence:
+    - action: media_player.media_play_pause
+      data: {}
+      target:
+        device_id:
+        - 67feb204d2fca3cfd31e143defa33fe5
 alias: Couch
 conditions:
 - above: 0

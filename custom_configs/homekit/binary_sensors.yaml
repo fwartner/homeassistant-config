@@ -3,3 +3,4 @@ homekit:
   filter:
     include_entities:
       - binary_sensor.steffi_zuhause
+      - binary_sensor.florian_bei_steffi

@@ -3622,13 +3622,6 @@
     input:
       schedule_entity: schedule.updates
       restart_type: core
-- id: 0362138541877
-  alias: New Automation
-  description: ''
-  triggers: []
-  conditions: []
-  actions: []
-  mode: single
 - id: '1728905439373'
   alias: Couch
   description: ''
@@ -3649,9 +3642,6 @@
   - condition: numeric_state
     entity_id: sensor.people_home
     above: 0
-  - condition: state
-    entity_id: media_player.appletv_wohnzimmer
-    state: playing
   actions:
   - choose:
     - conditions:
@@ -3669,11 +3659,12 @@
         id:
         - couchBelegt
       sequence:
-      - action: media_player.media_play_pause
+      - action: remote.send_command
+        metadata: {}
+        data:
+          command: play
         target:
-          device_id:
-          - 67feb204d2fca3cfd31e143defa33fe5
-        data: {}
+          device_id: 67feb204d2fca3cfd31e143defa33fe5
   mode: single
 - id: '1729247777105'
   alias: Rollos Schlafzimmer

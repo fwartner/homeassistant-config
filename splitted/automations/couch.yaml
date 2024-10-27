@@ -15,19 +15,17 @@ actions:
       id:
       - couchBelegt
     sequence:
-    - action: media_player.media_play_pause
-      data: {}
+    - action: remote.send_command
+      data:
+        command: play
+      metadata: {}
       target:
-        device_id:
-        - 67feb204d2fca3cfd31e143defa33fe5
+        device_id: 67feb204d2fca3cfd31e143defa33fe5
 alias: Couch
 conditions:
 - above: 0
   condition: numeric_state
   entity_id: sensor.people_home
-- condition: state
-  entity_id: media_player.appletv_wohnzimmer
-  state: playing
 description: ''
 id: '1728905439373'
 mode: single

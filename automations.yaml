@@ -3754,3 +3754,18 @@
           - 4bd2421af39cbb87537914ffe272415d
         data: {}
   mode: single
+- id: '1730139795585'
+  alias: Bambu Lab A1 Image Reload
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.bambu_lab_a1_aktueller_arbeitsschritt
+    to: printing
+  conditions: []
+  actions:
+  - action: homeassistant.update_entity
+    data:
+      entity_id:
+      - image.bambu_lab_a1_titelbild
+  mode: single

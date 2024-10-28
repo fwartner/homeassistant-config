@@ -28,10 +28,10 @@ captive_portal:
 switch:
   - platform: gpio
     name: "Relay 1"
-    pin: D8
+    pin: D0
   - platform: gpio
     name: "Relay 2"
-    pin: D7
+    pin: D1
   - platform: gpio
     name: "Relay 3"
     pin: D6

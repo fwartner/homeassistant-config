@@ -1,0 +1,30 @@
+esphome:
+  name: multi-relais-8x
+  friendly_name: Multi Relais 8x
+
+esp8266:
+  board: esp01_1m
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "LZ5pTESh9clonjVkfbf/AOxOs0vwgvMy7yZhK9FZk6g="
+
+ota:
+  - platform: esphome
+    password: "a39c8c3071ec3d0cd101065c00dd3e41"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Multi-Relais-8X Fallback Hotspot"
+    password: "gqNrRjmy6I47"
+
+captive_portal:
+    

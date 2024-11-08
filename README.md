@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2880
+Number of entities | 2877
 Number of sensors | 1547
 Number of automations | 112
 Number of scripts | 51
@@ -32,7 +32,6 @@ Number of binary sensors | 215
 
 ### Add-ons
 - Advanced SSH & Web Terminal
-- AirCast
 - AirSonos
 - Changedetection.io
 - ESPHome
@@ -50,8 +49,6 @@ Number of binary sensors | 215
 - Silicon Labs Multiprotocol
 - Spotify Connect
 - Studio Code Server
-- TasmoAdmin
-- Uptime Kuma
 - Whisper
 
 ### Custom integrations

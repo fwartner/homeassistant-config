@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2877
+Number of entities | 2875
 Number of sensors | 1547
 Number of automations | 112
 Number of scripts | 51
@@ -32,7 +32,6 @@ Number of binary sensors | 215
 
 ### Add-ons
 - Advanced SSH & Web Terminal
-- AirSonos
 - Changedetection.io
 - ESPHome
 - go2rtc
@@ -41,7 +40,6 @@ Number of binary sensors | 215
 - Matter Server
 - Mosquitto broker
 - Music Assistant Server
-- Node-RED
 - Piper
 - PS5 MQTT
 - RTSP Simple Server Add-on

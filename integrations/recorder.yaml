@@ -5,8 +5,6 @@ recorder:
   commit_interval: 30
   include:
     domains:
-      - sensor
-      - switch
       - media_player
       - device_tracker
       - person

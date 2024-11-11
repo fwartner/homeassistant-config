@@ -1,0 +1,44 @@
+actions:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - low
+    sequence:
+    - action: persistent_notification.create
+      data:
+        message: "The device has a battery level of {{ trigger.event.data.battery_level\
+          \ }}% {{ '\\n' -}} You need {{ trigger.event.data.battery_quantity }}\xD7\
+          \ {{ trigger.event.data.battery_type }}\n"
+        notification_id: '{{ trigger.event.data.device_id }}-{{ trigger.event.data.source_entity_id
+          }}'
+        title: '{{ trigger.event.data.device_name }} Battery Low
+
+          '
+  - conditions:
+    - condition: trigger
+      id:
+      - high
+    sequence:
+    - action: persistent_notification.dismiss
+      data:
+        notification_id: '{{ trigger.event.data.device_id }}-{{ trigger.event.data.source_entity_id
+          }}'
+alias: Battery Low Notification
+conditions: []
+description: Battery Low Notification with auto dismiss
+id: '1731317783562'
+mode: queued
+triggers:
+- alias: Battery went low
+  event_data:
+    battery_low: true
+  event_type: battery_notes_battery_threshold
+  id: low
+  trigger: event
+- alias: Battery went high
+  event_data:
+    battery_low: false
+  event_type: battery_notes_battery_threshold
+  id: high
+  trigger: event

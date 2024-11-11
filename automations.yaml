@@ -3769,3 +3769,62 @@
       entity_id:
       - image.bambu_lab_a1_titelbild
   mode: single
+- id: '1731317783562'
+  alias: Battery Low Notification
+  description: Battery Low Notification with auto dismiss
+  triggers:
+  - event_type: battery_notes_battery_threshold
+    event_data:
+      battery_low: true
+    id: low
+    alias: Battery went low
+    trigger: event
+  - event_type: battery_notes_battery_threshold
+    event_data:
+      battery_low: false
+    id: high
+    alias: Battery went high
+    trigger: event
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - low
+      sequence:
+      - data:
+          title: '{{ trigger.event.data.device_name }} Battery Low
+
+            '
+          notification_id: '{{ trigger.event.data.device_id }}-{{ trigger.event.data.source_entity_id
+            }}'
+          message: 'The device has a battery level of {{ trigger.event.data.battery_level
+            }}% {{ ''\n'' -}} You need {{ trigger.event.data.battery_quantity }}×
+            {{ trigger.event.data.battery_type }}
+
+            '
+        action: persistent_notification.create
+    - conditions:
+      - condition: trigger
+        id:
+        - high
+      sequence:
+      - data:
+          notification_id: '{{ trigger.event.data.device_id }}-{{ trigger.event.data.source_entity_id
+            }}'
+        action: persistent_notification.dismiss
+  mode: queued
+- id: '1731317900823'
+  alias: Battery Replaced
+  description: Battery Replaced
+  triggers:
+  - event_type: battery_notes_battery_increased
+    trigger: event
+  conditions: []
+  actions:
+  - data:
+      device_id: '{{ trigger.event.data.device_id }}'
+      source_entity_id: '{{ trigger.event.data.source_entity_id }}'
+    action: battery_notes.set_battery_replaced
+  mode: queued

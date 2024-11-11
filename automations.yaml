@@ -3855,7 +3855,10 @@
   description: ''
   triggers:
   - trigger: event
-    event_type: alexa_actionable_notification_test
+    event_type: alexa_actionable_notification
+    event_data:
+      event_id: alexa_actionable_notification_test
+      event_response_type: ResponseYes
   conditions: []
   actions:
   - device_id: bbd9e54b0c86db52bb635f1fbbf63a64

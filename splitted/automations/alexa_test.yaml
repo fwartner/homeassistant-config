@@ -9,5 +9,8 @@ description: ''
 id: '1731367093556'
 mode: single
 triggers:
-- event_type: alexa_actionable_notification_test
+- event_data:
+    event_id: alexa_actionable_notification_test
+    event_response_type: ResponseYes
+  event_type: alexa_actionable_notification
   trigger: event

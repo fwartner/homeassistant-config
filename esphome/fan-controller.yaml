@@ -22,24 +22,13 @@ wifi:
     password: "zD673tFO6i8c"
 
 output:
-  - platform: ledc
+  - platform: esp8266_pwm
     id: console_fan_speed
     pin: D0
     frequency: "25000 Hz" 
     min_power: 13%
     max_power: 80%
     zero_means_zero: true
-
-  - platform: template
-    id: proxy_output
-    type: float
-    write_action:
-      lambda: |-
-        float write_val = 
-          (id(manual_fan_control).state) ?
-            id(manual_fan_control).speed / 100.0 : state*1.0;
-        id(console_fan_speed).set_level(write_val);
-        id(fan_speed_pwm_voltage).publish_state(write_val*100.0);
 
 switch:
   - platform: gpio

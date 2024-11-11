@@ -3828,3 +3828,25 @@
       source_entity_id: '{{ trigger.event.data.source_entity_id }}'
     action: battery_notes.set_battery_replaced
   mode: queued
+- id: '1731345953307'
+  alias: Schlafenszeit
+  description: ''
+  triggers:
+  - trigger: time
+    at: '22:30:00'
+  conditions:
+  - condition: numeric_state
+    entity_id: sensor.people_home
+    above: 0
+  actions:
+  - action: notify.alexa_media_echo_show_wohnzimmer
+    data:
+      message: '{{ [ "Es ist 22:30... Willst du nicht langsam schlafen gehen?", "Es
+        ist 22:30... Zeit, sich bettfertig zu machen?", "Es ist 22:30... Solltest
+        du nicht ins Bett gehen?", "Es ist 22:30... Zeit, zur Ruhe zu kommen?", "Es
+        ist 22:30... Willst du dich nicht langsam ins Bett begeben?", "Es ist 22:30...
+        Denkst du, es wäre Zeit für Schlaf?", "Es ist 22:30... Wie wäre es mit Schlafengehen?",
+        "Es ist 22:30... Zeit, den Tag zu beenden?", "Es ist 22:30... Solltest du
+        dich nicht bettfertig machen?", "Es ist 22:30... Mach dich bereit fürs Bett!"
+        ] | random }}'
+  mode: single

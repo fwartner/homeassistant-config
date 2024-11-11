@@ -1,0 +1,22 @@
+actions:
+- action: notify.alexa_media_echo_show_wohnzimmer
+  data:
+    message: "{{ [ \"Es ist 22:30... Willst du nicht langsam schlafen gehen?\", \"\
+      Es ist 22:30... Zeit, sich bettfertig zu machen?\", \"Es ist 22:30... Solltest\
+      \ du nicht ins Bett gehen?\", \"Es ist 22:30... Zeit, zur Ruhe zu kommen?\"\
+      , \"Es ist 22:30... Willst du dich nicht langsam ins Bett begeben?\", \"Es ist\
+      \ 22:30... Denkst du, es w\xE4re Zeit f\xFCr Schlaf?\", \"Es ist 22:30... Wie\
+      \ w\xE4re es mit Schlafengehen?\", \"Es ist 22:30... Zeit, den Tag zu beenden?\"\
+      , \"Es ist 22:30... Solltest du dich nicht bettfertig machen?\", \"Es ist 22:30...\
+      \ Mach dich bereit f\xFCrs Bett!\" ] | random }}"
+alias: Schlafenszeit
+conditions:
+- above: 0
+  condition: numeric_state
+  entity_id: sensor.people_home
+description: ''
+id: '1731345953307'
+mode: single
+triggers:
+- at: '22:30:00'
+  trigger: time

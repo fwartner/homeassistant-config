@@ -3834,35 +3834,36 @@
   triggers:
   - trigger: time
     at: '22:30:00'
+    id: timeOn
+  - trigger: event
+    event_type: alexa_actionable_notification
+    event_data:
+      event_id: alexa_actionable_notification_bettzeit
+      event_response_type: ResponseYes
+    id: alexaResponse
   conditions:
   - condition: numeric_state
     entity_id: sensor.people_home
     above: 0
   actions:
-  - action: notify.alexa_media_echo_show_wohnzimmer
-    data:
-      message: '{{ [ "Es ist 22:30... Willst du nicht langsam schlafen gehen?", "Es
-        ist 22:30... Zeit, sich bettfertig zu machen?", "Es ist 22:30... Solltest
-        du nicht ins Bett gehen?", "Es ist 22:30... Zeit, zur Ruhe zu kommen?", "Es
-        ist 22:30... Willst du dich nicht langsam ins Bett begeben?", "Es ist 22:30...
-        Denkst du, es wäre Zeit für Schlaf?", "Es ist 22:30... Wie wäre es mit Schlafengehen?",
-        "Es ist 22:30... Zeit, den Tag zu beenden?", "Es ist 22:30... Solltest du
-        dich nicht bettfertig machen?", "Es ist 22:30... Mach dich bereit fürs Bett!"
-        ] | random }}'
-  mode: single
-- id: '1731367093556'
-  alias: Alexa Test
-  description: ''
-  triggers:
-  - trigger: event
-    event_type: alexa_actionable_notification
-    event_data:
-      event_id: alexa_actionable_notification_test
-      event_response_type: ResponseYes
-  conditions: []
-  actions:
-  - device_id: bbd9e54b0c86db52bb635f1fbbf63a64
-    domain: light
-    entity_id: 8e2ded9ba3dfe64840807785251c012c
-    type: flash
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - timeOn
+      sequence:
+      - data:
+          text: Es ist 22:30... Willst du nicht langsam schlafen gehen?
+          event_id: alexa_actionable_notification_bettzeit
+          alexa_device: media_player.echo_show_wohnzimmer
+          suppress_confirmation: true
+        action: script.activate_alexa_actionable_notification
+    - conditions:
+      - condition: trigger
+        id:
+        - alexaResponse
+      sequence:
+      - action: script.schlafenszeit
+        metadata: {}
+        data: {}
   mode: single

@@ -986,3 +986,34 @@ schlafenszeit:
       milliseconds: 0
   description: ''
   icon: mdi:bed
+activate_alexa_actionable_notification:
+  alias: Activate Alexa Actionable Notification
+  description: Activates an actionable notification on a specific echo device
+  fields:
+    text:
+      description: The text you would like alexa to speak.
+      example: What would you like the thermostat set to?
+    event_id:
+      description: Correlation ID for event responses
+      example: ask_for_temperature
+    alexa_device:
+      description: Alexa device you want to trigger
+      example: media_player.bedroom_echo
+    suppress_confirmation:
+      description: Set true if you want to suppress 'okay' confirmation
+      example: 'true'
+  sequence:
+  - action: input_text.set_value
+    target:
+      entity_id: input_text.alexa_actionable_notification
+    data_template:
+      value: '{"text": "{{ text }}", "event": "{{ event_id }}", "suppress_confirmation":
+        "{{ suppress_confirmation }}"}'
+  - action: media_player.play_media
+    target:
+      entity_id: '{{ alexa_device }}'
+    data_template:
+      media_content_type: skill
+      media_content_id: amzn1.ask.skill.f1f4ad37-454a-446e-8c02-f7d4190312ab
+  mode: single
+  icon: phu:alexa-logo

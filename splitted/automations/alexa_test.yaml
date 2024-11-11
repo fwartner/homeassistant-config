@@ -1,0 +1,13 @@
+actions:
+- device_id: bbd9e54b0c86db52bb635f1fbbf63a64
+  domain: light
+  entity_id: 8e2ded9ba3dfe64840807785251c012c
+  type: flash
+alias: Alexa Test
+conditions: []
+description: ''
+id: '1731367093556'
+mode: single
+triggers:
+- event_type: alexa_actionable_notification_test
+  trigger: event

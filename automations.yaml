@@ -3850,3 +3850,16 @@
         dich nicht bettfertig machen?", "Es ist 22:30... Mach dich bereit fürs Bett!"
         ] | random }}'
   mode: single
+- id: '1731367093556'
+  alias: Alexa Test
+  description: ''
+  triggers:
+  - trigger: event
+    event_type: alexa_actionable_notification_test
+  conditions: []
+  actions:
+  - device_id: bbd9e54b0c86db52bb635f1fbbf63a64
+    domain: light
+    entity_id: 8e2ded9ba3dfe64840807785251c012c
+    type: flash
+  mode: single

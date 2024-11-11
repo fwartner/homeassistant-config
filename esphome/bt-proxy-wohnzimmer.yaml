@@ -1,19 +1,32 @@
-substitutions:
-  node_name: bt-proxy-wohnzimmer
+esphome:
+  name: bt-proxy-wohnzimmer
   friendly_name: BT Proxy Wohnzimmer
 
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
 api:
   encryption:
-    key: "gGtk/Oi0A0tLk5UmCc0tNSPSGmaMljO4CABg5pXLinM="
+    key: "h3j5Hkbhyevr49sOXrUJ2hmEQRezf2aUKj2I2GhQuWI="
 
-packages:
-  base: !include common/base_32.yaml
-  ble: !include common/ble_gateway.yaml
+ota:
+  - platform: esphome
+    password: "985d2c2886781d30d47495586ff09594"
 
 wifi:
-  manual_ip:
-    static_ip: 10.182.1.43
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
 
-web_server:
-  version: 2
-  include_internal: true
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Bt-Proxy-Wohnzimmer"
+    password: "LBi3VMjlk5v4"
+
+captive_portal:
+    

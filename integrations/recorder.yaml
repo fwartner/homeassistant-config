@@ -6,8 +6,11 @@ recorder:
   auto_purge: true
   auto_repack: true
   include:
+    entity_globs:
+      - sensor.shelly_*
+      - sensor.strom*
+      - sensor.energy*
     domains:
-      - sensor
       - media_player
       - device_tracker
       - person

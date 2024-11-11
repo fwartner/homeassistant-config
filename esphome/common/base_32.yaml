@@ -21,7 +21,7 @@ ota:
   - platform: esphome
     password: !secret ota_password
 
-<<: !include wifi_fb.yaml
+<<: !include wifi.yaml
 
 text_sensor:
   - platform: version

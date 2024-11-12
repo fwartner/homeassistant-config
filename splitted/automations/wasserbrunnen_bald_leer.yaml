@@ -1,10 +1,33 @@
 actions:
-- action: notify.mobile_app_iphone_von_florian
-  data:
-    message: "Der Wasserbrunnen von Polly ist fast leer. Bitte f\xFClle ihn doch mal\
-      \ nach.."
-    title: "\U0001F63F Polly k\xF6nnte bald Durst bekommen!"
-  metadata: {}
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - mlNegative
+    sequence:
+    - action: light.turn_on
+      data: {}
+      metadata: {}
+      target:
+        entity_id:
+        - light.petlibro_plwf105_red_led
+    - action: notify.mobile_app_iphone_von_florian
+      data:
+        message: "Der Wasserbrunnen von Polly ist fast leer. Bitte f\xFClle ihn doch\
+          \ mal nach.."
+        title: "\U0001F63F Polly k\xF6nnte bald Durst bekommen!"
+      metadata: {}
+  - conditions:
+    - condition: trigger
+      id:
+      - mlPositive
+    sequence:
+    - action: light.turn_off
+      data: {}
+      metadata: {}
+      target:
+        entity_id:
+        - light.petlibro_plwf105_red_led
 alias: Wasserbrunnen bald leer
 conditions: []
 description: ''
@@ -15,5 +38,13 @@ triggers:
   device_id: 1b1fdd5a7160d9ceccd3382168632d20
   domain: sensor
   entity_id: cc70a87da42ff20a997fbb3cec3a240f
+  id: mlNegative
+  trigger: device
+  type: value
+- above: 120
+  device_id: 1b1fdd5a7160d9ceccd3382168632d20
+  domain: sensor
+  entity_id: cc70a87da42ff20a997fbb3cec3a240f
+  id: mlPositive
   trigger: device
   type: value

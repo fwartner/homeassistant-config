@@ -3957,12 +3957,43 @@
     domain: sensor
     trigger: device
     below: 120
+    id: mlNegative
+  - type: value
+    device_id: 1b1fdd5a7160d9ceccd3382168632d20
+    entity_id: cc70a87da42ff20a997fbb3cec3a240f
+    domain: sensor
+    trigger: device
+    id: mlPositive
+    above: 120
   conditions: []
   actions:
-  - action: notify.mobile_app_iphone_von_florian
-    metadata: {}
-    data:
-      title: "\U0001F63F Polly könnte bald Durst bekommen!"
-      message: Der Wasserbrunnen von Polly ist fast leer. Bitte fülle ihn doch mal
-        nach..
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - mlNegative
+      sequence:
+      - action: light.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - light.petlibro_plwf105_red_led
+      - action: notify.mobile_app_iphone_von_florian
+        metadata: {}
+        data:
+          title: "\U0001F63F Polly könnte bald Durst bekommen!"
+          message: Der Wasserbrunnen von Polly ist fast leer. Bitte fülle ihn doch
+            mal nach..
+    - conditions:
+      - condition: trigger
+        id:
+        - mlPositive
+      sequence:
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - light.petlibro_plwf105_red_led
   mode: single

@@ -1526,12 +1526,12 @@
 - id: '1710933790796'
   alias: Katzenklo Counter Reset
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - counter.katzenklo_counter
     to: '11'
-  condition:
+    trigger: state
+  conditions:
   - condition: and
     conditions:
     - condition: state
@@ -1540,13 +1540,13 @@
     - condition: state
       entity_id: input_boolean.wartung
       state: 'off'
-  action:
-  - service: counter.reset
-    target:
+  actions:
+  - target:
       entity_id:
       - counter.katzenklo_counter
     data: {}
     enabled: true
+    action: counter.reset
   - if:
     - condition: time
       weekday:
@@ -1557,29 +1557,29 @@
       - fri
       - sat
       - sun
-      after: 06:00:00
+      after: 08:00:00
       before: '20:00:00'
     then:
-    - service: vacuum.send_command
-      metadata: {}
+    - metadata: {}
       data:
         command: set_custom_mode
         params: 104
       target:
         entity_id: vacuum.roborock_s7_maxv
-    - service: vacuum.set_fan_speed
-      target:
+      action: vacuum.send_command
+    - target:
         entity_id:
         - vacuum.roborock_s7_maxv
       data:
         fan_speed: '100'
-    - service: roborock.vacuum_clean_segment
-      target:
+      action: vacuum.set_fan_speed
+    - target:
         entity_id: vacuum.roborock_s7_maxv
       data:
         segments:
         - 20
         repeats: 1
+      action: roborock.vacuum_clean_segment
   mode: single
 - id: '1711970118796'
   alias: 'BKW: Inverter Power'

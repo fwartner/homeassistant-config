@@ -40,7 +40,7 @@ dashboard_import:
   import_full_config: true
 
 wifi:
-  ssid: !secret wifi_fb_ssid
+  ssid: !secret wifi_ssid
   password: !secret wifi_password
 
 captive_portal:

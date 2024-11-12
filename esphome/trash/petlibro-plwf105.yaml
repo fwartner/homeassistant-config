@@ -25,15 +25,15 @@ esp32:
     type: esp-idf
 
 api:
-  encryption:
-    key: "FLykuOMmEVU8/6heAc7TFTpwPxy0LaRqWrcONbHFqrw="
+#  encryption:
+#    key: !secret encryption_key
 
 logger:
   level: debug
 
 ota:
   platform: esphome
-  password: !secret ota_password
+#  password: !secret ota_password
 
 dashboard_import:
   package_import_url: github://taylorfinnell/petlibro-esphome/plwf105/plwf105.yaml@master

@@ -17,13 +17,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2949
-Number of sensors | 1574
+Number of entities | 2921
+Number of sensors | 1560
 Number of automations | 116
 Number of scripts | 53
 Number of scenes | 32
 Number of zones | 23
-Number of binary sensors | 217
+Number of binary sensors | 221
 
 ## Demo of my dashboard
 ![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)
@@ -36,7 +36,6 @@ Number of binary sensors | 217
 - ESPHome
 - go2rtc
 - Home Assistant Google Drive Backup
-- MariaDB
 - Matter Server
 - Mosquitto broker
 - Music Assistant Server

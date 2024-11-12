@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 2948
+Number of entities | 2949
 Number of sensors | 1574
 Number of automations | 116
 Number of scripts | 53
@@ -47,6 +47,7 @@ Number of binary sensors | 217
 - Silicon Labs Multiprotocol
 - Spotify Connect
 - Studio Code Server
+- Uptime Kuma
 - Whisper
 
 ### Custom integrations

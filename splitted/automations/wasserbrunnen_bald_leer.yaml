@@ -1,0 +1,19 @@
+actions:
+- action: notify.mobile_app_iphone_von_florian
+  data:
+    message: "Der Wasserbrunnen von Polly ist fast leer. Bitte f\xFClle ihn doch mal\
+      \ nach.."
+    title: "\U0001F63F Polly k\xF6nnte bald Durst bekommen!"
+  metadata: {}
+alias: Wasserbrunnen bald leer
+conditions: []
+description: ''
+id: '1731410111520'
+mode: single
+triggers:
+- below: 120
+  device_id: 1b1fdd5a7160d9ceccd3382168632d20
+  domain: sensor
+  entity_id: cc70a87da42ff20a997fbb3cec3a240f
+  trigger: device
+  type: value

@@ -3970,3 +3970,49 @@
           entity_id:
           - light.petlibro_plwf105_red_led
   mode: single
+- id: '1731688558462'
+  alias: Willkommen Steffi
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.people_home
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 30
+    above: 1
+    id: steffiZuhause
+  - trigger: event
+    event_type: alexa_actionable_notification
+    event_data:
+      event_id: alexa_actionable_notification_steffi_heizung
+      event_response_type: ResponseYes
+    id: alexaResponse
+  conditions:
+  - condition: zone
+    entity_id: person.steffi
+    zone: zone.home
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - steffiZuhause
+      sequence:
+      - data:
+          text: Hallo Steffi. Willkommen Zuhause! Soll ich die Heizung für dich einschalten?
+          event_id: alexa_actionable_notification_steffi_heizung
+          alexa_device: media_player.echo_show_wohnzimmer
+          suppress_confirmation: true
+        action: script.activate_alexa_actionable_notification
+    - conditions:
+      - condition: trigger
+        id:
+        - alexaResponse
+      sequence:
+      - action: notify.alexa_media_echo_show_wohnzimmer
+        metadata: {}
+        data:
+          message: fsdgrg
+  mode: single

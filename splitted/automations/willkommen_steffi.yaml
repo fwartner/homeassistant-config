@@ -1,0 +1,47 @@
+actions:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - steffiZuhause
+    sequence:
+    - action: script.activate_alexa_actionable_notification
+      data:
+        alexa_device: media_player.echo_show_wohnzimmer
+        event_id: alexa_actionable_notification_steffi_heizung
+        suppress_confirmation: true
+        text: "Hallo Steffi. Willkommen Zuhause! Soll ich die Heizung f\xFCr dich\
+          \ einschalten?"
+  - conditions:
+    - condition: trigger
+      id:
+      - alexaResponse
+    sequence:
+    - action: notify.alexa_media_echo_show_wohnzimmer
+      data:
+        message: fsdgrg
+      metadata: {}
+alias: Willkommen Steffi
+conditions:
+- condition: zone
+  entity_id: person.steffi
+  zone: zone.home
+description: ''
+id: '1731688558462'
+mode: single
+triggers:
+- above: 1
+  entity_id:
+  - sensor.people_home
+  for:
+    hours: 0
+    minutes: 5
+    seconds: 30
+  id: steffiZuhause
+  trigger: numeric_state
+- event_data:
+    event_id: alexa_actionable_notification_steffi_heizung
+    event_response_type: ResponseYes
+  event_type: alexa_actionable_notification
+  id: alexaResponse
+  trigger: event

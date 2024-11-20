@@ -33,7 +33,7 @@ Number of binary sensors | 225
 ### Add-ons
 - Advanced SSH & Web Terminal
 - Changedetection.io
-- ESPHome
+- ESPHome Device Compiler
 - go2rtc
 - Home Assistant Google Drive Backup
 - Matter Server

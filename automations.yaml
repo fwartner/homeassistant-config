@@ -797,27 +797,27 @@
 - id: '1692310400644'
   alias: Aufstehen
   description: ''
-  trigger:
-  - platform: time
-    at: 07:30:00
+  triggers:
+  - at: 08:30:00
     id: timeOn
-  condition:
+    trigger: time
+  conditions:
   - condition: state
     entity_id: input_boolean.wartung
     state: 'off'
-  action:
+  actions:
   - choose:
     - conditions:
       - condition: trigger
         id:
         - timeOn
       sequence:
-      - service: switch.turn_on
-        data: {}
+      - data: {}
         target:
           entity_id:
           - switch.dashboard_flur_bildschirm
           - switch.lenovo_tab_m10_bildschirm
+        action: switch.turn_on
   mode: single
 - id: '1693489965780'
   alias: Rollo Küche
@@ -1383,19 +1383,19 @@
 - id: '1707472829981'
   alias: Wohnungstür (NFC Tag)
   description: ''
-  trigger:
-  - platform: tag
-    tag_id: 2db7a52e-e2b8-464e-a411-1cedff09524c
-  condition:
+  triggers:
+  - tag_id: 80174732-d4b2-4c77-9e71-a05ff997192a
+    trigger: tag
+  conditions:
   - condition: state
     entity_id: input_boolean.wartung
     state: 'off'
-  action:
-  - service: lock.open
-    metadata: {}
+  actions:
+  - metadata: {}
     data: {}
     target:
       entity_id: lock.nuki_wohnungstur_lock
+    action: lock.open
   mode: single
 - id: '1710345991689'
   alias: Futterautomat

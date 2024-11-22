@@ -1,25 +1,25 @@
-action:
+actions:
 - choose:
   - conditions:
     - condition: trigger
       id:
       - timeOn
     sequence:
-    - data: {}
-      service: switch.turn_on
+    - action: switch.turn_on
+      data: {}
       target:
         entity_id:
         - switch.dashboard_flur_bildschirm
         - switch.lenovo_tab_m10_bildschirm
 alias: Aufstehen
-condition:
+conditions:
 - condition: state
   entity_id: input_boolean.wartung
   state: 'off'
 description: ''
 id: '1692310400644'
 mode: single
-trigger:
-- at: 07:30:00
+triggers:
+- at: 08:30:00
   id: timeOn
-  platform: time
+  trigger: time

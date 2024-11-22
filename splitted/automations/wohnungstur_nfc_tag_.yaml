@@ -1,17 +1,17 @@
-action:
-- data: {}
+actions:
+- action: lock.open
+  data: {}
   metadata: {}
-  service: lock.open
   target:
     entity_id: lock.nuki_wohnungstur_lock
 alias: "Wohnungst\xFCr (NFC Tag)"
-condition:
+conditions:
 - condition: state
   entity_id: input_boolean.wartung
   state: 'off'
 description: ''
 id: '1707472829981'
 mode: single
-trigger:
-- platform: tag
-  tag_id: 2db7a52e-e2b8-464e-a411-1cedff09524c
+triggers:
+- tag_id: 80174732-d4b2-4c77-9e71-a05ff997192a
+  trigger: tag

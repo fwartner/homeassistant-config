@@ -2357,17 +2357,17 @@
 - id: '1713867813081'
   alias: Starte WELT Livestream morgens
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.aqara_fp2_presence_couch
+  triggers:
+  - entity_id:
+    - binary_sensor.presence_couch
     to: 'on'
     from: 'off'
     for:
       hours: 0
       minutes: 0
       seconds: 10
-  condition:
+    trigger: state
+  conditions:
   - condition: and
     conditions:
     - condition: time
@@ -2389,29 +2389,29 @@
       entity_id: input_boolean.wartung
       state: 'off'
     enabled: true
-  action:
+  actions:
   - type: turn_on
     device_id: d30e5e22fdee4494285af01c47713091
     entity_id: 05785b4428b8cdd9ff015195221899c8
     domain: switch
-  - service: rest_command.start_welt_stream
-    metadata: {}
+  - metadata: {}
     data: {}
     enabled: true
-  - service: script.power_wohnzimmer
-    metadata: {}
+    action: rest_command.start_welt_stream
+  - metadata: {}
     data: {}
+    action: script.power_wohnzimmer
   - delay:
       hours: 0
       minutes: 0
       seconds: 10
       milliseconds: 0
-  - service: media_player.play_media
-    target:
+  - target:
       device_id: 67feb204d2fca3cfd31e143defa33fe5
     data:
       media_content_type: url
       media_content_id: '{{ states(''input_text.latest_welt_stream'') }}'
+    action: media_player.play_media
   mode: single
 - id: '1713885934064'
   alias: Schalter Flur Nuki

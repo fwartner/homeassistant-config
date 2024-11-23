@@ -1,0 +1,6 @@
+---
+- platform: group
+  name: florian_notify
+  unique_id: florian_notify
+  services:
+    - service: mobile_app_iphone_von_florian

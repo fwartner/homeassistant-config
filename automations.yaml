@@ -489,9 +489,8 @@
 - id: '1691741828322'
   alias: Ankommen
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - binary_sensor.aqara_contact_wohnungstur_contact
     from: 'on'
     to: 'off'
@@ -501,28 +500,29 @@
       minutes: 0
       seconds: 2
     id: doorOpenOn
-  - platform: state
-    entity_id:
+    trigger: state
+  - entity_id:
     - sensor.people_home
     to: '1'
     id: anyoneHomeOn
-  condition:
+    trigger: state
+  conditions:
   - condition: and
     conditions:
     - condition: state
       entity_id: input_boolean.guestmode
       state: 'off'
-  action:
+  actions:
   - choose:
     - conditions:
       - condition: trigger
         id:
         - anyoneHomeOn
       sequence:
-      - service: switch.turn_on
-        data: {}
+      - data: {}
         target:
           device_id: 9d14dca47a5773d55c5f7f9d16c58476
+        action: switch.turn_on
     - conditions:
       - condition: trigger
         id:
@@ -536,24 +536,24 @@
           }}'
         enabled: true
       sequence:
-      - service: notify.home_ai
-        data:
+      - data:
           title: "Willkommen Zuhause \U0001F3E0"
           message: Ich habe die Musik von deinem iPhone auf Sonos Ray gestellt
-      - service: media_player.select_source
-        data:
+        action: notify.florian_notify
+      - data:
           source: Spotify Connect
         target:
           entity_id: media_player.sonos_ray_wohnzimmer
-      - service: media_player.select_source
-        data:
+        action: media_player.select_source
+      - data:
           source: Sonos Ray
         target:
           entity_id: media_player.spotify_florian
-      - service: media_player.media_play
-        data: {}
+        action: media_player.select_source
+      - data: {}
         target:
           entity_id: media_player.sonos_ray_wohnzimmer
+        action: media_player.media_play
     - conditions:
       - condition: trigger
         id:
@@ -563,15 +563,15 @@
           < 10 }}'
         enabled: true
       sequence:
-      - service: media_player.volume_set
-        metadata: {}
+      - metadata: {}
         data:
           volume_level: 0.25
         target:
           device_id: 5d251a0a20f76a8251bbdb9e1b1b0178
-      - service: script.willkommen_florian
-        metadata: {}
+        action: media_player.volume_set
+      - metadata: {}
         data: {}
+        action: script.willkommen_florian
   mode: single
 - id: '1691769668517'
   alias: 'Jonas: Zähneputzen Starten'
@@ -778,7 +778,7 @@
                   milliseconds: 0
           - data:
               message: Jemand hat an der Tür geklingelt
-            enabled: false
+            enabled: true
             action: notify.alexa_media_echo_show_wohnzimmer
           - metadata: {}
             data: {}
@@ -1284,37 +1284,37 @@
 - id: '1702827571661'
   alias: Türen
   description: ''
-  trigger:
-  - platform: zone
-    entity_id: person.florian_wartner
+  triggers:
+  - entity_id: person.florian_wartner
     zone: zone.home
     event: enter
     id: zoneHomeOn
-  - platform: state
-    entity_id:
+    trigger: zone
+  - entity_id:
     - binary_sensor.nuki_haustur_ring_action
     to: 'on'
     id: nukiRingOn
-  - platform: event
-    event_type: mobile_app_notification_action
+    trigger: state
+  - event_type: mobile_app_notification_action
     event_data:
       action: UNLOCK_HOUSE
     id: unlockHouse
-  - platform: event
-    event_type: mobile_app_notification_action
+    trigger: event
+  - event_type: mobile_app_notification_action
     event_data:
       action: UNLOCK_APARTMENT
     id: unlockApartment
-  - platform: zone
-    entity_id: person.steffi
+    trigger: event
+  - entity_id: person.steffi
     zone: zone.home
     event: enter
     id: zoneHomeOnSteffi
-  condition:
+    trigger: zone
+  conditions:
   - condition: state
     entity_id: input_boolean.wartung
     state: 'off'
-  action:
+  actions:
   - choose:
     - conditions:
       - condition: and
@@ -1335,7 +1335,7 @@
             - action: UNLOCK_APARTMENT
               title: Wohnungstür öffnen
               icon: sfsymbols:lock.open.fill
-        action: notify.home_ai
+        action: notify.florian_notify
       alias: Notification Florian
     - conditions:
       - condition: and
@@ -1356,8 +1356,8 @@
             - action: UNLOCK_APARTMENT
               title: Wohnungstür öffnen
               icon: sfsymbols:lock.open.fill
-        action: notify.home_ai
-        enabled: false
+        action: notify.florian_notify
+        enabled: true
       alias: Notification Steffi
     - conditions:
       - condition: trigger
@@ -1738,9 +1738,8 @@
 - id: '1712829051695'
   alias: 'BKW: Maschinen laufen lassen Notification'
   description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id:
+  triggers:
+  - entity_id:
     - sensor.shelly_bkw_power
     for:
       hours: 0
@@ -1748,22 +1747,23 @@
       seconds: 0
     above: 330
     id: bkwSunPower
-  - platform: event
-    event_type: mobile_app_notification_action
+    trigger: numeric_state
+  - event_type: mobile_app_notification_action
     event_data:
       action: IOS_BKW_WASCHMASCHINE_AN
     id: bkwIOSWMAn
-  - platform: event
-    event_type: mobile_app_notification_action
+    trigger: event
+  - event_type: mobile_app_notification_action
     event_data:
       action: IOS_BKW_SPUELMASCHINE_AN
     id: bkwIOSSMAn
-  - platform: event
-    event_type: mobile_app_notification_action
+    trigger: event
+  - event_type: mobile_app_notification_action
     event_data:
       action: IOS_BKW_ALLES_AN
     id: bkwIOSALLESAn
-  condition:
+    trigger: event
+  conditions:
   - condition: and
     conditions:
     - condition: state
@@ -1775,15 +1775,14 @@
     - condition: numeric_state
       entity_id: sensor.people_home
       above: 0.3
-  action:
+  actions:
   - choose:
     - conditions:
       - condition: trigger
         id:
         - bkwSunPower
       sequence:
-      - service: notify.home_ai
-        metadata: {}
+      - metadata: {}
         data:
           title: ☀️ Die Sonne scheint prächtig!
           message: Du erzeugst gerade so viel Energie, du könntest doch glatt die
@@ -1800,6 +1799,7 @@
             - action: IOS_BKW_ALLES_AN
               title: Beides
               icon: sfsymbols:power
+        action: notify.florian_notify
     - conditions:
       - condition: trigger
         id:

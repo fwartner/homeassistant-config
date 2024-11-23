@@ -1,12 +1,12 @@
-action:
+actions:
 - choose:
   - conditions:
     - condition: trigger
       id:
       - anyoneHomeOn
     sequence:
-    - data: {}
-      service: switch.turn_on
+    - action: switch.turn_on
+      data: {}
       target:
         device_id: 9d14dca47a5773d55c5f7f9d16c58476
   - conditions:
@@ -22,22 +22,22 @@ action:
       value_template: '{{ is_state(''media_player.spotify_florian'', ''playing'')
         }}'
     sequence:
-    - data:
+    - action: notify.florian_notify
+      data:
         message: Ich habe die Musik von deinem iPhone auf Sonos Ray gestellt
         title: "Willkommen Zuhause \U0001F3E0"
-      service: notify.home_ai
-    - data:
+    - action: media_player.select_source
+      data:
         source: Spotify Connect
-      service: media_player.select_source
       target:
         entity_id: media_player.sonos_ray_wohnzimmer
-    - data:
+    - action: media_player.select_source
+      data:
         source: Sonos Ray
-      service: media_player.select_source
       target:
         entity_id: media_player.spotify_florian
-    - data: {}
-      service: media_player.media_play
+    - action: media_player.media_play
+      data: {}
       target:
         entity_id: media_player.sonos_ray_wohnzimmer
   - conditions:
@@ -49,17 +49,17 @@ action:
       value_template: '{{ (as_timestamp(now()) - as_timestamp(states.person.florian_wartner.last_changed))
         < 10 }}'
     sequence:
-    - data:
+    - action: media_player.volume_set
+      data:
         volume_level: 0.25
       metadata: {}
-      service: media_player.volume_set
       target:
         device_id: 5d251a0a20f76a8251bbdb9e1b1b0178
-    - data: {}
+    - action: script.willkommen_florian
+      data: {}
       metadata: {}
-      service: script.willkommen_florian
 alias: Ankommen
-condition:
+conditions:
 - condition: and
   conditions:
   - condition: state
@@ -68,7 +68,7 @@ condition:
 description: ''
 id: '1691741828322'
 mode: single
-trigger:
+triggers:
 - enabled: true
   entity_id:
   - binary_sensor.aqara_contact_wohnungstur_contact
@@ -78,10 +78,10 @@ trigger:
     seconds: 2
   from: 'on'
   id: doorOpenOn
-  platform: state
   to: 'off'
+  trigger: state
 - entity_id:
   - sensor.people_home
   id: anyoneHomeOn
-  platform: state
   to: '1'
+  trigger: state

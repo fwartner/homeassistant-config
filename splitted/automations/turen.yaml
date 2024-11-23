@@ -1,4 +1,4 @@
-action:
+actions:
 - choose:
   - alias: Notification Florian
     conditions:
@@ -9,7 +9,7 @@ action:
         - zoneHomeOn
         - nukiRingOn
     sequence:
-    - action: notify.home_ai
+    - action: notify.florian_notify
       data:
         data:
           actions:
@@ -30,7 +30,7 @@ action:
         - nukiRingOn
         - zoneHomeOnSteffi
     sequence:
-    - action: notify.home_ai
+    - action: notify.florian_notify
       data:
         data:
           actions:
@@ -42,7 +42,7 @@ action:
             title: "Wohnungst\xFCr \xF6ffnen"
         message: "M\xF6chtest du die T\xFCr \xF6ffnen?"
         title: "\U0001F510 T\xFCren \xF6ffnen"
-      enabled: false
+      enabled: true
   - alias: "Haust\xFCr \xD6ffnen"
     conditions:
     - condition: trigger
@@ -64,36 +64,36 @@ action:
       target:
         entity_id: lock.nuki_wohnungstur_lock
 alias: "T\xFCren"
-condition:
+conditions:
 - condition: state
   entity_id: input_boolean.wartung
   state: 'off'
 description: ''
 id: '1702827571661'
 mode: single
-trigger:
+triggers:
 - entity_id: person.florian_wartner
   event: enter
   id: zoneHomeOn
-  platform: zone
+  trigger: zone
   zone: zone.home
 - entity_id:
   - binary_sensor.nuki_haustur_ring_action
   id: nukiRingOn
-  platform: state
   to: 'on'
+  trigger: state
 - event_data:
     action: UNLOCK_HOUSE
   event_type: mobile_app_notification_action
   id: unlockHouse
-  platform: event
+  trigger: event
 - event_data:
     action: UNLOCK_APARTMENT
   event_type: mobile_app_notification_action
   id: unlockApartment
-  platform: event
+  trigger: event
 - entity_id: person.steffi
   event: enter
   id: zoneHomeOnSteffi
-  platform: zone
+  trigger: zone
   zone: zone.home

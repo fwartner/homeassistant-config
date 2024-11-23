@@ -1,11 +1,12 @@
-action:
+actions:
 - choose:
   - conditions:
     - condition: trigger
       id:
       - bkwSunPower
     sequence:
-    - data:
+    - action: notify.florian_notify
+      data:
         data:
           actions:
           - action: IOS_BKW_WASCHMASCHINE_AN
@@ -22,7 +23,6 @@ action:
           \ einschalten? (Ignoriere die Temperatur in der K\xFCche)"
         title: "\u2600\uFE0F Die Sonne scheint pr\xE4chtig!"
       metadata: {}
-      service: notify.home_ai
   - conditions:
     - condition: trigger
       id:
@@ -55,7 +55,7 @@ action:
       entity_id: eb4d372310f986822d024a05f2007c03
       type: turn_on
 alias: 'BKW: Maschinen laufen lassen Notification'
-condition:
+conditions:
 - condition: and
   conditions:
   - condition: state
@@ -70,7 +70,7 @@ condition:
 description: ''
 id: '1712829051695'
 mode: single
-trigger:
+triggers:
 - above: 330
   entity_id:
   - sensor.shelly_bkw_power
@@ -79,19 +79,19 @@ trigger:
     minutes: 5
     seconds: 0
   id: bkwSunPower
-  platform: numeric_state
+  trigger: numeric_state
 - event_data:
     action: IOS_BKW_WASCHMASCHINE_AN
   event_type: mobile_app_notification_action
   id: bkwIOSWMAn
-  platform: event
+  trigger: event
 - event_data:
     action: IOS_BKW_SPUELMASCHINE_AN
   event_type: mobile_app_notification_action
   id: bkwIOSSMAn
-  platform: event
+  trigger: event
 - event_data:
     action: IOS_BKW_ALLES_AN
   event_type: mobile_app_notification_action
   id: bkwIOSALLESAn
-  platform: event
+  trigger: event

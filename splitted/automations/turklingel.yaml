@@ -55,7 +55,7 @@ actions:
         - action: notify.alexa_media_echo_show_wohnzimmer
           data:
             message: "Jemand hat an der T\xFCr geklingelt"
-          enabled: false
+          enabled: true
         - action: script.awtrix_doorbell
           data: {}
           metadata: {}

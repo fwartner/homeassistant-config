@@ -4016,3 +4016,22 @@
         data:
           message: fsdgrg
   mode: single
+- id: '1732381912698'
+  alias: Bambulab AWTRIX 3 Printer Assistant
+  description: ''
+  use_blueprint:
+    path: blueforcer/flow_R0ZVOjYYorGl.yaml
+    input:
+      awtrix:
+      - 472e344dea5aa2229f4b915e90e2c141
+      sensor_bed_temperature: sensor.bambu_lab_a1_druckbetttemperatur
+      sensor_target_bed_temperature: number.bambu_lab_a1_zieltemperatur_des_druckbett
+      sensor_nozzle_temperature: sensor.bambu_lab_a1_temperatur_der_duse
+      sensor_nozzle_target_temperature: number.bambu_lab_a1_zieltemperatur_der_duse
+      sensor_print_progress: sensor.bambu_lab_a1_druckfortschritt
+      sensor_current_layer: sensor.bambu_lab_a1_aktuelle_schicht
+      sensor_remaining_time: sensor.bambu_lab_a1_verbleibende_zeit
+      sensor_total_layer_count: sensor.bambu_lab_a1_gesamtzahl_der_schichten
+      sensor_task_name: sensor.bambu_lab_a1_name_der_aufgabe
+      sensor_print_status: sensor.bambu_lab_a1_druckstatus
+      sensor_current_stage: sensor.bambu_lab_a1_aktueller_arbeitsschritt

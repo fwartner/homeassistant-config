@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3014
+Number of entities | 3013
 Number of sensors | 1618
 Number of automations | 116
 Number of scripts | 53
@@ -91,8 +91,8 @@ Number of binary sensors | 225
 - [Hoymiles](https://github.com/suaveolent/ha-hoymiles-wifi)
 - [Hvac Group](https://github.com/tetele/hvac_group)
 - [Icloud3 V3 Idevice Tracker](https://github.com/gcobb321/icloud3)
-- [Local Llm Conversation](https://github.com/fixtse/home-llm)
 - [Local Llm Conversation](https://github.com/acon96/home-llm)
+- [Local Llm Conversation](https://github.com/fixtse/home-llm)
 - [Mail And Packages](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages)
 - [Media Player Template](https://github.com/Sennevds/media_player.template)
 - [Multiscrape](https://github.com/danieldotnl/ha-multiscrape)
@@ -100,7 +100,6 @@ Number of binary sensors | 225
 - [Network Scanner](https://github.com/parvez/network_scanner)
 - [Node Red Companion](https://github.com/zachowj/hass-node-red)
 - [Nuki Lock](https://github.com/kvj/hass_nuki_ng)
-- [Office 365](https://github.com/RogerSelwyn/O365-HomeAssistant)
 - [Openmediavault](https://github.com/tomaae/homeassistant-openmediavault)
 - [Passive Ble Monitor Integration](https://github.com/custom-components/ble_monitor)
 - [Philips Hue Play Hdmi Sync Box](https://github.com/mvdwetering/huesyncbox)

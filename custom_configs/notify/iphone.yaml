@@ -4,3 +4,4 @@
   unique_id: all_iphones
   services:
     - service: mobile_app_iphone_von_florian
+    - service: mobile_app_iphone_von_steffi

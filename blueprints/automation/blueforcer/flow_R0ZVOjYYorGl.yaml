@@ -1,0 +1,766 @@
+blueprint:
+  name: Bambulab AWTRIX 3 Printer Assistant
+  description: "# Bambulab AWTRIX 3 Printer Assistant\nis an advanced Home Assistant
+    automation blueprint, specifically designed for Bambu Lab printers. It provides
+    a seamless integration into your smart home system, enabling enhanced monitoring
+    of your 3D printing tasks.   \n## Features:   \n- AWTRIX 3 Control: Utilizes MQTT
+    for real-time print status updates and visual alerts on your AWTRIX Light.    \n-
+    Comprehensive Print Monitoring: Tracks nozzle temperature, remaining print time,
+    bed temperature, layer progress, and task names.   \n- Customizable Notifications:
+    Offers configurable options for notification icons, text colors, and durations,
+    adapting to various print stages like bed leveling and nozzle heating.   \n- Progress
+    Bar Display: Optional visual representation of print progress on AWTRIX Light.
+    \  \n- MQTT Protocol: Ensures efficient communication between your printer and
+    Home Assistant setup.   \n- Detailed Customization: Includes settings for text
+    format, icon behavior, and RGB color choices for notifications.   \nThe blueprint
+    is created with help of the bambulab HACS integration, and therefore is required.
+    It is designed with help of the P1S, but should work with any Bambulab printer
+    and the HACS integration.\n"
+  domain: automation
+  input:
+    awtrix:
+      name: AWTRIX 3
+      description: Select the Awtrix 3 device
+      selector:
+        device:
+          filter:
+          - integration: mqtt
+            manufacturer: Blueforcer
+            model: AWTRIX 3
+          multiple: true
+    appname:
+      name: Awtrix Application name
+      description: This is the app name listed in the MQTT topic - it should be unique
+      default: print_status
+      selector:
+        text: {}
+    print_status_select:
+      name: Print status - Select the print status
+      description: "Enables selection of multiple print status metrics for monitoring.\n\n
+        nozzle_temp: Tracks nozzle temperature.\n remaining_time: Monitors remaining
+        print duration.\n bed_temp: Observes bed temperature.\n layers: Follows layer-by-layer
+        progress.\n task_name: Displays current task name.\n"
+      selector:
+        select:
+          options:
+          - label: Nozzle
+            value: nozzle_temp
+          - label: Remaining Time
+            value: remaining_time
+          - label: Bed Temperature
+            value: bed_temp
+          - label: Layers
+            value: layers
+          - label: Task Name
+            value: task_name
+          multiple: true
+          custom_value: false
+          sort: false
+      default:
+      - nozzle_temp
+      - remaining_time
+      - bed_temp
+      - layers
+      - task_name
+    print_status_show_progress:
+      name: Print status - Show progress bar in AWTRIX
+      description: Show progress bar in AWTRIX
+      selector:
+        boolean: {}
+      default: true
+    print_status_nozzle_temp_push_icon:
+      name: Print status - Nozzle Temperature - Push Icon
+      description: "Please select the pushIcon setting for the icon\n\n  - `0`  Icon
+        doesn't move\n\n  - `1`  Icon moves with text and will not appear again\n\n
+        \ - `2` Icon moves with text but appears again when the text starts to scroll
+        again\n"
+      selector:
+        select:
+          options:
+          - label: Icon doesn't move.
+            value: '0'
+          - label: Icon moves with text and will not reappear.
+            value: '1'
+          - label: Icon moves with text but appears again when the text starts.
+            value: '2'
+          mode: list
+          custom_value: false
+          sort: false
+          multiple: false
+      default: '0'
+    print_status_nozzle_temp_text_color:
+      name: Print status - Nozzle Temperature - Text Color
+      description: Select the Text color
+      selector:
+        color_rgb: {}
+      default:
+      - 255
+      - 255
+      - 255
+    print_status_nozzle_temp_duration:
+      name: Print status - Nozzle Temperature - Duration (in seconds)
+      description: Sets how long the app or notification should be displayed.
+      default: '10'
+    print_status_nozzle_temp_icon:
+      name: Print status - Nozzle Temperature - Icon
+      description: 'Enter the Icon Name that you like to show (this file should exist
+        on the AWTRIX device).
+
+        Do not add the file extension'
+      default: bl_heatnozzle
+    print_status_nozzle_temp_format:
+      name: Nozzle Temperature Format
+      description: Define the format for displaying nozzle temperatures. Use %nozzle_current_temp%
+        for current temperature and %nozzle_target_temp% for target temperature.
+      default: '%nozzle_current_temp% / %nozzle_target_temp%'
+      selector:
+        text: {}
+    print_status_task_name_push_icon:
+      name: print_status_task_name_pushIcon
+      description: "Please select the pushIcon setting for the icon\n\n  - `0`  Icon
+        doesn't move\n\n  - `1`  Icon moves with text and will not appear again\n\n
+        \ - `2` Icon moves with text but appears again when the text starts to scroll
+        again\n"
+      selector:
+        select:
+          options:
+          - label: Icon doesn't move.
+            value: '0'
+          - label: Icon moves with text and will not reappear.
+            value: '1'
+          - label: Icon moves with text but appears again when the text starts.
+            value: '2'
+          mode: list
+          custom_value: false
+          sort: false
+          multiple: false
+      default: '0'
+    print_status_task_name_text_color:
+      name: Text Color for task_name
+      description: Select the Text color
+      selector:
+        color_rgb: {}
+      default:
+      - 255
+      - 255
+      - 255
+    print_status_task_name_duration:
+      name: print_status_task_name_duration Duration (in seconds)
+      description: Sets how long the app or notification should be displayed.
+      default: '10'
+    print_status_task_name_icon:
+      name: Print Status Task Name Icon
+      description: Print Status Task Name Icon
+      default: bl_green
+    print_status_task_name_format:
+      name: Nozzle Temperature Format
+      description: Define the format for displaying task name. Use %task_name% for
+        current task name
+      default: 'Task: %task_name%'
+      selector:
+        text: {}
+    print_status_layer_push_icon:
+      name: print_status_layer_pushIcon
+      description: "Please select the pushIcon setting for the icon\n\n  - `0`  Icon
+        doesn't move\n\n  - `1`  Icon moves with text and will not appear again\n\n
+        \ - `2` Icon moves with text but appears again when the text starts to scroll
+        again\n"
+      selector:
+        select:
+          options:
+          - label: Icon doesn't move.
+            value: '0'
+          - label: Icon moves with text and will not reappear.
+            value: '1'
+          - label: Icon moves with text but appears again when the text starts.
+            value: '2'
+          mode: list
+          custom_value: false
+          sort: false
+          multiple: false
+      default: '0'
+    print_status_layer_text_color:
+      name: Text Color for layer
+      description: Select the Text color
+      selector:
+        color_rgb: {}
+      default:
+      - 255
+      - 255
+      - 255
+    print_status_layer_duration:
+      name: print_status_layer_duration Duration (in seconds)
+      description: Sets how long the app or notification should be displayed.
+      default: '10'
+    print_status_layer_icon:
+      name: Layer icon
+      description: Layer icon
+      default: bl_green
+    print_status_layer_format:
+      name: Layer Format
+      description: Define the format for displaying layer. Use %current_layer% / %total_layers%
+      default: '%current_layer% / %total_layers%'
+      selector:
+        text: {}
+    print_status_bed_temp_push_icon:
+      name: print_status_bed_temp_pushIcon
+      description: "Please select the pushIcon setting for the icon\n\n  - `0`  Icon
+        doesn't move\n\n  - `1`  Icon moves with text and will not appear again\n\n
+        \ - `2` Icon moves with text but appears again when the text starts to scroll
+        again\n"
+      selector:
+        select:
+          options:
+          - label: Icon doesn't move.
+            value: '0'
+          - label: Icon moves with text and will not reappear.
+            value: '1'
+          - label: Icon moves with text but appears again when the text starts.
+            value: '2'
+          mode: list
+          custom_value: false
+          sort: false
+          multiple: false
+      default: '0'
+    print_status_bed_temp_text_color:
+      name: Text Color for bed_temp
+      description: Select the Text color
+      selector:
+        color_rgb: {}
+      default:
+      - 255
+      - 255
+      - 255
+    print_status_bed_temp_duration:
+      name: print_status_bed_temp_duration Duration (in seconds)
+      description: Sets how long the app or notification should be displayed.
+      default: '10'
+    print_status_bed_temp_icon:
+      name: bed_temp icon
+      description: bed_temp icon
+      default: bl_heatbed
+    print_status_bed_temp_format:
+      name: bed_temp Format
+      description: Define the format for displaying bed_temp. Use %current_bed_temp%
+        / %target_bed_temp%
+      default: '%current_bed_temp% / %target_bed_temp%'
+      selector:
+        text: {}
+    print_status_remaining_time_push_icon:
+      name: print_status_remaining_time_pushIcon
+      description: "Please select the pushIcon setting for the icon\n\n  - `0`  Icon
+        doesn't move\n\n  - `1`  Icon moves with text and will not appear again\n\n
+        \ - `2` Icon moves with text but appears again when the text starts to scroll
+        again\n"
+      selector:
+        select:
+          options:
+          - label: Icon doesn't move.
+            value: '0'
+          - label: Icon moves with text and will not reappear.
+            value: '1'
+          - label: Icon moves with text but appears again when the text starts.
+            value: '2'
+          mode: list
+          custom_value: false
+          sort: false
+          multiple: false
+      default: '0'
+    print_status_remaining_time_text_color:
+      name: Text Color for remaining_time
+      description: Select the Text color
+      selector:
+        color_rgb: {}
+      default:
+      - 255
+      - 255
+      - 255
+    print_status_remaining_time_duration:
+      name: print_status_remaining_time_duration Duration (in seconds)
+      description: Sets how long the app or notification should be displayed.
+      default: '10'
+    print_status_remaining_time_icon:
+      name: remaining_time icon
+      description: remaining_time icon
+      default: bl_time_green
+    print_status_remaining_time_format:
+      name: remaining_time Format
+      description: 'Define the format for displaying remaining_time. Use %remaining_time% '
+      default: -%remaining_time% m
+      selector:
+        text: {}
+    stage_status_select:
+      name: Stage status - Select the stage status
+      description: Select the stage status
+      selector:
+        select:
+          options:
+          - label: Auto bed leveling
+            value: auto_bed_leveling
+          - label: Heatbed Preheating
+            value: heatbed_preheating
+          - label: Heating Hotend
+            value: heating_hotend
+          - label: Cleaning Nozzle Tip
+            value: cleaning_nozzle_tip
+          multiple: true
+          custom_value: false
+          sort: false
+      default:
+      - auto_bed_leveling
+      - heatbed_preheating
+      - heating_hotend
+      - cleaning_nozzle_tip
+    stage_status_abl_text_color:
+      name: Text Color for nozzle stage_status_abl_text_color
+      description: Select the Text stage_status_abl_text_color
+      selector:
+        color_rgb: {}
+      default:
+      - 55
+      - 158
+      - 47
+    stage_status_abl_icon:
+      name: stage_status_abl_text_icon
+      description: stage_status_abl_text_icon
+      default: bl_bedlevel
+    stage_status_abl_format:
+      name: Nozzle Temperature Format
+      description: Define the format for displaying ABL
+      default: Auto bed leveling
+      selector:
+        text: {}
+    stage_status_abl_push_icon:
+      name: print_status_nozzle_temp_pushIcon
+      description: "Please select the pushIcon setting for the icon\n\n  - `0`  Icon
+        doesn't move\n\n  - `1`  Icon moves with text and will not appear again\n\n
+        \ - `2` Icon moves with text but appears again when the text starts to scroll
+        again\n"
+      selector:
+        select:
+          options:
+          - label: Icon doesn't move.
+            value: '0'
+          - label: Icon moves with text and will not reappear.
+            value: '1'
+          - label: Icon moves with text but appears again when the text starts.
+            value: '2'
+          mode: list
+          custom_value: false
+          sort: false
+          multiple: false
+      default: '0'
+    stage_status_heatbed_text_color:
+      name: Text Color for heatbed
+      description: Select the Text heatbed
+      selector:
+        color_rgb: {}
+      default:
+      - 55
+      - 158
+      - 47
+    stage_status_heatbed_icon:
+      name: stage_status_heatbed_icon
+      description: stage_status_heatbed_icon
+      default: bl_heatbed
+    stage_status_heatbed_format:
+      name: stage_status_heatbed_format
+      description: Define the format for stage_status_heatbed_format
+      default: Heatbed Preheating
+      selector:
+        text: {}
+    stage_status_heatbed_push_icon:
+      name: stage_status_heatbed_push_icon
+      description: "Please select the pushIcon setting for the icon\n\n  - `0`  Icon
+        doesn't move\n\n  - `1`  Icon moves with text and will not appear again\n\n
+        \ - `2` Icon moves with text but appears again when the text starts to scroll
+        again\n"
+      selector:
+        select:
+          options:
+          - label: Icon doesn't move.
+            value: '0'
+          - label: Icon moves with text and will not reappear.
+            value: '1'
+          - label: Icon moves with text but appears again when the text starts.
+            value: '2'
+          mode: list
+          custom_value: false
+          sort: false
+          multiple: false
+      default: '0'
+    stage_status_heatnozzle_text_color:
+      name: Text Color for heatnozzle
+      description: Select the Text heatnozzle
+      selector:
+        color_rgb: {}
+      default:
+      - 55
+      - 158
+      - 47
+    stage_status_heatnozzle_icon:
+      name: stage_status_heatnozzle_icon
+      description: stage_status_heatnozzle_icon
+      default: bl_heatnozzle
+    stage_status_heatnozzle_format:
+      name: stage_status_heatnozzle_format
+      description: Define the format for stage_status_heatnozzle_format
+      default: Nozzle Preheating
+      selector:
+        text: {}
+    stage_status_heatnozzle_push_icon:
+      name: stage_status_heatnozzle_push_icon
+      description: "Please select the pushIcon setting for the icon\n\n  - `0`  Icon
+        doesn't move\n\n  - `1`  Icon moves with text and will not appear again\n\n
+        \ - `2` Icon moves with text but appears again when the text starts to scroll
+        again\n"
+      selector:
+        select:
+          options:
+          - label: Icon doesn't move.
+            value: '0'
+          - label: Icon moves with text and will not reappear.
+            value: '1'
+          - label: Icon moves with text but appears again when the text starts.
+            value: '2'
+          mode: list
+          custom_value: false
+          sort: false
+          multiple: false
+      default: '0'
+    stage_status_cleannozzle_text_color:
+      name: Text Color for cleannozzle
+      description: Select the Text cleannozzle
+      selector:
+        color_rgb: {}
+      default:
+      - 55
+      - 158
+      - 47
+    stage_status_cleannozzle_icon:
+      name: stage_status_cleannozzle_icon
+      description: stage_status_cleannozzle_icon
+      default: bl_cleannozzle
+    stage_status_cleannozzle_format:
+      name: stage_status_cleannozzle_format
+      description: Define the format for stage_status_cleannozzle_format
+      default: Cleaning Nozzle
+      selector:
+        text: {}
+    stage_status_cleannozzle_push_icon:
+      name: stage_status_cleannozzle_push_icon
+      description: "Please select the pushIcon setting for the icon\n\n  - `0`  Icon
+        doesn't move\n\n  - `1`  Icon moves with text and will not appear again\n\n
+        \ - `2` Icon moves with text but appears again when the text starts to scroll
+        again\n"
+      selector:
+        select:
+          options:
+          - label: Icon doesn't move.
+            value: '0'
+          - label: Icon moves with text and will not reappear.
+            value: '1'
+          - label: Icon moves with text but appears again when the text starts.
+            value: '2'
+          mode: list
+          custom_value: false
+          sort: false
+          multiple: false
+      default: '0'
+    sensor_bed_temperature:
+      name: bed_temperature sensor
+      description: Select your bed tempreature sensor
+      selector:
+        entity:
+          multiple: false
+          filter:
+          - integration: bambu_lab
+          - device_class:
+            - sensor
+    sensor_target_bed_temperature:
+      name: target_bed_temperature
+      description: Select your bed target_bed_temperature
+      selector:
+        entity:
+          multiple: false
+          filter:
+          - integration: bambu_lab
+          - device_class:
+            - sensor
+    sensor_nozzle_temperature:
+      name: nozzle_temperature
+      description: Select your nozzle_temperature
+      selector:
+        entity:
+          multiple: false
+          filter:
+          - integration: bambu_lab
+          - device_class:
+            - sensor
+    sensor_nozzle_target_temperature:
+      name: nozzle_target_temperature
+      description: Select your nozzle_target_temperature
+      selector:
+        entity:
+          multiple: false
+          filter:
+          - integration: bambu_lab
+          - device_class:
+            - sensor
+    sensor_print_progress:
+      name: print_progress
+      description: Select your print_progress
+      selector:
+        entity:
+          multiple: false
+          filter:
+          - integration: bambu_lab
+    sensor_remaining_time:
+      name: remaining_time
+      description: Select your remaining_time
+      selector:
+        entity:
+          multiple: false
+          filter:
+          - integration: bambu_lab
+    sensor_current_layer:
+      name: current_layer
+      description: Select your current_layer
+      selector:
+        entity:
+          multiple: false
+          filter:
+          - integration: bambu_lab
+    sensor_total_layer_count:
+      name: total_layer_count
+      description: Select your total_layer_count
+      selector:
+        entity:
+          multiple: false
+          filter:
+          - integration: bambu_lab
+    sensor_task_name:
+      name: task_name
+      description: Select your task_name
+      selector:
+        entity:
+          multiple: false
+          filter:
+          - integration: bambu_lab
+    sensor_print_status:
+      name: print_status
+      description: Select your print_status
+      selector:
+        entity:
+          multiple: false
+          filter:
+          - integration: bambu_lab
+    sensor_current_stage:
+      name: current_stage
+      description: Select your current_stage
+      selector:
+        entity:
+          multiple: false
+          filter:
+          - integration: bambu_lab
+  source_url: https://github.com/blueforcer/flows_blueprints/blob/main/flows/flow_R0ZVOjYYorGl.yaml
+variables:
+  device_ids: !input awtrix
+  devices: "{% macro get_device(device_id) %}\n  {{ states((device_entities(device_id)
+    | select('search','device_topic') | list)[0] | default('unknown')) }}\n{% endmacro
+    %} {% set ns = namespace(devices=[]) %} {% for device_id in device_ids %}\n  {%
+    set device=get_device(device_id)|replace(' ','')|replace('\\n','') %}\n  {% set
+    ns.devices = ns.devices + [ device ] %}\n{% endfor %} {{ ns.devices | reject('match','unavailable|unknown')
+    | list }}"
+  appname: !input appname
+  val_sensor_bed_temperature: !input sensor_bed_temperature
+  val_sensor_target_bed_temperature: !input sensor_target_bed_temperature
+  val_sensor_nozzle_temperature: !input sensor_nozzle_temperature
+  val_sensor_nozzle_target_temperature: !input sensor_nozzle_target_temperature
+  val_sensor_print_progress: !input sensor_print_progress
+  val_sensor_remaining_time: !input sensor_remaining_time
+  val_sensor_current_layer: !input sensor_current_layer
+  val_sensor_total_layer_count: !input sensor_total_layer_count
+  val_sensor_task_name: !input sensor_task_name
+  val_sensor_print_status: !input sensor_print_status
+  val_sensor_current_stage: !input sensor_current_stage
+  print_status_select: !input print_status_select
+  print_status_show_progress: !input print_status_show_progress
+  stage_status_select: !input stage_status_select
+  stage_status_abl_text_color: !input stage_status_abl_text_color
+  stage_status_abl_icon: !input stage_status_abl_icon
+  stage_status_abl_format: !input stage_status_abl_format
+  stage_status_abl_push_icon: !input stage_status_abl_push_icon
+  stage_status_heatbed_text_color: !input stage_status_heatbed_text_color
+  stage_status_heatbed_icon: !input stage_status_heatbed_icon
+  stage_status_heatbed_format: !input stage_status_heatbed_format
+  stage_status_heatbed_push_icon: !input stage_status_heatbed_push_icon
+  stage_status_heatnozzle_text_color: !input stage_status_heatnozzle_text_color
+  stage_status_heatnozzle_icon: !input stage_status_heatnozzle_icon
+  stage_status_heatnozzle_format: !input stage_status_heatnozzle_format
+  stage_status_heatnozzle_push_icon: !input stage_status_heatnozzle_push_icon
+  stage_status_cleannozzle_text_color: !input stage_status_cleannozzle_text_color
+  stage_status_cleannozzle_icon: !input stage_status_cleannozzle_icon
+  stage_status_cleannozzle_format: !input stage_status_cleannozzle_format
+  stage_status_cleannozzle_push_icon: !input stage_status_cleannozzle_push_icon
+  print_status_nozzle_temp_format: !input print_status_nozzle_temp_format
+  print_status_nozzle_temp_icon: !input print_status_nozzle_temp_icon
+  print_status_nozzle_temp_duration: !input print_status_nozzle_temp_duration
+  print_status_nozzle_temp_text_color: !input print_status_nozzle_temp_text_color
+  print_status_task_name_format: !input print_status_task_name_format
+  print_status_task_name_icon: !input print_status_task_name_icon
+  print_status_task_name_duration: !input print_status_task_name_duration
+  print_status_task_name_text_color: !input print_status_task_name_text_color
+  print_status_layer_format: !input print_status_layer_format
+  print_status_layer_icon: !input print_status_layer_icon
+  print_status_layer_duration: !input print_status_layer_duration
+  print_status_layer_text_color: !input print_status_layer_text_color
+  print_status_bed_temp_format: !input print_status_bed_temp_format
+  print_status_bed_temp_icon: !input print_status_bed_temp_icon
+  print_status_bed_temp_duration: !input print_status_bed_temp_duration
+  print_status_bed_temp_text_color: !input print_status_bed_temp_text_color
+  print_status_remaining_time_format: !input print_status_remaining_time_format
+  print_status_remaining_time_icon: !input print_status_remaining_time_icon
+  print_status_remaining_time_duration: !input print_status_remaining_time_duration
+  print_status_remaining_time_text_color: !input print_status_remaining_time_text_color
+  payload_stage: "{% macro gen_stage_payload(icon, pushIcon, text, color) %}\n  {\n
+    \   \"hold\": true,\n    \"stack\": false,\n    \"pushIcon\": {{ pushIcon }},\n
+    \   \"icon\": \"{{ icon }}\",\n    \"color\": {{ color }},\n    \"text\": \"{{
+    text }}\"\n  }\n{% endmacro %} {% set printer_stage = states(val_sensor_current_stage)
+    %} {% set all_stage_mappings = {\n    \"auto_bed_leveling\": gen_stage_payload(stage_status_abl_icon,
+    stage_status_abl_push_icon, stage_status_abl_format, stage_status_abl_text_color),\n
+    \   \"heatbed_preheating\": gen_stage_payload(stage_status_heatbed_icon, stage_status_heatbed_push_icon,
+    stage_status_heatbed_format, stage_status_heatbed_text_color),\n    \"heating_hotend\":
+    gen_stage_payload(stage_status_heatnozzle_icon, stage_status_heatnozzle_push_icon,
+    stage_status_heatnozzle_format, stage_status_heatnozzle_text_color),\n    \"cleaning_nozzle_tip\":
+    gen_stage_payload(stage_status_cleannozzle_icon, stage_status_cleannozzle_push_icon,
+    stage_status_cleannozzle_format, stage_status_cleannozzle_text_color),\n} %} {%
+    set selected_stages = stage_status_select %} {% if printer_stage in selected_stages
+    %}\n  {{ all_stage_mappings.get(printer_stage, '') }}\n{% else %}\n  \"\"\n{%
+    endif %}"
+  payload_print_status: "{% set show_progress = print_status_show_progress %} {% set
+    enabled_items = print_status_select %} {# Function to create a payload item #}
+    {% macro create_payload_item(name, icon, duration, text, color) -%}\n    {\"name\":
+    \"{{ name }}\", \"icon\": \"{{ icon }}\", \"duration\": {{ duration }}, \"text\":
+    \"{{ text }}\", \"color\": {{ color }}}\n{%- endmacro -%} {# Function to generate
+    the payload #} {% macro generate_payload(show_progress, progress, payload_items,
+    enabled_items) %}\n    [\n        {%- for item in payload_items if item.name in
+    enabled_items %}\n            {{- create_payload_item(item.name, item.icon, item.duration,
+    item.text, item.color) -}}\n            {%- if not loop.last %},{% endif %}\n
+    \       {%- endfor %}\n        {%- if show_progress and progress is number -%}\n
+    \           {%- if payload_items|length > 0 -%},{%- endif -%}\n            \"progress\":
+    {{ progress }}\n        {%- endif -%}\n    ]\n{%- endmacro -%} {# Formatting nozzle_temp_format
+    strings #} {% set nozzle_temp_format = print_status_nozzle_temp_format\n    |
+    replace('%nozzle_current_temp%', states(val_sensor_nozzle_temperature))\n    |
+    replace('%nozzle_target_temp%', states(val_sensor_nozzle_target_temperature))
+    %}\n{# Formatting task_name_format strings #} {% set task_name_format = print_status_task_name_format\n
+    \   | replace('%task_name%', states(val_sensor_task_name)) %}\n{# Formatting layer_format
+    strings #} {% set layer_format = print_status_layer_format\n    | replace('%current_layer%',
+    states(val_sensor_current_layer))\n    | replace('%total_layers%', states(val_sensor_total_layer_count))
+    %}\n{# Formatting bed_temp_format strings #} {% set bed_temp_format = print_status_bed_temp_format\n
+    \   | replace('%current_bed_temp%', states(val_sensor_bed_temperature))\n    |
+    replace('%target_bed_temp%', states(val_sensor_target_bed_temperature)) %}\n{#
+    Formatting remaining_time_format strings #} {% set remaining_time_format = print_status_remaining_time_format\n
+    \   | replace('%remaining_time%', states(val_sensor_remaining_time)) %}\n{# Defining
+    payload items - using the create_payload_item function #} {% set payload_items
+    = [\n    {\"name\": \"remaining_time\", \"icon\": print_status_remaining_time_icon,
+    \"duration\": print_status_remaining_time_duration, \"text\": remaining_time_format,
+    \"color\": print_status_remaining_time_text_color},\n    {\"name\": \"bed_temp\",
+    \"icon\": print_status_bed_temp_icon, \"duration\": print_status_bed_temp_duration,
+    \"text\": bed_temp_format, \"color\": print_status_bed_temp_text_color},\n    {\"name\":
+    \"layers\", \"icon\": print_status_layer_icon, \"duration\": print_status_layer_duration,
+    \"text\": layer_format, \"color\": print_status_layer_text_color},\n    {\"name\":
+    \"task_name\", \"icon\": print_status_task_name_icon, \"duration\": print_status_task_name_duration,
+    \"text\": task_name_format, \"color\": print_status_task_name_text_color},\n    {\"name\":
+    \"nozzle_temp\", \"icon\": print_status_nozzle_temp_icon, \"duration\": print_status_nozzle_temp_duration,
+    \"text\": nozzle_temp_format, \"color\": print_status_nozzle_temp_text_color}\n]
+    %} {{ generate_payload(show_progress, states(val_sensor_print_progress), payload_items,
+    enabled_items) }}"
+  payload_finished: "{\n  \"icon\": \"bl_green\",\n  \"hold\": false,\n  \"duration\":
+    240,\n  \"stack\": false,\n  \"text\": \"Done\",\n  \"color\": [0, 128, 0]\n}"
+  payload_failed: "{\n  \"icon\": \"bl_red\",\n  \"hold\": false,\n  \"duration\":
+    240,\n  \"stack\": false,\n  \"text\": \"Failed\",\n  \"color\": [255, 0, 0]\n}"
+trigger:
+- platform: state
+  entity_id: !input sensor_current_stage
+  id: id_current_stage
+- platform: state
+  entity_id: !input sensor_print_progress
+  id: id_print_progress
+- platform: state
+  entity_id: !input sensor_print_status
+  id: id_printer_status_change
+action:
+- repeat:
+    for_each: '{{ devices }}'
+    sequence:
+    - choose:
+      - conditions:
+        - condition: and
+          conditions:
+          - condition: trigger
+            id:
+            - id_current_stage
+          - condition: template
+            value_template: '{{ states(val_sensor_current_stage) in stage_status_select
+              }}'
+        sequence:
+        - service: mqtt.publish
+          data:
+            topic: '{{ repeat.item }}/notify/dismiss'
+        - service: mqtt.publish
+          data:
+            topic: '{{ repeat.item }}/notify'
+            payload: '{{ payload_stage }}'
+      - conditions:
+        - condition: and
+          conditions:
+          - condition: trigger
+            id:
+            - id_print_progress
+          - condition: numeric_state
+            entity_id: !input sensor_current_layer
+            above: '0'
+          - condition: numeric_state
+            entity_id: !input sensor_print_progress
+            above: '0'
+            below: 100
+        sequence:
+        - service: mqtt.publish
+          data:
+            topic: '{{ repeat.item }}/notify/dismiss'
+        - service: mqtt.publish
+          data:
+            topic: '{{ repeat.item }}/custom/{{ appname }}'
+            payload: '{{ payload_print_status }}'
+      - conditions:
+        - condition: template
+          value_template: "{{ trigger.id == 'id_printer_status_change' and \n    trigger.from_state.state
+            == 'running' and \n    trigger.to_state.state == 'finish' \n}}\n"
+        sequence:
+        - service: mqtt.publish
+          data:
+            topic: '{{ repeat.item }}/notify/dismiss'
+        - service: mqtt.publish
+          data:
+            topic: '{{ repeat.item }}/custom/{{ appname }}'
+        - service: mqtt.publish
+          data:
+            topic: '{{ repeat.item }}/notify'
+            payload: '{{ payload_finished }}'
+      - conditions:
+        - condition: template
+          value_template: "{{ trigger.id == 'id_printer_status_change' and \n    trigger.from_state.state
+            == 'running' and \n    trigger.to_state.state == 'failed' \n}}\n"
+        sequence:
+        - service: mqtt.publish
+          data:
+            topic: '{{ repeat.item }}/notify/dismiss'
+        - service: mqtt.publish
+          data:
+            topic: '{{ repeat.item }}/custom/{{ appname }}'
+        - service: mqtt.publish
+          data:
+            topic: '{{ repeat.item }}/notify'
+            payload: '{{ payload_failed }}'
+mode: restart

@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3015
+Number of entities | 3017
 Number of sensors | 1620
 Number of automations | 118
 Number of scripts | 53
@@ -33,9 +33,12 @@ Number of binary sensors | 220
 ### Add-ons
 - Advanced SSH & Web Terminal
 - Changedetection.io
+- DeepStack
+- Double Take
 - ESPHome Device Compiler
-- Facebox
+- Exadel CompreFace
 - go2rtc
+- go2rtc master hardware
 - Grafana
 - Home Assistant Google Drive Backup
 - Matter Server
@@ -44,7 +47,6 @@ Number of binary sensors | 220
 - Music Assistant Server
 - Piper
 - PS5 MQTT
-- RTSP Simple Server Add-on
 - Samba share
 - Silicon Labs Multiprotocol
 - Studio Code Server

@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3032
+Number of entities | 3030
 Number of sensors | 1626
 Number of automations | 118
 Number of scripts | 53
@@ -37,8 +37,6 @@ Number of binary sensors | 228
 - Double Take
 - ESPHome Device Compiler
 - Exadel CompreFace
-- Frigate (Full Access)
-- go2rtc
 - go2rtc master hardware
 - Grafana
 - Home Assistant Google Drive Backup

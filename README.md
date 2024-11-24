@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3014
+Number of entities | 3015
 Number of sensors | 1620
 Number of automations | 118
 Number of scripts | 53
@@ -34,6 +34,7 @@ Number of binary sensors | 220
 - Advanced SSH & Web Terminal
 - Changedetection.io
 - ESPHome Device Compiler
+- Facebox
 - go2rtc
 - Grafana
 - Home Assistant Google Drive Backup

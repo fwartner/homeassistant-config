@@ -1,0 +1,8 @@
+alias: Awtrix current playing song
+description: ''
+id: '1732451636104'
+use_blueprint:
+  input:
+    awtrix_3: 472e344dea5aa2229f4b915e90e2c141
+    media_player: media_player.spotifyplus_florian
+  path: blueforcer/flow_GKXydoDmOpjL.yaml

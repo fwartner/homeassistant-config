@@ -39,3 +39,5 @@ frigate.db-shm
 
 .vacuum
 .timeline
+
+go2rtc.yaml

@@ -17,13 +17,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3030
+Number of entities | 3031
 Number of sensors | 1624
 Number of automations | 118
 Number of scripts | 53
 Number of scenes | 32
 Number of zones | 24
-Number of binary sensors | 221
+Number of binary sensors | 220
 
 ## Demo of my dashboard
 ![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)
@@ -35,8 +35,10 @@ Number of binary sensors | 221
 - Changedetection.io
 - ESPHome Device Compiler
 - go2rtc
+- Grafana
 - Home Assistant Google Drive Backup
 - Matter Server
+- Matterbridge
 - Mosquitto broker
 - Music Assistant Server
 - Piper
@@ -44,8 +46,8 @@ Number of binary sensors | 221
 - RTSP Simple Server Add-on
 - Samba share
 - Silicon Labs Multiprotocol
-- Spotify Connect
 - Studio Code Server
+- TasmoAdmin
 - Uptime Kuma
 - Whisper
 

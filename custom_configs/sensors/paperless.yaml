@@ -1,7 +1,7 @@
 ---
 - platform: rest
   name: Paperless Documents
-  resource: http://10.182.1.38:8080/api/documents/
+  resource: https://paperless.wartner.cloud/api/documents/
   method: GET
   headers:
     Authorization: !secret paperless_token
@@ -12,7 +12,7 @@
 
 - platform: rest
   name: Paperless Inbox
-  resource: http://10.182.1.38:8080/api/tags/7/
+  resource: https://paperless.wartner.cloud/api/tags/7/
   method: GET
   headers:
     Authorization: !secret paperless_token

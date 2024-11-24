@@ -1660,7 +1660,7 @@
       - data:
           title: "\U0001F9FA Wäsche ist fertig"
           message: Die Wäsche ist fertig.
-        action: notify.home_ai
+        action: notify.florian_notify
     - conditions:
       - condition: trigger
         id:
@@ -1673,7 +1673,7 @@
       - data:
           title: "\U0001F37D️ Geschirr ist sauber"
           message: Spülmaschine ist fertig.
-        action: notify.home_ai
+        action: notify.florian_notify
   mode: single
 - id: '1712525174898'
   alias: Wecker

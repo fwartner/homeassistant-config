@@ -1,9 +1,0 @@
----
-- resource: http://10.182.1.109:5000/api/v1/watch/f74700c2-689d-45be-ac65-6a4e345e2e05
-  headers:
-    x-api-key: !secret changedetction_token
-  sensor:
-    name: Home Assistant BETA Release
-    value_template: >
-      {{ value_json.last_changed }}
-  scan_interval: 21600

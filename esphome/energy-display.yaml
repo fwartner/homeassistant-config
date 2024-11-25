@@ -36,13 +36,6 @@ wifi:
 
 captive_portal:
 
-external_components:
-  - source:
-      type: git
-      url: https://github.com/clydebarrow/esphome
-      ref: fd15094c0860df23d532881df36cfd16c7da1091 #previous commit - wont be needed in the future
-    components: [ lvgl ] 
-
 sensor:
   - platform: homeassistant
     id: kwh_live
@@ -164,43 +157,6 @@ display:
     transform: # Configure to use it upside down. Remove transform-element to rotate 180
       mirror_x: true
       mirror_y: false
-
-script:
-  - id: update_display
-    then:
-      - lvgl.indicator.line.update:
-          id: power_meter_input
-          value: !lambda return id(kwh_live).get_state()*10;
-      - lvgl.label.update:
-          id: power_meter_text
-          text:
-            format: "%.1f kW"
-            args: [ 'id(kwh_live).get_state()' ]
-      - lvgl.img.update:
-          id: img_thunderbolt
-          src: thunderbolt_icon
-          img_recolor: 0xFFF000 #mixes this color with the base image
-      - lvgl.label.update:
-          id: kwh_today_text
-          text:
-            format: "%.1f kWh"
-            args: [ 'id(kwh_today).get_state()' ]
-      - lvgl.label.update:
-          id: cost_today_text
-          text:
-            format: "%.0f kr"
-            args: [ 'id(cost_today).get_state()' ]
-      - lvgl.label.update:
-          id: kwh_month_text
-          text:
-            format: "%.1f kWh"
-            args: [ 'id(kwh_month).get_state()' ]
-      - lvgl.label.update:
-          id: cost_month_text
-          text:
-            format: "%.0f kr"
-            args: [ 'id(cost_month).get_state()' ]
-
 i2c:
   sda: 4
   scl: 5

@@ -4043,3 +4043,26 @@
     input:
       awtrix_3: 472e344dea5aa2229f4b915e90e2c141
       media_player: media_player.spotifyplus_florian
+- id: '1732616821280'
+  alias: AI Event Summary (LLM Vision v1.3.1)
+  description: ''
+  use_blueprint:
+    path: valentinfrlch/event_summary.yaml
+    input:
+      notify_device:
+      - 243c451777aeeaa0a9568cf5b35f5815
+      camera_entities:
+      - camera.kamera_flur
+      motion_sensors:
+      - binary_sensor.aqara_contact_wohnungstur_contact
+      model: gemini-1.5-flash-latest
+      provider: 01JDKZXB9EHRC39AT0ZFSCEXA7
+      mode: Camera
+      message: 'Summarize what''s happening in the camera feed (one sentence max).
+        Don''t describe the scene! If there is a person, describe what they''re doing
+        and what they look like. If they look like a courier mention that! If nothing
+        is happening, say so.
+
+
+        All in german please.'
+      preview_mode: Snapshot

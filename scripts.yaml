@@ -1017,3 +1017,25 @@ activate_alexa_actionable_notification:
       media_content_id: amzn1.ask.skill.f1f4ad37-454a-446e-8c02-f7d4190312ab
   mode: single
   icon: phu:alexa-logo
+analyse_front_door:
+  alias: Analyse Front Door
+  sequence:
+  - data:
+      provider: 01JDKZXB9EHRC39AT0ZFSCEXA7
+      detail: low
+      temperature: 0.5
+      message: Is a person or a package at the front door?
+      image_entity:
+      - camera.kamera_flur
+      max_tokens: 60
+      include_filename: false
+    response_variable: response
+    action: llmvision.image_analyzer
+  - metadata: {}
+    data:
+      value: '{{response.response_text}}'
+    target:
+      entity_id: input_text.llmvision_response
+    action: input_text.set_value
+  description: ''
+  icon: mdi:cube-scan

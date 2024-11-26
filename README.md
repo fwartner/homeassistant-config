@@ -17,13 +17,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3047
-Number of sensors | 1632
+Number of entities | 3034
+Number of sensors | 1630
 Number of automations | 119
 Number of scripts | 54
 Number of scenes | 32
 Number of zones | 24
-Number of binary sensors | 231
+Number of binary sensors | 228
 
 ## Demo of my dashboard
 ![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)
@@ -37,7 +37,6 @@ Number of binary sensors | 231
 - Double Take
 - ESPHome Device Compiler
 - Exadel CompreFace
-- go2rtc master hardware
 - Grafana
 - Home Assistant Google Drive Backup
 - Matter Server

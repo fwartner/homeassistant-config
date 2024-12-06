@@ -4103,27 +4103,3 @@
     action: notify.florian_notify
   mode: parallel
   max: 10
-- id: '1733504268109'
-  alias: Universal Remote Volume
-  description: ''
-  triggers:
-  - device_id: 688bd266db656755141bcb1a539bd837
-    domain: button
-    entity_id: 7adbb803bb6232733d9ab1a63f354814
-    type: pressed
-    trigger: device
-    id: universalRemoteLeiser
-  conditions: []
-  actions:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - universalRemoteLeiser
-      sequence:
-      - action: media_player.volume_down
-        metadata: {}
-        data: {}
-        target:
-          device_id: 9d14dca47a5773d55c5f7f9d16c58476
-  mode: single

@@ -41,3 +41,4 @@ frigate.db-shm
 .timeline
 
 go2rtc.yaml
+.jwt_secret

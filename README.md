@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3144
+Number of entities | 3145
 Number of sensors | 1681
 Number of automations | 120
 Number of scripts | 54
@@ -52,6 +52,7 @@ Number of binary sensors | 241
 - Studio Code Server
 - TasmoAdmin
 - Uptime Kuma
+- Whatsapper
 - Whisper
 
 ### Custom integrations

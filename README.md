@@ -35,7 +35,7 @@ Number of binary sensors | 241
 - Changedetection.io
 - DeepStack
 - Double Take
-- ESPHome Device Compiler
+- ESPHome Device Builder
 - Exadel CompreFace
 - Frigate (Full Access)
 - go2rtc master hardware

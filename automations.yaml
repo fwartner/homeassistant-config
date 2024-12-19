@@ -85,45 +85,6 @@
               data: {}
               target:
                 entity_id: cover.rollos_schlafzimmer
-- id: '1673948568537'
-  alias: Urlaubsmodus nach Kalender
-  description: ''
-  trigger:
-  - platform: calendar
-    event: start
-    offset: 0:0:0
-    entity_id: calendar.personio_cloud37_abwesenheiten_mein_kalender_remote_d_schleswig_holstein_cloud_infrastructure_d
-    id: urlaubOn
-  - platform: calendar
-    event: end
-    offset: 0:0:0
-    entity_id: calendar.personio_cloud37_abwesenheiten_mein_kalender_remote_d_schleswig_holstein_cloud_infrastructure_d
-    id: urlaubOff
-  condition:
-  - condition: state
-    entity_id: input_boolean.wartung
-    state: 'off'
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - urlaubOn
-      sequence:
-      - service: input_boolean.turn_on
-        data: {}
-        target:
-          entity_id: input_boolean.urlaubsmodus
-    - conditions:
-      - condition: trigger
-        id:
-        - urlaubOff
-      sequence:
-      - service: input_boolean.turn_off
-        data: {}
-        target:
-          entity_id: input_boolean.urlaubsmodus
-  mode: single
 - id: '1674670778068'
   alias: Kaffeemaschine
   description: Fü vier Stunden

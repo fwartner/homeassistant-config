@@ -3612,9 +3612,14 @@
     trigger: device
     id: couchBelegt
   conditions:
-  - condition: numeric_state
-    entity_id: sensor.people_home
-    above: 0
+  - condition: and
+    conditions:
+    - condition: numeric_state
+      entity_id: sensor.people_home
+      above: 0
+    - condition: state
+      entity_id: input_boolean.movietime
+      state: 'on'
   actions:
   - choose:
     - conditions:

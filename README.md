@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3132
+Number of entities | 3131
 Number of sensors | 1665
 Number of automations | 115
 Number of scripts | 54
@@ -33,18 +33,16 @@ Number of binary sensors | 241
 ### Add-ons
 - Advanced SSH & Web Terminal
 - Changedetection.io
-- DeepStack
 - Double Take
 - ESPHome Device Builder
-- Exadel CompreFace
 - Frigate (Full Access)
-- go2rtc master hardware
 - Grafana
 - Home Assistant Google Drive Backup
 - Matter Server
 - Matterbridge
 - Mosquitto broker
 - Music Assistant Server
+- Node-RED
 - Piper
 - PS5 MQTT
 - Samba share
@@ -138,6 +136,7 @@ Number of binary sensors | 241
 - [Waste Collection Schedule](https://github.com/mampfes/hacs_waste_collection_schedule)
 - [Watchman](https://github.com/dummylabs/thewatchman)
 - [Webrtc Camera](https://github.com/AlexxIT/WebRTC)
+- [Whatsapper Notification](https://github.com/baldarn/whatsapper-ha-integration)
 - [Ytube Music Player](https://github.com/KoljaWindeler/ytube_music_player)
 
 ### Lovelace plugins

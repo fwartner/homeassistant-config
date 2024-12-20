@@ -17,8 +17,8 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3139
-Number of sensors | 1667
+Number of entities | 3144
+Number of sensors | 1672
 Number of automations | 115
 Number of scripts | 54
 Number of scenes | 32

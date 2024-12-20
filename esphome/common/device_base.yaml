@@ -1,0 +1,61 @@
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  manual_ip:
+    static_ip: ${static_ip}
+    gateway: !secret gateway
+    subnet: !secret subnet
+  ap:
+    ssid: ${name}
+    password: ${wifi_ap_password}
+
+api:
+  encryption:
+    key: ${encryption_key}
+
+ota:
+  platform: esphome
+  password: ${ota_password}
+
+captive_portal:
+
+logger:
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+    timezone: Europe/Amsterdam
+
+sensor:
+  - platform: wifi_signal
+    id: ${name}_esphome_wifi_signal
+    name: Wifi signal
+    update_interval: 10s
+    disabled_by_default: true
+
+  - platform: uptime
+    id: ${name}_esphome_uptime
+    name: Uptime
+    disabled_by_default: true
+
+binary_sensor:
+  - platform: status
+    id: ${name}_esphome_status
+    name: Status
+
+button:
+  - platform: restart
+    id: ${name}_esphome_restart
+    name: Restart
+    disabled_by_default: true
+
+  - platform: safe_mode
+    id: ${name}_esphome_restart_safe_mode
+    name: Restart (safe mode)
+    disabled_by_default: true
+
+text_sensor:
+  - platform: version
+    id: ${name}_esphome_version
+    name: Version
+    disabled_by_default: true

@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3145
+Number of entities | 3144
 Number of sensors | 1673
 Number of automations | 115
 Number of scripts | 54
@@ -36,7 +36,6 @@ Number of binary sensors | 241
 - Double Take
 - ESPHome Device Builder
 - Frigate (Full Access)
-- Glances
 - Grafana
 - Home Assistant Google Drive Backup
 - Matter Server

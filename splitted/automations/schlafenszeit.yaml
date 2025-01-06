@@ -108,7 +108,7 @@ description: ''
 id: '1731345953307'
 mode: single
 triggers:
-- at: '22:30:00'
+- at: '21:30:00'
   id: timeOn
   trigger: time
 - event_data:

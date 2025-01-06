@@ -3772,7 +3772,7 @@
   description: ''
   triggers:
   - trigger: time
-    at: '22:30:00'
+    at: '21:30:00'
     id: timeOn
   - trigger: event
     event_type: alexa_actionable_notification

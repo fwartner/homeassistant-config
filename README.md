@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3186
+Number of entities | 3187
 Number of sensors | 1705
 Number of automations | 114
 Number of scripts | 54
@@ -103,12 +103,13 @@ Number of binary sensors | 244
 - [Local Llm Conversation](https://github.com/fixtse/home-llm)
 - [Mail And Packages](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages)
 - [Media Player Template](https://github.com/Sennevds/media_player.template)
+- [Microsoft 365   Calendar](https://github.com/RogerSelwyn/MS365-Calendar)
+- [Microsoft 365   Teams](https://github.com/RogerSelwyn/MS365-Teams)
 - [Multiscrape](https://github.com/danieldotnl/ha-multiscrape)
 - [Music Assistant](https://github.com/music-assistant/hass-music-assistant)
 - [Network Scanner](https://github.com/parvez/network_scanner)
 - [Node Red Companion](https://github.com/zachowj/hass-node-red)
 - [Nuki Lock](https://github.com/kvj/hass_nuki_ng)
-- [Office 365](https://github.com/RogerSelwyn/O365-HomeAssistant)
 - [Openmediavault](https://github.com/tomaae/homeassistant-openmediavault)
 - [Passive Ble Monitor Integration](https://github.com/custom-components/ble_monitor)
 - [Philips Hue Play Hdmi Sync Box](https://github.com/mvdwetering/huesyncbox)

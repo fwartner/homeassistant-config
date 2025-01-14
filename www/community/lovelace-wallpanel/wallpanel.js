@@ -207,7 +207,7 @@ class CameraMotionDetection {
 	}
 }
 
-const version = "4.33.0";
+const version = "4.34.0";
 const defaultConfig = {
 	enabled: false,
 	enabled_on_tabs: [],
@@ -244,6 +244,7 @@ const defaultConfig = {
 	image_url_entity: '',
 	immich_api_key: '',
 	immich_album_names: [],
+	immich_shared_albums: true,
 	immich_resolution: "preview",
 	image_fit: 'cover', // cover / contain / fill
 	image_list_update_interval: 3600,
@@ -2148,7 +2149,7 @@ class WallpanelView extends HuiView {
 		const http = new XMLHttpRequest();
 		const resolution = config.immich_resolution == "original" ? "original" : "thumbnail?size=preview"
 		http.responseType = "json";
-		http.open("GET", `${api_url}/albums`, true);
+		http.open("GET", `${api_url}/albums?shared=${config.immich_shared_albums}`, true);
 		http.setRequestHeader("x-api-key", config.immich_api_key);
 		http.onload = function() {
 			let album_ids = [];
@@ -2157,7 +2158,7 @@ class WallpanelView extends HuiView {
 				logger.debug(`Got immich API response`, allAlbums);
 				allAlbums.forEach(album => {
 					logger.debug(album);
-					if (config.immich_album_names && ! config.immich_album_names.includes(album.albumName)) {
+					if (config.immich_album_names.length && ! config.immich_album_names.includes(album.albumName)) {
 						logger.debug("Skipping album: ", album.albumName);
 					}
 					else {
@@ -2564,7 +2565,7 @@ class WallpanelView extends HuiView {
 					navigate(config.screensaver_stop_navigation_path);
 					setTimeout(() => {
 						skipDisableScreensaverOnLocationChanged = false;
-					}, 250);
+					}, 5000);
 				}
 				if (config.screensaver_stop_close_browser_mod_popup) {
 					let bmp = getActiveBrowserModPopup();
@@ -2910,10 +2911,14 @@ function locationChanged() {
 		wallpanel &&
 		wallpanel.screensaverRunning &&
 		wallpanel.screensaverRunning() &&
-		config.stop_screensaver_on_location_change &&
-		!skipDisableScreensaverOnLocationChanged
+		config.stop_screensaver_on_location_change
 	) {
-		wallpanel.stopScreensaver();	
+		if (skipDisableScreensaverOnLocationChanged) {
+			skipDisableScreensaverOnLocationChanged = false;
+		}
+		else {
+			wallpanel.stopScreensaver();
+		}
 	}
 
 	let panel = null;
@@ -4120,5 +4125,3 @@ EXIF.pretty = function(img) {
 EXIF.readFromBinaryFile = function(file) {
 	return findEXIFinJPEG(file);
 }
-
-

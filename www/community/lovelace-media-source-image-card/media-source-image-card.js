@@ -28,7 +28,10 @@ class MediaSourceImageCard extends HTMLElement {
 
             img {
                 display: block;
+                max-width: ${this.config.width ? this.config.width : '100%'};
+                max-height: ${this.config.height ? this.config.height : '100%'};
                 width: 100%;
+                height: 100%;
             }
 
             img.off {
@@ -127,15 +130,15 @@ class MediaSourceImageCard extends HTMLElement {
 
   renderContent() {
     this.getImageUrl(this.config.image)
-      .then(response => {
-          if (this.image != response.url) {
-            this.image = response.url;
-            if (response.url.indexOf('mp4') != -1 || response.url.indexOf('ogg') != -1 || response.url.indexOf('webm') != -1) {
-              this.content.innerHTML = `<video width="${this.config.video_options?.width || '320'}" height="${this.config.video_options?.height || '240'}" ${this.config.video_options?.show_controls ? 'controls' : ''} ${this.config.video_options?.loop ? 'loop' : ''} ${this.config.video_options?.autoplay ? 'autoplay' : ''} ${this.config.video_options?.muted ? 'muted' : ''} ${this.config.video_options?.type ? `type=${this.config.video_options?.type}`: ''}><source src="${response.url}" playsInLine></source></video>`;
-            } else {
-              this.content.innerHTML = `<img src=${response.url} class="${(this.config.entity_id && this.config.apply_grayscale) ? this._hass.states[this.config.entity_id].state : ''}">`;
-            }
-          }
+    .then(response => {
+      if (this.image != response.url) {
+        this.image = response.url;
+        if (response.url.indexOf('mp4') != -1 || response.url.indexOf('ogg') != -1 || response.url.indexOf('webm') != -1) {
+          this.content.innerHTML = `<video width="${this.config.video_options?.width || '320'}" height="${this.config.video_options?.height || '240'}" ${this.config.video_options?.show_controls ? 'controls' : ''} ${this.config.video_options?.loop ? 'loop' : ''} ${this.config.video_options?.autoplay ? 'autoplay' : ''} ${this.config.video_options?.muted ? 'muted' : ''} ${this.config.video_options?.type ? `type=${this.config.video_options?.type}`: ''}><source src="${response.url}" playsInLine></source></video>`;
+        } else {
+          this.content.innerHTML = `<img src=${response.url} class="${(this.config.entity_id && this.config.apply_grayscale) ? this._hass.states[this.config.entity_id].state : ''}">`;
+        }
+      }
       })
   }
 
@@ -202,7 +205,7 @@ window.customCards.push({
 });
 
 console.info(
-  `%c  MEDIA SOURCE IMAGE CARD %c Version 0.4.0 `,
+  `%c  MEDIA SOURCE IMAGE CARD %c Version 0.5.0 `,
   'color: orange; font-weight: bold; background: black',
   'color: white; font-weight: bold; background: dimgray',
 );

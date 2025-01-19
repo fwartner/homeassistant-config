@@ -1358,39 +1358,6 @@
       entity_id: lock.nuki_wohnungstur_lock
     action: lock.open
   mode: single
-- id: '1710345991689'
-  alias: Futterautomat
-  description: ''
-  trigger:
-  - platform: calendar
-    event: start
-    offset: 0:0:0
-    entity_id: calendar.polly
-    enabled: true
-  condition:
-  - condition: and
-    conditions:
-    - condition: time
-      after: 06:00:00
-      weekday:
-      - mon
-      - tue
-      - wed
-      - fri
-      - sat
-      - sun
-      - thu
-      before: '22:00:00'
-    - condition: state
-      entity_id: input_boolean.wartung
-      state: 'off'
-  action:
-  - service: script.toggle
-    metadata: {}
-    data: {}
-    target:
-      entity_id: script.polly_futtern
-  mode: single
 - id: '1710602590906'
   alias: BKW Steckdose Probleme
   description: ''
@@ -1459,88 +1426,6 @@
         device_id: 25e8395680cf11660d43d6d06ecb2d14
         entity_id: c2b543703b09163eb220f8b8a0eb4830
         domain: switch
-  mode: single
-- id: '1710933026215'
-  alias: Katzenklo Counter Increase
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.aqara_contact_katzenklo_contact
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: input_boolean.wartung
-    state: 'off'
-  action:
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 3
-      milliseconds: 0
-  - service: counter.increment
-    target:
-      entity_id: counter.katzenklo_counter
-    data: {}
-  mode: single
-- id: '1710933790796'
-  alias: Katzenklo Counter Reset
-  description: ''
-  triggers:
-  - entity_id:
-    - counter.katzenklo_counter
-    to: '11'
-    trigger: state
-  conditions:
-  - condition: and
-    conditions:
-    - condition: state
-      entity_id: input_boolean.staubsauger_reinigung_erlaubt
-      state: 'on'
-    - condition: state
-      entity_id: input_boolean.wartung
-      state: 'off'
-  actions:
-  - target:
-      entity_id:
-      - counter.katzenklo_counter
-    data: {}
-    enabled: true
-    action: counter.reset
-  - if:
-    - condition: time
-      weekday:
-      - mon
-      - tue
-      - wed
-      - thu
-      - fri
-      - sat
-      - sun
-      after: 08:00:00
-      before: '20:00:00'
-    then:
-    - metadata: {}
-      data:
-        command: set_custom_mode
-        params: 104
-      target:
-        entity_id: vacuum.roborock_s7_maxv
-      action: vacuum.send_command
-    - target:
-        entity_id:
-        - vacuum.roborock_s7_maxv
-      data:
-        fan_speed: '100'
-      action: vacuum.set_fan_speed
-    - target:
-        entity_id: vacuum.roborock_s7_maxv
-      data:
-        segments:
-        - 20
-        repeats: 1
-      action: roborock.vacuum_clean_segment
   mode: single
 - id: '1711970118796'
   alias: 'BKW: Inverter Power'
@@ -3265,21 +3150,6 @@
       button_up_double_press: false
       button_down_double_press: false
       helper_double_press_delay: 500
-- id: '1720638395327'
-  alias: Polly Wasser alle 15 Minuten
-  description: ''
-  trigger:
-  - platform: time_pattern
-    minutes: /15
-  condition:
-  - condition: state
-    entity_id: input_boolean.wartung
-    state: 'off'
-  action:
-  - service: script.polly_wasser_5_minuten
-    metadata: {}
-    data: {}
-  mode: single
 - id: '1726224334152'
   alias: Balkontür Rollo Öffnen
   description: ''
@@ -3885,56 +3755,6 @@
             - 255
           target:
             area_id: schlafzimmer
-  mode: single
-- id: '1731410111520'
-  alias: Wasserbrunnen bald leer
-  description: ''
-  triggers:
-  - type: value
-    device_id: 1b1fdd5a7160d9ceccd3382168632d20
-    entity_id: cc70a87da42ff20a997fbb3cec3a240f
-    domain: sensor
-    trigger: device
-    below: 120
-    id: mlNegative
-  - type: value
-    device_id: 1b1fdd5a7160d9ceccd3382168632d20
-    entity_id: cc70a87da42ff20a997fbb3cec3a240f
-    domain: sensor
-    trigger: device
-    id: mlPositive
-    above: 120
-  conditions: []
-  actions:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - mlNegative
-      sequence:
-      - action: light.turn_on
-        metadata: {}
-        data: {}
-        target:
-          entity_id:
-          - light.petlibro_plwf105_red_led
-      - action: notify.mobile_app_iphone_von_florian
-        metadata: {}
-        data:
-          title: "\U0001F63F Polly könnte bald Durst bekommen!"
-          message: Der Wasserbrunnen von Polly ist fast leer. Bitte fülle ihn doch
-            mal nach..
-    - conditions:
-      - condition: trigger
-        id:
-        - mlPositive
-      sequence:
-      - action: light.turn_off
-        metadata: {}
-        data: {}
-        target:
-          entity_id:
-          - light.petlibro_plwf105_red_led
   mode: single
 - id: '1731688558462'
   alias: Willkommen Steffi

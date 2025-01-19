@@ -11,31 +11,27 @@ class MediaSourceImageCard extends HTMLElement {
       this.innerHTML = `
         <style>
             ha-card {
-                overflow: hidden;
-                height: 100%;
+              overflow: hidden;
+              height: 100%;
+              display: flex;
+              align-content: center;
+              justify-content: center;
             }
 
             ha-card.clickable {
-                cursor: pointer;
-            }
-
-            .card-content {
-                padding: 0px;
-                display: flex;
-                align-content: center;
-                justify-content: center;
+              cursor: pointer;
             }
 
             img {
-                display: block;
-                max-width: ${this.config.width ? this.config.width : '100%'};
-                max-height: ${this.config.height ? this.config.height : '100%'};
-                width: 100%;
-                height: 100%;
+              display: block;
+              max-width: ${this.config.width ? this.config.width : '100%'};
+              max-height: ${this.config.height ? this.config.height : '100%'};
+              width: 100%;
+              height: 100%;
             }
 
             img.off {
-                -webkit-filter: grayscale();
+              -webkit-filter: grayscale();
             }
 
             .error {
@@ -45,12 +41,10 @@ class MediaSourceImageCard extends HTMLElement {
 
         </style>
         <ha-card>
-            <div class="card-content">
-                <img src="">
-            </div>
+          <img src="">
         </ha-card>
       `;
-      this.content = this.querySelector("div");
+      this.content = this.querySelector("ha-card");
       this.content.addEventListener('click', () => this.handleClick())
     }
   }
@@ -205,7 +199,7 @@ window.customCards.push({
 });
 
 console.info(
-  `%c  MEDIA SOURCE IMAGE CARD %c Version 0.5.0 `,
+  `%c  MEDIA SOURCE IMAGE CARD %c Version 0.5.1 `,
   'color: orange; font-weight: bold; background: black',
   'color: white; font-weight: bold; background: dimgray',
 );

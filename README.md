@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3213
+Number of entities | 3214
 Number of sensors | 1730
 Number of automations | 108
 Number of scripts | 51
@@ -79,6 +79,7 @@ Number of binary sensors | 244
 - [Cupertino Icons](https://github.com/menahishayan/HomeAssistant-Cupertino-Icons)
 - [Daily Schedule](https://github.com/amitfin/daily_schedule)
 - [Daily Sensor](https://github.com/jeroenterheerdt/HADailySensor)
+- [Db Infoscreen](https://github.com/FaserF/ha-db_infoscreen)
 - [Deutsche Bahn](https://github.com/FaserF/ha-deutschebahn)
 - [Dyson](https://github.com/libdyson-wg/ha-dyson)
 - [Elevenlabs Tts](https://github.com/carleeno/elevenlabs_tts)
@@ -100,8 +101,8 @@ Number of binary sensors | 244
 - [Hvac Group](https://github.com/tetele/hvac_group)
 - [Icloud3 V3 Idevice Tracker](https://github.com/gcobb321/icloud3)
 - [Llm Vision](https://github.com/valentinfrlch/ha-llmvision)
-- [Local Llm Conversation](https://github.com/acon96/home-llm)
 - [Local Llm Conversation](https://github.com/fixtse/home-llm)
+- [Local Llm Conversation](https://github.com/acon96/home-llm)
 - [Mail And Packages](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages)
 - [Media Player Template](https://github.com/Sennevds/media_player.template)
 - [Microsoft 365   Calendar](https://github.com/RogerSelwyn/MS365-Calendar)

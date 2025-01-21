@@ -245,25 +245,6 @@
           - cover.rollos_schlafzimmer
         data: {}
   mode: single
-- id: '1690625427032'
-  alias: Daily Backup
-  description: ''
-  trigger:
-  - platform: time
-    at: 02:00:00
-  - platform: conversation
-    command:
-    - Mache ein Backup
-    - Mach ein Backup
-  condition:
-  - condition: state
-    entity_id: input_boolean.wartung
-    state: 'off'
-  action:
-  - service: auto_backup.backup_full
-    data:
-      keep_days: 2
-  mode: single
 - id: '1690714818053'
   alias: Rollos hoch wenn jemand nach Hause kommt
   description: ''

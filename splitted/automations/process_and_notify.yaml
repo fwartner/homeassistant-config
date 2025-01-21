@@ -1,5 +1,6 @@
-action:
-- data:
+actions:
+- action: conversation.process
+  data:
     agent_id: conversation.chatgpt_assist
     language: german
     text: 'Briefly tell me that my {{ trigger.event.data.service_data.message }}.
@@ -8,35 +9,34 @@ action:
       '
   metadata: {}
   response_variable: generated_response
-  service: conversation.process
 - else:
-  - data:
+  - action: notify.florian_notify
+    data:
       message: '{{ generated_response.response.speech.plain.speech }}'
       title: '{{ trigger.event.data.service_data.title }}'
     metadata: {}
-    service: notify.all_iphones
   if:
   - condition: template
     value_template: '{{ trigger.event.data.service_data.data.actions != null }}'
   then:
-  - data:
+  - action: notify.florian_notify
+    data:
       data:
         actions: '{{ trigger.event.data.service_data.data.actions }}'
       message: '{{ generated_response.response.speech.plain.speech }}'
       title: '{{ trigger.event.data.service_data.title }}'
     metadata: {}
-    service: notify.all_iphones
 alias: Process and Notify
-condition:
+conditions:
 - condition: state
   entity_id: input_boolean.wartung
   state: 'off'
 description: ''
 id: '1718614598599'
 mode: single
-trigger:
+triggers:
 - event_data:
     domain: notify
     service: home_ai
   event_type: call_service
-  platform: event
+  trigger: event

@@ -93,40 +93,6 @@
   metadata:
     input_boolean.movietime:
       entity_only: true
-- id: '1713182234223'
-  name: Polly Füttern
-  entities:
-    lock.aqara_futterautomat_child_lock:
-      friendly_name: Aqara Futterautomat Child lock
-      supported_features: 0
-      state: unlocked
-    number.aqara_futterautomat_portion_weight:
-      min: 1
-      max: 20
-      step: 1
-      mode: auto
-      unit_of_measurement: g
-      friendly_name: Aqara Futterautomat Portion weight
-      state: '9'
-    number.aqara_futterautomat_serving_size:
-      min: 1
-      max: 10
-      step: 1
-      mode: auto
-      unit_of_measurement: portion
-      friendly_name: Aqara Futterautomat Serving size
-      state: '1'
-    select.aqara_futterautomat_feed:
-      options:
-      - ''
-      - START
-      friendly_name: Aqara Futterautomat Feed
-      state: ''
-    switch.aqara_futterautomat:
-      friendly_name: Aqara Futterautomat
-      state: 'off'
-  icon: phu:aqara-pet-feeder-c1
-  metadata: {}
 - id: '1716114516321'
   name: Flirty
   entities:

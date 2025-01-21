@@ -58,16 +58,6 @@
     domain: light
   mode: single
   icon: mdi:bed-clock
-polly_futtern:
-  alias: Polly füttern
-  sequence:
-  - device_id: 04ece3de9f8fdb037bfefdbfd2fa78ca
-    domain: select
-    entity_id: 6ff3e29cf091354896df420b804035f6
-    type: select_option
-    option: START
-  mode: single
-  icon: mdi:cat
 zahneputzen:
   alias: Zähneputzen
   sequence:
@@ -851,48 +841,6 @@ deckenventilator_timer_8h:
       device_id: 4ed17b33e4a244aaabf58d21cbfc92db
   description: ''
   icon: mdi:ceiling-fan
-polly_wasser_5_minuten:
-  alias: Polly Wasser 5 Minuten
-  sequence:
-  - service: switch.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id: switch.petlibro_plwf105_pump
-  - delay:
-      hours: 0
-      minutes: 5
-      seconds: 0
-      milliseconds: 0
-  - service: switch.turn_off
-    metadata: {}
-    data: {}
-    target:
-      entity_id: switch.petlibro_plwf105_pump
-  fields: {}
-  description: ''
-  icon: mdi:fountain
-polly_wasser_15_minuten:
-  alias: Polly Wasser 15 Minuten
-  sequence:
-  - service: switch.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id: switch.petlibro_plwf105_pump
-  - delay:
-      hours: 0
-      minutes: 15
-      seconds: 0
-      milliseconds: 0
-  - service: switch.turn_off
-    metadata: {}
-    data: {}
-    target:
-      entity_id: switch.petlibro_plwf105_pump
-  fields: {}
-  description: ''
-  icon: mdi:fountain
 schlafenszeit:
   alias: Schlafenszeit
   sequence:

@@ -12,18 +12,18 @@
         {% endif %}
     location_steffi_color:
       value_template: >
-        {% if is_state("person.steffi", "home") %}
+        {% if is_state("device_tracker.iphone_von_stephanie", "home") %}
           green
-        {% elif is_state("person.steffi", "Steffi Zuhause") %}
+        {% elif is_state("device_tracker.iphone_von_stephanie", "Steffi Zuhause") %}
           pink
         {%- else -%}
           red
         {%- endif -%}
     location_steffi_icon:
       value_template: >
-        {% if is_state("person.steffi", "home") %}
+        {% if is_state("device_tracker.iphone_von_stephanie", "home") %}
           mdi:home
-        {% elif is_state("person.steffi", "Steffi Zuhause") %}
+        {% elif is_state("device_tracker.iphone_von_stephanie", "Steffi Zuhause") %}
           mdi:home-heart
         {%- else -%}
           mdi:home-remove

@@ -3,27 +3,27 @@
   sensors:
     location_florian:
       value_template: >
-        {% if is_state('device_tracker.device_tracker.pixel_9', 'home') %}
+        {% if is_state('device_tracker.pixel_9', 'home') %}
           Zuhause
-        {% elif is_state("device_tracker.√", "not_home") %}
+        {% elif is_state("device_tracker.pixel_9", "not_home") %}
           Unterwegs
         {% else %}
-          {{ states("device_tracker.device_tracker.pixel_9") }}
+          {{ states("device_tracker.pixel_9") }}
         {% endif %}
     location_florian_color:
       value_template: >
-        {% if is_state("person.florian_wartner", "home") %}
+        {% if is_state("device_tracker.pixel_9", "home") %}
           green
-        {% elif is_state("person.florian_wartner", "Steffi Zuhause") %}
+        {% elif is_state("device_tracker.pixel_9", "Steffi Zuhause") %}
           pink
         {%- else -%}
           red
         {%- endif -%}
     location_florian_icon:
       value_template: >
-        {% if is_state("person.florian_wartner", "home") %}
+        {% if is_state("device_tracker.pixel_9", "home") %}
           mdi:home
-        {% elif is_state("person.florian_wartner", "Steffi Zuhause") %}
+        {% elif is_state("device_tracker.pixel_9", "Steffi Zuhause") %}
           mdi:home-heart
         {%- else -%}
           mdi:home-remove

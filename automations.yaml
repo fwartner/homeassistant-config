@@ -3850,8 +3850,7 @@
     entity_id: device_tracker.pixel_9
     state: home
   actions:
-  - action: notify.florian_notify
-    metadata: {}
+  - action: notify.mobile_app_pixel_9
     data:
       data:
         actions:
@@ -3862,4 +3861,39 @@
         - action: DRINK_500
           title: 500 ml getrunken
       message: "Vergiss nicht zu trinken! \U0001F6B0"
+  mode: single
+- id: '1737570681778'
+  alias: Wasseraktionen verarbeiten
+  description: ''
+  triggers:
+  - event_type: mobile_app_notification_action
+    trigger: event
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.event.data.action == ''DRINK_200'' }}'
+      sequence:
+      - data:
+          amount: 200
+        action: script.log_water
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.event.data.action == ''DRINK_300'' }}'
+      sequence:
+      - data:
+          amount: 300
+        action: script.log_water
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.event.data.action == ''DRINK_500'' }}'
+      sequence:
+      - data:
+          amount: 500
+        action: script.log_water
+  - action: persistent_notification.dismiss
+    metadata: {}
+    data:
+      notification_id: '{{ trigger.event.data.notification_id }}'
   mode: single

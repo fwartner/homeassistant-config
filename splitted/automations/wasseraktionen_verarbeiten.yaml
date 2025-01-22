@@ -1,0 +1,35 @@
+actions:
+- choose:
+  - conditions:
+    - condition: template
+      value_template: '{{ trigger.event.data.action == ''DRINK_200'' }}'
+    sequence:
+    - action: script.log_water
+      data:
+        amount: 200
+  - conditions:
+    - condition: template
+      value_template: '{{ trigger.event.data.action == ''DRINK_300'' }}'
+    sequence:
+    - action: script.log_water
+      data:
+        amount: 300
+  - conditions:
+    - condition: template
+      value_template: '{{ trigger.event.data.action == ''DRINK_500'' }}'
+    sequence:
+    - action: script.log_water
+      data:
+        amount: 500
+- action: persistent_notification.dismiss
+  data:
+    notification_id: '{{ trigger.event.data.notification_id }}'
+  metadata: {}
+alias: Wasseraktionen verarbeiten
+conditions: []
+description: ''
+id: '1737570681778'
+mode: single
+triggers:
+- event_type: mobile_app_notification_action
+  trigger: event

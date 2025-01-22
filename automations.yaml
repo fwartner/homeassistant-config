@@ -3833,3 +3833,33 @@
 
         All in german please.'
       preview_mode: Snapshot
+- id: '1737570190214'
+  alias: Trinkerinnerung
+  description: ''
+  triggers:
+  - trigger: time_pattern
+    hours: '1'
+  conditions:
+  - condition: time
+    after: 08:00
+    before: '22:00'
+  - condition: numeric_state
+    entity_id: sensor.wasseraufnahme
+    below: input_number.water_goal
+  - condition: state
+    entity_id: device_tracker.pixel_9
+    state: home
+  actions:
+  - action: notify.florian_notify
+    metadata: {}
+    data:
+      data:
+        actions:
+        - action: DRINK_200
+          title: 200 ml getrunken
+        - action: DRINK_300
+          title: 300 ml getrunken
+        - action: DRINK_500
+          title: 500 ml getrunken
+      message: "Vergiss nicht zu trinken! \U0001F6B0"
+  mode: single

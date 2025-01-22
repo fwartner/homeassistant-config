@@ -1,0 +1,30 @@
+actions:
+- action: notify.florian_notify
+  data:
+    data:
+      actions:
+      - action: DRINK_200
+        title: 200 ml getrunken
+      - action: DRINK_300
+        title: 300 ml getrunken
+      - action: DRINK_500
+        title: 500 ml getrunken
+    message: "Vergiss nicht zu trinken! \U0001F6B0"
+  metadata: {}
+alias: Trinkerinnerung
+conditions:
+- after: 08:00
+  before: '22:00'
+  condition: time
+- below: input_number.water_goal
+  condition: numeric_state
+  entity_id: sensor.wasseraufnahme
+- condition: state
+  entity_id: device_tracker.pixel_9
+  state: home
+description: ''
+id: '1737570190214'
+mode: single
+triggers:
+- hours: '1'
+  trigger: time_pattern

@@ -1,8 +1,8 @@
 ---
-  water_goal:
-    name: Tagesziel
-    min: 0
-    max: 5000
-    step: 100
-    unit_of_measurement: ml
-    initial: 2000
+water_goal:
+  name: Tagesziel
+  min: 0
+  max: 5000
+  step: 100
+  unit_of_measurement: ml
+  initial: 2000

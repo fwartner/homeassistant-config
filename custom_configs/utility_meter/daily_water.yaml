@@ -1,0 +1,5 @@
+---
+daily_water:
+  name: Tagesverbrauch Wasser
+  source: sensor.water_intake
+  cycle: daily

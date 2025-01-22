@@ -987,3 +987,13 @@ analyse_front_door:
     action: input_text.set_value
   description: ''
   icon: mdi:cube-scan
+log_water:
+  alias: "Wasserzufuhr erfassen"
+  fields:
+    amount:
+      description: "Menge in ml"
+      example: 200
+  sequence:
+    - service: sensor.update_water_intake
+      data:
+        value: "{{ amount }}"

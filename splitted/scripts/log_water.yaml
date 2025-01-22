@@ -1,0 +1,10 @@
+log_water:
+  alias: Wasserzufuhr erfassen
+  fields:
+    amount:
+      description: Menge in ml
+      example: 200
+  sequence:
+  - data:
+      value: '{{ amount }}'
+    service: sensor.update_water_intake

@@ -6,5 +6,6 @@ log_water:
       example: 200
   sequence:
   - data:
-      value: '{{ amount }}'
-    service: sensor.update_water_intake
+      entity_id: input_number.water_intake
+      value: '{{ states(''input_number.water_intake'') | float(0) + amount }}'
+    service: input_number.set_value

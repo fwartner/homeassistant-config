@@ -1,8 +1,0 @@
----
-- platform: statistics
-  name: "Wasseraufnahme"
-  entity_id: sensor.water_intake
-  state_characteristic: sum
-  sampling_size: 100 # Optional: Limits the number of states to track
-  max_age:
-    hours: 24

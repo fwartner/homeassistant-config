@@ -3906,6 +3906,13 @@
     - binary_sensor.macbook_pro_von_florian_ontracon_camera_in_use
     from: 'off'
     to: 'on'
+    id: meetingOn
+  - trigger: state
+    entity_id:
+    - binary_sensor.macbook_pro_von_florian_ontracon_camera_in_use
+    from: 'on'
+    to: 'off'
+    id: meetingOff
   conditions:
   - condition: time
     weekday:
@@ -3922,4 +3929,65 @@
       message: command_dnd
       data:
         command: total_silence
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - meetingOn
+      sequence:
+      - action: input_boolean.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_boolean.meeting
+    - conditions:
+      - condition: trigger
+        id:
+        - meetingOff
+      sequence:
+      - action: input_boolean.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_boolean.meeting
+  mode: single
+- id: '1737627220636'
+  alias: Meeting Toggle
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.meeting
+    from: 'off'
+    to: 'on'
+    id: meetingToggleOn
+  - trigger: state
+    entity_id:
+    - input_boolean.meeting
+    from: 'on'
+    to: 'off'
+    id: meetingToggleOff
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - meetingToggleOn
+      sequence:
+      - action: notify.mobile_app_pixel_9
+        data:
+          message: command_dnd
+          data:
+            command: total_silence
+    - conditions:
+      - condition: trigger
+        id:
+        - meetingToggleOff
+      sequence:
+      - action: notify.mobile_app_pixel_9
+        data:
+          message: command_dnd
+          data:
+            command: 'off'
   mode: single

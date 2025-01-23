@@ -4,6 +4,27 @@ actions:
     data:
       command: total_silence
     message: command_dnd
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - meetingOn
+    sequence:
+    - action: input_boolean.turn_on
+      data: {}
+      metadata: {}
+      target:
+        entity_id: input_boolean.meeting
+  - conditions:
+    - condition: trigger
+      id:
+      - meetingOff
+    sequence:
+    - action: input_boolean.turn_off
+      data: {}
+      metadata: {}
+      target:
+        entity_id: input_boolean.meeting
 alias: Meeting
 conditions:
 - after: 08:00:00
@@ -22,5 +43,12 @@ triggers:
 - entity_id:
   - binary_sensor.macbook_pro_von_florian_ontracon_camera_in_use
   from: 'off'
+  id: meetingOn
   to: 'on'
+  trigger: state
+- entity_id:
+  - binary_sensor.macbook_pro_von_florian_ontracon_camera_in_use
+  from: 'on'
+  id: meetingOff
+  to: 'off'
   trigger: state

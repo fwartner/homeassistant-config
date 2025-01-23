@@ -1,0 +1,40 @@
+actions:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - meetingToggleOn
+    sequence:
+    - action: notify.mobile_app_pixel_9
+      data:
+        data:
+          command: total_silence
+        message: command_dnd
+  - conditions:
+    - condition: trigger
+      id:
+      - meetingToggleOff
+    sequence:
+    - action: notify.mobile_app_pixel_9
+      data:
+        data:
+          command: 'off'
+        message: command_dnd
+alias: Meeting Toggle
+conditions: []
+description: ''
+id: '1737627220636'
+mode: single
+triggers:
+- entity_id:
+  - input_boolean.meeting
+  from: 'off'
+  id: meetingToggleOn
+  to: 'on'
+  trigger: state
+- entity_id:
+  - input_boolean.meeting
+  from: 'on'
+  id: meetingToggleOff
+  to: 'off'
+  trigger: state

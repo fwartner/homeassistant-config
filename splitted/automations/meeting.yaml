@@ -1,0 +1,26 @@
+actions:
+- action: notify.mobile_app_pixel_9
+  data:
+    data:
+      command: total_silence
+    message: command_dnd
+alias: Meeting
+conditions:
+- after: 08:00:00
+  before: '17:00:00'
+  condition: time
+  weekday:
+  - mon
+  - tue
+  - wed
+  - thu
+  - fri
+description: ''
+id: '1737626947619'
+mode: single
+triggers:
+- entity_id:
+  - binary_sensor.macbook_pro_von_florian_ontracon_camera_in_use
+  from: 'off'
+  to: 'on'
+  trigger: state

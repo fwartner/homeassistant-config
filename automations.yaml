@@ -3897,3 +3897,29 @@
     data:
       notification_id: '{{ trigger.event.data.notification_id }}'
   mode: single
+- id: '1737626947619'
+  alias: Meeting
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.macbook_pro_von_florian_ontracon_camera_in_use
+    from: 'off'
+    to: 'on'
+  conditions:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    after: 08:00:00
+    before: '17:00:00'
+  actions:
+  - action: notify.mobile_app_pixel_9
+    data:
+      message: command_dnd
+      data:
+        command: total_silence
+  mode: single

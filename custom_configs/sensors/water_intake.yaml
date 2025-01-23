@@ -1,0 +1,7 @@
+---
+- platform: template
+  sensors:
+    water_intake:
+      value_template: >
+        {{ states('input_number.water_intake') | float(0) }}
+      unit_of_measurement: "ml"

@@ -3924,11 +3924,6 @@
     after: 08:00:00
     before: '17:00:00'
   actions:
-  - action: notify.mobile_app_pixel_9
-    data:
-      message: command_dnd
-      data:
-        command: total_silence
   - choose:
     - conditions:
       - condition: trigger

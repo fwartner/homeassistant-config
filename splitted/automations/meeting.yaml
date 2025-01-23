@@ -1,9 +1,4 @@
 actions:
-- action: notify.mobile_app_pixel_9
-  data:
-    data:
-      command: total_silence
-    message: command_dnd
 - choose:
   - conditions:
     - condition: trigger

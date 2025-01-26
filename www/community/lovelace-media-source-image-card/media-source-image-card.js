@@ -13,7 +13,7 @@ class MediaSourceImageCard extends HTMLElement {
             ha-card {
               overflow: hidden;
               height: 100%;
-              aspect-ratio: ${this.config.aspect_ratio ? this.config.aspect_ratio : '1.9'};
+              aspect-ratio: ${this.config.aspect_ratio ? this.config.aspect_ratio : 'auto'};
               display: flex;
               align-content: center;
               justify-content: center;

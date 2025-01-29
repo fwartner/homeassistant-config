@@ -122,9 +122,7 @@ class CameraMotionDetection {
 
 		this.canvasElement = document.createElement("canvas");
 		this.canvasElement.setAttribute("id", "wallpanelMotionDetectionCanvas");
-		this.canvasElement.style.display = 'none';
-		document.body.appendChild(this.canvasElement);
-
+		
 		this.context = this.canvasElement.getContext('2d', { willReadFrequently: true });
 	}
 
@@ -207,7 +205,7 @@ class CameraMotionDetection {
 	}
 }
 
-const version = "4.34.0";
+const version = "4.35.0";
 const defaultConfig = {
 	enabled: false,
 	enabled_on_tabs: [],
@@ -251,6 +249,7 @@ const defaultConfig = {
 	image_order: 'sorted', // sorted / random
 	image_excludes: [],
 	image_background: 'color', // color / image
+	video_loop: false,
 	touch_zone_size_next_image: 15,
 	touch_zone_size_previous_image: 15,
 	show_progress_bar: false,
@@ -331,18 +330,7 @@ const elHass = document.querySelector("body > home-assistant");
 const LitElement = Object.getPrototypeOf(customElements.get("hui-masonry-view"));
 const HuiView = customElements.get("hui-view");
 let elHaMain = null;
-
 let browserId = null;
-if (window.browser_mod) {
-	if (window.browser_mod.entity_id) {
-		// V1
-		browserId = window.browser_mod.entity_id;
-	}
-	else if (window.browser_mod.browserID) {
-		// V2
-		browserId = window.browser_mod.browserID.replace('-', '_');
-	}
-}
 
 function getActiveBrowserModPopup() {
 	if (!browserId) {
@@ -1285,17 +1273,25 @@ class WallpanelView extends HuiView {
 		this.moveInfoBox(x, y);
 	}
 
-	moveAroundCorners() {
-		this.lastCorner = (this.lastCorner + 1) % 4;
+	moveAroundCorners(correctPostion=false) {
+		let fadeDuration = null;
+		if (correctPostion) {
+			fadeDuration = 0;
+		} else {
+			this.lastCorner = (this.lastCorner + 1) % 4;
+		}
 		let computed = getComputedStyle(this.infoContainer);
 		let x = [2, 3].includes(this.lastCorner) ? this.infoContainer.offsetWidth - parseInt(computed.paddingLeft) - parseInt(computed.paddingRight) - this.infoBox.offsetWidth : 0;
 		let y = [1, 2].includes(this.lastCorner) ? this.infoContainer.offsetHeight - parseInt(computed.paddingTop) - parseInt(computed.paddingBottom) - this.infoBox.offsetHeight : 0;
-		this.moveInfoBox(x, y);
+		this.moveInfoBox(x, y, fadeDuration);
 	}
 
-	moveInfoBox(x, y) {
+	moveInfoBox(x, y, fadeDuration = null) {
 		this.lastMove = Date.now();
-		if (config.info_move_fade_duration > 0) {
+		if (fadeDuration === null) {
+			fadeDuration = config.info_move_fade_duration;
+		}
+		if (fadeDuration > 0) {
 			if (this.infoBox.animate) {
 				let keyframes = [
 					{ opacity: 1 },
@@ -1304,7 +1300,7 @@ class WallpanelView extends HuiView {
 				];
 				this.infoBox.animate(
 					keyframes, {
-						duration: Math.round(config.info_move_fade_duration * 1000),
+						duration: Math.round(fadeDuration * 1000),
 						iterations: 1
 					}
 				);
@@ -1314,7 +1310,7 @@ class WallpanelView extends HuiView {
 			}
 		}
 		let wp = this;
-		let ms = Math.round(config.info_move_fade_duration * 500);
+		let ms = Math.round(fadeDuration * 500);
 		if (ms < 0) {
 			ms = 0;
 		}
@@ -1538,6 +1534,71 @@ class WallpanelView extends HuiView {
 		return this.imageOne;
 	}
 
+	handleMediaError(medialElem, error) {
+		medialElem.setAttribute('data-loading', false);
+		logger.error('Error while loding image:', error);
+
+		if (medialElem.imageUrl) {
+			const idx = this.imageList.indexOf(medialElem.imageUrl);
+			if (idx > -1) {
+				logger.debug(`Removing media from list: ${medialElem.imageUrl}`);
+				this.imageList.splice(idx, 1);
+			}
+			this.updateImage(medialElem);
+		} else {
+			this.displayMessage(`Failed to load media: ${medialElem.src}`, 5000);
+		}
+	}
+
+	loadBackgroundImage(medialElem) {
+		const isVideo = medialElem.tagName === 'VIDEO';
+		let srcImageUrl = medialElem.src;
+		if (isVideo) {
+			// Capture the current frame of the video as a background image
+			const canvas = document.createElement('canvas');
+			canvas.width = medialElem.videoWidth;
+			canvas.height = medialElem.videoHeight;
+			
+			const ctx = canvas.getContext('2d');
+			ctx.drawImage(medialElem, 0, 0, canvas.width, canvas.height);
+			try {
+				srcImageUrl = canvas.toDataURL('image/png');
+			} catch (err) {
+				srcImageUrl = null;
+				logger.error("Error extracting canvas image:", err);
+			}
+		}
+		let cont = this.imageOneBackground;
+		if (medialElem == this.imageTwo) {
+			cont = this.imageTwoBackground;
+		}
+		cont.style.backgroundImage = srcImageUrl ? `url(${srcImageUrl})` : '';
+	}
+
+	handleMediaLoaded(medialElem) {
+		medialElem.setAttribute('data-loading', false);
+		const isVideo = medialElem.tagName === 'VIDEO';
+		const wp = this;
+		if (config.image_background === "image") {
+			if (isVideo) {
+				if (medialElem.readyState >= medialElem.HAVE_CURRENT_DATA) {
+					wp.loadBackgroundImage(medialElem);
+				}
+				else {
+					medialElem.addEventListener('canplay', function() {
+						wp.loadBackgroundImage(medialElem);
+					});
+				}
+			}
+			else {
+				wp.loadBackgroundImage(medialElem);
+			}
+		}
+		if (!isVideo && config.show_image_info && /.*\.jpe?g$/i.test(medialElem.imageUrl)) {
+			wp.fetchEXIFInfo(medialElem);
+		}
+	}
+
 	connectedCallback() {
 		this.style.zIndex = config.z_index;
 		this.style.visibility = 'hidden';
@@ -1644,7 +1705,7 @@ class WallpanelView extends HuiView {
 		this.infoBoxContent = document.createElement('div');
 		this.infoBoxContent.id = 'wallpanel-screensaver-info-box-content';
 		this.infoBoxContent.style.display = 'grid';
-
+		
 		this.infoBox.appendChild(this.infoBoxContent);
 		this.infoBoxPosX.appendChild(this.infoBox);
 		this.infoBoxPosY.appendChild(this.infoBoxPosX);
@@ -1690,37 +1751,14 @@ class WallpanelView extends HuiView {
 				wp.moreInfoDialogToForeground();
 			}
 		});
-
-		[this.imageOne, this.imageTwo].forEach(function(img) {
-			img.addEventListener('load', function() {
-				img.setAttribute('data-loading', false);
-				if (config.image_background == "image") {
-					let cont = wp.imageOneBackground;
-					if (img == wp.imageTwo) {
-						cont = wp.imageTwoBackground;
-					}
-					cont.style.backgroundImage = "url(" + img.src + ")";
-				}
-				if (config.show_image_info && /.*\.jpe?g$/i.test(img.imageUrl)) {
-					wp.fetchEXIFInfo(img);
-				}
-			});
-			img.addEventListener('error', function() {
-				img.setAttribute('data-loading', false);
-				logger.error(`Failed to load image: ${img.src}`);
-				if (img.imageUrl) {
-					const idx = wp.imageList.indexOf(img.imageUrl);
-					if (idx > -1) {
-						logger.debug(`Removing image from list: ${img.imageUrl}`);
-						wp.imageList.splice(idx, 1);
-					}
-					wp.updateImage(img);
-				}
-				else {
-					wp.displayMessage(`Failed to load image: ${img.src}`, 5000)
-				}
-			})
+		const infoBoxResizeObserver = new ResizeObserver((entries) => {
+			if (config.info_move_pattern === 'corners') {
+				// Correct position
+				this.moveAroundCorners(true);
+			}
 		});
+		infoBoxResizeObserver.observe(this.infoBoxContent);
+		
 
 		this.reconfigure();
 		// Correct possibly incorrect entity state
@@ -1747,6 +1785,8 @@ class WallpanelView extends HuiView {
 			function preloadCallback(wp) {
 				if (switchImages) {
 					wp.switchActiveImage();
+				} else {
+					wp.startPlayingActiveMedia();
 				}
 			}
 			if (["immich-api", "unsplash-api", "media-source"].includes(imageSourceType())) {
@@ -2012,9 +2052,9 @@ class WallpanelView extends HuiView {
 		}
 	}
 
-	findImages(mediaContentId) {
+	findMedias(mediaContentId) {
 		const wp = this;
-		logger.debug(`findImages: ${mediaContentId}`);
+		logger.debug(`findMedias: ${mediaContentId}`);
 		let excludeRegExp = [];
 		if (config.image_excludes) {
 			for (let imageExclude of config.image_excludes) {
@@ -2037,7 +2077,7 @@ class WallpanelView extends HuiView {
 									return;
 								}
 							}
-							if (child.media_class == "image") {
+							if (["image", "video"].includes(child.media_class)) {
 								//logger.debug(child);
 								return child.media_content_id;
 							}
@@ -2045,7 +2085,7 @@ class WallpanelView extends HuiView {
 								if (wp.cancelUpdatingImageList) {
 									return;
 								}
-								return wp.findImages(child.media_content_id);
+								return wp.findMedias(child.media_content_id);
 							}
 						});
 						Promise.all(promises).then(results => {
@@ -2072,7 +2112,7 @@ class WallpanelView extends HuiView {
 		this.lastImageListUpdate = Date.now();
 		const mediaContentId = config.image_url;
 		const wp = this;
-		wp.findImages(mediaContentId).then(
+		wp.findMedias(mediaContentId).then(
 			result => {
 				wp.updatingImageList = false;
 				if (!wp.cancelUpdatingImageList) {
@@ -2147,7 +2187,6 @@ class WallpanelView extends HuiView {
 		let data = {};
 		const api_url = config.image_url.replace(/^immich\+/, "");
 		const http = new XMLHttpRequest();
-		const resolution = config.immich_resolution == "original" ? "original" : "thumbnail?size=preview"
 		http.responseType = "json";
 		http.open("GET", `${api_url}/albums?shared=${config.immich_shared_albums}`, true);
 		http.setRequestHeader("x-api-key", config.immich_api_key);
@@ -2179,9 +2218,11 @@ class WallpanelView extends HuiView {
 								logger.debug(`Got immich API response`, albumDetails);
 								albumDetails.assets.forEach(asset => {
 									logger.debug(asset);
-									if (asset.type == "IMAGE") {
+									if (["IMAGE", "VIDEO"].includes(asset.type)) {
+										const resolution = asset.type == "VIDEO" || config.immich_resolution == "original" ? "original" : "thumbnail?size=preview"
 										const url = `${api_url}/assets/${asset.id}/${resolution}`;
 										data[url] = asset.exifInfo;
+										data[url]["mediaType"] = asset.type;
 										data[url]["image"] = {
 											"filename": asset.originalFileName,
 											"folderName": albumDetails.albumName
@@ -2238,36 +2279,91 @@ class WallpanelView extends HuiView {
 		return url;
 	}
 
-	updateImageFromUrl(img, url, headers = null) {
+	async loadMediaFromUrl(curElem, sourceUrl, mediaType = null, headers = {}) {
+		const loadMediaWithElement = async (elem, url) => {
+			const response = await fetch(url, { headers: headers });
+			if (!response.ok) {
+				logger.error(`Failed to load ${elem.tagName} "${url}"`, response);
+				throw new Error(`Failed to load ${elem.tagName} "${url}": ${response.status}`);
+			}
+			const blob = await response.blob();
+			elem.src = window.URL.createObjectURL(blob);
+		};
+
+		const createFallbackElement = (currentElem) => {
+			const fallbackTag = currentElem.tagName === "IMG" ? "VIDEO" : "IMG";
+			const fallbackElem = document.createElement(fallbackTag);
+
+			// Clone all custom and HTML attributes except 'src', it will be set later.
+			Object.entries(currentElem)
+				.filter(([key]) => !(key in HTMLElement.prototype))
+				.forEach(([key, value]) => fallbackElem[key] = value);
+
+			[...currentElem.attributes]
+				.filter((attr) => attr.name !== "src")
+				.forEach((attr) => fallbackElem.setAttribute(attr.name, attr.value));
+
+			if (fallbackTag === "VIDEO") {
+				Object.assign(fallbackElem, { preload: "auto", muted: true });
+			}
+			return fallbackElem;
+		};
+
+		const replaceElementWith = (currentElem, newElem) => {
+			if (currentElem === this.imageOne) this.imageOne = newElem;
+			if (currentElem === this.imageTwo) this.imageTwo = newElem;
+			currentElem.replaceWith(newElem);
+		};
+
+		const handleFallback = async (currentElem, url, originalError = null) => {
+			let fallbackSuccessful = false;
+			const fallbackElem = createFallbackElement(currentElem);
+			try {
+				await loadMediaWithElement(fallbackElem, url);
+				replaceElementWith(currentElem, fallbackElem);
+				fallbackSuccessful = true;
+			} catch (e) {
+				this.handleMediaError(currentElem, originalError || e);
+			}
+			if (fallbackSuccessful) {
+				this.handleMediaLoaded(fallbackElem);
+			}
+		};
+
+		const loadOrFallback = async (currentElem, url, withFallback) => {
+			let loadSuccessful = false;
+			try {
+				await loadMediaWithElement(currentElem, url);
+				loadSuccessful = true;
+			} catch (e) {
+				if (withFallback) {
+					await handleFallback(currentElem, url, e);
+				} else {
+					this.handleMediaError(currentElem, e);
+				}
+			}
+			if (loadSuccessful) {
+				this.handleMediaLoaded(currentElem);
+			}
+		};
+
+		if (!mediaType) {
+			await loadOrFallback(curElem, sourceUrl, true);
+		} else if (mediaType === curElem.tagName) {
+			await loadOrFallback(curElem, sourceUrl, false);
+		} else {
+			await handleFallback(curElem, sourceUrl);
+		}
+	}
+
+	updateImageFromUrl(img, url, mediaType = null, headers = null) {
 		const realUrl = this.fillPlaceholders(url);
 		if (realUrl != url && imageInfoCache[url]) {
 			imageInfoCache[realUrl] = imageInfoCache[url];
 		}
 		img.imageUrl = realUrl;
 		logger.debug(`Updating image '${img.id}' from '${realUrl}'`);
-		if (["media-entity", "immich-api"].includes(imageSourceType())) {
-			this.updateImageUrlWithHttpFetch(img, realUrl, headers);
-		} else {
-			img.src = realUrl;
-		}
-	}
-
-	updateImageUrlWithHttpFetch(img, url, headers) {
-		let http = new XMLHttpRequest();
-		http.onload = function() {
-			if (this.status == 200 || this.status === 0) {
-				img.src = "data:image/jpeg;base64," + arrayBufferToBase64(http.response);
-			}
-			http = null;
-		};
-		http.open("GET", url, true);
-		if (headers) {
-			for (const header in headers) {
-				http.setRequestHeader(header, headers[header]);
-			}
-		}
-		http.responseType = "arraybuffer";
-		http.send(null);
+		this.loadMediaFromUrl(img, realUrl, mediaType, headers);
 	}
 
 	updateImageIndex() {
@@ -2301,10 +2397,13 @@ class WallpanelView extends HuiView {
 					src = `${document.location.origin}${src}`;
 				}
 				logger.debug(`Setting image src: ${src}`);
-				img.src = src;
+
+				const matchedType = result.mime_type?.match(/^(image|video)\//);
+				const mediaType = {"image": "IMG", "video": "VIDEO"}[matchedType?.[1]] || null;
+				this.loadMediaFromUrl(img, src, mediaType);
 			},
 			error => {
-				logger.error(`media_source/resolve_media error for ${imageUrl}:`, error);
+				logger.error(`media_source/resolve_media error for ${img.imageUrl}:`, error);
 			}
 		);
 	}
@@ -2314,7 +2413,7 @@ class WallpanelView extends HuiView {
 			return;
 		}
 		this.updateImageIndex();
-		this.updateImageFromUrl(img, this.imageList[this.imageIndex]);
+		this.updateImageFromUrl(img, this.imageList[this.imageIndex], "IMG");
 	}
 
 	updateImageFromImmichAPI(img) {
@@ -2322,7 +2421,10 @@ class WallpanelView extends HuiView {
 			return;
 		}
 		this.updateImageIndex();
-		this.updateImageFromUrl(img, this.imageList[this.imageIndex], {"x-api-key": config.immich_api_key});
+		const url = this.imageList[this.imageIndex];
+		const imageInfo = imageInfoCache[url] || {};
+		const mediaType = imageInfo["mediaType"] == "VIDEO" ? "VIDEO" : "IMG";
+		this.updateImageFromUrl(img, url, mediaType, {"x-api-key": config.immich_api_key});
 	}
 
 	updateImageFromMediaEntity(img) {
@@ -2334,7 +2436,7 @@ class WallpanelView extends HuiView {
 		let entityPicture = entity.attributes.entity_picture;
 		let querySuffix = entityPicture.indexOf('?') > 0 ? '&' : '?';
 		querySuffix += "width=${width}&height=${height}";
-		this.updateImageFromUrl(img, entityPicture + querySuffix);
+		this.updateImageFromUrl(img, entityPicture + querySuffix, "IMG");
 	}
 
 	updateImage(img, callback = null) {
@@ -2438,6 +2540,66 @@ class WallpanelView extends HuiView {
 		this.updateImage(next);
 	}
 
+	startPlayingActiveMedia() {
+		const activeElem = this.getActiveImageElement();
+		if (typeof activeElem.play !== "function") {
+			return; // Not playable element.
+		}
+
+		let playbackListeners;
+		const cleanupListeners = () => {
+			if (playbackListeners) {
+				Object.entries(playbackListeners).forEach(([event, handler]) => {
+					activeElem.removeEventListener(event, handler);
+				});
+				playbackListeners == null;
+			}
+		};
+
+		activeElem.loop = config.video_loop
+		if (!config.video_loop) {
+			// Immediately switch to next image at the end of the playback.
+			const onTimeUpdate = () => {
+				if (this.getActiveImageElement() !== activeElem) {
+					cleanupListeners();
+					return;
+				}
+				// If the media has played enough and is near the end.
+				if (activeElem.currentTime > config.crossfade_time) {
+					const remainingTime = activeElem.duration - activeElem.currentTime;
+					if (remainingTime <= config.crossfade_time) {
+						this.switchActiveImage();
+						cleanupListeners();
+					}
+				}
+			};
+			const onMediaEnded = () => {
+				if (this.getActiveImageElement() === activeElem) {
+					this.switchActiveImage();
+				}
+				cleanupListeners();
+			};
+			const onMediaPause = () => {
+				cleanupListeners();
+			};
+
+			playbackListeners = {
+				timeupdate: onTimeUpdate,
+				ended: onMediaEnded,
+				pause: onMediaPause,
+			};
+			Object.entries(playbackListeners).forEach(([event, handler]) => {
+				activeElem.addEventListener(event, handler);
+			});
+		}
+
+		// Start playing the media.
+		activeElem.play().catch((e) => {
+			cleanupListeners();
+			logger.error(`Failed to play media "${activeElem.src}":`, e);
+		});
+	}
+
 	switchActiveImage(crossfadeMillis = null) {
 		if (this.afterFadeoutTimer) {
 			clearTimeout(this.afterFadeoutTimer);
@@ -2475,6 +2637,7 @@ class WallpanelView extends HuiView {
 			curActive.style.opacity = 0;
 		}
 
+		this.startPlayingActiveMedia();
 		this.restartProgressBarAnimation();
 		this.restartKenBurnsEffect();
 
@@ -2483,6 +2646,9 @@ class WallpanelView extends HuiView {
 		if (imageSourceType() !== "media-entity") {
 			let wp = this;
 			this.afterFadeoutTimer = setTimeout(function() {
+				if (typeof curImg.pause === "function") {
+					curImg.pause();
+				}
 				wp.updateImage(curImg);
 			}, crossfadeMillis);
 		}
@@ -2529,6 +2695,7 @@ class WallpanelView extends HuiView {
 		this.updateStyle();
 		this.setupScreensaver();
 		this.setImageURLEntityState();
+		this.startPlayingActiveMedia();
 		this.restartProgressBarAnimation();
 		this.restartKenBurnsEffect();
 
@@ -2578,7 +2745,7 @@ class WallpanelView extends HuiView {
 	}
 
 	screensaverRunning() {
-		return this.screensaverStartedAt && this.screensaverStartedAt > 0;
+		return Boolean(this.screensaverStartedAt) && this.screensaverStartedAt > 0;
 	}
 
 	stopScreensaver(fadeOutTime = 0.0) {
@@ -2915,12 +3082,15 @@ function locationChanged() {
 	) {
 		if (skipDisableScreensaverOnLocationChanged) {
 			skipDisableScreensaverOnLocationChanged = false;
+			if (wallpanel.screensaverStopNavigationPathTimeout) {
+				clearTimeout(wallpanel.screensaverStopNavigationPathTimeout);
+			}
 		}
 		else {
 			wallpanel.stopScreensaver();
 		}
 	}
-
+	
 	let panel = null;
 	let tab = null;
 	let path = window.location.pathname.split("/");
@@ -2941,12 +3111,33 @@ function locationChanged() {
 	}
 }
 
-function startup() {
+function startup(attempt = 1) {
 	elHaMain = elHass.shadowRoot.querySelector("home-assistant-main");
 	if (!elHaMain) {
-		setTimeout(startup, 1000);
+		if (attempt > 10) {
+			throw new Error(`Wallpanel startup failed after ${attempt} attempts, element hass not found.`);
+		}
+		setTimeout(startup, 1000, [attempt + 1]);
 		return;
 	}
+	if (!window.browser_mod) {
+		if (attempt < 5) {
+			setTimeout(startup, 1000, [attempt + 1]);
+			return;
+		}
+	}
+
+	if (window.browser_mod) {
+		if (window.browser_mod.entity_id) {
+			// V1
+			browserId = window.browser_mod.entity_id;
+		}
+		else if (window.browser_mod.browserID) {
+			// V2
+			browserId = window.browser_mod.browserID.replace('-', '_');
+		}
+	}
+
 	console.info(`%c🖼️ Wallpanel version ${version}`, "color: #34b6f9; font-weight: bold;");
 	updateConfig();
 	customElements.define("wallpanel-view", WallpanelView);

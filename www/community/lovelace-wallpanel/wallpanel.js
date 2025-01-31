@@ -205,11 +205,12 @@ class CameraMotionDetection {
 	}
 }
 
-const version = "4.35.3";
+const version = "4.36.1";
 const defaultConfig = {
 	enabled: false,
 	enabled_on_tabs: [],
 	debug: false,
+	wait_for_browser_mod_time: 0.25,
 	log_level_console: "info",
 	hide_toolbar: false,
 	keep_toolbar_space: false,
@@ -488,7 +489,7 @@ function updateConfig() {
 	let oldConfig = config;
 	config = {};
 	mergeConfig(config, defaultConfig);
-
+	
 	if (Object.keys(dashboardConfig).length === 0) {
 		dashboardConfig = getHaPanelLovelaceConfig();
 	}
@@ -626,14 +627,26 @@ function getHaPanelLovelace() {
 }
 
 
-function getHaPanelLovelaceConfig() {
+function getHaPanelLovelaceConfig(keys = []) {
 	let pl = getHaPanelLovelace();
 	let conf = {};
-	if (pl && pl.lovelace && pl.lovelace.config && pl.lovelace.config.wallpanel) {
-		for (let key in pl.lovelace.config.wallpanel) {
-			if (key in defaultConfig) {
-				conf[key] = pl.lovelace.config.wallpanel[key];
+	if (pl && pl.lovelace) {
+		let wallpanelConfig;
+		if (pl.lovelace.config && pl.lovelace.config.wallpanel) {
+			wallpanelConfig = pl.lovelace.config.wallpanel;
+		}
+		else if (pl.lovelace.rawConfig && pl.lovelace.rawConfig.wallpanel) {
+			wallpanelConfig = pl.lovelace.rawConfig.wallpanel;
+		}
+		if (wallpanelConfig) {
+			if (keys.length === 0) {
+				keys = Object.keys(wallpanelConfig);
 			}
+			keys.forEach(key => {
+				if (key in defaultConfig) {
+					conf[key] = wallpanelConfig[key];
+				}
+			});
 		}
 	}
 	return conf;
@@ -2294,15 +2307,44 @@ class WallpanelView extends HuiView {
 		return url;
 	}
 
-	async loadMediaFromUrl(curElem, sourceUrl, mediaType = null, headers = null) {
+	async loadMediaFromUrl(curElem, sourceUrl, mediaType = null, headers = null, useFetch = false) {
 		const loadMediaWithElement = async (elem, url) => {
-			const response = await fetch(url, { headers: headers || {} });
-			if (!response.ok) {
-				logger.error(`Failed to load ${elem.tagName} "${url}"`, response);
-				throw new Error(`Failed to load ${elem.tagName} "${url}": ${response.status}`);
+			if (useFetch) {
+				const response = await fetch(url, { headers: headers || {} });
+				if (!response.ok) {
+					logger.error(`Failed to load ${elem.tagName} "${url}"`, response);
+					throw new Error(`Failed to load ${elem.tagName} "${url}": ${response.status}`);
+				}
+				const blob = await response.blob();
+				elem.src = window.URL.createObjectURL(blob);
 			}
-			const blob = await response.blob();
-			elem.src = window.URL.createObjectURL(blob);
+			else {
+				// Setting the src attribute on an img works better because cross-origin requests aren't blocked
+				const loadEventName = { IMG: "load", VIDEO: "loadeddata" }[elem.tagName];
+				if (!loadEventName) {
+					throw new Error(`Unsupported element tag "${elem.tagName}"`);
+				}
+				return new Promise((resolve, reject) => {
+					const cleanup = () => {
+						elem.onerror = null;
+						elem.removeEventListener(loadEventName, onLoad);
+					};
+
+					const onLoad = () => {
+						cleanup();
+						resolve();
+					};
+
+					const onError = () => {
+						cleanup();
+						reject(new Error(`Failed to load ${elem.tagName} "${url}", ${elem.error?.message | "unknown"}`));
+					};
+
+					elem.addEventListener(loadEventName, onLoad);
+					elem.onerror = onError;
+					elem.src = url;
+				});
+			}
 		};
 
 		const createFallbackElement = (currentElem) => {
@@ -2371,14 +2413,15 @@ class WallpanelView extends HuiView {
 		}
 	}
 
-	updateImageFromUrl(img, url, mediaType = null, headers = null) {
+	updateImageFromUrl(img, url, mediaType = null, headers = null, useFetch = false) {
 		const realUrl = this.fillPlaceholders(url);
 		if (realUrl != url && imageInfoCache[url]) {
 			imageInfoCache[realUrl] = imageInfoCache[url];
 		}
 		img.imageUrl = realUrl;
 		logger.debug(`Updating image '${img.id}' from '${realUrl}'`);
-		this.loadMediaFromUrl(img, realUrl, mediaType, headers);
+		
+		this.loadMediaFromUrl(img, realUrl, mediaType, headers, useFetch);
 	}
 
 	updateImageIndex() {
@@ -2439,7 +2482,7 @@ class WallpanelView extends HuiView {
 		const url = this.imageList[this.imageIndex];
 		const imageInfo = imageInfoCache[url] || {};
 		const mediaType = imageInfo["mediaType"] == "VIDEO" ? "VIDEO" : "IMG";
-		this.updateImageFromUrl(img, url, mediaType, {"x-api-key": config.immich_api_key});
+		this.updateImageFromUrl(img, url, mediaType, {"x-api-key": config.immich_api_key}, true);
 	}
 
 	updateImageFromMediaEntity(img) {
@@ -2451,7 +2494,15 @@ class WallpanelView extends HuiView {
 		let entityPicture = entity.attributes.entity_picture;
 		let querySuffix = entityPicture.indexOf('?') > 0 ? '&' : '?';
 		querySuffix += "width=${width}&height=${height}";
-		this.updateImageFromUrl(img, entityPicture + querySuffix, "IMG");
+		const url = entityPicture + querySuffix;
+		if ("media_exif" in entity.attributes) {
+			// immich-home-assistant provides media_exif
+			imageInfoCache[url] = entity.attributes["media_exif"];
+		}
+		else {
+			imageInfoCache[url] = entity.attributes;
+		}
+		this.updateImageFromUrl(img, url, "IMG", null, false);
 	}
 
 	updateImage(img, callback = null) {
@@ -2792,8 +2843,8 @@ class WallpanelView extends HuiView {
 		if (screenWakeLock.enabled) {
 			screenWakeLock.disable();
 		}
-
-		this.setScreensaverEntityState();
+		
+		setTimeout(this.setScreensaverEntityState.bind(this), 25);
 	}
 
 	updateScreensaver() {
@@ -3126,21 +3177,29 @@ function locationChanged() {
 	}
 }
 
-function startup(attempt = 1) {
+const startTime = performance.now();
+function startup() {
+	const startupSeconds = (performance.now() - startTime) / 1000;
+	
 	elHass = document.querySelector("body > home-assistant");
 	if (elHass) {
 		elHaMain = elHass.shadowRoot.querySelector("home-assistant-main");
 	}
 	if (!elHass || !elHaMain) {
-		if (attempt > 10) {
+		if (startupSeconds >= 5.0) {
 			throw new Error(`Wallpanel startup failed after ${attempt} attempts, element home-assistant / home-assistant-main not found.`);
 		}
-		setTimeout(startup, 1000, attempt + 1);
+		setTimeout(startup, 100);
 		return;
 	}
+	
 	if (!window.browser_mod) {
-		if (attempt < 5) {
-			setTimeout(startup, 1000, attempt + 1);
+		let waitTime = getHaPanelLovelaceConfig(["wait_for_browser_mod_time"])["wait_for_browser_mod_time"];
+		if (waitTime === undefined) {
+			waitTime = defaultConfig["wait_for_browser_mod_time"];
+		}	
+		if (startupSeconds < waitTime) {
+			setTimeout(startup, 100);
 			return;
 		}
 	}
@@ -3221,7 +3280,7 @@ function startup(attempt = 1) {
 	);
 }
 
-setTimeout(startup, 25);
+setTimeout(startup, 0);
 
 
 /**

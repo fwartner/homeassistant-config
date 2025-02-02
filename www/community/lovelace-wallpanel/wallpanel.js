@@ -3,7 +3,7 @@
  * Released under the GNU General Public License v3.0
  */
 
-const version = "4.38.0";
+const version = "4.38.1";
 const defaultConfig = {
 	enabled: false,
 	enabled_on_tabs: [],
@@ -124,6 +124,7 @@ const imageInfoCacheMaxSize = 1000;
 let imageInfoCache = {};
 let imageInfoCacheKeys = [];
 let configEntityStates = {};
+let mediaEntityState = null;
 let elHass = null;
 let elHaMain = null;
 let browserId = null;
@@ -881,7 +882,6 @@ class WallpanelView extends HuiView {
 	set hass(hass) {
 		logger.debug("Update hass");
 		this.__hass = hass;
-
 		let changed = false;
 		for (const entityId in configEntityStates) {
 			const entity = this.__hass.states[entityId];
@@ -923,6 +923,10 @@ class WallpanelView extends HuiView {
 			this.__views.forEach(view => {
 				view.hass = this.hass;
 			});
+
+			if (imageSourceType() == "media-entity") {
+				this.switchActiveEntityImage();
+			}
 		}
 	}
 
@@ -2388,8 +2392,12 @@ class WallpanelView extends HuiView {
 		};
 
 		const replaceElementWith = (currentElem, newElem) => {
-			if (currentElem === this.imageOne) this.imageOne = newElem;
-			if (currentElem === this.imageTwo) this.imageTwo = newElem;
+			if (currentElem === this.imageOne) {
+				this.imageOne = newElem;
+			}
+			else {
+				this.imageTwo = newElem;
+			}
 			currentElem.replaceWith(newElem);
 		};
 
@@ -2523,7 +2531,8 @@ class WallpanelView extends HuiView {
 		else {
 			imageInfoCache[url] = entity.attributes;
 		}
-		this.updateImageFromUrl(img, url, "IMG", null, false);
+		mediaEntityState = entity.state;
+		this.updateImageFromUrl(img, url, "IMG", null, true);
 	}
 
 	updateImage(img, callback = null) {
@@ -2613,6 +2622,14 @@ class WallpanelView extends HuiView {
 
 	switchActiveEntityImage(crossfadeMillis = null) {
 		this.lastImageUpdate = Date.now();
+		const imageEntity = config.image_url.replace(/^media-entity:\/\//, '')
+		const entity = this.hass.states[imageEntity];
+		if (!entity || mediaEntityState == entity.state) {
+			// Unchanged
+			return;
+		}
+		logger.debug(`Media entity ${imageEntity} state has changed`);
+		mediaEntityState = entity.state;
 		let next = this.imageTwo;
 		let current = this.imageOne;
 		if (this.imageTwoContainer.style.opacity == 1) {
@@ -2622,9 +2639,7 @@ class WallpanelView extends HuiView {
 		const wp = this;
 		const onLoad = function(e) {
 			next.removeEventListener('load', onLoad);
-			if (next.complete && next.src !== current.src) {
-				wp.switchActiveImage(crossfadeMillis)
-			}
+			wp.switchActiveImage(crossfadeMillis)
 		}
 		next.addEventListener('load', onLoad);
 		this.updateImage(next);
@@ -3255,15 +3270,27 @@ function startup() {
 	}
 
 	function continueStartup() {
+		logger.debug(`userId: ${userId}, userName: ${userName}, userDisplayname: ${userDisplayname}`);
 		updateConfig();
-		customElements.define("wallpanel-view", WallpanelView);
+		if (!customElements.get("wallpanel-view")) {
+			customElements.define("wallpanel-view", WallpanelView);
+		}
 		wallpanel = document.createElement("wallpanel-view");
 		elHaMain.shadowRoot.appendChild(wallpanel);
-		// Using navigate event because a back button on a sub-view will not produce a location-changed event
-		navigation.addEventListener("navigate", event => {
-			logger.debug("navigate", event);
-			setTimeout(locationChanged, 0);
-		});
+		try {
+			// Using navigate event because a back button on a sub-view will not produce a location-changed event
+			navigation.addEventListener("navigate", event => {
+				logger.debug("navigate", event);
+				setTimeout(locationChanged, 0);
+			});
+		}
+		catch {
+			// Not supported by Firefox
+			window.addEventListener("location-changed", event => {
+				logger.debug("location-changed", event);
+				setTimeout(locationChanged, 0);
+			});
+		}
 		elHass.__hass.connection.subscribeEvents(
 			function(event) {
 				logger.debug("lovelace_updated", event);
@@ -3296,28 +3323,37 @@ function startup() {
 	}
 
 	console.info(`%c🖼️ Wallpanel version ${version}`, "color: #34b6f9; font-weight: bold;");
-	elHass.hass.callWS({
-		type: "config/auth/list"
-	}).then(
-		result => {
-			userId = elHass.__hass.user.id;
-			userDisplayname = elHass.__hass.user.name;
-			result.forEach(userInfo => {
-				if (userInfo.id == userId) {
-					userDisplayname = userInfo.name;
-					userName = userInfo.username;
+
+	userId = elHass.__hass.user.id;
+	userDisplayname = elHass.__hass.user.name;
+	
+	if (elHass.__hass.user.is_admin) {
+		elHass.hass.callWS({
+			type: "config/auth/list"
+		}).then(
+			result => {
+				result.forEach(userInfo => {
+					if (userInfo.id == userId) {
+						userDisplayname = userInfo.name;
+						userName = userInfo.username;
+					}
+				});
+				if (!userName) {
+					logger.error(`User ${userId} / ${userDisplayname} not found in user list`, result);
 				}
-			});
-			if (!userName) {
-				logger.error(`User ${userId} / ${userDisplayname} not found in user list`, result);
+				continueStartup();
+			},
+			error => {
+				logger.error("Failed to fetch user list", error);
+				continueStartup();
 			}
-			continueStartup();
-		},
-		error => {
-			logger.error("Failed to fetch user list", error);
-			continueStartup();
-		}
-	);
+		);
+	}
+	else {
+		logger.info(`Not an admin user, setting userName to userDisplayname: ${userDisplayname}`);
+		userName = userDisplayname;
+		continueStartup();
+	}
 }
 
 setTimeout(startup, 0);

@@ -3,13 +3,14 @@
  * Released under the GNU General Public License v3.0
  */
 
-const version = "4.38.2";
+const version = "4.39.0";
 const defaultConfig = {
 	enabled: false,
 	enabled_on_tabs: [],
 	debug: false,
 	wait_for_browser_mod_time: 0.25,
 	log_level_console: "info",
+	alert_errors: false,
 	hide_toolbar: false,
 	keep_toolbar_space: false,
 	hide_toolbar_action_icons: false,
@@ -28,39 +29,39 @@ const defaultConfig = {
 	keep_screen_on_time: 0,
 	black_screen_after_time: 0,
 	control_reactivation_time: 1.0,
-	screensaver_stop_navigation_path: '',
+	screensaver_stop_navigation_path: "",
 	screensaver_stop_close_browser_mod_popup: false,
-	screensaver_entity: '',
+	screensaver_entity: "",
 	stop_screensaver_on_mouse_move: true,
 	stop_screensaver_on_mouse_click: true,
 	stop_screensaver_on_key_down: true,
 	stop_screensaver_on_location_change: true,
 	disable_screensaver_on_browser_mod_popup: false,
-	disable_screensaver_on_browser_mod_popup_func: '',
+	disable_screensaver_on_browser_mod_popup_func: "",
 	show_images: true,
 	image_url: "https://picsum.photos/${width}/${height}?random=${timestamp}",
-	image_url_entity: '',
-	immich_api_key: '',
+	image_url_entity: "",
+	immich_api_key: "",
 	immich_album_names: [],
 	immich_shared_albums: true,
 	immich_resolution: "preview",
-	image_fit: 'cover', // cover / contain / fill
+	image_fit: "cover", // cover / contain / fill
 	image_list_update_interval: 3600,
-	image_order: 'sorted', // sorted / random
+	image_order: "sorted", // sorted / random
 	image_excludes: [],
-	image_background: 'color', // color / image
+	image_background: "color", // color / image
 	video_loop: false,
 	touch_zone_size_next_image: 15,
 	touch_zone_size_previous_image: 15,
 	show_progress_bar: false,
 	show_image_info: false,
 	fetch_address_data: false,
-	image_info_template: '${DateTimeOriginal}',
+	image_info_template: "${DateTimeOriginal}",
 	info_animation_duration_x: 0,
 	info_animation_duration_y: 0,
-	info_animation_timing_function_x: 'ease',
-	info_animation_timing_function_y: 'ease',
-	info_move_pattern: 'random',
+	info_animation_timing_function_x: "ease",
+	info_animation_timing_function_y: "ease",
+	info_move_pattern: "random",
 	info_move_interval: 0,
 	info_move_fade_duration: 2.0,
 	image_animation_ken_burns: false,
@@ -75,13 +76,11 @@ const defaultConfig = {
 	camera_motion_detection_capture_visible: false,
 	style: {},
 	badges: [],
-	cards: [
-		{type: 'weather-forecast', entity: 'weather.home', show_forecast: true}
-	],
+	cards: [{ type: "weather-forecast", entity: "weather.home", show_forecast: true }],
 	views: [],
 	card_interaction: false,
-	profile: '',
-	profile_entity: '',
+	profile: "",
+	profile_entity: "",
 	profiles: {}
 };
 
@@ -93,38 +92,38 @@ let activeTab = null;
 let fullscreen = false;
 let wallpanel = null;
 let skipDisableScreensaverOnLocationChanged = false;
-let classStyles = {
+const classStyles = {
 	"wallpanel-screensaver-image-background": {
-		"filter": "blur(15px)",
-		"background": "#00000000",
+		filter: "blur(15px)",
+		background: "#00000000",
 		"background-position": "center",
 		"background-size": "cover"
 	},
 	"wallpanel-screensaver-image-info": {
-		"position": "absolute",
-		"bottom": "0.5em",
-		"right": "0.5em",
-		"padding": "0.1em 0.5em 0.1em 0.5em",
+		position: "absolute",
+		bottom: "0.5em",
+		right: "0.5em",
+		padding: "0.1em 0.5em 0.1em 0.5em",
 		"font-size": "2em",
-		"background": "#00000055",
+		background: "#00000055",
 		"backdrop-filter": "blur(2px)",
 		"border-radius": "0.1em"
 	},
 	"wallpanel-progress": {
-		"position": "absolute",
-		"bottom": "0",
-		"height": "2px",
-		"width": "100%",
+		position: "absolute",
+		bottom: "0",
+		height: "2px",
+		width: "100%"
 	},
 	"wallpanel-progress-inner": {
-		"height": "100%",
+		height: "100%",
 		"background-color": "white"
 	}
-}
+};
 const imageInfoCacheMaxSize = 1000;
 let imageInfoCache = {};
-let imageInfoCacheKeys = [];
-let configEntityStates = {};
+const imageInfoCacheKeys = [];
+const configEntityStates = {};
 let mediaEntityState = null;
 let elHass = null;
 let elHaMain = null;
@@ -136,19 +135,16 @@ let userDisplayname = null;
 const HuiView = customElements.get("hui-view");
 if (!HuiView) {
 	const error = "Failed to get hui-view from customElements";
-	console.error(error, customElements);
 	throw new Error(error);
 }
 
-
 function isObject(item) {
-	return (item && typeof item === 'object' && !Array.isArray(item));
+	return item && typeof item === "object" && !Array.isArray(item);
 }
 
-
 function stringify(obj) {
-	let processedObjects = [];
-	let json = JSON.stringify(obj, function(key, value) {
+	const processedObjects = [];
+	const json = JSON.stringify(obj, function (key, value) {
 		if (typeof value === "object" && value !== null) {
 			if (processedObjects.indexOf(value) !== -1) {
 				// Circular reference found, discard key
@@ -161,29 +157,27 @@ function stringify(obj) {
 	return json;
 }
 
-
 const logger = {
 	messages: [],
-	addMessage: function(level, args) {
+	addMessage: function (level, args) {
 		if (!config.debug) {
 			return;
 		}
-		let msg = {
-			"level": level,
-			"date": (new Date()).toISOString(),
-			"text": "",
-			"objs": [],
-			"stack": ""
-		}
+		const msg = {
+			level: level,
+			date: new Date().toISOString(),
+			text: "",
+			objs: [],
+			stack: ""
+		};
 		const err = new Error();
 		if (err.stack) {
-			msg.stack = err.stack.toString().replace(/^Error\r?\n/, '');
+			msg.stack = err.stack.toString().replace(/^Error\r?\n/, "");
 		}
 		for (let i = 0; i < args.length; i++) {
-			if (i == 0 && (typeof args[0] === 'string' || args[0] instanceof String)) {
+			if (i == 0 && (typeof args[0] === "string" || args[0] instanceof String)) {
 				msg.text = args[i];
-			}
-			else {
+			} else {
 				msg.objs.push(args[i]);
 			}
 		}
@@ -193,50 +187,52 @@ const logger = {
 			logger.messages.shift();
 		}
 	},
-	downloadMessages: function() {
-		const data = new Blob([stringify(logger.messages)], {type: 'text/plain'});
+	downloadMessages: function () {
+		const data = new Blob([stringify(logger.messages)], { type: "text/plain" });
 		const url = window.URL.createObjectURL(data);
-		const el = document.createElement('a');
+		const el = document.createElement("a");
 		el.href = url;
-		el.target = '_blank';
-		el.download = 'wallpanel_log.txt';
+		el.target = "_blank";
+		el.download = "wallpanel_log.txt";
 		el.click();
 	},
-	purgeMessages: function() {
+	purgeMessages: function () {
 		logger.messages = [];
 	},
-	log: function(text){
+	log: function () {
 		console.log.apply(this, arguments);
 		logger.addMessage("info", arguments);
 	},
-	debug: function (text) {
+	debug: function () {
 		if (["debug"].includes(config.log_level_console)) {
 			console.debug.apply(this, arguments);
 		}
 		logger.addMessage("debug", arguments);
 	},
-	info: function (text) {
+	info: function () {
 		if (["debug", "info"].includes(config.log_level_console)) {
 			console.info.apply(this, arguments);
 		}
 		logger.addMessage("info", arguments);
 	},
-	warn: function (text) {
+	warn: function () {
 		const logLevel = config.log_level_console || "warn";
 		if (["debug", "info", "warn"].includes(logLevel)) {
 			console.warn.apply(this, arguments);
 		}
 		logger.addMessage("warn", arguments);
 	},
-	error: function (text) {
+	error: function () {
 		const logLevel = config.log_level_console || "warn";
 		if (["debug", "info", "warn", "error"].includes(logLevel)) {
 			console.error.apply(this, arguments);
 		}
 		logger.addMessage("error", arguments);
+		if (config.alert_errors) {
+			alert(`Wallpanel error: ${stringify(arguments)}`);
+		}
 	}
 };
-
 
 class ScreenWakeLock {
 	constructor() {
@@ -258,23 +254,24 @@ class ScreenWakeLock {
 		document.addEventListener("fullscreenchange", handleVisibilityChange);
 
 		if (!this.nativeWakeLockSupported) {
-			let videoData = 'data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQAAA1NtZGF0AAACrwYF//+r3EXpvebZSLeWLNgg2SPu73gyNjQgLSBjb3JlIDE2NCByMzA5NSBiYWVlNDAwIC0gSC4yNjQvTVBFRy00IEFWQyBjb2RlYyAtIENvcHlsZWZ0IDIwMDMtMjAyMiAtIGh0dHA6Ly93d3cudmlkZW9sYW4ub3JnL3gyNjQuaHRtbCAtIG9wdGlvbnM6IGNhYmFjPTEgcmVmPTMgZGVibG9jaz0xOi0zOi0zIGFuYWx5c2U9MHgzOjB4MTEzIG1lPWhleCBzdWJtZT03IHBzeT0xIHBzeV9yZD0yLjAwOjAuNzAgbWl4ZWRfcmVmPTEgbWVfcmFuZ2U9MTYgY2hyb21hX21lPTEgdHJlbGxpcz0xIDh4OGRjdD0xIGNxbT0wIGRlYWR6b25lPTIxLDExIGZhc3RfcHNraXA9MSBjaHJvbWFfcXBfb2Zmc2V0PS00IHRocmVhZHM9MSBsb29rYWhlYWRfdGhyZWFkcz0xIHNsaWNlZF90aHJlYWRzPTAgbnI9MCBkZWNpbWF0ZT0xIGludGVybGFjZWQ9MCBibHVyYXlfY29tcGF0PTAgY29uc3RyYWluZWRfaW50cmE9MCBiZnJhbWVzPTMgYl9weXJhbWlkPTIgYl9hZGFwdD0xIGJfYmlhcz0wIGRpcmVjdD0xIHdlaWdodGI9MSBvcGVuX2dvcD0wIHdlaWdodHA9MiBrZXlpbnQ9MjUwIGtleWludF9taW49MSBzY2VuZWN1dD00MCBpbnRyYV9yZWZyZXNoPTAgcmNfbG9va2FoZWFkPTQwIHJjPWNyZiBtYnRyZWU9MSBjcmY9MjMuMCBxY29tcD0wLjYwIHFwbWluPTAgcXBtYXg9NjkgcXBzdGVwPTQgaXBfcmF0aW89MS40MCBhcT0xOjEuMjAAgAAAABFliIQAF85//vfUt8yy7VNwgQAAAAlBmiRsQXzn/vAAAAAJQZ5CeIL5z4aBAAAACQGeYXRBfOeGgAAAAAkBnmNqQXznhoEAAAAPQZpoSahBaJlMCC+c//7xAAAAC0GehkURLBfOf4aBAAAACQGepXRBfOeGgQAAAAkBnqdqQXznhoAAAAAPQZqpSahBbJlMCC+c//7wAAADs21vb3YAAABsbXZoZAAAAAAAAAAAAAAAAAAAA+gAACcQAAEAAAEAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAALddHJhawAAAFx0a2hkAAAAAwAAAAAAAAAAAAAAAQAAAAAAACcQAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAIAAAACAAAAAAAJGVkdHMAAAAcZWxzdAAAAAAAAAABAAAnEAAAgAAAAQAAAAACVW1kaWEAAAAgbWRoZAAAAAAAAAAAAAAAAAAAQAAAAoAAVcQAAAAAAC1oZGxyAAAAAAAAAAB2aWRlAAAAAAAAAAAAAAAAVmlkZW9IYW5kbGVyAAAAAgBtaW5mAAAAFHZtaGQAAAABAAAAAAAAAAAAAAAkZGluZgAAABxkcmVmAAAAAAAAAAEAAAAMdXJsIAAAAAEAAAHAc3RibAAAAMBzdHNkAAAAAAAAAAEAAACwYXZjMQAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAIAAgASAAAAEgAAAAAAAAAARVMYXZjNTkuMzcuMTAwIGxpYngyNjQAAAAAAAAAAAAAABj//wAAADZhdmNDAWQACv/hABlnZAAKrNlfllwEQAAAAwBAAAADAIPEiWWAAQAGaOvjxMhM/fj4AAAAABBwYXNwAAAAAQAAAAEAAAAUYnRydAAAAAAAAAKiAAACogAAABhzdHRzAAAAAAAAAAEAAAAKAABAAAAAABRzdHNzAAAAAAAAAAEAAAABAAAAYGN0dHMAAAAAAAAACgAAAAEAAIAAAAAAAQABQAAAAAABAACAAAAAAAEAAAAAAAAAAQAAQAAAAAABAAFAAAAAAAEAAIAAAAAAAQAAAAAAAAABAABAAAAAAAEAAIAAAAAAHHN0c2MAAAAAAAAAAQAAAAEAAAAKAAAAAQAAADxzdHN6AAAAAAAAAAAAAAAKAAACyAAAAA0AAAANAAAADQAAAA0AAAATAAAADwAAAA0AAAANAAAAEwAAABRzdGNvAAAAAAAAAAEAAAAwAAAAYnVkdGEAAABabWV0YQAAAAAAAAAhaGRscgAAAAAAAAAAbWRpcmFwcGwAAAAAAAAAAAAAAAAtaWxzdAAAACWpdG9vAAAAHWRhdGEAAAABAAAAAExhdmY1OS4yNy4xMDA=';
+			const videoData =
+				"data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQAAA1NtZGF0AAACrwYF//+r3EXpvebZSLeWLNgg2SPu73gyNjQgLSBjb3JlIDE2NCByMzA5NSBiYWVlNDAwIC0gSC4yNjQvTVBFRy00IEFWQyBjb2RlYyAtIENvcHlsZWZ0IDIwMDMtMjAyMiAtIGh0dHA6Ly93d3cudmlkZW9sYW4ub3JnL3gyNjQuaHRtbCAtIG9wdGlvbnM6IGNhYmFjPTEgcmVmPTMgZGVibG9jaz0xOi0zOi0zIGFuYWx5c2U9MHgzOjB4MTEzIG1lPWhleCBzdWJtZT03IHBzeT0xIHBzeV9yZD0yLjAwOjAuNzAgbWl4ZWRfcmVmPTEgbWVfcmFuZ2U9MTYgY2hyb21hX21lPTEgdHJlbGxpcz0xIDh4OGRjdD0xIGNxbT0wIGRlYWR6b25lPTIxLDExIGZhc3RfcHNraXA9MSBjaHJvbWFfcXBfb2Zmc2V0PS00IHRocmVhZHM9MSBsb29rYWhlYWRfdGhyZWFkcz0xIHNsaWNlZF90aHJlYWRzPTAgbnI9MCBkZWNpbWF0ZT0xIGludGVybGFjZWQ9MCBibHVyYXlfY29tcGF0PTAgY29uc3RyYWluZWRfaW50cmE9MCBiZnJhbWVzPTMgYl9weXJhbWlkPTIgYl9hZGFwdD0xIGJfYmlhcz0wIGRpcmVjdD0xIHdlaWdodGI9MSBvcGVuX2dvcD0wIHdlaWdodHA9MiBrZXlpbnQ9MjUwIGtleWludF9taW49MSBzY2VuZWN1dD00MCBpbnRyYV9yZWZyZXNoPTAgcmNfbG9va2FoZWFkPTQwIHJjPWNyZiBtYnRyZWU9MSBjcmY9MjMuMCBxY29tcD0wLjYwIHFwbWluPTAgcXBtYXg9NjkgcXBzdGVwPTQgaXBfcmF0aW89MS40MCBhcT0xOjEuMjAAgAAAABFliIQAF85//vfUt8yy7VNwgQAAAAlBmiRsQXzn/vAAAAAJQZ5CeIL5z4aBAAAACQGeYXRBfOeGgAAAAAkBnmNqQXznhoEAAAAPQZpoSahBaJlMCC+c//7xAAAAC0GehkURLBfOf4aBAAAACQGepXRBfOeGgQAAAAkBnqdqQXznhoAAAAAPQZqpSahBbJlMCC+c//7wAAADs21vb3YAAABsbXZoZAAAAAAAAAAAAAAAAAAAA+gAACcQAAEAAAEAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAALddHJhawAAAFx0a2hkAAAAAwAAAAAAAAAAAAAAAQAAAAAAACcQAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAIAAAACAAAAAAAJGVkdHMAAAAcZWxzdAAAAAAAAAABAAAnEAAAgAAAAQAAAAACVW1kaWEAAAAgbWRoZAAAAAAAAAAAAAAAAAAAQAAAAoAAVcQAAAAAAC1oZGxyAAAAAAAAAAB2aWRlAAAAAAAAAAAAAAAAVmlkZW9IYW5kbGVyAAAAAgBtaW5mAAAAFHZtaGQAAAABAAAAAAAAAAAAAAAkZGluZgAAABxkcmVmAAAAAAAAAAEAAAAMdXJsIAAAAAEAAAHAc3RibAAAAMBzdHNkAAAAAAAAAAEAAACwYXZjMQAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAIAAgASAAAAEgAAAAAAAAAARVMYXZjNTkuMzcuMTAwIGxpYngyNjQAAAAAAAAAAAAAABj//wAAADZhdmNDAWQACv/hABlnZAAKrNlfllwEQAAAAwBAAAADAIPEiWWAAQAGaOvjxMhM/fj4AAAAABBwYXNwAAAAAQAAAAEAAAAUYnRydAAAAAAAAAKiAAACogAAABhzdHRzAAAAAAAAAAEAAAAKAABAAAAAABRzdHNzAAAAAAAAAAEAAAABAAAAYGN0dHMAAAAAAAAACgAAAAEAAIAAAAAAAQABQAAAAAABAACAAAAAAAEAAAAAAAAAAQAAQAAAAAABAAFAAAAAAAEAAIAAAAAAAQAAAAAAAAABAABAAAAAAAEAAIAAAAAAHHN0c2MAAAAAAAAAAQAAAAEAAAAKAAAAAQAAADxzdHN6AAAAAAAAAAAAAAAKAAACyAAAAA0AAAANAAAADQAAAA0AAAATAAAADwAAAA0AAAANAAAAEwAAABRzdGNvAAAAAAAAAAEAAAAwAAAAYnVkdGEAAABabWV0YQAAAAAAAAAhaGRscgAAAAAAAAAAbWRpcmFwcGwAAAAAAAAAAAAAAAAtaWxzdAAAACWpdG9vAAAAHWRhdGEAAAABAAAAAExhdmY1OS4yNy4xMDA=";
 			this._player = document.createElement("video");
 			this._player.setAttribute("id", "ScreenWakeLockVideo");
 			this._player.setAttribute("src", videoData);
 			this._player.setAttribute("playsinline", "");
 			this._player.setAttribute("muted", "");
-			this._player.addEventListener('ended', (event) => {
+			this._player.addEventListener("ended", () => {
 				logger.debug("Video ended");
 				if (this.enabled) {
 					this.enable();
 				}
 			});
-			this._player.addEventListener('playing', (event) => {
+			this._player.addEventListener("playing", () => {
 				logger.debug("Video playing");
 				this._isPlaying = true;
 			});
-			this._player.addEventListener('pause', (event) => {
+			this._player.addEventListener("pause", () => {
 				logger.debug("Video pause");
 				this._isPlaying = false;
 			});
@@ -284,9 +281,6 @@ class ScreenWakeLock {
 	enable() {
 		if (this.nativeWakeLockSupported) {
 			logger.debug("Requesting native screen wakelock");
-			//if (this._lock) {
-			//	this._lock.release();
-			//}
 			navigator.wakeLock
 				.request("screen")
 				.then((wakeLock) => {
@@ -300,24 +294,23 @@ class ScreenWakeLock {
 					this.error = e;
 					logger.error(`Failed to request screen wakeLock: ${e}`);
 				});
-		}
-		else {
+		} else {
 			logger.debug("Starting video player");
 			if (!this._player.paused && this._player._isPlaying) {
 				this._player.pause();
 			}
-			let playPromise = this._player.play();
+			const playPromise = this._player.play();
 			if (playPromise) {
 				playPromise
-					.then((r) => {
+					.then(() => {
 						this.enabled = true;
 						this.error = null;
 						logger.debug("Video play successful");
 					})
-					.catch((e) => {
+					.catch((error) => {
 						this.enabled = false;
-						this.error = e;
-						logger.error(`Failed to play video: ${e}`);
+						this.error = error;
+						logger.error(`Failed to play video: ${error}`);
 					});
 			}
 		}
@@ -330,8 +323,7 @@ class ScreenWakeLock {
 				this._lock.release();
 			}
 			this._lock = null;
-		}
-		else {
+		} else {
 			logger.debug("Stopping video player");
 			if (!this._player.paused && this._player._isPlaying) {
 				this._player.pause();
@@ -344,6 +336,7 @@ class ScreenWakeLock {
 class CameraMotionDetection {
 	constructor() {
 		this.enabled = false;
+		this.error = false;
 		this.width = 64;
 		this.height = 48;
 		this.threshold = this.width * this.height * 0.05;
@@ -351,27 +344,27 @@ class CameraMotionDetection {
 
 		this.videoElement = document.createElement("video");
 		this.videoElement.setAttribute("id", "wallpanelMotionDetectionVideo");
-		this.videoElement.style.display = 'none';
+		this.videoElement.style.display = "none";
 		document.body.appendChild(this.videoElement);
 
 		this.canvasElement = document.createElement("canvas");
 		this.canvasElement.setAttribute("id", "wallpanelMotionDetectionCanvas");
-		this.canvasElement.style.display = 'none';
+		this.canvasElement.style.display = "none";
 		document.body.appendChild(this.canvasElement);
 
-		this.context = this.canvasElement.getContext('2d', { willReadFrequently: true });
+		this.context = this.canvasElement.getContext("2d", { willReadFrequently: true });
 	}
 
 	capture() {
 		let diffPixels = 0;
-		this.context.globalCompositeOperation = 'difference';
+		this.context.globalCompositeOperation = "difference";
 		this.context.drawImage(this.videoElement, 0, 0, this.width, this.height);
 		const diffImageData = this.context.getImageData(0, 0, this.width, this.height);
 		const rgba = diffImageData.data;
 		for (let i = 0; i < rgba.length; i += 4) {
 			const pixelDiff = rgba[i] + rgba[i + 1] + rgba[i + 2];
 			if (pixelDiff >= 256) {
-				diffPixels ++;
+				diffPixels++;
 				if (diffPixels >= this.threshold) {
 					break;
 				}
@@ -381,15 +374,17 @@ class CameraMotionDetection {
 			logger.debug("Motion detetcted:", diffPixels, this.threshold);
 			wallpanel.motionDetected();
 		}
-		this.context.globalCompositeOperation = 'source-over';
+		this.context.globalCompositeOperation = "source-over";
 		this.context.drawImage(this.videoElement, 0, 0, this.width, this.height);
 	}
 
 	start() {
-		if (this.enabled) {
+		if (this.enabled || this.error) {
 			return;
 		}
+
 		if (!navigator.mediaDevices) {
+			this.error = true;
 			logger.error("No media devices found");
 			return;
 		}
@@ -410,28 +405,30 @@ class CameraMotionDetection {
 			this.canvasElement.style.left = 0;
 			this.canvasElement.style.zIndex = 10000;
 			this.canvasElement.style.border = "1px solid black";
-			this.canvasElement.style.display = 'block';
-		}
-		else {
-			this.canvasElement.style.display = 'none';
+			this.canvasElement.style.display = "block";
+		} else {
+			this.canvasElement.style.display = "none";
 		}
 
-		navigator.mediaDevices.getUserMedia({
-			audio: false,
-			video: {
-				facingMode: { ideal: config.camera_motion_detection_facing_mode },
-				width: this.width,
-				height: this.height
-			}
-		}).then((stream) => {
-			this.videoElement.srcObject = stream
-			this.videoElement.play();
-			if (this.enabled) {
-				setInterval(this.capture.bind(this), this.captureInterval);
-			}
-		}).catch((err) => {
-			logger.error("Camera motion detection error:", err);
-		});
+		navigator.mediaDevices
+			.getUserMedia({
+				audio: false,
+				video: {
+					facingMode: { ideal: config.camera_motion_detection_facing_mode },
+					width: this.width,
+					height: this.height
+				}
+			})
+			.then((stream) => {
+				this.videoElement.srcObject = stream;
+				this.videoElement.play();
+				if (this.enabled) {
+					setInterval(this.capture.bind(this), this.captureInterval);
+				}
+			})
+			.catch((err) => {
+				logger.error("Camera motion detection error:", err);
+			});
 	}
 
 	stop() {
@@ -440,12 +437,11 @@ class CameraMotionDetection {
 		}
 		this.enabled = false;
 		this.videoElement.pause();
-		this.videoElement.srcObject.getTracks().forEach(track => {
+		this.videoElement.srcObject.getTracks().forEach((track) => {
 			track.stop();
 		});
 	}
 }
-
 
 function mergeConfig(target, ...sources) {
 	// https://stackoverflow.com/questions/27936772/how-to-deep-merge-instead-of-shallow-merge
@@ -459,26 +455,25 @@ function mergeConfig(target, ...sources) {
 				mergeConfig(target[key], source[key]);
 			} else {
 				let val = source[key];
-				function replacer(match, entityId, offset, string) {
+				function replacer(match, entityId) {
 					if (!(entityId in configEntityStates)) {
 						configEntityStates[entityId] = "";
 						const entity = elHass.__hass.states[entityId];
 						if (entity) {
 							configEntityStates[entityId] = entity.state;
-						}
-						else {
-							logger.error(`Entity used in placeholder not found: ${entityId} (${match})`)
+						} else {
+							logger.error(`Entity used in placeholder not found: ${entityId} (${match})`);
 						}
 					}
 					const state = configEntityStates[entityId];
 					logger.debug(`Replace ${match} with ${state}`);
 					return state;
 				}
-				if (typeof val === 'string' || val instanceof String) {
+				if (typeof val === "string" || val instanceof String) {
 					val = val.replace("${browser_id}", browserId ? browserId : "browser-id-unset");
 					val = val.replace(/\$\{entity:\s*([^}]+\.[^}]+)\}/g, replacer);
 				}
-				if (typeof target[key] === 'boolean') {
+				if (typeof target[key] === "boolean") {
 					val = ["true", "on", "yes", "1"].includes(val.toString());
 				}
 				Object.assign(target, { [key]: val });
@@ -490,23 +485,28 @@ function mergeConfig(target, ...sources) {
 
 function updateConfig() {
 	const params = new URLSearchParams(window.location.search);
-	
-	let oldConfig = config;
+
+	const oldConfig = config;
 	config = {};
 	mergeConfig(config, defaultConfig);
-	
+
 	if (Object.keys(dashboardConfig).length === 0) {
 		dashboardConfig = getHaPanelLovelaceConfig();
 	}
 	mergeConfig(config, dashboardConfig);
 
-	let paramConfig = {}
+	const paramConfig = {};
 	for (let [key, value] of params) {
 		if (key.startsWith("wp_")) {
 			key = key.substring(3);
 			if (key in defaultConfig && value) {
 				// Convert to the right type
-				paramConfig[key] = defaultConfig[key].constructor(JSON.parse(value));
+				try {
+					value = JSON.parse(value);
+				} catch {
+					// Invalid JSON, just take the string
+				}
+				paramConfig[key] = defaultConfig[key].constructor(value);
 			}
 		}
 	}
@@ -518,18 +518,18 @@ function updateConfig() {
 		logger.debug(`Profile set from config: ${profile}`);
 	}
 	if (config.profiles && browserId && config.profiles[`device.${browserId}`]) {
-		let profile = `device.${browserId}`;
+		const profile = `device.${browserId}`;
 		config = mergeConfig(config, config.profiles[profile]);
 		logger.debug(`Profile set from device: ${profile}`);
 	}
 	if (config.profiles) {
-		let userIds = [userId, userName, userDisplayname];
-		for (let i=0; i<userIds.length; i++) {
+		const userIds = [userId, userName, userDisplayname];
+		for (let i = 0; i < userIds.length; i++) {
 			let user = userIds[i];
 			if (user) {
-				user = user.toLowerCase().replace(/\s/g, '_');
+				user = user.toLowerCase().replace(/\s/g, "_");
 				if (config.profiles[`user.${user}`]) {
-					let profile = `user.${user}`;
+					const profile = `user.${user}`;
 					config = mergeConfig(config, config.profiles[profile]);
 					logger.debug(`Profile set from user: ${profile}`);
 					break;
@@ -539,8 +539,13 @@ function updateConfig() {
 	}
 	config = mergeConfig(config, paramConfig);
 	const profile_entity = config.profile_entity;
-	if (config.profiles && profile_entity && elHass.__hass.states[profile_entity] && config.profiles[elHass.__hass.states[profile_entity].state]) {
-		let profile = elHass.__hass.states[profile_entity].state;
+	if (
+		config.profiles &&
+		profile_entity &&
+		elHass.__hass.states[profile_entity] &&
+		config.profiles[elHass.__hass.states[profile_entity].state]
+	) {
+		const profile = elHass.__hass.states[profile_entity].state;
 		config = mergeConfig(config, config.profiles[profile]);
 		logger.debug(`Profile set from entity state: ${profile}`);
 	}
@@ -554,14 +559,13 @@ function updateConfig() {
 			config.image_url = `media-source://media_source${config.image_url}`;
 		}
 		if (imageSourceType() == "media-source") {
-			config.image_url = config.image_url.replace(/\/+$/, '');
+			config.image_url = config.image_url.replace(/\/+$/, "");
 		}
 		if (imageSourceType() == "unsplash-api" && config.image_list_update_interval < 90) {
 			// Unsplash API currently places a limit of 50 requests per hour
 			config.image_list_update_interval = 90;
 		}
-	}
-	else {
+	} else {
 		config.show_images = false;
 	}
 
@@ -578,13 +582,11 @@ function updateConfig() {
 	if (wallpanel) {
 		if (isActive()) {
 			wallpanel.reconfigure(oldConfig);
-		}
-		else if (wallpanel.screensaverRunning && wallpanel.screensaverRunning()) {
+		} else if (wallpanel.screensaverRunning && wallpanel.screensaverRunning()) {
 			wallpanel.stopScreensaver();
 		}
 	}
 }
-
 
 function getActiveBrowserModPopup() {
 	if (!browserId) {
@@ -597,7 +599,6 @@ function getActiveBrowserModPopup() {
 	return bmp[0];
 }
 
-
 function isActive() {
 	const params = new URLSearchParams(window.location.search);
 	if (params.get("edit") == "1") {
@@ -606,13 +607,20 @@ function isActive() {
 	if (!config.enabled) {
 		return false;
 	}
-	if (config.enabled_on_tabs && config.enabled_on_tabs.length > 0 && activeTab && !config.enabled_on_tabs.includes(activeTab)) {
+	if (
+		config.enabled_on_tabs &&
+		config.enabled_on_tabs.length > 0 &&
+		activeTab &&
+		!config.enabled_on_tabs.includes(activeTab)
+	) {
 		return false;
 	}
-	if (wallpanel &&
+	if (
+		wallpanel &&
 		wallpanel.disable_screensaver_on_browser_mod_popup_function &&
 		getActiveBrowserModPopup() &&
-		wallpanel.disable_screensaver_on_browser_mod_popup_function(getActiveBrowserModPopup())) {
+		wallpanel.disable_screensaver_on_browser_mod_popup_function(getActiveBrowserModPopup())
+	) {
 		return false;
 	}
 	if (config.disable_screensaver_on_browser_mod_popup && getActiveBrowserModPopup()) {
@@ -621,9 +629,8 @@ function isActive() {
 	return true;
 }
 
-
 function imageSourceType() {
-	if ((!config.show_images) || (!config.image_url)) {
+	if (!config.show_images || !config.image_url) {
 		return "";
 	}
 	if (config.image_url.startsWith("media-entity://")) return "media-entity";
@@ -634,33 +641,29 @@ function imageSourceType() {
 	return "url";
 }
 
-
 function getHaPanelLovelace() {
 	try {
-		return elHaMain.shadowRoot.querySelector('ha-panel-lovelace')
-	}
-	catch (e) {
+		return elHaMain.shadowRoot.querySelector("ha-panel-lovelace");
+	} catch (e) {
 		logger.error(e);
 	}
 }
 
-
 function getHaPanelLovelaceConfig(keys = []) {
-	let pl = getHaPanelLovelace();
-	let conf = {};
+	const pl = getHaPanelLovelace();
+	const conf = {};
 	if (pl && pl.lovelace) {
 		let wallpanelConfig;
 		if (pl.lovelace.config && pl.lovelace.config.wallpanel) {
 			wallpanelConfig = pl.lovelace.config.wallpanel;
-		}
-		else if (pl.lovelace.rawConfig && pl.lovelace.rawConfig.wallpanel) {
+		} else if (pl.lovelace.rawConfig && pl.lovelace.rawConfig.wallpanel) {
 			wallpanelConfig = pl.lovelace.rawConfig.wallpanel;
 		}
 		if (wallpanelConfig) {
 			if (keys.length === 0) {
 				keys = Object.keys(wallpanelConfig);
 			}
-			keys.forEach(key => {
+			keys.forEach((key) => {
 				if (key in defaultConfig) {
 					conf[key] = wallpanelConfig[key];
 				}
@@ -670,21 +673,7 @@ function getHaPanelLovelaceConfig(keys = []) {
 	return conf;
 }
 
-
-function getCurrentView() {
-	try {
-		return elHaMain.shadowRoot
-		.querySelector('ha-panel-lovelace').shadowRoot
-		.querySelector('hui-root').shadowRoot
-		.querySelector('hui-view')
-	}
-	catch (e) {
-		logger.error(e);
-	}
-}
-
-
-function setSidebarHidden(hidden) {
+function setSidebarVisibility(hidden) {
 	try {
 		const panelLovelace = elHaMain.shadowRoot.querySelector("ha-panel-lovelace");
 		if (!panelLovelace) {
@@ -696,35 +685,30 @@ function setSidebarHidden(hidden) {
 			if (menuButton) {
 				if (hidden) {
 					menuButton.style.display = "none";
-				}
-				else {
+				} else {
 					menuButton.style.removeProperty("display");
 				}
 			}
 		}
-	}
-	catch (e) {
+	} catch (e) {
 		logger.warn(e);
 	}
 
 	try {
 		const aside = elHaMain.shadowRoot.querySelector("ha-drawer").shadowRoot.querySelector("aside");
-		aside.style.display = (hidden ? "none" : "");
+		aside.style.display = hidden ? "none" : "";
 		if (hidden) {
 			elHaMain.style.setProperty("--mdc-drawer-width", "env(safe-area-inset-left)");
-		}
-		else {
+		} else {
 			elHaMain.style.removeProperty("--mdc-drawer-width");
 		}
-		window.dispatchEvent(new Event('resize'));
-	}
-	catch (e) {
+		window.dispatchEvent(new Event("resize"));
+	} catch (e) {
 		logger.warn(e);
 	}
 }
 
-
-function setToolbarHidden(hidden) {
+function setToolbarVisibility(hideToolbar, hideActionItems) {
 	try {
 		const panelLovelace = elHaMain.shadowRoot.querySelector("ha-panel-lovelace");
 		if (!panelLovelace) {
@@ -741,101 +725,78 @@ function setToolbarHidden(hidden) {
 			// Changed with 2023.04
 			appToolbar = huiRoot.querySelector("div.toolbar");
 		}
-		if (hidden) {
+		if (hideToolbar) {
 			appToolbar.style.setProperty("display", "none");
 			if (!config.keep_toolbar_space) {
 				view.style.minHeight = "100vh";
 				view.style.marginTop = "0";
 				view.style.paddingTop = "0";
 			}
-		}
-		else {
+		} else {
 			appToolbar.style.removeProperty("display");
 			view.style.removeProperty("min-height");
 			view.style.removeProperty("margin-top");
 			view.style.removeProperty("padding-top");
 			const actionItems = appToolbar.querySelector("div.action-items");
-			if (config.hide_toolbar_action_icons) {
+			if (hideActionItems) {
 				actionItems.style.setProperty("display", "none");
-			}
-			else {
+			} else {
 				actionItems.style.setProperty("display", "flex");
 			}
 		}
-		window.dispatchEvent(new Event('resize'));
-	}
-	catch (e) {
+		window.dispatchEvent(new Event("resize"));
+	} catch (e) {
 		logger.warn(e);
 	}
 }
 
-
-function navigate(path, keepSearch=true) {
-	if (keepSearch && (!path.includes('?'))) {
+function navigate(path, keepSearch = true) {
+	if (keepSearch && !path.includes("?")) {
 		path += window.location.search;
 	}
 	history.pushState(null, "", path);
 	elHass.dispatchEvent(
-		new Event(
-			"location-changed", {
-				bubbles: true,
-				cancelable: false,
-				composed: true,
-			}
-		)
+		new Event("location-changed", {
+			bubbles: true,
+			cancelable: false,
+			composed: true
+		})
 	);
 }
 
-
-document.addEventListener('fullscreenerror', (event) => {
-	logger.error('Failed to enter fullscreen');
+document.addEventListener("fullscreenerror", () => {
+	logger.error("Failed to enter fullscreen");
 });
 
-
-document.addEventListener('fullscreenchange', (event) => {
-	fullscreen = Boolean(document.fullscreenElement);
+document.addEventListener("fullscreenchange", () => {
+	if (typeof document.webkitCurrentFullScreenElement !== "undefined") {
+		fullscreen = Boolean(document.webkitCurrentFullScreenElement);
+	} else if (typeof document.fullscreenElement !== "undefined") {
+		fullscreen = Boolean(document.fullscreenElement);
+	}
 });
-
 
 function enterFullscreen() {
 	logger.debug("Enter fullscreen");
 	// Will need user input event to work
-	let el = document.documentElement;
+	const el = document.documentElement;
 	if (el.requestFullscreen) {
 		el.requestFullscreen().then(
-			result => {
+			() => {
 				logger.debug("Successfully requested fullscreen");
 			},
-			error => {
+			(error) => {
 				logger.error(error);
 			}
-		)
-	}
-	else if (el.mozRequestFullScreen) {
+		);
+	} else if (el.mozRequestFullScreen) {
 		el.mozRequestFullScreen();
-	}
-	else if (el.msRequestFullscreen) {
+	} else if (el.msRequestFullscreen) {
 		el.msRequestFullscreen();
-	}
-	else if (el.webkitRequestFullscreen) {
+	} else if (el.webkitRequestFullscreen) {
 		el.webkitRequestFullscreen();
 	}
 }
-
-function exitFullscreen() {
-	logger.debug("Exit fullscreen");
-	if (document.fullscreenElement) {
-		document.fullscreenElement.exitFullscreen().then(
-			result => {
-				logger.debug("Successfully exited from fullscreen mode");
-			},
-			error => {
-				logger.error(error);
-			}
-		)
-	}
-}
-
 
 class WallpanelView extends HuiView {
 	constructor() {
@@ -891,7 +852,7 @@ class WallpanelView extends HuiView {
 				changed = true;
 			}
 		}
-		let profileUpdated = this.updateProfile();
+		const profileUpdated = this.updateProfile();
 		if (!profileUpdated && changed) {
 			updateConfig();
 		}
@@ -903,25 +864,24 @@ class WallpanelView extends HuiView {
 		const screensaver_entity = config.screensaver_entity;
 
 		if (screensaver_entity && this.__hass.states[screensaver_entity]) {
-			let lastChanged = new Date(this.__hass.states[screensaver_entity].last_changed);
-			let state = this.__hass.states[screensaver_entity].state;
+			const lastChanged = new Date(this.__hass.states[screensaver_entity].last_changed);
+			const state = this.__hass.states[screensaver_entity].state;
 
 			if (state == "off" && this.screensaverStartedAt && lastChanged.getTime() - this.screensaverStartedAt > 0) {
 				this.stopScreensaver(config.fade_out_time_screensaver_entity);
-			}
-			else if (state == "on" && this.screensaverStoppedAt && lastChanged.getTime() - this.screensaverStoppedAt > 0) {
+			} else if (state == "on" && this.screensaverStoppedAt && lastChanged.getTime() - this.screensaverStoppedAt > 0) {
 				this.startScreensaver();
 			}
 		}
 
 		if (this.screensaverRunning()) {
-			this.__cards.forEach(card => {
+			this.__cards.forEach((card) => {
 				card.hass = this.hass;
 			});
-			this.__badges.forEach(badge => {
+			this.__badges.forEach((badge) => {
 				badge.hass = this.hass;
 			});
-			this.__views.forEach(view => {
+			this.__views.forEach((view) => {
 				view.hass = this.hass;
 			});
 
@@ -938,21 +898,23 @@ class WallpanelView extends HuiView {
 	setScreensaverEntityState() {
 		const screensaver_entity = config.screensaver_entity;
 		if (!screensaver_entity || !this.__hass.states[screensaver_entity]) return;
-		if (this.screensaverRunning() && this.__hass.states[screensaver_entity].state == 'on') return;
-		if (!this.screensaverRunning() && this.__hass.states[screensaver_entity].state == 'off') return;
-		
+		if (this.screensaverRunning() && this.__hass.states[screensaver_entity].state == "on") return;
+		if (!this.screensaverRunning() && this.__hass.states[screensaver_entity].state == "off") return;
+
 		const service = this.screensaverRunning() ? "turn_on" : "turn_off";
 		logger.debug("Updating screensaver_entity", screensaver_entity, service);
-		this.__hass.callService('input_boolean', service, {
-			entity_id: screensaver_entity
-		}).then(
-			result => {
-				logger.debug(result);
-			},
-			error => {
-				logger.error("Failed to set screensaver entity state:", error);
-			}
-		);
+		this.__hass
+			.callService("input_boolean", service, {
+				entity_id: screensaver_entity
+			})
+			.then(
+				(result) => {
+					logger.debug(result);
+				},
+				(error) => {
+					logger.error("Failed to set screensaver entity state:", error);
+				}
+			);
 	}
 
 	setImageURLEntityState() {
@@ -960,19 +922,21 @@ class WallpanelView extends HuiView {
 		if (!image_url_entity || !this.__hass.states[image_url_entity]) return;
 		const activeImage = this.getActiveImageElement();
 		if (!activeImage || !activeImage.imageUrl) return;
-	
+
 		logger.debug("Updating image_url_entity", image_url_entity, activeImage.imageUrl);
-		this.__hass.callService('input_text', "set_value", {
-			entity_id: image_url_entity,
-			value: activeImage.imageUrl
-		}).then(
-			result => {
-				logger.debug(result);
-			},
-			error => {
-				logger.error("Failed to set image url entity state:", error);
-			}
-		);
+		this.__hass
+			.callService("input_text", "set_value", {
+				entity_id: image_url_entity,
+				value: activeImage.imageUrl
+			})
+			.then(
+				(result) => {
+					logger.debug(result);
+				},
+				(error) => {
+					logger.error("Failed to set image url entity state:", error);
+				}
+			);
 	}
 
 	updateProfile() {
@@ -996,242 +960,238 @@ class WallpanelView extends HuiView {
 		if (this.screensaverRunning()) {
 			if (config.disable_screensaver_on_browser_mod_popup && getActiveBrowserModPopup()) {
 				this.stopScreensaver(config.fade_out_time_browser_mod_popup);
-			}
-			else {
+			} else {
 				this.updateScreensaver();
 			}
-		}
-		else if (isActive()) {
-			if (config.idle_time > 0 && Date.now() - this.idleSince >= config.idle_time*1000) {
+		} else if (isActive()) {
+			if (config.idle_time > 0 && Date.now() - this.idleSince >= config.idle_time * 1000) {
 				this.startScreensaver();
 			}
 		}
 	}
 
 	setDefaultStyle() {
-		this.messageBox.removeAttribute('style');
-		this.messageBox.style.position = 'fixed';
+		this.messageBox.removeAttribute("style");
+		this.messageBox.style.position = "fixed";
 		this.messageBox.style.pointerEvents = "none";
 		this.messageBox.style.top = 0;
 		this.messageBox.style.left = 0;
-		this.messageBox.style.width = '100%';
-		this.messageBox.style.height = '10%';
+		this.messageBox.style.width = "100%";
+		this.messageBox.style.height = "10%";
 		this.messageBox.style.zIndex = this.style.zIndex + 1;
 		if (!this.screensaverRunning()) {
-			this.messageBox.style.visibility = 'hidden';
+			this.messageBox.style.visibility = "hidden";
 		}
 		//this.messageBox.style.margin = '5vh auto auto auto';
-		this.messageBox.style.padding = '5vh 0 0 0';
-		this.messageBox.style.fontSize = '5vh';
-		this.messageBox.style.textAlign = 'center';
-		this.messageBox.style.transition = 'visibility 200ms ease-in-out';
+		this.messageBox.style.padding = "5vh 0 0 0";
+		this.messageBox.style.fontSize = "5vh";
+		this.messageBox.style.textAlign = "center";
+		this.messageBox.style.transition = "visibility 200ms ease-in-out";
 
-		this.debugBox.removeAttribute('style');
-		this.debugBox.style.position = 'fixed';
+		this.debugBox.removeAttribute("style");
+		this.debugBox.style.position = "fixed";
 		this.debugBox.style.pointerEvents = "none";
-		this.debugBox.style.top = '0%';
-		this.debugBox.style.left = '0%';
-		this.debugBox.style.width = '100%';
-		this.debugBox.style.height = '100%';
-		this.debugBox.style.background = '#00000099';
-		this.debugBox.style.color = '#ffffff';
+		this.debugBox.style.top = "0%";
+		this.debugBox.style.left = "0%";
+		this.debugBox.style.width = "100%";
+		this.debugBox.style.height = "100%";
+		this.debugBox.style.background = "#00000099";
+		this.debugBox.style.color = "#ffffff";
 		this.debugBox.style.zIndex = this.style.zIndex + 2;
 		if (!this.screensaverRunning()) {
-			this.debugBox.style.visibility = 'hidden';
+			this.debugBox.style.visibility = "hidden";
 		}
-		this.debugBox.style.fontFamily = 'monospace';
-		this.debugBox.style.fontSize = '12px';
-		this.debugBox.style.overflowWrap = 'break-word';
-		this.debugBox.style.overflowY = 'auto';
+		this.debugBox.style.fontFamily = "monospace";
+		this.debugBox.style.fontSize = "12px";
+		this.debugBox.style.overflowWrap = "break-word";
+		this.debugBox.style.overflowY = "auto";
 
-		this.screensaverContainer.removeAttribute('style');
-		this.screensaverContainer.style.position = 'fixed';
+		this.screensaverContainer.removeAttribute("style");
+		this.screensaverContainer.style.position = "fixed";
 		this.screensaverContainer.style.top = 0;
 		this.screensaverContainer.style.left = 0;
-		this.screensaverContainer.style.width = '100vw';
-		this.screensaverContainer.style.height = '100vh';
-		this.screensaverContainer.style.background = '#000000';
+		this.screensaverContainer.style.width = "100vw";
+		this.screensaverContainer.style.height = "100vh";
+		this.screensaverContainer.style.background = "#000000";
 
 		if (!this.screensaverRunning()) {
-			this.imageOneContainer.removeAttribute('style');
+			this.imageOneContainer.removeAttribute("style");
 			this.imageOneContainer.style.opacity = 1;
 		}
-		this.imageOneContainer.style.position = 'absolute';
-		this.imageOneContainer.style.pointerEvents = 'none';
+		this.imageOneContainer.style.position = "absolute";
+		this.imageOneContainer.style.pointerEvents = "none";
 		this.imageOneContainer.style.top = 0;
 		this.imageOneContainer.style.left = 0;
-		this.imageOneContainer.style.width = '100%';
-		this.imageOneContainer.style.height = '100%';
-		this.imageOneContainer.style.border = 'none';
+		this.imageOneContainer.style.width = "100%";
+		this.imageOneContainer.style.height = "100%";
+		this.imageOneContainer.style.border = "none";
 
-		this.imageOneBackground.style.position = 'absolute';
-		this.imageOneBackground.style.pointerEvents = 'none';
+		this.imageOneBackground.style.position = "absolute";
+		this.imageOneBackground.style.pointerEvents = "none";
 		this.imageOneBackground.style.top = 0;
 		this.imageOneBackground.style.left = 0;
-		this.imageOneBackground.style.width = '100%';
-		this.imageOneBackground.style.height = '100%';
-		this.imageOneBackground.style.border = 'none';
+		this.imageOneBackground.style.width = "100%";
+		this.imageOneBackground.style.height = "100%";
+		this.imageOneBackground.style.border = "none";
 
 		if (!this.screensaverRunning()) {
-			this.imageOne.removeAttribute('style');
+			this.imageOne.removeAttribute("style");
 		}
-		this.imageOne.style.position = 'relative';
-		this.imageOne.style.pointerEvents = 'none';
-		this.imageOne.style.width = '100%';
-		this.imageOne.style.height = '100%';
-		this.imageOne.style.objectFit = 'contain';
-		this.imageOne.style.border = 'none';
+		this.imageOne.style.position = "relative";
+		this.imageOne.style.pointerEvents = "none";
+		this.imageOne.style.width = "100%";
+		this.imageOne.style.height = "100%";
+		this.imageOne.style.objectFit = "contain";
+		this.imageOne.style.border = "none";
 
-		this.imageOneInfoContainer.removeAttribute('style');
-		this.imageOneInfoContainer.style.position = 'absolute';
-		this.imageOneInfoContainer.style.pointerEvents = 'none';
+		this.imageOneInfoContainer.removeAttribute("style");
+		this.imageOneInfoContainer.style.position = "absolute";
+		this.imageOneInfoContainer.style.pointerEvents = "none";
 		this.imageOneInfoContainer.style.top = 0;
 		this.imageOneInfoContainer.style.left = 0;
-		this.imageOneInfoContainer.style.width = '100%';
-		this.imageOneInfoContainer.style.height = '100%';
-		this.imageOneInfoContainer.style.border = 'none';
+		this.imageOneInfoContainer.style.width = "100%";
+		this.imageOneInfoContainer.style.height = "100%";
+		this.imageOneInfoContainer.style.border = "none";
 
 		if (!this.screensaverRunning()) {
-			this.imageTwoContainer.removeAttribute('style');
+			this.imageTwoContainer.removeAttribute("style");
 			this.imageTwoContainer.style.opacity = 0;
 		}
-		this.imageTwoContainer.style.position = 'absolute';
-		this.imageTwoContainer.style.pointerEvents = 'none';
+		this.imageTwoContainer.style.position = "absolute";
+		this.imageTwoContainer.style.pointerEvents = "none";
 		this.imageTwoContainer.style.top = 0;
 		this.imageTwoContainer.style.left = 0;
-		this.imageTwoContainer.style.width = '100%';
-		this.imageTwoContainer.style.height = '100%';
-		this.imageTwoContainer.style.border = 'none';
+		this.imageTwoContainer.style.width = "100%";
+		this.imageTwoContainer.style.height = "100%";
+		this.imageTwoContainer.style.border = "none";
 
-		this.imageTwoBackground.style.position = 'absolute';
-		this.imageTwoBackground.style.pointerEvents = 'none';
+		this.imageTwoBackground.style.position = "absolute";
+		this.imageTwoBackground.style.pointerEvents = "none";
 		this.imageTwoBackground.style.top = 0;
 		this.imageTwoBackground.style.left = 0;
-		this.imageTwoBackground.style.width = '100%';
-		this.imageTwoBackground.style.height = '100%';
-		this.imageTwoBackground.style.border = 'none';
+		this.imageTwoBackground.style.width = "100%";
+		this.imageTwoBackground.style.height = "100%";
+		this.imageTwoBackground.style.border = "none";
 
 		if (!this.screensaverRunning()) {
-			this.imageTwo.removeAttribute('style');
+			this.imageTwo.removeAttribute("style");
 		}
-		this.imageTwo.style.position = 'relative';
-		this.imageTwo.style.pointerEvents = 'none';
-		this.imageTwo.style.width = '100%';
-		this.imageTwo.style.height = '100%';
-		this.imageTwo.style.objectFit = 'contain';
-		this.imageTwo.style.border = 'none';
+		this.imageTwo.style.position = "relative";
+		this.imageTwo.style.pointerEvents = "none";
+		this.imageTwo.style.width = "100%";
+		this.imageTwo.style.height = "100%";
+		this.imageTwo.style.objectFit = "contain";
+		this.imageTwo.style.border = "none";
 
-		this.imageTwoInfoContainer.removeAttribute('style');
-		this.imageTwoInfoContainer.style.position = 'absolute';
-		this.imageTwoInfoContainer.style.pointerEvents = 'none';
+		this.imageTwoInfoContainer.removeAttribute("style");
+		this.imageTwoInfoContainer.style.position = "absolute";
+		this.imageTwoInfoContainer.style.pointerEvents = "none";
 		this.imageTwoInfoContainer.style.top = 0;
 		this.imageTwoInfoContainer.style.left = 0;
-		this.imageTwoInfoContainer.style.width = '100%';
-		this.imageTwoInfoContainer.style.height = '100%';
-		this.imageTwoInfoContainer.style.border = 'none';
+		this.imageTwoInfoContainer.style.width = "100%";
+		this.imageTwoInfoContainer.style.height = "100%";
+		this.imageTwoInfoContainer.style.border = "none";
 
-		this.screensaverImageOverlay.removeAttribute('style');
-		this.screensaverImageOverlay.style.position = 'absolute';
+		this.screensaverImageOverlay.removeAttribute("style");
+		this.screensaverImageOverlay.style.position = "absolute";
 		if (config.card_interaction) {
-			this.screensaverImageOverlay.style.pointerEvents = 'none';
+			this.screensaverImageOverlay.style.pointerEvents = "none";
 		}
 		this.screensaverImageOverlay.style.top = 0;
 		this.screensaverImageOverlay.style.left = 0;
-		this.screensaverImageOverlay.style.width = '100%';
-		this.screensaverImageOverlay.style.height = '100%';
-		this.screensaverImageOverlay.style.background = '#00000000';
+		this.screensaverImageOverlay.style.width = "100%";
+		this.screensaverImageOverlay.style.height = "100%";
+		this.screensaverImageOverlay.style.background = "#00000000";
 
-		this.infoContainer.removeAttribute('style');
-		this.infoContainer.style.position = 'absolute';
-		this.infoContainer.style.pointerEvents = 'none';
+		this.infoContainer.removeAttribute("style");
+		this.infoContainer.style.position = "absolute";
+		this.infoContainer.style.pointerEvents = "none";
 		this.infoContainer.style.top = 0;
 		this.infoContainer.style.left = 0;
-		this.infoContainer.style.width = '100%';
-		this.infoContainer.style.height = '100%';
-		this.infoContainer.style.transition = 'opacity 2000ms ease-in-out';
-		this.infoContainer.style.padding = '25px';
-		this.infoContainer.style.boxSizing = 'border-box';
+		this.infoContainer.style.width = "100%";
+		this.infoContainer.style.height = "100%";
+		this.infoContainer.style.transition = "opacity 2000ms ease-in-out";
+		this.infoContainer.style.padding = "25px";
+		this.infoContainer.style.boxSizing = "border-box";
 
-		this.infoBox.removeAttribute('style');
-		this.infoBox.style.pointerEvents = 'none';
-		this.infoBox.style.width = 'fit-content';
-		this.infoBox.style.maxHeight = '100%';
-		this.infoBox.style.borderRadius = '10px';
+		this.infoBox.removeAttribute("style");
+		this.infoBox.style.pointerEvents = "none";
+		this.infoBox.style.width = "fit-content";
+		this.infoBox.style.maxHeight = "100%";
+		this.infoBox.style.borderRadius = "10px";
 		this.infoBox.style.overflowY = "auto";
 		this.infoBox.style.scrollbarWidth = "none";
-		this.infoBox.style.setProperty('--wp-card-width', '500px');
-		this.infoBox.style.setProperty('--wp-card-padding', '0');
-		this.infoBox.style.setProperty('--wp-card-margin', '5px');
-		this.infoBox.style.setProperty('--wp-card-backdrop-filter', 'none');
-		this.infoBox.style.setProperty('--wp-badges-minwidth', '200px');
+		this.infoBox.style.setProperty("--wp-card-width", "500px");
+		this.infoBox.style.setProperty("--wp-card-padding", "0");
+		this.infoBox.style.setProperty("--wp-card-margin", "5px");
+		this.infoBox.style.setProperty("--wp-card-backdrop-filter", "none");
+		this.infoBox.style.setProperty("--wp-badges-minwidth", "200px");
 
-		this.infoBoxPosX.style.height = '100%';
-		this.infoBoxPosX.style.width = '100%';
+		this.infoBoxPosX.style.height = "100%";
+		this.infoBoxPosX.style.width = "100%";
 
-		this.infoBoxPosY.style.height = '100%';
-		this.infoBoxPosY.style.width = '100%';
+		this.infoBoxPosY.style.height = "100%";
+		this.infoBoxPosY.style.width = "100%";
 
-		this.infoBoxContent.style.width = 'fit-content';
-		this.infoBoxContent.style.height = '100%';
-		this.infoBoxContent.style.display = 'grid';
+		this.infoBoxContent.style.width = "fit-content";
+		this.infoBoxContent.style.height = "100%";
+		this.infoBoxContent.style.display = "grid";
 
-		this.fixedInfoContainer.removeAttribute('style');
-		this.fixedInfoContainer.style.position = 'fixed';
-		this.fixedInfoContainer.style.pointerEvents = 'none';
+		this.fixedInfoContainer.removeAttribute("style");
+		this.fixedInfoContainer.style.position = "fixed";
+		this.fixedInfoContainer.style.pointerEvents = "none";
 		this.fixedInfoContainer.style.top = 0;
 		this.fixedInfoContainer.style.left = 0;
-		this.fixedInfoContainer.style.width = '100%';
-		this.fixedInfoContainer.style.height = '100%';
+		this.fixedInfoContainer.style.width = "100%";
+		this.fixedInfoContainer.style.height = "100%";
 
 		this.fixedInfoBox.style.cssText = this.infoBox.style.cssText;
-		this.fixedInfoBox.style.pointerEvents = 'none';
+		this.fixedInfoBox.style.pointerEvents = "none";
 
-		this.screensaverOverlay.removeAttribute('style');
-		this.screensaverOverlay.style.position = 'absolute';
+		this.screensaverOverlay.removeAttribute("style");
+		this.screensaverOverlay.style.position = "absolute";
 		if (config.card_interaction) {
-			this.screensaverOverlay.style.pointerEvents = 'none';
+			this.screensaverOverlay.style.pointerEvents = "none";
 		}
 		this.screensaverOverlay.style.top = 0;
 		this.screensaverOverlay.style.left = 0;
-		this.screensaverOverlay.style.width = '100%';
-		this.screensaverOverlay.style.height = '100%';
-		this.screensaverOverlay.style.background = '#00000000';
+		this.screensaverOverlay.style.width = "100%";
+		this.screensaverOverlay.style.height = "100%";
+		this.screensaverOverlay.style.background = "#00000000";
 	}
 
 	updateStyle() {
-		this.screensaverOverlay.style.background = '#00000000';
-		this.debugBox.style.visibility = config.debug ? 'visible' : 'hidden';
+		this.screensaverOverlay.style.background = "#00000000";
+		this.debugBox.style.visibility = config.debug ? "visible" : "hidden";
 		//this.screensaverContainer.style.transition = `opacity ${Math.round(config.fade_in_time*1000)}ms ease-in-out`;
-		this.style.transition = `opacity ${Math.round(config.fade_in_time*1000)}ms ease-in-out`;
-		this.imageOneContainer.style.transition = `opacity ${Math.round(config.crossfade_time*1000)}ms ease-in-out`;
-		this.imageTwoContainer.style.transition = `opacity ${Math.round(config.crossfade_time*1000)}ms ease-in-out`;
+		this.style.transition = `opacity ${Math.round(config.fade_in_time * 1000)}ms ease-in-out`;
+		this.imageOneContainer.style.transition = `opacity ${Math.round(config.crossfade_time * 1000)}ms ease-in-out`;
+		this.imageTwoContainer.style.transition = `opacity ${Math.round(config.crossfade_time * 1000)}ms ease-in-out`;
 		this.imageOne.style.objectFit = config.image_fit;
 		this.imageTwo.style.objectFit = config.image_fit;
 
 		if (config.info_animation_duration_x) {
 			this.infoBoxPosX.style.animation = `moveX ${config.info_animation_duration_x}s ${config.info_animation_timing_function_x} infinite alternate`;
-		}
-		else {
-			this.infoBoxPosX.style.animation = '';
+		} else {
+			this.infoBoxPosX.style.animation = "";
 		}
 
 		if (config.info_animation_duration_y) {
 			this.infoBoxPosY.style.animation = `moveY ${config.info_animation_duration_y}s ${config.info_animation_timing_function_y} infinite alternate`;
-		}
-		else {
-			this.infoBoxPosY.style.animation = '';
+		} else {
+			this.infoBoxPosY.style.animation = "";
 		}
 
 		if (config.style) {
 			for (const elId in config.style) {
 				if (
-					elId.startsWith('wallpanel-') &&
-					elId != 'wallpanel-shadow-host' &&
-					elId != 'wallpanel-screensaver-info-box-badges' &&
-					elId != 'wallpanel-screensaver-info-box-views' &&
+					elId.startsWith("wallpanel-") &&
+					elId != "wallpanel-shadow-host" &&
+					elId != "wallpanel-screensaver-info-box-badges" &&
+					elId != "wallpanel-screensaver-info-box-views" &&
 					!classStyles[elId]
 				) {
-					let el = this.shadowRoot.getElementById(elId);
+					const el = this.shadowRoot.getElementById(elId);
 					if (el) {
 						logger.debug(`Setting style attributes for element #${elId}`);
 						for (const attr in config.style[elId]) {
@@ -1240,12 +1200,10 @@ class WallpanelView extends HuiView {
 						}
 						if (el == this.infoBox) {
 							this.fixedInfoBox.style.cssText = this.infoBox.style.cssText;
-						}
-						else if (el == this.infoBoxContent) {
+						} else if (el == this.infoBoxContent) {
 							this.fixedInfoBoxContent.style.cssText = this.infoBoxContent.style.cssText;
 						}
-					}
-					else {
+					} else {
 						logger.error(`Element #${elId} not found`);
 					}
 				}
@@ -1254,15 +1212,23 @@ class WallpanelView extends HuiView {
 	}
 
 	updateShadowStyle() {
-		let computed = getComputedStyle(this.infoContainer);
-		let maxX = this.infoContainer.offsetWidth - parseInt(computed.paddingLeft) - parseInt(computed.paddingRight) - this.infoBox.offsetWidth;
-		let maxY = this.infoContainer.offsetHeight - parseInt(computed.paddingTop) - parseInt(computed.paddingBottom) - this.infoBox.offsetHeight;
-		let host = '';
+		const computed = getComputedStyle(this.infoContainer);
+		const maxX =
+			this.infoContainer.offsetWidth -
+			parseInt(computed.paddingLeft) -
+			parseInt(computed.paddingRight) -
+			this.infoBox.offsetWidth;
+		const maxY =
+			this.infoContainer.offsetHeight -
+			parseInt(computed.paddingTop) -
+			parseInt(computed.paddingBottom) -
+			this.infoBox.offsetHeight;
+		let host = "";
 
 		if (config.style) {
-			if (config.style['wallpanel-shadow-host']) {
-				for (const attr in config.style['wallpanel-shadow-host']) {
-					host += `${attr}: ${config.style['wallpanel-shadow-host'][attr]};\n`;
+			if (config.style["wallpanel-shadow-host"]) {
+				for (const attr in config.style["wallpanel-shadow-host"]) {
+					host += `${attr}: ${config.style["wallpanel-shadow-host"][attr]};\n`;
 				}
 			}
 			for (const className in classStyles) {
@@ -1313,28 +1279,46 @@ class WallpanelView extends HuiView {
 				}
 			}
 			${classCss}
-		`
+		`;
 	}
 
 	randomMove() {
-		let computed = getComputedStyle(this.infoContainer);
-		let maxX = this.infoContainer.offsetWidth - parseInt(computed.paddingLeft) - parseInt(computed.paddingRight) - this.infoBox.offsetWidth;
-		let maxY = this.infoContainer.offsetHeight - parseInt(computed.paddingTop) - parseInt(computed.paddingBottom) - this.infoBox.offsetHeight;
-		let x = Math.floor(Math.random() * maxX);
-		let y = Math.floor(Math.random() * maxY);
+		const computed = getComputedStyle(this.infoContainer);
+		const maxX =
+			this.infoContainer.offsetWidth -
+			parseInt(computed.paddingLeft) -
+			parseInt(computed.paddingRight) -
+			this.infoBox.offsetWidth;
+		const maxY =
+			this.infoContainer.offsetHeight -
+			parseInt(computed.paddingTop) -
+			parseInt(computed.paddingBottom) -
+			this.infoBox.offsetHeight;
+		const x = Math.floor(Math.random() * maxX);
+		const y = Math.floor(Math.random() * maxY);
 		this.moveInfoBox(x, y);
 	}
 
-	moveAroundCorners(correctPostion=false) {
+	moveAroundCorners(correctPostion = false) {
 		let fadeDuration = null;
 		if (correctPostion) {
 			fadeDuration = 0;
 		} else {
 			this.lastCorner = (this.lastCorner + 1) % 4;
 		}
-		let computed = getComputedStyle(this.infoContainer);
-		let x = [2, 3].includes(this.lastCorner) ? this.infoContainer.offsetWidth - parseInt(computed.paddingLeft) - parseInt(computed.paddingRight) - this.infoBox.offsetWidth : 0;
-		let y = [1, 2].includes(this.lastCorner) ? this.infoContainer.offsetHeight - parseInt(computed.paddingTop) - parseInt(computed.paddingBottom) - this.infoBox.offsetHeight : 0;
+		const computed = getComputedStyle(this.infoContainer);
+		const x = [2, 3].includes(this.lastCorner)
+			? this.infoContainer.offsetWidth -
+				parseInt(computed.paddingLeft) -
+				parseInt(computed.paddingRight) -
+				this.infoBox.offsetWidth
+			: 0;
+		const y = [1, 2].includes(this.lastCorner)
+			? this.infoContainer.offsetHeight -
+				parseInt(computed.paddingTop) -
+				parseInt(computed.paddingBottom) -
+				this.infoBox.offsetHeight
+			: 0;
 		this.moveInfoBox(x, y, fadeDuration);
 	}
 
@@ -1345,23 +1329,16 @@ class WallpanelView extends HuiView {
 		}
 		if (fadeDuration > 0) {
 			if (this.infoBox.animate) {
-				let keyframes = [
-					{ opacity: 1 },
-					{ opacity: 0, offset: 0.5 },
-					{ opacity: 1 }
-				];
-				this.infoBox.animate(
-					keyframes, {
-						duration: Math.round(fadeDuration * 1000),
-						iterations: 1
-					}
-				);
-			}
-			else {
+				const keyframes = [{ opacity: 1 }, { opacity: 0, offset: 0.5 }, { opacity: 1 }];
+				this.infoBox.animate(keyframes, {
+					duration: Math.round(fadeDuration * 1000),
+					iterations: 1
+				});
+			} else {
 				logger.warn("This browser does not support the animate() method, please set info_move_fade_duration to 0");
 			}
 		}
-		let wp = this;
+		const wp = this;
 		let ms = Math.round(fadeDuration * 500);
 		if (ms < 0) {
 			ms = 0;
@@ -1369,7 +1346,7 @@ class WallpanelView extends HuiView {
 		if (wp.translateInterval) {
 			clearInterval(wp.translateInterval);
 		}
-		wp.translateInterval = setInterval(function() {
+		wp.translateInterval = setInterval(function () {
 			wp.infoBoxPosX.style.transform = `translate3d(${x}px, 0, 0)`;
 			wp.infoBoxPosY.style.transform = `translate3d(0, ${y}px, 0)`;
 		}, ms);
@@ -1383,38 +1360,38 @@ class WallpanelView extends HuiView {
 		}
 		this.lovelace = haPanelLovelace.__lovelace;
 		this.infoBoxContentCreatedDate = new Date();
-		this.infoBoxContent.innerHTML = '';
+		this.infoBoxContent.innerHTML = "";
 		this.__badges = [];
 		this.__cards = [];
 		this.__views = [];
 		this.energyCollectionUpdateEnabled = false;
 
-		this.shadowRoot.querySelectorAll(".wp-card").forEach(card => {
+		this.shadowRoot.querySelectorAll(".wp-card").forEach((card) => {
 			card.parentElement.removeChild(card);
-		})
+		});
 
 		if (config.badges && config.badges.length > 0) {
-			const div = document.createElement('div');
+			const div = document.createElement("div");
 			div.id = "wallpanel-screensaver-info-box-badges";
 			div.classList.add("wp-badges");
-			div.style.padding = 'var(--wp-card-padding)';
-			div.style.margin = 'var(--wp-card-margin)';
-			div.style.textAlign = 'center';
-			div.style.display = 'flex';
-			div.style.alignItems = 'flex-start';
-			div.style.flexWrap = 'wrap';
-			div.style.justifyContent = 'center';
-			div.style.gap = '8px';
-			div.style.margin = '0px';
-			div.style.minWidth = 'var(--wp-badges-minwidth)';
+			div.style.padding = "var(--wp-card-padding)";
+			div.style.margin = "var(--wp-card-margin)";
+			div.style.textAlign = "center";
+			div.style.display = "flex";
+			div.style.alignItems = "flex-start";
+			div.style.flexWrap = "wrap";
+			div.style.justifyContent = "center";
+			div.style.gap = "8px";
+			div.style.margin = "0px";
+			div.style.minWidth = "var(--wp-badges-minwidth)";
 			if (config.style[div.id]) {
 				for (const attr in config.style[div.id]) {
 					logger.debug(`Setting style attribute ${attr} to ${config.style[div.id][attr]}`);
 					div.style.setProperty(attr, config.style[div.id][attr]);
 				}
 			}
-			config.badges.forEach(badge => {
-				let badgeConfig = JSON.parse(JSON.stringify(badge));
+			config.badges.forEach((badge) => {
+				const badgeConfig = JSON.parse(JSON.stringify(badge));
 				logger.debug("Creating badge:", badgeConfig);
 				let style = {};
 				if (badgeConfig.wp_style) {
@@ -1434,7 +1411,7 @@ class WallpanelView extends HuiView {
 		}
 
 		if (config.views && config.views.length > 0) {
-			const div = document.createElement('div');
+			const div = document.createElement("div");
 			div.id = "wallpanel-screensaver-info-box-views";
 			div.classList.add("wp-views");
 			if (config.style[div.id]) {
@@ -1445,9 +1422,9 @@ class WallpanelView extends HuiView {
 			}
 
 			const viewConfigs = this.lovelace.config.views;
-			config.views.forEach(view => {
+			config.views.forEach((view) => {
 				let viewIndex = -1;
-				let viewConfig = JSON.parse(JSON.stringify(view));
+				const viewConfig = JSON.parse(JSON.stringify(view));
 				for (var i = 0; i < viewConfigs.length; i++) {
 					if (
 						(viewConfigs[i].path && view.path && viewConfigs[i].path.toLowerCase() == view.path.toLowerCase()) ||
@@ -1464,8 +1441,8 @@ class WallpanelView extends HuiView {
 					viewIndex = 0;
 				}
 
-				const viewElement = document.createElement('hui-view');
-				viewElement.route = {prefix: '/' + activePanel, path: '/' + view.path};
+				const viewElement = document.createElement("hui-view");
+				viewElement.route = { prefix: "/" + activePanel, path: "/" + view.path };
 				viewElement.lovelace = this.lovelace;
 				viewElement.panel = this.hass.panels[activePanel];
 				viewElement.hass = this.hass;
@@ -1475,7 +1452,7 @@ class WallpanelView extends HuiView {
 				}
 				this.__views.push(viewElement);
 
-				const viewContainer = document.createElement('div');
+				const viewContainer = document.createElement("div");
 				if (config.card_interaction) {
 					viewElement.style.pointerEvents = "initial";
 				}
@@ -1492,9 +1469,9 @@ class WallpanelView extends HuiView {
 		}
 
 		if (config.cards && config.cards.length > 0) {
-			config.cards.forEach(card => {
+			config.cards.forEach((card) => {
 				// Copy object
-				let cardConfig = JSON.parse(JSON.stringify(card));
+				const cardConfig = JSON.parse(JSON.stringify(card));
 				logger.debug("Creating card:", cardConfig);
 				let style = {};
 				if (cardConfig.wp_style) {
@@ -1512,24 +1489,23 @@ class WallpanelView extends HuiView {
 				this.__cards.push(cardElement);
 
 				let parent = this.infoBoxContent;
-				const cardContainer = document.createElement('div');
+				const cardContainer = document.createElement("div");
 				cardContainer.classList.add("wp-card");
-				cardContainer.style.width = 'var(--wp-card-width)';
-				cardContainer.style.padding = 'var(--wp-card-padding)';
-				cardContainer.style.margin = 'var(--wp-card-margin)';
-				cardContainer.style.backdropFilter = 'var(--wp-card-backdrop-filter)';
+				cardContainer.style.width = "var(--wp-card-width)";
+				cardContainer.style.padding = "var(--wp-card-padding)";
+				cardContainer.style.margin = "var(--wp-card-margin)";
+				cardContainer.style.backdropFilter = "var(--wp-card-backdrop-filter)";
 
 				if (config.card_interaction) {
 					cardContainer.style.pointerEvents = "initial";
 				}
 				for (const attr in style) {
 					if (attr == "parent") {
-						let pel = this.shadowRoot.getElementById(style[attr]);
+						const pel = this.shadowRoot.getElementById(style[attr]);
 						if (pel) {
 							parent = pel;
 						}
-					}
-					else {
+					} else {
 						cardContainer.style.setProperty(attr, style[attr]);
 					}
 				}
@@ -1546,14 +1522,14 @@ class WallpanelView extends HuiView {
 		if (!this.progressBarContainer) {
 			return;
 		}
-		this.progressBar.style.animation = 'none';
+		this.progressBar.style.animation = "none";
 		if (!config.show_progress_bar) {
 			return;
 		}
 		const wp = this;
-		setTimeout(function() {
+		setTimeout(function () {
 			// Restart CSS animation.
-			wp.progressBar.style.animation = `horizontalProgress ${config.display_time}s linear`
+			wp.progressBar.style.animation = `horizontalProgress ${config.display_time}s linear`;
 		}, 25);
 	}
 
@@ -1567,7 +1543,7 @@ class WallpanelView extends HuiView {
 		if (delay < 50) {
 			delay = 50;
 		}
-		setTimeout(function() {
+		setTimeout(function () {
 			activeImage.style.animation = `kenBurnsEffect ${config.display_time + Math.ceil(config.crossfade_time * 2) + 1}s ease`;
 		}, delay);
 	}
@@ -1587,8 +1563,8 @@ class WallpanelView extends HuiView {
 	}
 
 	handleMediaError(medialElem, error) {
-		medialElem.setAttribute('data-loading', false);
-		logger.error('Error while loding image:', error);
+		medialElem.setAttribute("data-loading", false);
+		logger.error("Error while loding image:", error);
 
 		if (medialElem.imageUrl) {
 			const idx = this.imageList.indexOf(medialElem.imageUrl);
@@ -1603,18 +1579,18 @@ class WallpanelView extends HuiView {
 	}
 
 	loadBackgroundImage(medialElem) {
-		const isVideo = medialElem.tagName === 'VIDEO';
+		const isVideo = medialElem.tagName === "VIDEO";
 		let srcImageUrl = medialElem.src;
 		if (isVideo) {
 			// Capture the current frame of the video as a background image
-			const canvas = document.createElement('canvas');
+			const canvas = document.createElement("canvas");
 			canvas.width = medialElem.videoWidth;
 			canvas.height = medialElem.videoHeight;
-			
-			const ctx = canvas.getContext('2d');
+
+			const ctx = canvas.getContext("2d");
 			ctx.drawImage(medialElem, 0, 0, canvas.width, canvas.height);
 			try {
-				srcImageUrl = canvas.toDataURL('image/png');
+				srcImageUrl = canvas.toDataURL("image/png");
 			} catch (err) {
 				srcImageUrl = null;
 				logger.error("Error extracting canvas image:", err);
@@ -1624,25 +1600,23 @@ class WallpanelView extends HuiView {
 		if (medialElem == this.imageTwo) {
 			cont = this.imageTwoBackground;
 		}
-		cont.style.backgroundImage = srcImageUrl ? `url(${srcImageUrl})` : '';
+		cont.style.backgroundImage = srcImageUrl ? `url(${srcImageUrl})` : "";
 	}
 
 	handleMediaLoaded(medialElem) {
-		medialElem.setAttribute('data-loading', false);
-		const isVideo = medialElem.tagName === 'VIDEO';
+		medialElem.setAttribute("data-loading", false);
+		const isVideo = medialElem.tagName === "VIDEO";
 		const wp = this;
 		if (config.image_background === "image") {
 			if (isVideo) {
 				if (medialElem.readyState >= medialElem.HAVE_CURRENT_DATA) {
 					wp.loadBackgroundImage(medialElem);
-				}
-				else {
-					medialElem.addEventListener('canplay', function() {
+				} else {
+					medialElem.addEventListener("canplay", function () {
 						wp.loadBackgroundImage(medialElem);
 					});
 				}
-			}
-			else {
+			} else {
 				wp.loadBackgroundImage(medialElem);
 			}
 		}
@@ -1653,36 +1627,36 @@ class WallpanelView extends HuiView {
 
 	connectedCallback() {
 		this.style.zIndex = config.z_index;
-		this.style.visibility = 'hidden';
+		this.style.visibility = "hidden";
 		this.style.opacity = 0;
-		this.style.position = 'fixed';
+		this.style.position = "fixed";
 
-		this.messageBox = document.createElement('div');
-		this.messageBox.id = 'wallpanel-message-box';
+		this.messageBox = document.createElement("div");
+		this.messageBox.id = "wallpanel-message-box";
 
-		this.debugBox = document.createElement('div');
-		this.debugBox.id = 'wallpanel-debug-box';
+		this.debugBox = document.createElement("div");
+		this.debugBox.id = "wallpanel-debug-box";
 
-		this.screensaverContainer = document.createElement('div');
-		this.screensaverContainer.id = 'wallpanel-screensaver-container';
+		this.screensaverContainer = document.createElement("div");
+		this.screensaverContainer.id = "wallpanel-screensaver-container";
 
-		this.imageOneContainer = document.createElement('div');
-		this.imageOneContainer.id = 'wallpanel-screensaver-image-one-container';
+		this.imageOneContainer = document.createElement("div");
+		this.imageOneContainer.id = "wallpanel-screensaver-image-one-container";
 
-		this.imageOneBackground = document.createElement('div');
-		this.imageOneBackground.className = 'wallpanel-screensaver-image-background';
-		this.imageOneBackground.id = 'wallpanel-screensaver-image-one-background';
+		this.imageOneBackground = document.createElement("div");
+		this.imageOneBackground.className = "wallpanel-screensaver-image-background";
+		this.imageOneBackground.id = "wallpanel-screensaver-image-one-background";
 
-		this.imageOne = document.createElement('img');
-		this.imageOne.id = 'wallpanel-screensaver-image-one';
-		this.imageOne.setAttribute('data-loading', false);
+		this.imageOne = document.createElement("img");
+		this.imageOne.id = "wallpanel-screensaver-image-one";
+		this.imageOne.setAttribute("data-loading", false);
 
-		this.imageOneInfoContainer = document.createElement('div');
-		this.imageOneInfoContainer.id = 'wallpanel-screensaver-image-one-info-container';
+		this.imageOneInfoContainer = document.createElement("div");
+		this.imageOneInfoContainer.id = "wallpanel-screensaver-image-one-info-container";
 
-		this.imageOneInfo = document.createElement('div');
-		this.imageOneInfo.className = 'wallpanel-screensaver-image-info';
-		this.imageOneInfo.id = 'wallpanel-screensaver-image-one-info';
+		this.imageOneInfo = document.createElement("div");
+		this.imageOneInfo.className = "wallpanel-screensaver-image-info";
+		this.imageOneInfo.id = "wallpanel-screensaver-image-one-info";
 
 		this.imageOneInfoContainer.appendChild(this.imageOneInfo);
 		this.imageOneContainer.appendChild(this.imageOneBackground);
@@ -1690,23 +1664,23 @@ class WallpanelView extends HuiView {
 		this.imageOneContainer.appendChild(this.imageOneInfoContainer);
 		this.screensaverContainer.appendChild(this.imageOneContainer);
 
-		this.imageTwoContainer = document.createElement('div');
-		this.imageTwoContainer.id = 'wallpanel-screensaver-image-two-container';
+		this.imageTwoContainer = document.createElement("div");
+		this.imageTwoContainer.id = "wallpanel-screensaver-image-two-container";
 
-		this.imageTwoBackground = document.createElement('div');
-		this.imageTwoBackground.className = 'wallpanel-screensaver-image-background';
-		this.imageTwoBackground.id = 'wallpanel-screensaver-image-two-background';
+		this.imageTwoBackground = document.createElement("div");
+		this.imageTwoBackground.className = "wallpanel-screensaver-image-background";
+		this.imageTwoBackground.id = "wallpanel-screensaver-image-two-background";
 
-		this.imageTwo = document.createElement('img');
-		this.imageTwo.id = 'wallpanel-screensaver-image-two';
-		this.imageTwo.setAttribute('data-loading', false);
+		this.imageTwo = document.createElement("img");
+		this.imageTwo.id = "wallpanel-screensaver-image-two";
+		this.imageTwo.setAttribute("data-loading", false);
 
-		this.imageTwoInfoContainer = document.createElement('div');
-		this.imageTwoInfoContainer.id = 'wallpanel-screensaver-image-two-info-container';
+		this.imageTwoInfoContainer = document.createElement("div");
+		this.imageTwoInfoContainer.id = "wallpanel-screensaver-image-two-info-container";
 
-		this.imageTwoInfo = document.createElement('div');
-		this.imageTwoInfo.className = 'wallpanel-screensaver-image-info';
-		this.imageTwoInfo.id = 'wallpanel-screensaver-image-two-info';
+		this.imageTwoInfo = document.createElement("div");
+		this.imageTwoInfo.className = "wallpanel-screensaver-image-info";
+		this.imageTwoInfo.id = "wallpanel-screensaver-image-two-info";
 
 		this.imageTwoInfoContainer.appendChild(this.imageTwoInfo);
 		this.imageTwoContainer.appendChild(this.imageTwoBackground);
@@ -1714,50 +1688,50 @@ class WallpanelView extends HuiView {
 		this.imageTwoContainer.appendChild(this.imageTwoInfoContainer);
 		this.screensaverContainer.appendChild(this.imageTwoContainer);
 
-		this.screensaverImageOverlay = document.createElement('div');
-		this.screensaverImageOverlay.id = 'wallpanel-screensaver-image-overlay';
+		this.screensaverImageOverlay = document.createElement("div");
+		this.screensaverImageOverlay.id = "wallpanel-screensaver-image-overlay";
 		this.screensaverContainer.appendChild(this.screensaverImageOverlay);
 
-		this.progressBarContainer = document.createElement('div');
-		this.progressBarContainer.className = 'wallpanel-progress';
-		this.progressBar = document.createElement('div');
-		this.progressBar.className = 'wallpanel-progress-inner';
-		this.progressBar.id = 'wallpanel-progress-inner';
+		this.progressBarContainer = document.createElement("div");
+		this.progressBarContainer.className = "wallpanel-progress";
+		this.progressBar = document.createElement("div");
+		this.progressBar.className = "wallpanel-progress-inner";
+		this.progressBar.id = "wallpanel-progress-inner";
 		this.progressBarContainer.appendChild(this.progressBar);
 
 		if (config.show_progress_bar) {
 			this.screensaverContainer.appendChild(this.progressBarContainer);
 		}
 
-		this.infoContainer = document.createElement('div');
-		this.infoContainer.id = 'wallpanel-screensaver-info-container';
+		this.infoContainer = document.createElement("div");
+		this.infoContainer.id = "wallpanel-screensaver-info-container";
 
-		this.fixedInfoContainer = document.createElement('div');
-		this.fixedInfoContainer.id = 'wallpanel-screensaver-fixed-info-container';
+		this.fixedInfoContainer = document.createElement("div");
+		this.fixedInfoContainer.id = "wallpanel-screensaver-fixed-info-container";
 
-		this.fixedInfoBox = document.createElement('div');
-		this.fixedInfoBox.id = 'wallpanel-screensaver-fixed-info-box';
+		this.fixedInfoBox = document.createElement("div");
+		this.fixedInfoBox.id = "wallpanel-screensaver-fixed-info-box";
 
-		this.fixedInfoBoxContent = document.createElement('div');
-		this.fixedInfoBoxContent.id = 'wallpanel-screensaver-fixed-info-box-content';
+		this.fixedInfoBoxContent = document.createElement("div");
+		this.fixedInfoBoxContent.id = "wallpanel-screensaver-fixed-info-box-content";
 
 		this.screensaverContainer.appendChild(this.infoContainer);
 
-		this.infoBoxPosX = document.createElement('div');
-		this.infoBoxPosX.id = 'wallpanel-screensaver-info-box-pos-x';
-		this.infoBoxPosX.x = '0';
+		this.infoBoxPosX = document.createElement("div");
+		this.infoBoxPosX.id = "wallpanel-screensaver-info-box-pos-x";
+		this.infoBoxPosX.x = "0";
 
-		this.infoBoxPosY = document.createElement('div');
-		this.infoBoxPosY.id = 'wallpanel-screensaver-info-box-pos-y';
-		this.infoBoxPosX.y = '0';
+		this.infoBoxPosY = document.createElement("div");
+		this.infoBoxPosY.id = "wallpanel-screensaver-info-box-pos-y";
+		this.infoBoxPosX.y = "0";
 
-		this.infoBox = document.createElement('div');
-		this.infoBox.id = 'wallpanel-screensaver-info-box';
+		this.infoBox = document.createElement("div");
+		this.infoBox.id = "wallpanel-screensaver-info-box";
 
-		this.infoBoxContent = document.createElement('div');
-		this.infoBoxContent.id = 'wallpanel-screensaver-info-box-content';
-		this.infoBoxContent.style.display = 'grid';
-		
+		this.infoBoxContent = document.createElement("div");
+		this.infoBoxContent.id = "wallpanel-screensaver-info-box-content";
+		this.infoBoxContent.style.display = "grid";
+
 		this.infoBox.appendChild(this.infoBoxContent);
 		this.infoBoxPosX.appendChild(this.infoBox);
 		this.infoBoxPosY.appendChild(this.infoBoxPosX);
@@ -1767,50 +1741,53 @@ class WallpanelView extends HuiView {
 		this.fixedInfoContainer.appendChild(this.fixedInfoBox);
 		this.infoContainer.appendChild(this.fixedInfoContainer);
 
-		this.screensaverOverlay = document.createElement('div');
-		this.screensaverOverlay.id = 'wallpanel-screensaver-overlay';
+		this.screensaverOverlay = document.createElement("div");
+		this.screensaverOverlay.id = "wallpanel-screensaver-overlay";
 		this.screensaverContainer.appendChild(this.screensaverOverlay);
 
-		this.shadowStyle = document.createElement('style');
+		this.shadowStyle = document.createElement("style");
 
-		let shadow = this.attachShadow({mode: 'open'});
+		const shadow = this.attachShadow({ mode: "open" });
 		shadow.appendChild(this.shadowStyle);
 		shadow.appendChild(this.screensaverContainer);
 		shadow.appendChild(this.messageBox);
 		shadow.appendChild(this.debugBox);
 
 		const wp = this;
-		let eventNames = ['click', 'touchstart', 'wheel'];
+		const eventNames = ["click", "touchstart", "wheel"];
 		if (config.stop_screensaver_on_key_down) {
-			eventNames.push('keydown');
+			eventNames.push("keydown");
 		}
 		if (config.stop_screensaver_on_mouse_move) {
-			eventNames.push('mousemove');
+			eventNames.push("mousemove");
 		}
-		eventNames.forEach(function(eventName) {
-			let click = ['click', 'touchstart'].includes(eventName);
-			window.addEventListener(eventName, event => {
-				wp.handleInteractionEvent(event, click);
-			}, { capture: true, passive: !click });
+		eventNames.forEach(function (eventName) {
+			const click = ["click", "touchstart"].includes(eventName);
+			window.addEventListener(
+				eventName,
+				(event) => {
+					wp.handleInteractionEvent(event, click);
+				},
+				{ capture: true, passive: !click }
+			);
 		});
-		window.addEventListener("resize", event => {
+		window.addEventListener("resize", () => {
 			if (wp.screensaverRunning()) {
 				wp.updateShadowStyle();
 			}
 		});
-		window.addEventListener("hass-more-info", event => {
+		window.addEventListener("hass-more-info", () => {
 			if (wp.screensaverRunning()) {
 				wp.moreInfoDialogToForeground();
 			}
 		});
-		const infoBoxResizeObserver = new ResizeObserver((entries) => {
-			if (config.info_move_pattern === 'corners') {
+		const infoBoxResizeObserver = new ResizeObserver(() => {
+			if (config.info_move_pattern === "corners") {
 				// Correct position
 				this.moveAroundCorners(true);
 			}
 		});
 		infoBoxResizeObserver.observe(this.infoBoxContent);
-		
 
 		this.reconfigure();
 		// Correct possibly incorrect entity state
@@ -1843,20 +1820,21 @@ class WallpanelView extends HuiView {
 			}
 			if (["immich-api", "unsplash-api", "media-source"].includes(imageSourceType())) {
 				this.updateImageList(true, preloadCallback);
-			}
-			else {
+			} else {
 				this.imageList = [];
 				this.preloadImages(preloadCallback);
 			}
 		}
 
 		if (config.disable_screensaver_on_browser_mod_popup_func) {
-			this.disable_screensaver_on_browser_mod_popup_function = new Function('bmp', config.disable_screensaver_on_browser_mod_popup_func);
+			this.disable_screensaver_on_browser_mod_popup_function = new Function(
+				"bmp",
+				config.disable_screensaver_on_browser_mod_popup_func
+			);
 		}
-		if (config.enabled && config.camera_motion_detection_enabled) {
+		if (isActive() && config.camera_motion_detection_enabled) {
 			this.cameraMotionDetection.start();
-		}
-		else {
+		} else {
 			this.cameraMotionDetection.stop();
 		}
 	}
@@ -1889,12 +1867,12 @@ class WallpanelView extends HuiView {
 	}
 
 	fetchEXIFInfo(img) {
-		let wp = this;
+		const wp = this;
 		if (imageInfoCache[img.imageUrl]) {
 			return;
 		}
 		if (imageInfoCacheKeys.length >= imageInfoCacheMaxSize) {
-			let oldest = imageInfoCacheKeys.shift();
+			const oldest = imageInfoCacheKeys.shift();
 			if (imageInfoCache[oldest]) {
 				delete imageInfoCache[oldest];
 			}
@@ -1903,45 +1881,43 @@ class WallpanelView extends HuiView {
 		const tmpImg = document.createElement("img");
 		tmpImg.src = img.src;
 		tmpImg.imageUrl = img.imageUrl;
-		getImageData(tmpImg, function() {
+		getImageData(tmpImg, function () {
 			logger.debug("EXIF data:", tmpImg.exifdata);
 			imageInfoCacheKeys.push(tmpImg.imageUrl);
 			imageInfoCache[tmpImg.imageUrl] = tmpImg.exifdata;
 			wp.setImageDataInfo(tmpImg);
 
-			let exifLong = tmpImg.exifdata["GPSLongitude"];
-			let exifLat = tmpImg.exifdata["GPSLatitude"];
+			const exifLong = tmpImg.exifdata["GPSLongitude"];
+			const exifLat = tmpImg.exifdata["GPSLatitude"];
 			if (config.fetch_address_data && exifLong && !isNaN(exifLong[0]) && exifLat && !isNaN(exifLat[0])) {
-				let m = (tmpImg.exifdata["GPSLatitudeRef"] == "S") ? -1 : 1;
-				let latitude = (exifLat[0] * m) + (((exifLat[1] * m  * 60) + (exifLat[2] * m)) / 3600);
-				m = (tmpImg.exifdata["GPSLongitudeRef"] == "W") ? -1 : 1;
-				let longitude = (exifLong[0] * m) + (((exifLong[1] * m * 60) + (exifLong[2] * m)) / 3600);
+				let m = tmpImg.exifdata["GPSLatitudeRef"] == "S" ? -1 : 1;
+				const latitude = exifLat[0] * m + (exifLat[1] * m * 60 + exifLat[2] * m) / 3600;
+				m = tmpImg.exifdata["GPSLongitudeRef"] == "W" ? -1 : 1;
+				const longitude = exifLong[0] * m + (exifLong[1] * m * 60 + exifLong[2] * m) / 3600;
 
 				const xhr = new XMLHttpRequest();
-				xhr.onload = function(event) {
+				xhr.onload = function () {
 					if (this.status == 200 || this.status === 0) {
-						let info = JSON.parse(xhr.responseText);
+						const info = JSON.parse(xhr.responseText);
 						logger.debug("nominatim data:", info);
 						if (info && info.address) {
 							imageInfoCache[tmpImg.imageUrl].address = info.address;
 							wp.setImageDataInfo(tmpImg);
 						}
-					}
-					else {
+					} else {
 						logger.error("nominatim error:", this.status, xhr.status, xhr.responseText);
 						delete imageInfoCache[tmpImg.imageUrl];
 					}
-				}
-				xhr.onerror = function(event) {
+				};
+				xhr.onerror = function (event) {
 					logger.error("nominatim error:", event);
 					delete imageInfoCache[tmpImg.imageUrl];
-				}
-				xhr.ontimeout = function(event) {
+				};
+				xhr.ontimeout = function (event) {
 					logger.error("nominatim timeout:", event);
 					delete imageInfoCache[tmpImg.imageUrl];
-				}
+				};
 				xhr.open("GET", `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`);
-				//xhr.setRequestHeader("User-Agent", `lovelace-wallpanel/${version}`);
 				xhr.timeout = 15000;
 				xhr.send();
 			}
@@ -1955,8 +1931,7 @@ class WallpanelView extends HuiView {
 		let infoElement = null;
 		if (this.imageOne.imageUrl == img.imageUrl) {
 			infoElement = this.imageOneInfo;
-		}
-		else if (this.imageTwo.imageUrl == img.imageUrl) {
+		} else if (this.imageTwo.imageUrl == img.imageUrl) {
 			infoElement = this.imageTwoInfo;
 		}
 		if (!infoElement) {
@@ -1988,7 +1963,7 @@ class WallpanelView extends HuiView {
 			imageInfo.image.relativePath = img.imageUrl.replace(config.image_url, "").replace(/^\/+/, "");
 		}
 		if (!imageInfo.image.filename) {
-			imageInfo.image.filename =  img.imageUrl.replace(/^.*[\\/]/, "");
+			imageInfo.image.filename = img.imageUrl.replace(/^.*[\\/]/, "");
 		}
 		if (!imageInfo.image.folderName) {
 			imageInfo.image.folderName = "";
@@ -1997,31 +1972,29 @@ class WallpanelView extends HuiView {
 				imageInfo.image.folderName = parts[parts.length - 2];
 			}
 		}
-		logger.debug("Image info:", imageInfo)
+		logger.debug("Image info:", imageInfo);
 
 		let html = config.image_info_template;
-		html = html.replace(/\${([^}]+)}/g, (match, tags, offset, string) => {
+		html = html.replace(/\${([^}]+)}/g, (match, tags) => {
 			let prefix = "";
 			let suffix = "";
 			let options = null;
 			if (tags.includes("!")) {
-				let tmp = tags.split("!");
+				const tmp = tags.split("!");
 				tags = tmp[0];
-				for (let i=1; i<tmp.length; i++) {
-					let argType = tmp[i].substring(0, tmp[i].indexOf("="));
-					let argValue = tmp[i].substring(tmp[i].indexOf("=") + 1);
+				for (let i = 1; i < tmp.length; i++) {
+					const argType = tmp[i].substring(0, tmp[i].indexOf("="));
+					const argValue = tmp[i].substring(tmp[i].indexOf("=") + 1);
 					if (argType == "prefix") {
 						prefix = argValue;
-					}
-					else if (argType == "suffix") {
+					} else if (argType == "suffix") {
 						suffix = argValue;
-					}
-					else if (argType == "options") {
+					} else if (argType == "options") {
 						options = {};
-						argValue.split(",").forEach(optVal => {
-							let tmp2 = optVal.split(":", 2);
+						argValue.split(",").forEach((optVal) => {
+							const tmp2 = optVal.split(":", 2);
 							if (tmp2[0] && tmp2[1]) {
-								options[tmp2[0].replace(/\s/g, '')] = tmp2[1].replace(/\s/g, '');
+								options[tmp2[0].replace(/\s/g, "")] = tmp2[1].replace(/\s/g, "");
 							}
 						});
 					}
@@ -2029,36 +2002,36 @@ class WallpanelView extends HuiView {
 			}
 
 			let val = "";
-			let tagList = tags.split("|");
+			const tagList = tags.split("|");
 			let tag = "";
-			for (let i=0; i<tagList.length; i++) {
+			for (let i = 0; i < tagList.length; i++) {
 				tag = tagList[i];
-				let keys = tag.replace(/\s/g, '').split(".");
+				const keys = tag.replace(/\s/g, "").split(".");
 				val = imageInfo;
-				keys.forEach(key => {
+				keys.forEach((key) => {
 					if (val) {
 						val = val[key];
 					}
 				});
 				if (val) {
-					break
+					break;
 				}
-			};
+			}
 			if (!val) {
 				return "";
 			}
 			if (/DateTime/i.test(tag)) {
-				let date = new Date(val.replace(/(\d\d\d\d):(\d\d):(\d\d) (\d\d):(\d\d):(\d\d)/, '$1-$2-$3T$4:$5:$6'));
+				const date = new Date(val.replace(/(\d\d\d\d):(\d\d):(\d\d) (\d\d):(\d\d):(\d\d)/, "$1-$2-$3T$4:$5:$6"));
 				if (isNaN(date)) {
 					// Invalid date
 					return "";
 				}
 				if (!options) {
-					options = {year: "numeric", month: "2-digit", day: "2-digit"};
+					options = { year: "numeric", month: "2-digit", day: "2-digit" };
 				}
 				val = date.toLocaleDateString(elHass.__hass.locale.language, options);
 			}
-			if (typeof val === 'object') {
+			if (typeof val === "object") {
 				val = JSON.stringify(val);
 			}
 			return prefix + val + suffix;
@@ -2072,14 +2045,11 @@ class WallpanelView extends HuiView {
 		let updateFunction = null;
 		if (imageSourceType() == "unsplash-api") {
 			updateFunction = this.updateImageListFromUnsplashAPI;
-		}
-		else if (imageSourceType() == "immich-api") {
+		} else if (imageSourceType() == "immich-api") {
 			updateFunction = this.updateImageListFromImmichAPI;
-		}
-		else if (imageSourceType() == "media-source") {
+		} else if (imageSourceType() == "media-source") {
 			updateFunction = this.updateImageListFromMediaSource;
-		}
-		else {
+		} else {
 			return;
 		}
 
@@ -2088,17 +2058,15 @@ class WallpanelView extends HuiView {
 			this.cancelUpdatingImageList = true;
 			const start = Date.now();
 			function _checkUpdating() {
-				if ((!this.updatingImageList) || Date.now() - start >= 5000) {
+				if (!this.updatingImageList || Date.now() - start >= 5000) {
 					this.cancelUpdatingImageList = false;
 					updateFunction.bind(wp)(preload, preloadCallback);
-				}
-				else {
+				} else {
 					setTimeout(_checkUpdating, 50);
 				}
 			}
 			setTimeout(_checkUpdating, 1);
-		}
-		else {
+		} else {
 			this.cancelUpdatingImageList = false;
 			updateFunction.bind(wp)(preload, preloadCallback);
 		}
@@ -2107,24 +2075,25 @@ class WallpanelView extends HuiView {
 	findMedias(mediaContentId) {
 		const wp = this;
 		logger.debug(`findMedias: ${mediaContentId}`);
-		let excludeRegExp = [];
+		const excludeRegExp = [];
 		if (config.image_excludes) {
-			for (let imageExclude of config.image_excludes) {
+			for (const imageExclude of config.image_excludes) {
 				excludeRegExp.push(new RegExp(imageExclude));
 			}
 		}
 
-		return new Promise(
-			function(resolve, reject) {
-				wp.hass.callWS({
+		return new Promise(function (resolve, reject) {
+			wp.hass
+				.callWS({
 					type: "media_source/browse_media",
 					media_content_id: mediaContentId
-				}).then(
-					mediaEntry => {
+				})
+				.then(
+					(mediaEntry) => {
 						logger.debug("Found media entry", mediaEntry);
-						var promises = mediaEntry.children.map(child => {
-							let filename = child.media_content_id.replace(/^media-source:\/\/[^/]+/, '');
-							for (let exclude of excludeRegExp) {
+						var promises = mediaEntry.children.map((child) => {
+							const filename = child.media_content_id.replace(/^media-source:\/\/[^/]+/, "");
+							for (const exclude of excludeRegExp) {
 								if (exclude.test(filename)) {
 									return;
 								}
@@ -2140,23 +2109,22 @@ class WallpanelView extends HuiView {
 								return wp.findMedias(child.media_content_id);
 							}
 						});
-						Promise.all(promises).then(results => {
+						Promise.all(promises).then((results) => {
 							let result = [];
-							for (let res of results) {
+							for (const res of results) {
 								if (res) {
 									result = result.concat(res);
 								}
 							}
 							resolve(result);
-						})
+						});
 					},
-					error => {
+					(error) => {
 						//logger.warn(error);
 						reject(error);
 					}
 				);
-			}
-		);
+		});
 	}
 
 	updateImageListFromMediaSource(preload, preloadCallback = null) {
@@ -2165,13 +2133,12 @@ class WallpanelView extends HuiView {
 		const mediaContentId = config.image_url;
 		const wp = this;
 		wp.findMedias(mediaContentId).then(
-			result => {
+			(result) => {
 				wp.updatingImageList = false;
 				if (!wp.cancelUpdatingImageList) {
 					if (config.image_order == "random") {
-						wp.imageList = result.sort((a, b) => 0.5 - Math.random());
-					}
-					else {
+						wp.imageList = result.sort(() => 0.5 - Math.random());
+					} else {
 						wp.imageList = result.sort();
 					}
 					logger.debug("Image list from media-source is now:", wp.imageList);
@@ -2180,29 +2147,29 @@ class WallpanelView extends HuiView {
 					}
 				}
 			},
-			error => {
+			(error) => {
 				wp.updatingImageList = false;
 				error = `Failed to update image list from ${config.image_url}: ${JSON.stringify(error)}`;
 				logger.error(error);
-				wp.displayMessage(error, 10000)
+				wp.displayMessage(error, 10000);
 			}
-		)
+		);
 	}
 
 	updateImageListFromUnsplashAPI(preload, preloadCallback = null) {
 		this.updatingImageList = true;
 		this.lastImageListUpdate = Date.now();
-		let wp = this;
-		let urls = [];
-		let data = {};
+		const wp = this;
+		const urls = [];
+		const data = {};
 		const http = new XMLHttpRequest();
 		http.responseType = "json";
 		// count: The number of photos to return. (Default: 1; max: 30)
 		http.open("GET", `${config.image_url}&count=30`, true);
-		http.onload = function() {
+		http.onload = function () {
 			if (http.status == 200 || http.status === 0) {
 				logger.debug(`Got unsplash API response`);
-				http.response.forEach(entry => {
+				http.response.forEach((entry) => {
 					logger.debug(entry);
 					const url = entry.urls.raw + "&w=${width}&h=${height}&auto=format";
 					urls.push(url);
@@ -2231,54 +2198,56 @@ class WallpanelView extends HuiView {
 		if (!config.immich_api_key) {
 			throw "immich_api_key not configured";
 		}
-		let wp = this;
+		const wp = this;
 		wp.updatingImageList = true;
 		wp.imageList = [];
 		wp.lastImageListUpdate = Date.now();
-		let urls = [];
-		let data = {};
+		const urls = [];
+		const data = {};
 		const api_url = config.image_url.replace(/^immich\+/, "");
 		const http = new XMLHttpRequest();
 		http.responseType = "json";
 		http.open("GET", `${api_url}/albums?shared=${config.immich_shared_albums}`, true);
 		http.setRequestHeader("x-api-key", config.immich_api_key);
-		http.onload = function() {
-			let album_ids = [];
+		http.onload = function () {
+			const album_ids = [];
 			if (http.status == 200 || http.status === 0) {
 				const allAlbums = http.response;
 				logger.debug(`Got immich API response`, allAlbums);
-				allAlbums.forEach(album => {
+				allAlbums.forEach((album) => {
 					logger.debug(album);
-					if (config.immich_album_names.length && ! config.immich_album_names.includes(album.albumName)) {
+					if (config.immich_album_names.length && !config.immich_album_names.includes(album.albumName)) {
 						logger.debug("Skipping album: ", album.albumName);
-					}
-					else {
+					} else {
 						logger.debug("Adding album: ", album.albumName);
 						album_ids.push(album.id);
 					}
 				});
 				if (album_ids) {
-					album_ids.forEach(album_id => {
+					album_ids.forEach((album_id) => {
 						logger.debug("Fetching album metdata: ", album_id);
 						const http2 = new XMLHttpRequest();
 						http2.responseType = "json";
 						http2.open("GET", `${api_url}/albums/${album_id}`, true);
 						http2.setRequestHeader("x-api-key", config.immich_api_key);
-						http2.onload = function() {
+						http2.onload = function () {
 							if (http2.status == 200 || http2.status === 0) {
 								const albumDetails = http2.response;
 								logger.debug(`Got immich API response`, albumDetails);
-								albumDetails.assets.forEach(asset => {
+								albumDetails.assets.forEach((asset) => {
 									logger.debug(asset);
 									if (["IMAGE", "VIDEO"].includes(asset.type)) {
-										const resolution = asset.type == "VIDEO" || config.immich_resolution == "original" ? "original" : "thumbnail?size=preview"
+										const resolution =
+											asset.type == "VIDEO" || config.immich_resolution == "original"
+												? "original"
+												: "thumbnail?size=preview";
 										const url = `${api_url}/assets/${asset.id}/${resolution}`;
 										data[url] = asset.exifInfo;
 										data[url]["mediaType"] = asset.type;
 										data[url]["image"] = {
-											"filename": asset.originalFileName,
-											"folderName": albumDetails.albumName
-										}
+											filename: asset.originalFileName,
+											folderName: albumDetails.albumName
+										};
 										urls.push(url);
 									}
 								});
@@ -2290,7 +2259,7 @@ class WallpanelView extends HuiView {
 								// All processed
 								if (!wp.cancelUpdatingImageList) {
 									if (config.image_order == "random") {
-										wp.imageList = urls.sort((a, b) => 0.5 - Math.random());
+										wp.imageList = urls.sort(() => 0.5 - Math.random());
 									} else {
 										wp.imageList = urls;
 									}
@@ -2306,8 +2275,7 @@ class WallpanelView extends HuiView {
 						};
 						http2.send();
 					});
-				}
-				else {
+				} else {
 					logger.error("No immich albums selected");
 					wp.updatingImageList = false;
 				}
@@ -2320,10 +2288,10 @@ class WallpanelView extends HuiView {
 	}
 
 	fillPlaceholders(url) {
-		let width = this.screensaverContainer.clientWidth;
-		let height = this.screensaverContainer.clientHeight;
-		let timestamp_ms = Date.now();
-		let timestamp = Math.floor(timestamp_ms / 1000);
+		const width = this.screensaverContainer.clientWidth;
+		const height = this.screensaverContainer.clientHeight;
+		const timestamp_ms = Date.now();
+		const timestamp = Math.floor(timestamp_ms / 1000);
 		url = url.replace(/\${width}/g, width);
 		url = url.replace(/\${height}/g, height);
 		url = url.replace(/\${timestamp_ms}/g, timestamp_ms);
@@ -2341,8 +2309,7 @@ class WallpanelView extends HuiView {
 				}
 				const blob = await response.blob();
 				elem.src = window.URL.createObjectURL(blob);
-			}
-			else {
+			} else {
 				// Setting the src attribute on an img works better because cross-origin requests aren't blocked
 				const loadEventName = { IMG: "load", VIDEO: "loadeddata", IFRAME: "load" }[elem.tagName];
 				if (!loadEventName) {
@@ -2380,7 +2347,7 @@ class WallpanelView extends HuiView {
 			// Clone all custom and HTML attributes except 'src', it will be set later.
 			Object.entries(currentElem)
 				.filter(([key]) => !(key in HTMLElement.prototype))
-				.forEach(([key, value]) => fallbackElem[key] = value);
+				.forEach(([key, value]) => (fallbackElem[key] = value));
 
 			[...currentElem.attributes]
 				.filter((attr) => attr.name !== "src")
@@ -2395,8 +2362,7 @@ class WallpanelView extends HuiView {
 		const replaceElementWith = (currentElem, newElem) => {
 			if (currentElem === this.imageOne) {
 				this.imageOne = newElem;
-			}
-			else {
+			} else {
 				this.imageTwo = newElem;
 			}
 			currentElem.replaceWith(newElem);
@@ -2450,21 +2416,19 @@ class WallpanelView extends HuiView {
 		}
 		img.imageUrl = realUrl;
 		logger.debug(`Updating image '${img.id}' from '${realUrl}'`);
-		
+
 		this.loadMediaFromUrl(img, realUrl, mediaType, headers, useFetch);
 	}
 
 	updateImageIndex() {
 		if (this.imageListDirection == "forwards") {
 			this.imageIndex++;
-		}
-		else {
+		} else {
 			this.imageIndex--;
 		}
 		if (this.imageIndex >= this.imageList.length) {
 			this.imageIndex = 0;
-		}
-		else if (this.imageIndex < 0) {
+		} else if (this.imageIndex < 0) {
 			this.imageIndex = this.imageList.length - 1;
 		}
 	}
@@ -2475,25 +2439,27 @@ class WallpanelView extends HuiView {
 		}
 		this.updateImageIndex();
 		img.imageUrl = this.imageList[this.imageIndex];
-		this.hass.callWS({
-			type: "media_source/resolve_media",
-			media_content_id: img.imageUrl
-		}).then(
-			result => {
-				let src = result.url;
-				if ((!src.startsWith("http://")) && (!src.startsWith("https://"))) {
-					src = `${document.location.origin}${src}`;
-				}
-				logger.debug(`Setting image src: ${src}`);
+		this.hass
+			.callWS({
+				type: "media_source/resolve_media",
+				media_content_id: img.imageUrl
+			})
+			.then(
+				(result) => {
+					let src = result.url;
+					if (!src.startsWith("http://") && !src.startsWith("https://")) {
+						src = `${document.location.origin}${src}`;
+					}
+					logger.debug(`Setting image src: ${src}`);
 
-				const matchedType = result.mime_type?.match(/^(image|video)\//);
-				const mediaType = {"image": "IMG", "video": "VIDEO"}[matchedType?.[1]] || null;
-				this.loadMediaFromUrl(img, src, mediaType);
-			},
-			error => {
-				logger.error(`media_source/resolve_media error for ${img.imageUrl}:`, error);
-			}
-		);
+					const matchedType = result.mime_type?.match(/^(image|video)\//);
+					const mediaType = { image: "IMG", video: "VIDEO" }[matchedType?.[1]] || null;
+					this.loadMediaFromUrl(img, src, mediaType);
+				},
+				(error) => {
+					logger.error(`media_source/resolve_media error for ${img.imageUrl}:`, error);
+				}
+			);
 	}
 
 	updateImageFromUnsplashAPI(img) {
@@ -2512,24 +2478,23 @@ class WallpanelView extends HuiView {
 		const url = this.imageList[this.imageIndex];
 		const imageInfo = imageInfoCache[url] || {};
 		const mediaType = imageInfo["mediaType"] == "VIDEO" ? "VIDEO" : "IMG";
-		this.updateImageFromUrl(img, url, mediaType, {"x-api-key": config.immich_api_key}, true);
+		this.updateImageFromUrl(img, url, mediaType, { "x-api-key": config.immich_api_key }, true);
 	}
 
 	updateImageFromMediaEntity(img) {
-		const imageEntity = config.image_url.replace(/^media-entity:\/\//, '')
+		const imageEntity = config.image_url.replace(/^media-entity:\/\//, "");
 		const entity = this.hass.states[imageEntity];
 		if (!entity || !entity.attributes || !entity.attributes.entity_picture) {
 			return;
 		}
-		let entityPicture = entity.attributes.entity_picture;
-		let querySuffix = entityPicture.indexOf('?') > 0 ? '&' : '?';
+		const entityPicture = entity.attributes.entity_picture;
+		let querySuffix = entityPicture.indexOf("?") > 0 ? "&" : "?";
 		querySuffix += "width=${width}&height=${height}";
 		const url = entityPicture + querySuffix;
 		if ("media_exif" in entity.attributes) {
 			// immich-home-assistant provides media_exif
 			imageInfoCache[url] = entity.attributes["media_exif"];
-		}
-		else {
+		} else {
 			imageInfoCache[url] = entity.attributes;
 		}
 		mediaEntityState = entity.state;
@@ -2540,24 +2505,19 @@ class WallpanelView extends HuiView {
 		if (!config.show_images) {
 			return;
 		}
-		img.setAttribute('data-loading', true);
+		img.setAttribute("data-loading", true);
 
 		if (imageSourceType() == "media-source") {
 			this.updateImageFromMediaSource(img);
-		}
-		else if (imageSourceType() == "unsplash-api") {
+		} else if (imageSourceType() == "unsplash-api") {
 			this.updateImageFromUnsplashAPI(img);
-		}
-		else if (imageSourceType() == "immich-api") {
+		} else if (imageSourceType() == "immich-api") {
 			this.updateImageFromImmichAPI(img);
-		}
-		else if (imageSourceType() == "media-entity") {
+		} else if (imageSourceType() == "media-entity") {
 			this.updateImageFromMediaEntity(img);
-		}
-		else if (imageSourceType() == "iframe") {
+		} else if (imageSourceType() == "iframe") {
 			this.updateImageFromUrl(img, config.image_url.replace(/^iframe\+/, ""), "IFRAME");
-		}
-		else {
+		} else {
 			this.updateImageFromUrl(img, config.image_url);
 		}
 
@@ -2566,10 +2526,9 @@ class WallpanelView extends HuiView {
 			const start = Date.now();
 
 			function _checkLoading() {
-				if (img.getAttribute('data-loading') == "false" || Date.now() - start >= 2000) {
+				if (img.getAttribute("data-loading") == "false" || Date.now() - start >= 2000) {
 					callback(wp, img);
-				}
-				else {
+				} else {
 					setTimeout(_checkLoading, 50);
 				}
 			}
@@ -2579,51 +2538,46 @@ class WallpanelView extends HuiView {
 
 	preloadImage(img, callback = null) {
 		const wp = this;
-		if ((this.updatingImageList) || (img.getAttribute('data-loading') == "true") || (this.screensaverRunning() && img.parentNode.style.opacity == 1)) {
+		if (
+			this.updatingImageList ||
+			img.getAttribute("data-loading") == "true" ||
+			(this.screensaverRunning() && img.parentNode.style.opacity == 1)
+		) {
 			if (callback) {
 				callback(wp, img);
 			}
 			return;
 		}
-		this.updateImage(img,
-			function(wp, updatedImg) {
-				wp.setImageDataInfo(updatedImg);
-				if (callback) {
-					callback(wp, updatedImg);
-				}
+		this.updateImage(img, function (wp, updatedImg) {
+			wp.setImageDataInfo(updatedImg);
+			if (callback) {
+				callback(wp, updatedImg);
 			}
-		);
+		});
 	}
 
 	preloadImages(callback = null) {
 		logger.debug("Preloading images");
 		if (imageSourceType() === "media-entity") {
-			this.preloadImage(this.imageOne,
-				function(wp, updatedImg) {
+			this.preloadImage(this.imageOne, function (wp) {
+				if (callback) {
+					callback(wp);
+				}
+			});
+		} else {
+			this.preloadImage(this.imageOne, function (wp) {
+				wp.preloadImage(wp.imageTwo, function (wp) {
 					if (callback) {
 						callback(wp);
 					}
-				}
-			);
-		}
-		else {
-			this.preloadImage(this.imageOne,
-				function(wp, updatedImg) {
-					wp.preloadImage(wp.imageTwo,
-						function(wp, updatedImg) {
-							if (callback) {
-								callback(wp);
-							}
-						}
-					);
-				}
-			);
+				});
+			});
 		}
 	}
 
 	switchActiveEntityImage(crossfadeMillis = null) {
 		this.lastImageUpdate = Date.now();
-		const imageEntity = config.image_url.replace(/^media-entity:\/\//, '')
+		const imageEntity = config.image_url.replace(/^media-entity:\/\//, "");
 		const entity = this.hass.states[imageEntity];
 		if (!entity || mediaEntityState == entity.state) {
 			// Unchanged
@@ -2632,17 +2586,15 @@ class WallpanelView extends HuiView {
 		logger.debug(`Media entity ${imageEntity} state has changed`);
 		mediaEntityState = entity.state;
 		let next = this.imageTwo;
-		let current = this.imageOne;
 		if (this.imageTwoContainer.style.opacity == 1) {
 			next = this.imageOne;
-			current = this.imageTwo;
 		}
 		const wp = this;
-		const onLoad = function(e) {
-			next.removeEventListener('load', onLoad);
-			wp.switchActiveImage(crossfadeMillis)
-		}
-		next.addEventListener('load', onLoad);
+		const onLoad = function () {
+			next.removeEventListener("load", onLoad);
+			wp.switchActiveImage(crossfadeMillis);
+		};
+		next.addEventListener("load", onLoad);
 		this.updateImage(next);
 	}
 
@@ -2662,7 +2614,7 @@ class WallpanelView extends HuiView {
 			}
 		};
 
-		activeElem.loop = config.video_loop
+		activeElem.loop = config.video_loop;
 		if (!config.video_loop) {
 			// Immediately switch to next image at the end of the playback.
 			const onTimeUpdate = () => {
@@ -2692,7 +2644,7 @@ class WallpanelView extends HuiView {
 			playbackListeners = {
 				timeupdate: onTimeUpdate,
 				ended: onMediaEnded,
-				pause: onMediaPause,
+				pause: onMediaPause
 			};
 			Object.entries(playbackListeners).forEach(([event, handler]) => {
 				activeElem.addEventListener(event, handler);
@@ -2713,7 +2665,7 @@ class WallpanelView extends HuiView {
 		this.lastImageUpdate = Date.now();
 
 		if (crossfadeMillis === null) {
-			crossfadeMillis = Math.round(config.crossfade_time*1000);
+			crossfadeMillis = Math.round(config.crossfade_time * 1000);
 		}
 
 		this.imageOneContainer.style.transition = `opacity ${crossfadeMillis}ms ease-in-out`;
@@ -2721,18 +2673,16 @@ class WallpanelView extends HuiView {
 
 		let curActive = this.imageOneContainer;
 		let newActive = this.imageTwoContainer;
-		let infoElement = this.imageTwoInfo;
 		let curImg = this.imageOne;
 		let newImg = this.imageTwo;
 		if (this.imageTwoContainer.style.opacity == 1) {
 			curActive = this.imageTwoContainer;
 			newActive = this.imageOneContainer;
-			infoElement = this.imageOneInfo;
 			curImg = this.imageTwo;
 			newImg = this.imageOne;
 		}
 		logger.debug(`Switching active image to '${newActive.id}'`);
-		
+
 		this.setImageURLEntityState();
 		this.setImageDataInfo(newImg);
 
@@ -2750,8 +2700,8 @@ class WallpanelView extends HuiView {
 		// Load next image after fade out
 		// only if not media-entity, which will not yet have changed already
 		if (imageSourceType() !== "media-entity") {
-			let wp = this;
-			this.afterFadeoutTimer = setTimeout(function() {
+			const wp = this;
+			this.afterFadeoutTimer = setTimeout(function () {
 				if (typeof curImg.pause === "function") {
 					curImg.pause();
 				}
@@ -2760,12 +2710,12 @@ class WallpanelView extends HuiView {
 		}
 	}
 
-	displayMessage(message, timeout=15000) {
+	displayMessage(message, timeout = 15000) {
 		this.hideMessage();
 		this.messageBox.innerHTML = message;
-		this.messageBox.style.visibility = 'visible';
-		let wp = this;
-		this.messageBoxTimeout = setTimeout(function() {
+		this.messageBox.style.visibility = "visible";
+		const wp = this;
+		this.messageBoxTimeout = setTimeout(function () {
 			wp.hideMessage();
 		}, timeout);
 	}
@@ -2776,8 +2726,8 @@ class WallpanelView extends HuiView {
 		}
 		clearTimeout(this.messageBoxTimeout);
 		this.messageBoxTimeout = null;
-		this.messageBox.style.visibility = 'hidden';
-		this.messageBox.innerHTML = '';
+		this.messageBox.style.visibility = "hidden";
+		this.messageBox.innerHTML = "";
 	}
 
 	setupScreensaver() {
@@ -2806,11 +2756,13 @@ class WallpanelView extends HuiView {
 		this.restartKenBurnsEffect();
 
 		if (config.keep_screen_on_time > 0) {
-			let wp = this;
-			setTimeout(function() {
-				if (wp.screensaverRunning() && !this.screenWakeLock.enabled) {
-					logger.error("Keep screen on will not work because the user didn't interact with the document first. https://goo.gl/xX8pDD");
-					wp.displayMessage("Please interact with the screen for a moment to request wake lock.", 15000)
+			const wp = this;
+			setTimeout(function () {
+				if (wp.screensaverRunning() && !wp.screenWakeLock.enabled) {
+					logger.error(
+						"Keep screen on will not work because the user didn't interact with the document first. https://goo.gl/xX8pDD"
+					);
+					wp.displayMessage("Please interact with the screen for a moment to request wake lock.", 15000);
 				}
 			}, 2000);
 		}
@@ -2819,34 +2771,37 @@ class WallpanelView extends HuiView {
 		this.lastImageUpdate = Date.now();
 		this.screensaverStartedAt = Date.now();
 		this.screensaverStoppedAt = null;
-		document.documentElement.style.overflow = 'hidden';
+		document.documentElement.style.overflow = "hidden";
 
 		this.createInfoBoxContent();
 
-		this.style.visibility = 'visible';
+		this.style.visibility = "visible";
 		this.style.opacity = 1;
 		if (config.debug) {
-			this.debugBox.style.pointerEvents = 'auto';
+			this.debugBox.style.pointerEvents = "auto";
 		}
 
 		this.setScreensaverEntityState();
 
 		if (config.screensaver_stop_navigation_path || config.screensaver_stop_close_browser_mod_popup) {
-			this.screensaverStopNavigationPathTimeout = setTimeout(() => {
-				if (config.screensaver_stop_navigation_path) {
-					skipDisableScreensaverOnLocationChanged = true;
-					navigate(config.screensaver_stop_navigation_path);
-					setTimeout(() => {
-						skipDisableScreensaverOnLocationChanged = false;
-					}, 5000);
-				}
-				if (config.screensaver_stop_close_browser_mod_popup) {
-					let bmp = getActiveBrowserModPopup();
-					if (bmp) {
-						bmp.closeDialog();
+			this.screensaverStopNavigationPathTimeout = setTimeout(
+				() => {
+					if (config.screensaver_stop_navigation_path) {
+						skipDisableScreensaverOnLocationChanged = true;
+						navigate(config.screensaver_stop_navigation_path);
+						setTimeout(() => {
+							skipDisableScreensaverOnLocationChanged = false;
+						}, 5000);
 					}
-				}
-			}, (config.fade_in_time + 1) * 1000);
+					if (config.screensaver_stop_close_browser_mod_popup) {
+						const bmp = getActiveBrowserModPopup();
+						if (bmp) {
+							bmp.closeDialog();
+						}
+					}
+				},
+				(config.fade_in_time + 1) * 1000
+			);
 		}
 	}
 
@@ -2867,31 +2822,33 @@ class WallpanelView extends HuiView {
 		}
 		this.hideMessage();
 
-		this.debugBox.style.pointerEvents = 'none';
+		this.debugBox.style.pointerEvents = "none";
 		if (fadeOutTime > 0) {
-			this.style.transition = `opacity ${Math.round(fadeOutTime*1000)}ms ease-in-out`;
-		}
-		else {
-			this.style.transition = '';
+			this.style.transition = `opacity ${Math.round(fadeOutTime * 1000)}ms ease-in-out`;
+		} else {
+			this.style.transition = "";
 		}
 		this.style.opacity = 0;
-		this.style.visibility = 'hidden';
-		this.infoBoxPosX.style.animation = '';
-		this.infoBoxPosY.style.animation = '';
+		this.style.visibility = "hidden";
+		this.infoBoxPosX.style.animation = "";
+		this.infoBoxPosY.style.animation = "";
 
 		this.idleSince = Date.now();
 		if (this.screenWakeLock.enabled) {
 			this.screenWakeLock.disable();
 		}
-		
+
 		setTimeout(this.setScreensaverEntityState.bind(this), 25);
 	}
 
 	updateScreensaver() {
-		let currentDate = new Date();
-		let now = currentDate.getTime();
+		const currentDate = new Date();
+		const now = currentDate.getTime();
 
-		if (this.energyCollectionUpdateEnabled && now - this.lastEnergyCollectionUpdate >= this.energyCollectionUpdateInterval * 1000) {
+		if (
+			this.energyCollectionUpdateEnabled &&
+			now - this.lastEnergyCollectionUpdate >= this.energyCollectionUpdateInterval * 1000
+		) {
 			if (this.hass.connection._energy_wallpanel) {
 				this.hass.connection._energy_wallpanel.refresh();
 			}
@@ -2903,57 +2860,55 @@ class WallpanelView extends HuiView {
 			this.createInfoBoxContent();
 		}
 
-		if (config.info_move_interval > 0 && now - this.lastMove >= config.info_move_interval*1000) {
-			if (config.info_move_pattern === 'random') {
+		if (config.info_move_interval > 0 && now - this.lastMove >= config.info_move_interval * 1000) {
+			if (config.info_move_pattern === "random") {
 				this.randomMove();
-			}
-			else if (config.info_move_pattern === 'corners') {
+			} else if (config.info_move_pattern === "corners") {
 				this.moveAroundCorners();
-			}
-			else {
+			} else {
 				logger.error(`Unknown info move type ${config.info_move_pattern}`);
 			}
 		}
 
-		if (config.black_screen_after_time > 0 && now - this.screensaverStartedAt >= config.black_screen_after_time*1000) {
+		if (
+			config.black_screen_after_time > 0 &&
+			now - this.screensaverStartedAt >= config.black_screen_after_time * 1000
+		) {
 			logger.debug("Setting screen to black");
-			this.screensaverOverlay.style.background = '#000000';
-		}
-		else if (config.show_images) {
-			if (now - this.lastImageUpdate >= config.display_time*1000) {
+			this.screensaverOverlay.style.background = "#000000";
+		} else if (config.show_images) {
+			if (now - this.lastImageUpdate >= config.display_time * 1000) {
 				if (imageSourceType() === "media-entity") {
 					this.switchActiveEntityImage();
 				} else {
 					this.switchActiveImage();
 				}
 			}
-			if (now - this.lastImageListUpdate >= config.image_list_update_interval*1000) {
+			if (now - this.lastImageListUpdate >= config.image_list_update_interval * 1000) {
 				this.updateImageList();
 			}
-			if (this.imageOneContainer.style.visibility != 'visible') {
-				this.imageOneContainer.style.visibility = 'visible';
+			if (this.imageOneContainer.style.visibility != "visible") {
+				this.imageOneContainer.style.visibility = "visible";
 			}
-			if (this.imageTwoContainer.style.visibility != 'visible') {
-				this.imageTwoContainer.style.visibility = 'visible';
+			if (this.imageTwoContainer.style.visibility != "visible") {
+				this.imageTwoContainer.style.visibility = "visible";
 			}
-		}
-		else {
-			if (this.imageOneContainer.style.visibility != 'hidden') {
-				this.imageOneContainer.style.visibility = 'hidden';
+		} else {
+			if (this.imageOneContainer.style.visibility != "hidden") {
+				this.imageOneContainer.style.visibility = "hidden";
 			}
-			if (this.imageTwoContainer.style.visibility != 'hidden') {
-				this.imageTwoContainer.style.visibility = 'hidden';
+			if (this.imageTwoContainer.style.visibility != "hidden") {
+				this.imageTwoContainer.style.visibility = "hidden";
 			}
 		}
 
 		if (config.debug) {
-			let html = '';
-			let conf = {};
+			let html = "";
+			const conf = {};
 			for (const key in config) {
 				if (["profiles"].includes(key)) {
 					conf[key] = "...";
-				}
-				else {
+				} else {
 					conf[key] = config[key];
 				}
 			}
@@ -2965,7 +2920,7 @@ class WallpanelView extends HuiView {
 			html += `<b>Screensaver started at:</b> ${wallpanel.screensaverStartedAt}<br/>`;
 			html += `<b>Screen wake lock:</b> enabled=${this.screenWakeLock.enabled} native=${this.screenWakeLock.nativeWakeLockSupported} lock=${this.screenWakeLock._lock} player=${this.screenWakeLock._player} error=${this.screenWakeLock.error}<br/>`;
 			if (this.screenWakeLock._player) {
-				let p = this.screenWakeLock._player;
+				const p = this.screenWakeLock._player;
 				html += `<b>Screen wake lock video</b>: readyState=${p.readyState} currentTime=${p.currentTime} paused=${p.paused} ended=${p.ended}<br/>`;
 			}
 			const activeImage = this.getActiveImageElement();
@@ -2977,16 +2932,13 @@ class WallpanelView extends HuiView {
 				}
 			}
 			this.debugBox.innerHTML = html;
-			this.debugBox.querySelector("#download_log").addEventListener(
-				'click',
-				function(event) {
-					logger.downloadMessages();
-					event.preventDefault();
-				}
-			);
+			this.debugBox.querySelector("#download_log").addEventListener("click", function (event) {
+				logger.downloadMessages();
+				event.preventDefault();
+			});
 			this.debugBox.scrollTop = this.debugBox.scrollHeight;
 		}
-		if (this.screenWakeLock.enabled && now - this.screensaverStartedAt >= config.keep_screen_on_time*1000) {
+		if (this.screenWakeLock.enabled && now - this.screensaverStartedAt >= config.keep_screen_on_time * 1000) {
 			logger.info(`Disable wake lock after ${config.keep_screen_on_time} seconds`);
 			this.screenWakeLock.disable();
 		}
@@ -2999,11 +2951,9 @@ class WallpanelView extends HuiView {
 		}
 		this.updateImageIndex();
 		const inactiveImage = this.getInactiveImageElement();
-		this.updateImage(inactiveImage,
-			function(wp, img) {
-				wp.switchActiveImage(250);
-			}
-		);
+		this.updateImage(inactiveImage, function (wp) {
+			wp.switchActiveImage(250);
+		});
 	}
 
 	motionDetected() {
@@ -3011,10 +2961,10 @@ class WallpanelView extends HuiView {
 	}
 
 	handleInteractionEvent(evt, isClick) {
-		let now = Date.now();
+		const now = Date.now();
 		this.idleSince = now;
 
-		if (! this.screensaverRunning()) {
+		if (!this.screensaverRunning()) {
 			if (this.blockEventsUntil > now) {
 				if (isClick) {
 					evt.preventDefault();
@@ -3053,8 +3003,8 @@ class WallpanelView extends HuiView {
 
 		const bmp = getActiveBrowserModPopup();
 		if (bmp) {
-			const bm_elements = [ bmp.shadowRoot.querySelector(".content"), bmp.shadowRoot.querySelector("ha-dialog-header") ];
-			for (let i=0; i<bm_elements.length; i++) {
+			const bm_elements = [bmp.shadowRoot.querySelector(".content"), bmp.shadowRoot.querySelector("ha-dialog-header")];
+			for (let i = 0; i < bm_elements.length; i++) {
 				if (bm_elements[i]) {
 					const pos = bm_elements[i].getBoundingClientRect();
 					logger.debug("Event position:", bm_elements[i], x, y, pos.left, pos.right, pos.top, pos.bottom);
@@ -3063,7 +3013,7 @@ class WallpanelView extends HuiView {
 						return;
 					}
 				}
-			};
+			}
 		}
 
 		if (config.card_interaction) {
@@ -3076,7 +3026,7 @@ class WallpanelView extends HuiView {
 			elements = elements.concat(this.__views);
 			elements.push(this.shadowRoot.getElementById("wallpanel-screensaver-info-box-content"));
 			elements.push(this.shadowRoot.getElementById("wallpanel-screensaver-fixed-info-box-content"));
-			for (let i=0; i<elements.length; i++) {
+			for (let i = 0; i < elements.length; i++) {
 				const pos = elements[i].getBoundingClientRect();
 				logger.debug("Event position:", elements[i], x, y, pos.left, pos.right, pos.top, pos.bottom);
 				if (x >= pos.left && x <= pos.right && y >= pos.top && y <= pos.bottom) {
@@ -3100,40 +3050,44 @@ class WallpanelView extends HuiView {
 			if (y) {
 				bottom = (this.screensaverContainer.clientHeight - y) / this.screensaverContainer.clientHeight;
 			}
-			if ((config.touch_zone_size_next_image > 0) && (right <= config.touch_zone_size_next_image / 100)) {
+			if (config.touch_zone_size_next_image > 0 && right <= config.touch_zone_size_next_image / 100) {
 				if (isClick) {
 					if (this.imageListDirection != "forwards") {
 						this.switchImageDirection("forwards");
-					}
-					else if (this.imageOne.getAttribute('data-loading') == "false" && this.imageTwo.getAttribute('data-loading') == "false") {
+					} else if (
+						this.imageOne.getAttribute("data-loading") == "false" &&
+						this.imageTwo.getAttribute("data-loading") == "false"
+					) {
 						this.switchActiveImage(250);
 					}
 				}
 				return;
-			}
-			else if ((config.touch_zone_size_previous_image > 0) && (right >= (100 - config.touch_zone_size_previous_image) / 100)) {
+			} else if (
+				config.touch_zone_size_previous_image > 0 &&
+				right >= (100 - config.touch_zone_size_previous_image) / 100
+			) {
 				if (isClick) {
 					if (this.imageListDirection != "backwards") {
 						this.switchImageDirection("backwards");
-					}
-					else if (this.imageOne.getAttribute('data-loading') == "false" && this.imageTwo.getAttribute('data-loading') == "false") {
+					} else if (
+						this.imageOne.getAttribute("data-loading") == "false" &&
+						this.imageTwo.getAttribute("data-loading") == "false"
+					) {
 						this.switchActiveImage(250);
 					}
 				}
 				return;
-			}
-			else if (right >= 0.40 && right <= 0.60 && bottom <= 0.10) {
-				let now = new Date();
+			} else if (right >= 0.4 && right <= 0.6 && bottom <= 0.1) {
+				const now = new Date();
 				if (isClick && now - this.lastClickTime < 500) {
 					this.clickCount += 1;
 					if (this.clickCount == 3) {
 						logger.purgeMessages();
-						config.debug = ! config.debug;
-						this.debugBox.style.visibility = config.debug ? 'visible' : 'hidden';
-						this.debugBox.style.pointerEvents = config.debug ? 'auto' : 'none';
+						config.debug = !config.debug;
+						this.debugBox.style.visibility = config.debug ? "visible" : "hidden";
+						this.debugBox.style.pointerEvents = config.debug ? "auto" : "none";
 					}
-				}
-				else {
+				} else {
 					this.clickCount = 1;
 				}
 				this.lastClickTime = now;
@@ -3150,33 +3104,33 @@ class WallpanelView extends HuiView {
 
 function activateWallpanel() {
 	let hideToolbar = config.hide_toolbar;
+	let hideActionItems = config.hide_toolbar_action_icons;
 	if (hideToolbar && !config.hide_toolbar_on_subviews && activeTab) {
 		const pl = getHaPanelLovelace();
 		if (pl && pl.lovelace && pl.lovelace.rawConfig && pl.lovelace.rawConfig.views) {
-			for (let i=0; i<pl.lovelace.rawConfig.views.length; i++) {
+			for (let i = 0; i < pl.lovelace.rawConfig.views.length; i++) {
 				if (pl.lovelace.rawConfig.views[i].path == activeTab) {
 					if (pl.lovelace.rawConfig.views[i].subview) {
 						// Current tab is a subview
 						hideToolbar = false;
+						hideActionItems = false;
 					}
 					break;
 				}
 			}
 		}
 	}
-	setToolbarHidden(hideToolbar);
-	setSidebarHidden(config.hide_sidebar);
+	setToolbarVisibility(hideToolbar, hideActionItems);
+	setSidebarVisibility(config.hide_sidebar);
 }
-
 
 function deactivateWallpanel() {
 	if (wallpanel.screensaverRunning()) {
 		wallpanel.stopScreensaver();
 	}
-	setToolbarHidden(false);
-	setSidebarHidden(false);
+	setToolbarVisibility(false, false);
+	setSidebarVisibility(false);
 }
-
 
 function reconfigure() {
 	if (!activePanel || !activeTab) {
@@ -3187,12 +3141,10 @@ function reconfigure() {
 	updateConfig();
 	if (isActive()) {
 		activateWallpanel();
-	}
-	else {
+	} else {
 		deactivateWallpanel();
 	}
 }
-
 
 function locationChanged() {
 	if (
@@ -3206,22 +3158,21 @@ function locationChanged() {
 			if (wallpanel.screensaverStopNavigationPathTimeout) {
 				clearTimeout(wallpanel.screensaverStopNavigationPathTimeout);
 			}
-		}
-		else {
+		} else {
 			wallpanel.stopScreensaver();
 		}
 	}
-	
+
 	if (window.location.href == currentLocation) {
 		return;
 	}
 
 	logger.debug(`Location changed from '${currentLocation}' to '${window.location.href}'`);
 	currentLocation = window.location.href;
-	
+
 	let panel = null;
 	let tab = null;
-	let path = window.location.pathname.split("/");
+	const path = window.location.pathname.split("/");
 	if (path.length > 1) {
 		panel = path[1];
 		if (path.length > 2) {
@@ -3236,27 +3187,29 @@ function locationChanged() {
 	reconfigure();
 }
 
-const startTime = performance.now();
+const startTime = Date.now();
 function startup() {
-	const startupSeconds = (performance.now() - startTime) / 1000;
-	
+	const startupSeconds = (Date.now() - startTime) / 1000;
+
 	elHass = document.querySelector("body > home-assistant");
 	if (elHass) {
 		elHaMain = elHass.shadowRoot.querySelector("home-assistant-main");
 	}
 	if (!elHass || !elHaMain) {
 		if (startupSeconds >= 5.0) {
-			throw new Error(`Wallpanel startup failed after ${attempt} attempts, element home-assistant / home-assistant-main not found.`);
+			throw new Error(
+				`Wallpanel startup failed after ${startupSeconds} seconds, element home-assistant / home-assistant-main not found.`
+			);
 		}
 		setTimeout(startup, 100);
 		return;
 	}
-	
+
 	if (!window.browser_mod) {
 		let waitTime = getHaPanelLovelaceConfig(["wait_for_browser_mod_time"])["wait_for_browser_mod_time"];
 		if (waitTime === undefined) {
 			waitTime = defaultConfig["wait_for_browser_mod_time"];
-		}	
+		}
 		if (startupSeconds < waitTime) {
 			setTimeout(startup, 100);
 			return;
@@ -3267,10 +3220,9 @@ function startup() {
 		if (window.browser_mod.entity_id) {
 			// V1
 			browserId = window.browser_mod.entity_id;
-		}
-		else if (window.browser_mod.browserID) {
+		} else if (window.browser_mod.browserID) {
 			// V2
-			browserId = window.browser_mod.browserID.replace('-', '_');
+			browserId = window.browser_mod.browserID.replace("-", "_");
 		}
 	}
 
@@ -3284,31 +3236,30 @@ function startup() {
 		elHaMain.shadowRoot.appendChild(wallpanel);
 		if (window.navigation) {
 			// Using navigate event because a back button on a sub-view will not produce a location-changed event
-			window.navigation.addEventListener("navigate", event => {
+			window.navigation.addEventListener("navigate", (event) => {
 				logger.debug("navigate", event);
 				setTimeout(locationChanged, 0);
 			});
-		}
-		else {
+		} else {
 			// Not supported (i.e. Firefox)
-			window.addEventListener("location-changed", event => {
+			window.addEventListener("location-changed", (event) => {
 				logger.debug("location-changed", event);
 				setTimeout(locationChanged, 0);
 			});
 		}
-		elHass.__hass.connection.subscribeEvents(
-			function(event) {
-				logger.debug("lovelace_updated", event);
-				const dashboard = event.data.url_path ? event.data.url_path : "lovelace";
-				if (dashboard == activePanel) {
-					elHass.__hass.connection.sendMessagePromise({
+		elHass.__hass.connection.subscribeEvents(function (event) {
+			logger.debug("lovelace_updated", event);
+			const dashboard = event.data.url_path ? event.data.url_path : "lovelace";
+			if (dashboard == activePanel) {
+				elHass.__hass.connection
+					.sendMessagePromise({
 						type: "lovelace/config",
 						url_path: event.data.url_path
 					})
 					.then((data) => {
 						dashboardConfig = {};
 						if (data.wallpanel) {
-							for (let key in data.wallpanel) {
+							for (const key in data.wallpanel) {
 								if (key in defaultConfig) {
 									dashboardConfig[key] = data.wallpanel[key];
 								}
@@ -3316,10 +3267,8 @@ function startup() {
 						}
 						reconfigure();
 					});
-				}
-			},
-			"lovelace_updated"
-		);
+			}
+		}, "lovelace_updated");
 		try {
 			locationChanged();
 		} catch {
@@ -3331,30 +3280,31 @@ function startup() {
 
 	userId = elHass.__hass.user.id;
 	userDisplayname = elHass.__hass.user.name;
-	
+
 	if (elHass.__hass.user.is_admin) {
-		elHass.hass.callWS({
-			type: "config/auth/list"
-		}).then(
-			result => {
-				result.forEach(userInfo => {
-					if (userInfo.id == userId) {
-						userDisplayname = userInfo.name;
-						userName = userInfo.username;
+		elHass.hass
+			.callWS({
+				type: "config/auth/list"
+			})
+			.then(
+				(result) => {
+					result.forEach((userInfo) => {
+						if (userInfo.id == userId) {
+							userDisplayname = userInfo.name;
+							userName = userInfo.username;
+						}
+					});
+					if (!userName) {
+						logger.error(`User ${userId} / ${userDisplayname} not found in user list`, result);
 					}
-				});
-				if (!userName) {
-					logger.error(`User ${userId} / ${userDisplayname} not found in user list`, result);
+					continueStartup();
+				},
+				(error) => {
+					logger.error("Failed to fetch user list", error);
+					continueStartup();
 				}
-				continueStartup();
-			},
-			error => {
-				logger.error("Failed to fetch user list", error);
-				continueStartup();
-			}
-		);
-	}
-	else {
+			);
+	} else {
 		logger.info(`Not an admin user, setting userName to userDisplayname: ${userDisplayname}`);
 		userName = userDisplayname;
 		continueStartup();
@@ -3362,7 +3312,6 @@ function startup() {
 }
 
 setTimeout(startup, 0);
-
 
 /**
  * https://github.com/exif-js/exif-js
@@ -3373,160 +3322,159 @@ setTimeout(startup, 0);
 
 var debug = false;
 
-var EXIF = function(obj) {
+var EXIF = function (obj) {
 	if (obj instanceof EXIF) return obj;
 	if (!(this instanceof EXIF)) return new EXIF(obj);
 	this.EXIFwrapped = obj;
 };
 
-var ExifTags = EXIF.Tags = {
-
+var ExifTags = (EXIF.Tags = {
 	// version tags
-	0x9000 : "ExifVersion",             // EXIF version
-	0xA000 : "FlashpixVersion",         // Flashpix format version
+	0x9000: "ExifVersion", // EXIF version
+	0xa000: "FlashpixVersion", // Flashpix format version
 
 	// colorspace tags
-	0xA001 : "ColorSpace",              // Color space information tag
+	0xa001: "ColorSpace", // Color space information tag
 
 	// image configuration
-	0xA002 : "PixelXDimension",         // Valid width of meaningful image
-	0xA003 : "PixelYDimension",         // Valid height of meaningful image
-	0x9101 : "ComponentsConfiguration", // Information about channels
-	0x9102 : "CompressedBitsPerPixel",  // Compressed bits per pixel
+	0xa002: "PixelXDimension", // Valid width of meaningful image
+	0xa003: "PixelYDimension", // Valid height of meaningful image
+	0x9101: "ComponentsConfiguration", // Information about channels
+	0x9102: "CompressedBitsPerPixel", // Compressed bits per pixel
 
 	// user information
-	0x927C : "MakerNote",               // Any desired information written by the manufacturer
-	0x9286 : "UserComment",             // Comments by user
+	0x927c: "MakerNote", // Any desired information written by the manufacturer
+	0x9286: "UserComment", // Comments by user
 
 	// related file
-	0xA004 : "RelatedSoundFile",        // Name of related sound file
+	0xa004: "RelatedSoundFile", // Name of related sound file
 
 	// date and time
-	0x9003 : "DateTimeOriginal",        // Date and time when the original image was generated
-	0x9004 : "DateTimeDigitized",       // Date and time when the image was stored digitally
-	0x9290 : "SubsecTime",              // Fractions of seconds for DateTime
-	0x9291 : "SubsecTimeOriginal",      // Fractions of seconds for DateTimeOriginal
-	0x9292 : "SubsecTimeDigitized",     // Fractions of seconds for DateTimeDigitized
+	0x9003: "DateTimeOriginal", // Date and time when the original image was generated
+	0x9004: "DateTimeDigitized", // Date and time when the image was stored digitally
+	0x9290: "SubsecTime", // Fractions of seconds for DateTime
+	0x9291: "SubsecTimeOriginal", // Fractions of seconds for DateTimeOriginal
+	0x9292: "SubsecTimeDigitized", // Fractions of seconds for DateTimeDigitized
 
 	// picture-taking conditions
-	0x829A : "ExposureTime",            // Exposure time (in seconds)
-	0x829D : "FNumber",                 // F number
-	0x8822 : "ExposureProgram",         // Exposure program
-	0x8824 : "SpectralSensitivity",     // Spectral sensitivity
-	0x8827 : "ISOSpeedRatings",         // ISO speed rating
-	0x8828 : "OECF",                    // Optoelectric conversion factor
-	0x9201 : "ShutterSpeedValue",       // Shutter speed
-	0x9202 : "ApertureValue",           // Lens aperture
-	0x9203 : "BrightnessValue",         // Value of brightness
-	0x9204 : "ExposureBias",            // Exposure bias
-	0x9205 : "MaxApertureValue",        // Smallest F number of lens
-	0x9206 : "SubjectDistance",         // Distance to subject in meters
-	0x9207 : "MeteringMode",            // Metering mode
-	0x9208 : "LightSource",             // Kind of light source
-	0x9209 : "Flash",                   // Flash status
-	0x9214 : "SubjectArea",             // Location and area of main subject
-	0x920A : "FocalLength",             // Focal length of the lens in mm
-	0xA20B : "FlashEnergy",             // Strobe energy in BCPS
-	0xA20C : "SpatialFrequencyResponse",    //
-	0xA20E : "FocalPlaneXResolution",   // Number of pixels in width direction per FocalPlaneResolutionUnit
-	0xA20F : "FocalPlaneYResolution",   // Number of pixels in height direction per FocalPlaneResolutionUnit
-	0xA210 : "FocalPlaneResolutionUnit",    // Unit for measuring FocalPlaneXResolution and FocalPlaneYResolution
-	0xA214 : "SubjectLocation",         // Location of subject in image
-	0xA215 : "ExposureIndex",           // Exposure index selected on camera
-	0xA217 : "SensingMethod",           // Image sensor type
-	0xA300 : "FileSource",              // Image source (3 == DSC)
-	0xA301 : "SceneType",               // Scene type (1 == directly photographed)
-	0xA302 : "CFAPattern",              // Color filter array geometric pattern
-	0xA401 : "CustomRendered",          // Special processing
-	0xA402 : "ExposureMode",            // Exposure mode
-	0xA403 : "WhiteBalance",            // 1 = auto white balance, 2 = manual
-	0xA404 : "DigitalZoomRation",       // Digital zoom ratio
-	0xA405 : "FocalLengthIn35mmFilm",   // Equivalent foacl length assuming 35mm film camera (in mm)
-	0xA406 : "SceneCaptureType",        // Type of scene
-	0xA407 : "GainControl",             // Degree of overall image gain adjustment
-	0xA408 : "Contrast",                // Direction of contrast processing applied by camera
-	0xA409 : "Saturation",              // Direction of saturation processing applied by camera
-	0xA40A : "Sharpness",               // Direction of sharpness processing applied by camera
-	0xA40B : "DeviceSettingDescription",    //
-	0xA40C : "SubjectDistanceRange",    // Distance to subject
+	0x829a: "ExposureTime", // Exposure time (in seconds)
+	0x829d: "FNumber", // F number
+	0x8822: "ExposureProgram", // Exposure program
+	0x8824: "SpectralSensitivity", // Spectral sensitivity
+	0x8827: "ISOSpeedRatings", // ISO speed rating
+	0x8828: "OECF", // Optoelectric conversion factor
+	0x9201: "ShutterSpeedValue", // Shutter speed
+	0x9202: "ApertureValue", // Lens aperture
+	0x9203: "BrightnessValue", // Value of brightness
+	0x9204: "ExposureBias", // Exposure bias
+	0x9205: "MaxApertureValue", // Smallest F number of lens
+	0x9206: "SubjectDistance", // Distance to subject in meters
+	0x9207: "MeteringMode", // Metering mode
+	0x9208: "LightSource", // Kind of light source
+	0x9209: "Flash", // Flash status
+	0x9214: "SubjectArea", // Location and area of main subject
+	0x920a: "FocalLength", // Focal length of the lens in mm
+	0xa20b: "FlashEnergy", // Strobe energy in BCPS
+	0xa20c: "SpatialFrequencyResponse", //
+	0xa20e: "FocalPlaneXResolution", // Number of pixels in width direction per FocalPlaneResolutionUnit
+	0xa20f: "FocalPlaneYResolution", // Number of pixels in height direction per FocalPlaneResolutionUnit
+	0xa210: "FocalPlaneResolutionUnit", // Unit for measuring FocalPlaneXResolution and FocalPlaneYResolution
+	0xa214: "SubjectLocation", // Location of subject in image
+	0xa215: "ExposureIndex", // Exposure index selected on camera
+	0xa217: "SensingMethod", // Image sensor type
+	0xa300: "FileSource", // Image source (3 == DSC)
+	0xa301: "SceneType", // Scene type (1 == directly photographed)
+	0xa302: "CFAPattern", // Color filter array geometric pattern
+	0xa401: "CustomRendered", // Special processing
+	0xa402: "ExposureMode", // Exposure mode
+	0xa403: "WhiteBalance", // 1 = auto white balance, 2 = manual
+	0xa404: "DigitalZoomRation", // Digital zoom ratio
+	0xa405: "FocalLengthIn35mmFilm", // Equivalent foacl length assuming 35mm film camera (in mm)
+	0xa406: "SceneCaptureType", // Type of scene
+	0xa407: "GainControl", // Degree of overall image gain adjustment
+	0xa408: "Contrast", // Direction of contrast processing applied by camera
+	0xa409: "Saturation", // Direction of saturation processing applied by camera
+	0xa40a: "Sharpness", // Direction of sharpness processing applied by camera
+	0xa40b: "DeviceSettingDescription", //
+	0xa40c: "SubjectDistanceRange", // Distance to subject
 
 	// other tags
-	0xA005 : "InteroperabilityIFDPointer",
-	0xA420 : "ImageUniqueID"            // Identifier assigned uniquely to each image
-};
+	0xa005: "InteroperabilityIFDPointer",
+	0xa420: "ImageUniqueID" // Identifier assigned uniquely to each image
+});
 
-var TiffTags = EXIF.TiffTags = {
-	0x0100 : "ImageWidth",
-	0x0101 : "ImageHeight",
-	0x8769 : "ExifIFDPointer",
-	0x8825 : "GPSInfoIFDPointer",
-	0xA005 : "InteroperabilityIFDPointer",
-	0x0102 : "BitsPerSample",
-	0x0103 : "Compression",
-	0x0106 : "PhotometricInterpretation",
-	0x0112 : "Orientation",
-	0x0115 : "SamplesPerPixel",
-	0x011C : "PlanarConfiguration",
-	0x0212 : "YCbCrSubSampling",
-	0x0213 : "YCbCrPositioning",
-	0x011A : "XResolution",
-	0x011B : "YResolution",
-	0x0128 : "ResolutionUnit",
-	0x0111 : "StripOffsets",
-	0x0116 : "RowsPerStrip",
-	0x0117 : "StripByteCounts",
-	0x0201 : "JPEGInterchangeFormat",
-	0x0202 : "JPEGInterchangeFormatLength",
-	0x012D : "TransferFunction",
-	0x013E : "WhitePoint",
-	0x013F : "PrimaryChromaticities",
-	0x0211 : "YCbCrCoefficients",
-	0x0214 : "ReferenceBlackWhite",
-	0x0132 : "DateTime",
-	0x010E : "ImageDescription",
-	0x010F : "Make",
-	0x0110 : "Model",
-	0x0131 : "Software",
-	0x013B : "Artist",
-	0x8298 : "Copyright"
-};
+var TiffTags = (EXIF.TiffTags = {
+	0x0100: "ImageWidth",
+	0x0101: "ImageHeight",
+	0x8769: "ExifIFDPointer",
+	0x8825: "GPSInfoIFDPointer",
+	0xa005: "InteroperabilityIFDPointer",
+	0x0102: "BitsPerSample",
+	0x0103: "Compression",
+	0x0106: "PhotometricInterpretation",
+	0x0112: "Orientation",
+	0x0115: "SamplesPerPixel",
+	0x011c: "PlanarConfiguration",
+	0x0212: "YCbCrSubSampling",
+	0x0213: "YCbCrPositioning",
+	0x011a: "XResolution",
+	0x011b: "YResolution",
+	0x0128: "ResolutionUnit",
+	0x0111: "StripOffsets",
+	0x0116: "RowsPerStrip",
+	0x0117: "StripByteCounts",
+	0x0201: "JPEGInterchangeFormat",
+	0x0202: "JPEGInterchangeFormatLength",
+	0x012d: "TransferFunction",
+	0x013e: "WhitePoint",
+	0x013f: "PrimaryChromaticities",
+	0x0211: "YCbCrCoefficients",
+	0x0214: "ReferenceBlackWhite",
+	0x0132: "DateTime",
+	0x010e: "ImageDescription",
+	0x010f: "Make",
+	0x0110: "Model",
+	0x0131: "Software",
+	0x013b: "Artist",
+	0x8298: "Copyright"
+});
 
-var GPSTags = EXIF.GPSTags = {
-	0x0000 : "GPSVersionID",
-	0x0001 : "GPSLatitudeRef",
-	0x0002 : "GPSLatitude",
-	0x0003 : "GPSLongitudeRef",
-	0x0004 : "GPSLongitude",
-	0x0005 : "GPSAltitudeRef",
-	0x0006 : "GPSAltitude",
-	0x0007 : "GPSTimeStamp",
-	0x0008 : "GPSSatellites",
-	0x0009 : "GPSStatus",
-	0x000A : "GPSMeasureMode",
-	0x000B : "GPSDOP",
-	0x000C : "GPSSpeedRef",
-	0x000D : "GPSSpeed",
-	0x000E : "GPSTrackRef",
-	0x000F : "GPSTrack",
-	0x0010 : "GPSImgDirectionRef",
-	0x0011 : "GPSImgDirection",
-	0x0012 : "GPSMapDatum",
-	0x0013 : "GPSDestLatitudeRef",
-	0x0014 : "GPSDestLatitude",
-	0x0015 : "GPSDestLongitudeRef",
-	0x0016 : "GPSDestLongitude",
-	0x0017 : "GPSDestBearingRef",
-	0x0018 : "GPSDestBearing",
-	0x0019 : "GPSDestDistanceRef",
-	0x001A : "GPSDestDistance",
-	0x001B : "GPSProcessingMethod",
-	0x001C : "GPSAreaInformation",
-	0x001D : "GPSDateStamp",
-	0x001E : "GPSDifferential"
-};
+var GPSTags = (EXIF.GPSTags = {
+	0x0000: "GPSVersionID",
+	0x0001: "GPSLatitudeRef",
+	0x0002: "GPSLatitude",
+	0x0003: "GPSLongitudeRef",
+	0x0004: "GPSLongitude",
+	0x0005: "GPSAltitudeRef",
+	0x0006: "GPSAltitude",
+	0x0007: "GPSTimeStamp",
+	0x0008: "GPSSatellites",
+	0x0009: "GPSStatus",
+	0x000a: "GPSMeasureMode",
+	0x000b: "GPSDOP",
+	0x000c: "GPSSpeedRef",
+	0x000d: "GPSSpeed",
+	0x000e: "GPSTrackRef",
+	0x000f: "GPSTrack",
+	0x0010: "GPSImgDirectionRef",
+	0x0011: "GPSImgDirection",
+	0x0012: "GPSMapDatum",
+	0x0013: "GPSDestLatitudeRef",
+	0x0014: "GPSDestLatitude",
+	0x0015: "GPSDestLongitudeRef",
+	0x0016: "GPSDestLongitude",
+	0x0017: "GPSDestBearingRef",
+	0x0018: "GPSDestBearing",
+	0x0019: "GPSDestDistanceRef",
+	0x001a: "GPSDestDistance",
+	0x001b: "GPSProcessingMethod",
+	0x001c: "GPSAreaInformation",
+	0x001d: "GPSDateStamp",
+	0x001e: "GPSDifferential"
+});
 
-	// EXIF 2.3 Spec
-var IFD1Tags = EXIF.IFD1Tags = {
+// EXIF 2.3 Spec
+var IFD1Tags = (EXIF.IFD1Tags = {
 	0x0100: "ImageWidth",
 	0x0101: "ImageHeight",
 	0x0102: "BitsPerSample",
@@ -3537,174 +3485,162 @@ var IFD1Tags = EXIF.IFD1Tags = {
 	0x0115: "SamplesPerPixel",
 	0x0116: "RowsPerStrip",
 	0x0117: "StripByteCounts",
-	0x011A: "XResolution",
-	0x011B: "YResolution",
-	0x011C: "PlanarConfiguration",
+	0x011a: "XResolution",
+	0x011b: "YResolution",
+	0x011c: "PlanarConfiguration",
 	0x0128: "ResolutionUnit",
-	0x0201: "JpegIFOffset",    // When image format is JPEG, this value show offset to JPEG data stored.(aka "ThumbnailOffset" or "JPEGInterchangeFormat")
+	0x0201: "JpegIFOffset", // When image format is JPEG, this value show offset to JPEG data stored.(aka "ThumbnailOffset" or "JPEGInterchangeFormat")
 	0x0202: "JpegIFByteCount", // When image format is JPEG, this value shows data size of JPEG image (aka "ThumbnailLength" or "JPEGInterchangeFormatLength")
 	0x0211: "YCbCrCoefficients",
 	0x0212: "YCbCrSubSampling",
 	0x0213: "YCbCrPositioning",
 	0x0214: "ReferenceBlackWhite"
-};
+});
 
-var StringValues = EXIF.StringValues = {
-	ExposureProgram : {
-		0 : "Not defined",
-		1 : "Manual",
-		2 : "Normal program",
-		3 : "Aperture priority",
-		4 : "Shutter priority",
-		5 : "Creative program",
-		6 : "Action program",
-		7 : "Portrait mode",
-		8 : "Landscape mode"
+var StringValues = (EXIF.StringValues = {
+	ExposureProgram: {
+		0: "Not defined",
+		1: "Manual",
+		2: "Normal program",
+		3: "Aperture priority",
+		4: "Shutter priority",
+		5: "Creative program",
+		6: "Action program",
+		7: "Portrait mode",
+		8: "Landscape mode"
 	},
-	MeteringMode : {
-		0 : "Unknown",
-		1 : "Average",
-		2 : "CenterWeightedAverage",
-		3 : "Spot",
-		4 : "MultiSpot",
-		5 : "Pattern",
-		6 : "Partial",
-		255 : "Other"
+	MeteringMode: {
+		0: "Unknown",
+		1: "Average",
+		2: "CenterWeightedAverage",
+		3: "Spot",
+		4: "MultiSpot",
+		5: "Pattern",
+		6: "Partial",
+		255: "Other"
 	},
-	LightSource : {
-		0 : "Unknown",
-		1 : "Daylight",
-		2 : "Fluorescent",
-		3 : "Tungsten (incandescent light)",
-		4 : "Flash",
-		9 : "Fine weather",
-		10 : "Cloudy weather",
-		11 : "Shade",
-		12 : "Daylight fluorescent (D 5700 - 7100K)",
-		13 : "Day white fluorescent (N 4600 - 5400K)",
-		14 : "Cool white fluorescent (W 3900 - 4500K)",
-		15 : "White fluorescent (WW 3200 - 3700K)",
-		17 : "Standard light A",
-		18 : "Standard light B",
-		19 : "Standard light C",
-		20 : "D55",
-		21 : "D65",
-		22 : "D75",
-		23 : "D50",
-		24 : "ISO studio tungsten",
-		255 : "Other"
+	LightSource: {
+		0: "Unknown",
+		1: "Daylight",
+		2: "Fluorescent",
+		3: "Tungsten (incandescent light)",
+		4: "Flash",
+		9: "Fine weather",
+		10: "Cloudy weather",
+		11: "Shade",
+		12: "Daylight fluorescent (D 5700 - 7100K)",
+		13: "Day white fluorescent (N 4600 - 5400K)",
+		14: "Cool white fluorescent (W 3900 - 4500K)",
+		15: "White fluorescent (WW 3200 - 3700K)",
+		17: "Standard light A",
+		18: "Standard light B",
+		19: "Standard light C",
+		20: "D55",
+		21: "D65",
+		22: "D75",
+		23: "D50",
+		24: "ISO studio tungsten",
+		255: "Other"
 	},
-	Flash : {
-		0x0000 : "Flash did not fire",
-		0x0001 : "Flash fired",
-		0x0005 : "Strobe return light not detected",
-		0x0007 : "Strobe return light detected",
-		0x0009 : "Flash fired, compulsory flash mode",
-		0x000D : "Flash fired, compulsory flash mode, return light not detected",
-		0x000F : "Flash fired, compulsory flash mode, return light detected",
-		0x0010 : "Flash did not fire, compulsory flash mode",
-		0x0018 : "Flash did not fire, auto mode",
-		0x0019 : "Flash fired, auto mode",
-		0x001D : "Flash fired, auto mode, return light not detected",
-		0x001F : "Flash fired, auto mode, return light detected",
-		0x0020 : "No flash function",
-		0x0041 : "Flash fired, red-eye reduction mode",
-		0x0045 : "Flash fired, red-eye reduction mode, return light not detected",
-		0x0047 : "Flash fired, red-eye reduction mode, return light detected",
-		0x0049 : "Flash fired, compulsory flash mode, red-eye reduction mode",
-		0x004D : "Flash fired, compulsory flash mode, red-eye reduction mode, return light not detected",
-		0x004F : "Flash fired, compulsory flash mode, red-eye reduction mode, return light detected",
-		0x0059 : "Flash fired, auto mode, red-eye reduction mode",
-		0x005D : "Flash fired, auto mode, return light not detected, red-eye reduction mode",
-		0x005F : "Flash fired, auto mode, return light detected, red-eye reduction mode"
+	Flash: {
+		0x0000: "Flash did not fire",
+		0x0001: "Flash fired",
+		0x0005: "Strobe return light not detected",
+		0x0007: "Strobe return light detected",
+		0x0009: "Flash fired, compulsory flash mode",
+		0x000d: "Flash fired, compulsory flash mode, return light not detected",
+		0x000f: "Flash fired, compulsory flash mode, return light detected",
+		0x0010: "Flash did not fire, compulsory flash mode",
+		0x0018: "Flash did not fire, auto mode",
+		0x0019: "Flash fired, auto mode",
+		0x001d: "Flash fired, auto mode, return light not detected",
+		0x001f: "Flash fired, auto mode, return light detected",
+		0x0020: "No flash function",
+		0x0041: "Flash fired, red-eye reduction mode",
+		0x0045: "Flash fired, red-eye reduction mode, return light not detected",
+		0x0047: "Flash fired, red-eye reduction mode, return light detected",
+		0x0049: "Flash fired, compulsory flash mode, red-eye reduction mode",
+		0x004d: "Flash fired, compulsory flash mode, red-eye reduction mode, return light not detected",
+		0x004f: "Flash fired, compulsory flash mode, red-eye reduction mode, return light detected",
+		0x0059: "Flash fired, auto mode, red-eye reduction mode",
+		0x005d: "Flash fired, auto mode, return light not detected, red-eye reduction mode",
+		0x005f: "Flash fired, auto mode, return light detected, red-eye reduction mode"
 	},
-	SensingMethod : {
-		1 : "Not defined",
-		2 : "One-chip color area sensor",
-		3 : "Two-chip color area sensor",
-		4 : "Three-chip color area sensor",
-		5 : "Color sequential area sensor",
-		7 : "Trilinear sensor",
-		8 : "Color sequential linear sensor"
+	SensingMethod: {
+		1: "Not defined",
+		2: "One-chip color area sensor",
+		3: "Two-chip color area sensor",
+		4: "Three-chip color area sensor",
+		5: "Color sequential area sensor",
+		7: "Trilinear sensor",
+		8: "Color sequential linear sensor"
 	},
-	SceneCaptureType : {
-		0 : "Standard",
-		1 : "Landscape",
-		2 : "Portrait",
-		3 : "Night scene"
+	SceneCaptureType: {
+		0: "Standard",
+		1: "Landscape",
+		2: "Portrait",
+		3: "Night scene"
 	},
-	SceneType : {
-		1 : "Directly photographed"
+	SceneType: {
+		1: "Directly photographed"
 	},
-	CustomRendered : {
-		0 : "Normal process",
-		1 : "Custom process"
+	CustomRendered: {
+		0: "Normal process",
+		1: "Custom process"
 	},
-	WhiteBalance : {
-		0 : "Auto white balance",
-		1 : "Manual white balance"
+	WhiteBalance: {
+		0: "Auto white balance",
+		1: "Manual white balance"
 	},
-	GainControl : {
-		0 : "None",
-		1 : "Low gain up",
-		2 : "High gain up",
-		3 : "Low gain down",
-		4 : "High gain down"
+	GainControl: {
+		0: "None",
+		1: "Low gain up",
+		2: "High gain up",
+		3: "Low gain down",
+		4: "High gain down"
 	},
-	Contrast : {
-		0 : "Normal",
-		1 : "Soft",
-		2 : "Hard"
+	Contrast: {
+		0: "Normal",
+		1: "Soft",
+		2: "Hard"
 	},
-	Saturation : {
-		0 : "Normal",
-		1 : "Low saturation",
-		2 : "High saturation"
+	Saturation: {
+		0: "Normal",
+		1: "Low saturation",
+		2: "High saturation"
 	},
-	Sharpness : {
-		0 : "Normal",
-		1 : "Soft",
-		2 : "Hard"
+	Sharpness: {
+		0: "Normal",
+		1: "Soft",
+		2: "Hard"
 	},
-	SubjectDistanceRange : {
-		0 : "Unknown",
-		1 : "Macro",
-		2 : "Close view",
-		3 : "Distant view"
+	SubjectDistanceRange: {
+		0: "Unknown",
+		1: "Macro",
+		2: "Close view",
+		3: "Distant view"
 	},
-	FileSource : {
-		3 : "DSC"
+	FileSource: {
+		3: "DSC"
 	},
 
-	Components : {
-		0 : "",
-		1 : "Y",
-		2 : "Cb",
-		3 : "Cr",
-		4 : "R",
-		5 : "G",
-		6 : "B"
+	Components: {
+		0: "",
+		1: "Y",
+		2: "Cb",
+		3: "Cr",
+		4: "R",
+		5: "G",
+		6: "B"
 	}
-};
-
+});
 
 function imageHasData(img) {
-	return !!(img.exifdata);
+	return !!img.exifdata;
 }
 
-function arrayBufferToBase64(buffer) {
-    var binary = '';
-    var bytes = new Uint8Array( buffer );
-    var len = bytes.byteLength;
-    for (var i = 0; i < len; i++) {
-        binary += String.fromCharCode( bytes[ i ] );
-    }
-    return btoa(binary);
-}
-
-function base64ToArrayBuffer(base64, contentType) {
-	contentType = contentType || base64.match(/^data\:([^\;]+)\;base64,/mi)[1] || ''; // e.g. 'data:image/jpeg;base64,...' => 'image/jpeg'
-	base64 = base64.replace(/^data\:([^\;]+)\;base64,/gmi, '');
+function base64ToArrayBuffer(base64) {
+	base64 = base64.replace(/^data:([^;]+);base64,/gim, "");
 	var binary = atob(base64);
 	var len = binary.length;
 	var buffer = new ArrayBuffer(len);
@@ -3719,7 +3655,7 @@ function objectURLToBlob(url, callback) {
 	var http = new XMLHttpRequest();
 	http.open("GET", url, true);
 	http.responseType = "blob";
-	http.onload = function(e) {
+	http.onload = function () {
 		if (this.status == 200 || this.status === 0) {
 			callback(this.response);
 		}
@@ -3734,7 +3670,7 @@ function getImageData(img, callback) {
 		var iptcdata = findIPTCinJPEG(binFile);
 		img.iptcdata = iptcdata || {};
 		if (EXIF.isXmpEnabled) {
-			var xmpdata= findXMPinJPEG(binFile);
+			var xmpdata = findXMPinJPEG(binFile);
 			img.xmpdata = xmpdata || {};
 		}
 		if (callback) {
@@ -3743,21 +3679,22 @@ function getImageData(img, callback) {
 	}
 
 	if (img.src) {
-		if (/^data\:/i.test(img.src)) { // Data URI
+		if (/^data:/i.test(img.src)) {
+			// Data URI
 			var arrayBuffer = base64ToArrayBuffer(img.src);
 			handleBinaryFile(arrayBuffer);
-
-		} else if (/^blob\:/i.test(img.src)) { // Object URL
-			var fileReader = new FileReader();
-			fileReader.onload = function(e) {
+		} else if (/^blob:/i.test(img.src)) {
+			// Object URL
+			var blobFileReader = new FileReader();
+			blobFileReader.onload = function (e) {
 				handleBinaryFile(e.target.result);
 			};
 			objectURLToBlob(img.src, function (blob) {
-				fileReader.readAsArrayBuffer(blob);
+				blobFileReader.readAsArrayBuffer(blob);
 			});
 		} else {
 			var http = new XMLHttpRequest();
-			http.onload = function() {
+			http.onload = function () {
 				if (this.status == 200 || this.status === 0) {
 					handleBinaryFile(http.response);
 				} else {
@@ -3771,7 +3708,7 @@ function getImageData(img, callback) {
 		}
 	} else if (self.FileReader && (img instanceof self.Blob || img instanceof self.File)) {
 		var fileReader = new FileReader();
-		fileReader.onload = function(e) {
+		fileReader.onload = function (e) {
 			if (debug) logger.log("Got file of length " + e.target.result.byteLength);
 			handleBinaryFile(e.target.result);
 		};
@@ -3784,7 +3721,7 @@ function findEXIFinJPEG(file) {
 	var dataView = new DataView(file);
 
 	if (debug) logger.log("Got file of length " + file.byteLength);
-	if ((dataView.getUint8(0) != 0xFF) || (dataView.getUint8(1) != 0xD8)) {
+	if (dataView.getUint8(0) != 0xff || dataView.getUint8(1) != 0xd8) {
 		if (debug) logger.log("Not a valid JPEG");
 		return false; // not a valid jpeg
 	}
@@ -3794,7 +3731,7 @@ function findEXIFinJPEG(file) {
 		marker;
 
 	while (offset < length) {
-		if (dataView.getUint8(offset) != 0xFF) {
+		if (dataView.getUint8(offset) != 0xff) {
 			if (debug) logger.log("Not a valid marker at offset " + offset + ", found: " + dataView.getUint8(offset));
 			return false; // not a valid marker, something is wrong
 		}
@@ -3811,20 +3748,17 @@ function findEXIFinJPEG(file) {
 			return readEXIFData(dataView, offset + 4, dataView.getUint16(offset + 2) - 2);
 
 			// offset += 2 + file.getShortAt(offset+2, true);
-
 		} else {
-			offset += 2 + dataView.getUint16(offset+2);
+			offset += 2 + dataView.getUint16(offset + 2);
 		}
-
 	}
-
 }
 
 function findIPTCinJPEG(file) {
 	var dataView = new DataView(file);
 
 	if (debug) logger.log("Got file of length " + file.byteLength);
-	if ((dataView.getUint8(0) != 0xFF) || (dataView.getUint8(1) != 0xD8)) {
+	if (dataView.getUint8(0) != 0xff || dataView.getUint8(1) != 0xd8) {
 		if (debug) logger.log("Not a valid JPEG");
 		return false; // not a valid jpeg
 	}
@@ -3832,27 +3766,24 @@ function findIPTCinJPEG(file) {
 	var offset = 2,
 		length = file.byteLength;
 
-
-	var isFieldSegmentStart = function(dataView, offset){
+	var isFieldSegmentStart = function (dataView, offset) {
 		return (
 			dataView.getUint8(offset) === 0x38 &&
-			dataView.getUint8(offset+1) === 0x42 &&
-			dataView.getUint8(offset+2) === 0x49 &&
-			dataView.getUint8(offset+3) === 0x4D &&
-			dataView.getUint8(offset+4) === 0x04 &&
-			dataView.getUint8(offset+5) === 0x04
+			dataView.getUint8(offset + 1) === 0x42 &&
+			dataView.getUint8(offset + 2) === 0x49 &&
+			dataView.getUint8(offset + 3) === 0x4d &&
+			dataView.getUint8(offset + 4) === 0x04 &&
+			dataView.getUint8(offset + 5) === 0x04
 		);
 	};
 
 	while (offset < length) {
-
-		if ( isFieldSegmentStart(dataView, offset )){
-
+		if (isFieldSegmentStart(dataView, offset)) {
 			// Get the length of the name header (which is padded to an even number of bytes)
-			var nameHeaderLength = dataView.getUint8(offset+7);
-			if(nameHeaderLength % 2 !== 0) nameHeaderLength += 1;
+			var nameHeaderLength = dataView.getUint8(offset + 7);
+			if (nameHeaderLength % 2 !== 0) nameHeaderLength += 1;
 			// Check for pre photoshop 6 format
-			if(nameHeaderLength === 0) {
+			if (nameHeaderLength === 0) {
 				// Always 4
 				nameHeaderLength = 4;
 			}
@@ -3861,96 +3792,84 @@ function findIPTCinJPEG(file) {
 			var sectionLength = dataView.getUint16(offset + 6 + nameHeaderLength);
 
 			return readIPTCData(file, startOffset, sectionLength);
-
-			break;
-
 		}
-
 
 		// Not the marker, continue searching
 		offset++;
-
 	}
-
 }
 var IptcFieldMap = {
-	0x78 : 'caption',
-	0x6E : 'credit',
-	0x19 : 'keywords',
-	0x37 : 'dateCreated',
-	0x50 : 'byline',
-	0x55 : 'bylineTitle',
-	0x5A : 'city',
-	0x5C : 'sublocation',
-	0x5E : 'state',
-	0x64 : 'countryCode',
-	0x65 : 'countryName',
-	0x67 : 'OriginalTransmissionReference',
-	0x69 : 'headline',
-	0x6D : 'credit',
-	0x74 : 'copyright',
-	0x76 : 'contact',
-	0x78 : 'caption',
-	0x7A : 'captionWriter',
-	0x7D : 'rasterizedCaption',
-	0x82 : 'imageType',
-	0x83 : 'imageOrientation',
-	0x87 : 'languageID',
-	0x96 : 'audioType',
-	0x97 : 'audioSamplingRate',
-	0x98 : 'audioSamplingRes',
-	0x99 : 'audioDuration',
-	0x9A : 'audioOutcue',
-	0xC8 : 'previewFileFormat',
-	0xC9 : 'previewFileFormatVer',
-	0xCA : 'previewData',
-	0x0F : 'category'
+	0x19: "keywords",
+	0x37: "dateCreated",
+	0x50: "byline",
+	0x55: "bylineTitle",
+	0x5a: "city",
+	0x5c: "sublocation",
+	0x5e: "state",
+	0x64: "countryCode",
+	0x65: "countryName",
+	0x67: "OriginalTransmissionReference",
+	0x69: "headline",
+	0x6d: "credit",
+	0x6e: "credit",
+	0x74: "copyright",
+	0x76: "contact",
+	0x78: "caption",
+	0x7a: "captionWriter",
+	0x7d: "rasterizedCaption",
+	0x82: "imageType",
+	0x83: "imageOrientation",
+	0x87: "languageID",
+	0x96: "audioType",
+	0x97: "audioSamplingRate",
+	0x98: "audioSamplingRes",
+	0x99: "audioDuration",
+	0x9a: "audioOutcue",
+	0xc8: "previewFileFormat",
+	0xc9: "previewFileFormatVer",
+	0xca: "previewData",
+	0x0f: "category"
 };
 
-function readIPTCData(file, startOffset, sectionLength){
+function readIPTCData(file, startOffset, sectionLength) {
 	var dataView = new DataView(file);
 	var data = {};
-	var fieldValue, fieldName, dataSize, segmentType, segmentSize;
+	var fieldValue, fieldName, dataSize, segmentType;
 	var segmentStartPos = startOffset;
-	while(segmentStartPos < startOffset+sectionLength) {
-		if(dataView.getUint8(segmentStartPos) === 0x1C && dataView.getUint8(segmentStartPos+1) === 0x02){
-			segmentType = dataView.getUint8(segmentStartPos+2);
-			if(segmentType in IptcFieldMap) {
-				dataSize = dataView.getInt16(segmentStartPos+3);
-				segmentSize = dataSize + 5;
+	while (segmentStartPos < startOffset + sectionLength) {
+		if (dataView.getUint8(segmentStartPos) === 0x1c && dataView.getUint8(segmentStartPos + 1) === 0x02) {
+			segmentType = dataView.getUint8(segmentStartPos + 2);
+			if (segmentType in IptcFieldMap) {
+				dataSize = dataView.getInt16(segmentStartPos + 3);
 				fieldName = IptcFieldMap[segmentType];
-				fieldValue = getStringFromDB(dataView, segmentStartPos+5, dataSize);
+				fieldValue = getStringFromDB(dataView, segmentStartPos + 5, dataSize);
 				// Check if we already stored a value with this name
-				if(data.hasOwnProperty(fieldName)) {
+				if (Object.prototype.hasOwnProperty.call(data, fieldName)) {
 					// Value already stored with this name, create multivalue field
-					if(data[fieldName] instanceof Array) {
+					if (data[fieldName] instanceof Array) {
 						data[fieldName].push(fieldValue);
-					}
-					else {
+					} else {
 						data[fieldName] = [data[fieldName], fieldValue];
 					}
-				}
-				else {
+				} else {
 					data[fieldName] = fieldValue;
 				}
 			}
-
 		}
 		segmentStartPos++;
 	}
 	return data;
 }
 
-
-
 function readTags(file, tiffStart, dirStart, strings, bigEnd) {
 	var entries = file.getUint16(dirStart, !bigEnd),
 		tags = {},
-		entryOffset, tag,
+		entryOffset,
+		tag,
 		i;
 
-	for (i=0;i<entries;i++) {
-		entryOffset = dirStart + i*12 + 2;
+	for (i = 0; i < entries; i++) {
+		entryOffset = dirStart + i * 12 + 2;
 		tag = strings[file.getUint16(entryOffset, !bigEnd)];
 		if (!tag && debug) logger.log("Unknown tag: " + file.getUint16(entryOffset, !bigEnd));
 		tags[tag] = readTagValue(file, entryOffset, tiffStart, dirStart, bigEnd);
@@ -3958,14 +3877,16 @@ function readTags(file, tiffStart, dirStart, strings, bigEnd) {
 	return tags;
 }
 
-
 function readTagValue(file, entryOffset, tiffStart, dirStart, bigEnd) {
-	var type = file.getUint16(entryOffset+2, !bigEnd),
-		numValues = file.getUint32(entryOffset+4, !bigEnd),
-		valueOffset = file.getUint32(entryOffset+8, !bigEnd) + tiffStart,
+	var type = file.getUint16(entryOffset + 2, !bigEnd),
+		numValues = file.getUint32(entryOffset + 4, !bigEnd),
+		valueOffset = file.getUint32(entryOffset + 8, !bigEnd) + tiffStart,
 		offset,
-		vals, val, n,
-		numerator, denominator;
+		vals,
+		val,
+		n,
+		numerator,
+		denominator;
 
 	switch (type) {
 		case 1: // byte, 8-bit unsigned int
@@ -3973,26 +3894,26 @@ function readTagValue(file, entryOffset, tiffStart, dirStart, bigEnd) {
 			if (numValues == 1) {
 				return file.getUint8(entryOffset + 8, !bigEnd);
 			} else {
-				offset = numValues > 4 ? valueOffset : (entryOffset + 8);
+				offset = numValues > 4 ? valueOffset : entryOffset + 8;
 				vals = [];
-				for (n=0;n<numValues;n++) {
+				for (n = 0; n < numValues; n++) {
 					vals[n] = file.getUint8(offset + n);
 				}
 				return vals;
 			}
 
 		case 2: // ascii, 8-bit byte
-			offset = numValues > 4 ? valueOffset : (entryOffset + 8);
-			return getStringFromDB(file, offset, numValues-1);
+			offset = numValues > 4 ? valueOffset : entryOffset + 8;
+			return getStringFromDB(file, offset, numValues - 1);
 
 		case 3: // short, 16 bit int
 			if (numValues == 1) {
 				return file.getUint16(entryOffset + 8, !bigEnd);
 			} else {
-				offset = numValues > 2 ? valueOffset : (entryOffset + 8);
+				offset = numValues > 2 ? valueOffset : entryOffset + 8;
 				vals = [];
-				for (n=0;n<numValues;n++) {
-					vals[n] = file.getUint16(offset + 2*n, !bigEnd);
+				for (n = 0; n < numValues; n++) {
+					vals[n] = file.getUint16(offset + 2 * n, !bigEnd);
 				}
 				return vals;
 			}
@@ -4002,25 +3923,25 @@ function readTagValue(file, entryOffset, tiffStart, dirStart, bigEnd) {
 				return file.getUint32(entryOffset + 8, !bigEnd);
 			} else {
 				vals = [];
-				for (n=0;n<numValues;n++) {
-					vals[n] = file.getUint32(valueOffset + 4*n, !bigEnd);
+				for (n = 0; n < numValues; n++) {
+					vals[n] = file.getUint32(valueOffset + 4 * n, !bigEnd);
 				}
 				return vals;
 			}
 
-		case 5:    // rational = two long values, first is numerator, second is denominator
+		case 5: // rational = two long values, first is numerator, second is denominator
 			if (numValues == 1) {
 				numerator = file.getUint32(valueOffset, !bigEnd);
-				denominator = file.getUint32(valueOffset+4, !bigEnd);
+				denominator = file.getUint32(valueOffset + 4, !bigEnd);
 				val = new Number(numerator / denominator);
 				val.numerator = numerator;
 				val.denominator = denominator;
 				return val;
 			} else {
 				vals = [];
-				for (n=0;n<numValues;n++) {
-					numerator = file.getUint32(valueOffset + 8*n, !bigEnd);
-					denominator = file.getUint32(valueOffset+4 + 8*n, !bigEnd);
+				for (n = 0; n < numValues; n++) {
+					numerator = file.getUint32(valueOffset + 8 * n, !bigEnd);
+					denominator = file.getUint32(valueOffset + 4 + 8 * n, !bigEnd);
 					vals[n] = new Number(numerator / denominator);
 					vals[n].numerator = numerator;
 					vals[n].denominator = denominator;
@@ -4033,19 +3954,19 @@ function readTagValue(file, entryOffset, tiffStart, dirStart, bigEnd) {
 				return file.getInt32(entryOffset + 8, !bigEnd);
 			} else {
 				vals = [];
-				for (n=0;n<numValues;n++) {
-					vals[n] = file.getInt32(valueOffset + 4*n, !bigEnd);
+				for (n = 0; n < numValues; n++) {
+					vals[n] = file.getInt32(valueOffset + 4 * n, !bigEnd);
 				}
 				return vals;
 			}
 
 		case 10: // signed rational, two slongs, first is numerator, second is denominator
 			if (numValues == 1) {
-				return file.getInt32(valueOffset, !bigEnd) / file.getInt32(valueOffset+4, !bigEnd);
+				return file.getInt32(valueOffset, !bigEnd) / file.getInt32(valueOffset + 4, !bigEnd);
 			} else {
 				vals = [];
-				for (n=0;n<numValues;n++) {
-					vals[n] = file.getInt32(valueOffset + 8*n, !bigEnd) / file.getInt32(valueOffset+4 + 8*n, !bigEnd);
+				for (n = 0; n < numValues; n++) {
+					vals[n] = file.getInt32(valueOffset + 8 * n, !bigEnd) / file.getInt32(valueOffset + 4 + 8 * n, !bigEnd);
 				}
 				return vals;
 			}
@@ -4053,10 +3974,10 @@ function readTagValue(file, entryOffset, tiffStart, dirStart, bigEnd) {
 }
 
 /**
-* Given an IFD (Image File Directory) start offset
-* returns an offset to next IFD or 0 if it's the last IFD.
-*/
-function getNextIFDOffset(dataView, dirStart, bigEnd){
+ * Given an IFD (Image File Directory) start offset
+ * returns an offset to next IFD or 0 if it's the last IFD.
+ */
+function getNextIFDOffset(dataView, dirStart, bigEnd) {
 	//the first 2bytes means the number of directory entries contains in this IFD
 	var entries = dataView.getUint16(dirStart, !bigEnd);
 
@@ -4067,21 +3988,21 @@ function getNextIFDOffset(dataView, dirStart, bigEnd){
 	return dataView.getUint32(dirStart + 2 + entries * 12, !bigEnd); // each entry is 12 bytes long
 }
 
-function readThumbnailImage(dataView, tiffStart, firstIFDOffset, bigEnd){
+function readThumbnailImage(dataView, tiffStart, firstIFDOffset, bigEnd) {
 	// get the IFD1 offset
-	var IFD1OffsetPointer = getNextIFDOffset(dataView, tiffStart+firstIFDOffset, bigEnd);
+	var IFD1OffsetPointer = getNextIFDOffset(dataView, tiffStart + firstIFDOffset, bigEnd);
 
 	if (!IFD1OffsetPointer) {
 		// logger.log('******** IFD1Offset is empty, image thumb not found ********');
 		return {};
-	}
-	else if (IFD1OffsetPointer > dataView.byteLength) { // this should not happen
+	} else if (IFD1OffsetPointer > dataView.byteLength) {
+		// this should not happen
 		// logger.log('******** IFD1Offset is outside the bounds of the DataView ********');
 		return {};
 	}
 	// logger.log('*******  thumbnail IFD offset (IFD1) is: %s', IFD1OffsetPointer);
 
-	var thumbTags = readTags(dataView, tiffStart, tiffStart + IFD1OffsetPointer, IFD1Tags, bigEnd)
+	var thumbTags = readTags(dataView, tiffStart, tiffStart + IFD1OffsetPointer, IFD1Tags, bigEnd);
 
 	// EXIF 2.3 specification for JPEG format thumbnail
 
@@ -4091,30 +4012,29 @@ function readThumbnailImage(dataView, tiffStart, firstIFDOffset, bigEnd){
 	// Data format is ordinary JPEG format, starts from 0xFFD8 and ends by 0xFFD9. It seems that
 	// JPEG format and 160x120pixels of size are recommended thumbnail format for Exif2.1 or later.
 
-	if (thumbTags['Compression']) {
+	if (thumbTags["Compression"]) {
 		// logger.log('Thumbnail image found!');
 
-		switch (thumbTags['Compression']) {
+		switch (thumbTags["Compression"]) {
 			case 6:
 				// logger.log('Thumbnail image format is JPEG');
 				if (thumbTags.JpegIFOffset && thumbTags.JpegIFByteCount) {
-				// extract the thumbnail
+					// extract the thumbnail
 					var tOffset = tiffStart + thumbTags.JpegIFOffset;
 					var tLength = thumbTags.JpegIFByteCount;
-					thumbTags['blob'] = new Blob([new Uint8Array(dataView.buffer, tOffset, tLength)], {
-						type: 'image/jpeg'
+					thumbTags["blob"] = new Blob([new Uint8Array(dataView.buffer, tOffset, tLength)], {
+						type: "image/jpeg"
 					});
 				}
-			break;
+				break;
 
-		case 1:
-			logger.log("Thumbnail image format is TIFF, which is not implemented.");
-			break;
-		default:
-			logger.log("Unknown thumbnail image format '%s'", thumbTags['Compression']);
+			case 1:
+				logger.log("Thumbnail image format is TIFF, which is not implemented.");
+				break;
+			default:
+				logger.log("Unknown thumbnail image format '%s'", thumbTags["Compression"]);
 		}
-	}
-	else if (thumbTags['PhotometricInterpretation'] == 2) {
+	} else if (thumbTags["PhotometricInterpretation"] == 2) {
 		logger.log("Thumbnail image format is RGB, which is not implemented.");
 	}
 	return thumbTags;
@@ -4126,13 +4046,13 @@ function getStringFromDB(buffer, start, length) {
 	var outstr = "";
 	var arOut = [];
 	var j = 0;
-	for (var n = start; n < start+length; n++) {
+	for (var n = start; n < start + length; n++) {
 		//outstr += String.fromCharCode(buffer.getUint8(n));
-		arOut[j] = '0x' + buffer.getUint8(n).toString(16);
+		arOut[j] = "0x" + buffer.getUint8(n).toString(16);
 		j++;
 	}
 	//transform array to UTF-8 String with Utf8ArrayToStr function
-	outstr =  Utf8ArrayToStr(arOut);
+	outstr = Utf8ArrayToStr(arOut);
 	return outstr;
 }
 
@@ -4154,26 +4074,32 @@ function Utf8ArrayToStr(array) {
 	out = "";
 	len = array.length;
 	i = 0;
-	while(i < len) {
+	while (i < len) {
 		c = array[i++];
-		switch(c >> 4) {
-			case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
-			// 0xxxxxxx
-			out += String.fromCharCode(c);
-			break;
-			case 12: case 13:
-			// 110x xxxx   10xx xxxx
-			char2 = array[i++];
-			out += String.fromCharCode(((c & 0x1F) << 6) | (char2 & 0x3F));
-			break;
+		switch (c >> 4) {
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+			case 6:
+			case 7:
+				// 0xxxxxxx
+				out += String.fromCharCode(c);
+				break;
+			case 12:
+			case 13:
+				// 110x xxxx   10xx xxxx
+				char2 = array[i++];
+				out += String.fromCharCode(((c & 0x1f) << 6) | (char2 & 0x3f));
+				break;
 			case 14:
-			// 1110 xxxx  10xx xxxx  10xx xxxx
-			char2 = array[i++];
-			char3 = array[i++];
-			out += String.fromCharCode(((c & 0x0F) << 12) |
-							((char2 & 0x3F) << 6) |
-							((char3 & 0x3F) << 0));
-			break;
+				// 1110 xxxx  10xx xxxx  10xx xxxx
+				char2 = array[i++];
+				char3 = array[i++];
+				out += String.fromCharCode(((c & 0x0f) << 12) | ((char2 & 0x3f) << 6) | ((char3 & 0x3f) << 0));
+				break;
 		}
 	}
 
@@ -4187,29 +4113,31 @@ function readEXIFData(file, start) {
 	}
 
 	var bigEnd,
-		tags, tag,
-		exifData, gpsData,
+		tags,
+		tag,
+		exifData,
+		gpsData,
 		tiffOffset = start + 6;
 
 	// test for TIFF validity and endianness
 	if (file.getUint16(tiffOffset) == 0x4949) {
 		bigEnd = false;
-	} else if (file.getUint16(tiffOffset) == 0x4D4D) {
+	} else if (file.getUint16(tiffOffset) == 0x4d4d) {
 		bigEnd = true;
 	} else {
 		if (debug) logger.log("Not valid TIFF data! (no 0x4949 or 0x4D4D)");
 		return false;
 	}
 
-	if (file.getUint16(tiffOffset+2, !bigEnd) != 0x002A) {
+	if (file.getUint16(tiffOffset + 2, !bigEnd) != 0x002a) {
 		if (debug) logger.log("Not valid TIFF data! (no 0x002A)");
 		return false;
 	}
 
-	var firstIFDOffset = file.getUint32(tiffOffset+4, !bigEnd);
+	var firstIFDOffset = file.getUint32(tiffOffset + 4, !bigEnd);
 
 	if (firstIFDOffset < 0x00000008) {
-		if (debug) logger.log("Not valid TIFF data! (First offset less than 8)", file.getUint32(tiffOffset+4, !bigEnd));
+		if (debug) logger.log("Not valid TIFF data! (First offset less than 8)", file.getUint32(tiffOffset + 4, !bigEnd));
 		return false;
 	}
 
@@ -4219,30 +4147,30 @@ function readEXIFData(file, start) {
 		exifData = readTags(file, tiffOffset, tiffOffset + tags.ExifIFDPointer, ExifTags, bigEnd);
 		for (tag in exifData) {
 			switch (tag) {
-				case "LightSource" :
-				case "Flash" :
-				case "MeteringMode" :
-				case "ExposureProgram" :
-				case "SensingMethod" :
-				case "SceneCaptureType" :
-				case "SceneType" :
-				case "CustomRendered" :
-				case "WhiteBalance" :
-				case "GainControl" :
-				case "Contrast" :
-				case "Saturation" :
-				case "Sharpness" :
-				case "SubjectDistanceRange" :
-				case "FileSource" :
+				case "LightSource":
+				case "Flash":
+				case "MeteringMode":
+				case "ExposureProgram":
+				case "SensingMethod":
+				case "SceneCaptureType":
+				case "SceneType":
+				case "CustomRendered":
+				case "WhiteBalance":
+				case "GainControl":
+				case "Contrast":
+				case "Saturation":
+				case "Sharpness":
+				case "SubjectDistanceRange":
+				case "FileSource":
 					exifData[tag] = StringValues[tag][exifData[tag]];
 					break;
 
-				case "ExifVersion" :
-				case "FlashpixVersion" :
+				case "ExifVersion":
+				case "FlashpixVersion":
 					exifData[tag] = String.fromCharCode(exifData[tag][0], exifData[tag][1], exifData[tag][2], exifData[tag][3]);
 					break;
 
-				case "ComponentsConfiguration" :
+				case "ComponentsConfiguration":
 					exifData[tag] =
 						StringValues.Components[exifData[tag][0]] +
 						StringValues.Components[exifData[tag][1]] +
@@ -4258,11 +4186,8 @@ function readEXIFData(file, start) {
 		gpsData = readTags(file, tiffOffset, tiffOffset + tags.GPSInfoIFDPointer, GPSTags, bigEnd);
 		for (tag in gpsData) {
 			switch (tag) {
-				case "GPSVersionID" :
-					gpsData[tag] = gpsData[tag][0] +
-						"." + gpsData[tag][1] +
-						"." + gpsData[tag][2] +
-						"." + gpsData[tag][3];
+				case "GPSVersionID":
+					gpsData[tag] = gpsData[tag][0] + "." + gpsData[tag][1] + "." + gpsData[tag][2] + "." + gpsData[tag][3];
 					break;
 			}
 			tags[tag] = gpsData[tag];
@@ -4270,21 +4195,20 @@ function readEXIFData(file, start) {
 	}
 
 	// extract thumbnail
-	tags['thumbnail'] = readThumbnailImage(file, tiffOffset, firstIFDOffset, bigEnd);
+	tags["thumbnail"] = readThumbnailImage(file, tiffOffset, firstIFDOffset, bigEnd);
 
 	return tags;
 }
 
 function findXMPinJPEG(file) {
-
-	if (!('DOMParser' in self)) {
+	if (!("DOMParser" in self)) {
 		// logger.warn('XML parsing not supported without DOMParser');
 		return;
 	}
 	var dataView = new DataView(file);
 
 	if (debug) logger.log("Got file of length " + file.byteLength);
-	if ((dataView.getUint8(0) != 0xFF) || (dataView.getUint8(1) != 0xD8)) {
+	if (dataView.getUint8(0) != 0xff || dataView.getUint8(1) != 0xd8) {
 		if (debug) logger.log("Not a valid JPEG");
 		return false; // not a valid jpeg
 	}
@@ -4293,34 +4217,35 @@ function findXMPinJPEG(file) {
 		length = file.byteLength,
 		dom = new DOMParser();
 
-	while (offset < (length-4)) {
+	while (offset < length - 4) {
 		if (getStringFromDB(dataView, offset, 4) == "http") {
 			var startOffset = offset - 1;
 			var sectionLength = dataView.getUint16(offset - 2) - 1;
-			var xmpString = getStringFromDB(dataView, startOffset, sectionLength)
-			var xmpEndIndex = xmpString.indexOf('xmpmeta>') + 8;
-			xmpString = xmpString.substring( xmpString.indexOf( '<x:xmpmeta' ), xmpEndIndex );
+			var xmpString = getStringFromDB(dataView, startOffset, sectionLength);
+			var xmpEndIndex = xmpString.indexOf("xmpmeta>") + 8;
+			xmpString = xmpString.substring(xmpString.indexOf("<x:xmpmeta"), xmpEndIndex);
 
-			var indexOfXmp = xmpString.indexOf('x:xmpmeta') + 10
+			var indexOfXmp = xmpString.indexOf("x:xmpmeta") + 10;
 			//Many custom written programs embed xmp/xml without any namespace. Following are some of them.
 			//Without these namespaces, XML is thought to be invalid by parsers
-			xmpString = xmpString.slice(0, indexOfXmp)
-						+ 'xmlns:Iptc4xmpCore="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/" '
-						+ 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
-						+ 'xmlns:tiff="http://ns.adobe.com/tiff/1.0/" '
-						+ 'xmlns:plus="http://schemas.android.com/apk/lib/com.google.android.gms.plus" '
-						+ 'xmlns:ext="http://www.gettyimages.com/xsltExtension/1.0" '
-						+ 'xmlns:exif="http://ns.adobe.com/exif/1.0/" '
-						+ 'xmlns:stEvt="http://ns.adobe.com/xap/1.0/sType/ResourceEvent#" '
-						+ 'xmlns:stRef="http://ns.adobe.com/xap/1.0/sType/ResourceRef#" '
-						+ 'xmlns:crs="http://ns.adobe.com/camera-raw-settings/1.0/" '
-						+ 'xmlns:xapGImg="http://ns.adobe.com/xap/1.0/g/img/" '
-						+ 'xmlns:Iptc4xmpExt="http://iptc.org/std/Iptc4xmpExt/2008-02-29/" '
-						+ xmpString.slice(indexOfXmp)
+			xmpString =
+				xmpString.slice(0, indexOfXmp) +
+				'xmlns:Iptc4xmpCore="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/" ' +
+				'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
+				'xmlns:tiff="http://ns.adobe.com/tiff/1.0/" ' +
+				'xmlns:plus="http://schemas.android.com/apk/lib/com.google.android.gms.plus" ' +
+				'xmlns:ext="http://www.gettyimages.com/xsltExtension/1.0" ' +
+				'xmlns:exif="http://ns.adobe.com/exif/1.0/" ' +
+				'xmlns:stEvt="http://ns.adobe.com/xap/1.0/sType/ResourceEvent#" ' +
+				'xmlns:stRef="http://ns.adobe.com/xap/1.0/sType/ResourceRef#" ' +
+				'xmlns:crs="http://ns.adobe.com/camera-raw-settings/1.0/" ' +
+				'xmlns:xapGImg="http://ns.adobe.com/xap/1.0/g/img/" ' +
+				'xmlns:Iptc4xmpExt="http://iptc.org/std/Iptc4xmpExt/2008-02-29/" ' +
+				xmpString.slice(indexOfXmp);
 
-			var domDocument = dom.parseFromString( xmpString, 'text/xml' );
+			var domDocument = dom.parseFromString(xmpString, "text/xml");
 			return xml2Object(domDocument);
-		} else{
+		} else {
 			offset++;
 		}
 	}
@@ -4329,33 +4254,35 @@ function findXMPinJPEG(file) {
 function xml2json(xml) {
 	var json = {};
 
-	if (xml.nodeType == 1) { // element node
+	if (xml.nodeType == 1) {
+		// element node
 		if (xml.attributes.length > 0) {
-		json['@attributes'] = {};
-		for (var j = 0; j < xml.attributes.length; j++) {
-			var attribute = xml.attributes.item(j);
-			json['@attributes'][attribute.nodeName] = attribute.nodeValue;
+			json["@attributes"] = {};
+			for (var j = 0; j < xml.attributes.length; j++) {
+				var attribute = xml.attributes.item(j);
+				json["@attributes"][attribute.nodeName] = attribute.nodeValue;
+			}
 		}
-		}
-	} else if (xml.nodeType == 3) { // text node
+	} else if (xml.nodeType == 3) {
+		// text node
 		return xml.nodeValue;
 	}
 
 	// deal with children
 	if (xml.hasChildNodes()) {
-		for(var i = 0; i < xml.childNodes.length; i++) {
-		var child = xml.childNodes.item(i);
-		var nodeName = child.nodeName;
-		if (json[nodeName] == null) {
-			json[nodeName] = xml2json(child);
-		} else {
-			if (json[nodeName].push == null) {
-			var old = json[nodeName];
-			json[nodeName] = [];
-			json[nodeName].push(old);
+		for (var i = 0; i < xml.childNodes.length; i++) {
+			var child = xml.childNodes.item(i);
+			var nodeName = child.nodeName;
+			if (json[nodeName] == null) {
+				json[nodeName] = xml2json(child);
+			} else {
+				if (json[nodeName].push == null) {
+					var old = json[nodeName];
+					json[nodeName] = [];
+					json[nodeName].push(old);
+				}
+				json[nodeName].push(xml2json(child));
 			}
-			json[nodeName].push(xml2json(child));
-		}
 		}
 	}
 
@@ -4367,52 +4294,53 @@ function xml2Object(xml) {
 		var obj = {};
 		if (xml.children.length > 0) {
 			for (var i = 0; i < xml.children.length; i++) {
-			var item = xml.children.item(i);
-			var attributes = item.attributes;
-			for(var idx in attributes) {
-				var itemAtt = attributes[idx];
-				var dataKey = itemAtt.nodeName;
-				var dataValue = itemAtt.nodeValue;
+				var item = xml.children.item(i);
+				var attributes = item.attributes;
+				for (var idx in attributes) {
+					var itemAtt = attributes[idx];
+					var dataKey = itemAtt.nodeName;
+					var dataValue = itemAtt.nodeValue;
 
-				if(dataKey !== undefined) {
-					obj[dataKey] = dataValue;
+					if (dataKey !== undefined) {
+						obj[dataKey] = dataValue;
+					}
 				}
-			}
-			var nodeName = item.nodeName;
+				var nodeName = item.nodeName;
 
-			if (typeof (obj[nodeName]) == "undefined") {
-				obj[nodeName] = xml2json(item);
-			} else {
-				if (typeof (obj[nodeName].push) == "undefined") {
-				var old = obj[nodeName];
+				if (typeof obj[nodeName] == "undefined") {
+					obj[nodeName] = xml2json(item);
+				} else {
+					if (typeof obj[nodeName].push == "undefined") {
+						var old = obj[nodeName];
 
-				obj[nodeName] = [];
-				obj[nodeName].push(old);
+						obj[nodeName] = [];
+						obj[nodeName].push(old);
+					}
+					obj[nodeName].push(xml2json(item));
 				}
-				obj[nodeName].push(xml2json(item));
-			}
 			}
 		} else {
 			obj = xml.textContent;
 		}
 		return obj;
-		} catch (e) {
-			logger.log(e.message);
-		}
+	} catch (e) {
+		logger.log(e.message);
+	}
 }
 
-EXIF.enableXmp = function() {
+EXIF.enableXmp = function () {
 	EXIF.isXmpEnabled = true;
-}
+};
 
-EXIF.disableXmp = function() {
+EXIF.disableXmp = function () {
 	EXIF.isXmpEnabled = false;
-}
+};
 
-EXIF.getData = function(img, callback) {
-	if (((self.Image && img instanceof self.Image)
-		|| (self.HTMLImageElement && img instanceof self.HTMLImageElement))
-		&& !img.complete)
+EXIF.getData = function (img, callback) {
+	if (
+		((self.Image && img instanceof self.Image) || (self.HTMLImageElement && img instanceof self.HTMLImageElement)) &&
+		!img.complete
+	)
 		return false;
 
 	if (!imageHasData(img)) {
@@ -4423,43 +4351,43 @@ EXIF.getData = function(img, callback) {
 		}
 	}
 	return true;
-}
+};
 
-EXIF.getTag = function(img, tag) {
+EXIF.getTag = function (img, tag) {
 	if (!imageHasData(img)) return;
 	return img.exifdata[tag];
-}
+};
 
-EXIF.getIptcTag = function(img, tag) {
+EXIF.getIptcTag = function (img, tag) {
 	if (!imageHasData(img)) return;
 	return img.iptcdata[tag];
-}
+};
 
-EXIF.getAllTags = function(img) {
+EXIF.getAllTags = function (img) {
 	if (!imageHasData(img)) return {};
 	var a,
 		data = img.exifdata,
 		tags = {};
 	for (a in data) {
-		if (data.hasOwnProperty(a)) {
+		if (Object.prototype.hasOwnProperty.call(data, a)) {
 			tags[a] = data[a];
 		}
 	}
 	return tags;
-}
+};
 
-EXIF.getAllIptcTags = function(img) {
+EXIF.getAllIptcTags = function (img) {
 	if (!imageHasData(img)) return {};
 	var a,
 		data = img.iptcdata,
 		tags = {};
 	for (a in data) {
-		if (data.hasOwnProperty(a)) {
+		if (Object.prototype.hasOwnProperty.call(data, a)) {
 			tags[a] = data[a];
 		}
 	}
 	return tags;
-}
+};
 
 //***************************************************************************
 // Written by Stanko Milosev
@@ -4467,21 +4395,21 @@ EXIF.getAllIptcTags = function(img) {
 // http://www.milosev.com/425-reading-exif-meta-data-from-jpeg-image-files.html
 // gps conversion for google map use
 EXIF.ConvertDMSToDD = function (degrees, minutes, seconds, direction) {
-	var dd = degrees + minutes/60 + seconds/(60*60);
+	var dd = degrees + minutes / 60 + seconds / (60 * 60);
 	if (direction == "S" || direction == "W") {
 		dd = dd * -1;
 	} // Don't do anything for N or E
 	return dd;
-}
+};
 //*******************************************************************************
 
-EXIF.pretty = function(img) {
+EXIF.pretty = function (img) {
 	if (!imageHasData(img)) return "";
 	var a,
 		data = img.exifdata,
 		strPretty = "";
 	for (a in data) {
-		if (data.hasOwnProperty(a)) {
+		if (Object.prototype.hasOwnProperty.call(data, a)) {
 			if (typeof data[a] == "object") {
 				if (data[a] instanceof Number) {
 					strPretty += a + " : " + data[a] + " [" + data[a].numerator + "/" + data[a].denominator + "]\r\n";
@@ -4494,8 +4422,8 @@ EXIF.pretty = function(img) {
 		}
 	}
 	return strPretty;
-}
+};
 
-EXIF.readFromBinaryFile = function(file) {
+EXIF.readFromBinaryFile = function (file) {
 	return findEXIFinJPEG(file);
-}
+};

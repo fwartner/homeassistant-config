@@ -17,8 +17,8 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3350
-Number of sensors | 1826
+Number of entities | 3363
+Number of sensors | 1838
 Number of automations | 112
 Number of scripts | 52
 Number of scenes | 31
@@ -83,6 +83,7 @@ Number of binary sensors | 272
 - [Dyson](https://github.com/libdyson-wg/ha-dyson)
 - [Elevenlabs Tts](https://github.com/carleeno/elevenlabs_tts)
 - [Energyscore](https://github.com/knudsvik/EnergyScore)
+- [EPG](https://github.com/yohaybn/HomeAssistant-EPG)
 - [Eufy Security](https://github.com/fuatakgun/eufy_security)
 - [Expose Camera Stream Source](https://github.com/felipecrs/hass-expose-camera-stream-source)
 - [Extended Openai Conversation](https://github.com/jekalmin/extended_openai_conversation)
@@ -100,8 +101,8 @@ Number of binary sensors | 272
 - [Hvac Group](https://github.com/tetele/hvac_group)
 - [Icloud3 V3 Idevice Tracker](https://github.com/gcobb321/icloud3)
 - [Llm Vision](https://github.com/valentinfrlch/ha-llmvision)
-- [Local Llm Conversation](https://github.com/acon96/home-llm)
 - [Local Llm Conversation](https://github.com/fixtse/home-llm)
+- [Local Llm Conversation](https://github.com/acon96/home-llm)
 - [Mail And Packages](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages)
 - [Media Player Template](https://github.com/Sennevds/media_player.template)
 - [Microsoft 365   Calendar](https://github.com/RogerSelwyn/MS365-Calendar)

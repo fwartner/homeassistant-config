@@ -3,7 +3,7 @@
  * Released under the GNU General Public License v3.0
  */
 
-const version = "4.39.0";
+const version = "4.39.1";
 const defaultConfig = {
 	enabled: false,
 	enabled_on_tabs: [],
@@ -602,9 +602,11 @@ function getActiveBrowserModPopup() {
 function isActive() {
 	const params = new URLSearchParams(window.location.search);
 	if (params.get("edit") == "1") {
+		logger.debug("Edit mode active");
 		return false;
 	}
 	if (!config.enabled) {
+		logger.debug("Wallpanel not enabled in config");
 		return false;
 	}
 	if (
@@ -613,6 +615,7 @@ function isActive() {
 		activeTab &&
 		!config.enabled_on_tabs.includes(activeTab)
 	) {
+		logger.debug(`Wallpanel not enabled on current tab ${activeTab}`);
 		return false;
 	}
 	if (
@@ -621,9 +624,11 @@ function isActive() {
 		getActiveBrowserModPopup() &&
 		wallpanel.disable_screensaver_on_browser_mod_popup_function(getActiveBrowserModPopup())
 	) {
+		logger.debug("Browser mod popup function returned true, wallpanel disabled");
 		return false;
 	}
 	if (config.disable_screensaver_on_browser_mod_popup && getActiveBrowserModPopup()) {
+		logger.debug("Browser mod popup active, wallpanel disabled");
 		return false;
 	}
 	return true;
@@ -676,17 +681,16 @@ function getHaPanelLovelaceConfig(keys = []) {
 function setSidebarVisibility(hidden) {
 	try {
 		const panelLovelace = elHaMain.shadowRoot.querySelector("ha-panel-lovelace");
-		if (!panelLovelace) {
-			return;
-		}
-		const huiRoot = panelLovelace.shadowRoot.querySelector("hui-root");
-		if (huiRoot) {
-			const menuButton = huiRoot.shadowRoot.querySelector("ha-menu-button");
-			if (menuButton) {
-				if (hidden) {
-					menuButton.style.display = "none";
-				} else {
-					menuButton.style.removeProperty("display");
+		if (panelLovelace) {
+			const huiRoot = panelLovelace.shadowRoot.querySelector("hui-root");
+			if (huiRoot) {
+				const menuButton = huiRoot.shadowRoot.querySelector("ha-menu-button");
+				if (menuButton) {
+					if (hidden) {
+						menuButton.style.display = "none";
+					} else {
+						menuButton.style.removeProperty("display");
+					}
 				}
 			}
 		}
@@ -3139,6 +3143,7 @@ function reconfigure() {
 	}
 
 	updateConfig();
+
 	if (isActive()) {
 		activateWallpanel();
 	} else {
@@ -3147,6 +3152,13 @@ function reconfigure() {
 }
 
 function locationChanged() {
+	if (window.location.href == currentLocation) {
+		return;
+	}
+
+	logger.debug(`Location changed from '${currentLocation}' to '${window.location.href}'`);
+	currentLocation = window.location.href;
+
 	if (
 		wallpanel &&
 		wallpanel.screensaverRunning &&
@@ -3163,13 +3175,6 @@ function locationChanged() {
 		}
 	}
 
-	if (window.location.href == currentLocation) {
-		return;
-	}
-
-	logger.debug(`Location changed from '${currentLocation}' to '${window.location.href}'`);
-	currentLocation = window.location.href;
-
 	let panel = null;
 	let tab = null;
 	const path = window.location.pathname.split("/");
@@ -3184,7 +3189,8 @@ function locationChanged() {
 	}
 	activePanel = panel;
 	activeTab = tab;
-	reconfigure();
+
+	setTimeout(reconfigure, 25);
 }
 
 const startTime = Date.now();
@@ -3234,16 +3240,14 @@ function startup() {
 		}
 		wallpanel = document.createElement("wallpanel-view");
 		elHaMain.shadowRoot.appendChild(wallpanel);
+		window.addEventListener("location-changed", (event) => {
+			logger.debug("location-changed", event);
+			setTimeout(locationChanged, 25);
+		});
 		if (window.navigation) {
 			// Using navigate event because a back button on a sub-view will not produce a location-changed event
 			window.navigation.addEventListener("navigate", (event) => {
 				logger.debug("navigate", event);
-				setTimeout(locationChanged, 0);
-			});
-		} else {
-			// Not supported (i.e. Firefox)
-			window.addEventListener("location-changed", (event) => {
-				logger.debug("location-changed", event);
 				setTimeout(locationChanged, 0);
 			});
 		}

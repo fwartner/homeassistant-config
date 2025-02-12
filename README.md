@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3373
+Number of entities | 3374
 Number of sensors | 1834
 Number of automations | 112
 Number of scripts | 52
@@ -213,6 +213,7 @@ Number of binary sensors | 274
 - [Qr Code Generator Card](https://github.com/igor-panteleev/lovelace-qr-code-card)
 - [Refreshable Picture Card](https://github.com/dimagoltsman/refreshable-picture-card)
 - [Rgb Light Card](https://github.com/bokub/rgb-light-card)
+- [Sankey Chart Card](https://github.com/MindFreeze/ha-sankey-chart)
 - [Scheduler Card](https://github.com/nielsfaber/scheduler-card)
 - [Search Card](https://github.com/postlund/search-card)
 - [Secondaryinfo Entity Row](https://github.com/custom-cards/secondaryinfo-entity-row)

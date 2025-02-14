@@ -50,7 +50,6 @@ Number of binary sensors | 274
 - PS5 MQTT
 - Samba share
 - Silicon Labs Multiprotocol
-- Speech-to-Phrase
 - Spotify Connect
 - Studio Code Server
 - TasmoAdmin

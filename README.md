@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3385
+Number of entities | 3386
 Number of sensors | 1834
 Number of automations | 112
 Number of scripts | 52
@@ -225,6 +225,7 @@ Number of binary sensors | 274
 - [Slider Entity Row](https://github.com/thomasloven/lovelace-slider-entity-row)
 - [Spotify Lovelace Card](https://github.com/custom-cards/spotify-card)
 - [Stack In Card](https://github.com/custom-cards/stack-in-card)
+- [Streamline Card](https://github.com/brunosabot/streamline-card)
 - [Swipe Card](https://github.com/bramkragten/swipe-card)
 - [Tabbed Card](https://github.com/kinghat/tabbed-card)
 - [Team Tracker Card](https://github.com/vasqued2/ha-teamtracker-card)

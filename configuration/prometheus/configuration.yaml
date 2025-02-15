@@ -1,4 +1,5 @@
 namespace: hass
+requires_auth: true
 component_config_glob:
   sensor.*_hum:
     override_metric: humidity_percent

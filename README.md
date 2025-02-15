@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3411
+Number of entities | 3406
 Number of sensors | 1849
 Number of automations | 112
 Number of scripts | 52
@@ -33,15 +33,10 @@ Number of binary sensors | 282
 ### Add-ons
 - Advanced SSH & Web Terminal
 - Assist Microphone
-- Changedetection.io
-- Double Take
 - ESPHome Device Builder
-- Frigate (Full Access)
-- Grafana
 - Home Assistant Google Drive Backup
 - Matter Server
 - Matterbridge
-- Mindctrl
 - Mosquitto broker
 - Music Assistant Server
 - Node-RED

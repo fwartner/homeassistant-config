@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3421
+Number of entities | 3422
 Number of sensors | 1864
 Number of automations | 112
 Number of scripts | 52
@@ -237,6 +237,7 @@ Number of binary sensors | 281
 - [Vertical Stack In Card](https://github.com/ofekashery/vertical-stack-in-card)
 - [Wallpanel](https://github.com/j-a-n/lovelace-wallpanel)
 - [Weather Card](https://github.com/bramkragten/weather-card)
+- [Week Planner Card](https://github.com/FamousWolf/week-planner-card)
 - [Wind Rose Card](https://github.com/aukedejong/lovelace-windrose-card)
 - [Xiaomi Vacuum Map Card](https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card)
 

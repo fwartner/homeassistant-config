@@ -3986,3 +3986,10 @@
           data:
             command: 'off'
   mode: single
+- id: '1739707464405'
+  alias: Music Assistant - (nur) lokale Sprachsteuerung - Blueprint
+  description: ''
+  use_blueprint:
+    path: music-assistant/mass_assist_blueprint_de.yaml
+    input:
+      default_player_entity_id_input: media_player.sonos_wohnzimmer

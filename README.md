@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3420
+Number of entities | 3421
 Number of sensors | 1864
 Number of automations | 112
 Number of scripts | 52
@@ -146,6 +146,7 @@ Number of binary sensors | 281
 - [Ytube Music Player](https://github.com/KoljaWindeler/ytube_music_player)
 
 ### Lovelace plugins
+- [Advanced Camera Card](https://github.com/dermotduffy/advanced-camera-card)
 - [Apexcharts Card](https://github.com/RomRider/apexcharts-card)
 - [Atomic Calendar Revive](https://github.com/totaldebug/atomic-calendar-revive)
 - [Auto Entities](https://github.com/thomasloven/lovelace-auto-entities)

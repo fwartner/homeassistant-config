@@ -5,15 +5,6 @@ recorder:
   commit_interval: 30
   auto_purge: true
   auto_repack: true
-  include:
-    entity_globs:
-      - sensor.shelly_*
-      - sensor.strom*
-      - sensor.energy*
-    domains:
-      - media_player
-      - device_tracker
-      - person
   exclude:
     domains:
       - sun

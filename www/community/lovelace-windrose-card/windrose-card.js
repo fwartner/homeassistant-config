@@ -62,7 +62,7 @@ const Tt=(t,e,i)=>(i.configurable=!0,i.enumerable=!0,Reflect.decorate&&"object"!
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */window.customCards=window.customCards||[],window.customCards.push({type:"windrose-card",name:"Windrose Card",description:"A card to show wind speed and direction in a windrose."}),console.info("%c  WINROSE-CARD  %c Version 1.16.0 ","color: orange; font-weight: bold; background: black","color: white; font-weight: bold; background: dimgray");let nn=class extends Lt{static getStubConfig(){return Gt.exampleConfig()}constructor(){super(),this.log=new xr("WindRoseCard"),this.refreshCardConfigOnHass=!1,this.warningMessage="",this.errorMessage="",this.svg=Zs().height("100%").width("100%"),this.windRoseDirigent=new Wr(this.svg,this.sendEvent.bind(this)),this.entityStateProcessor=new Hr,this.entityChecker=new zr}setConfig(t){this.config=t,this.cardConfig=new Gt(t),Bt.setLevel(this.cardConfig.logLevel),xr.setLevel(this.cardConfig.logLevel),this.log.debug("setConfig(): ",t,this._hass),this._hass?this.refreshCardConfig():this.refreshCardConfigOnHass=!0}set hass(t){this.refreshCardConfigOnHass&&(Bt.debug("hass(), refreshCardConfigOnHass"),this.refreshCardConfigOnHass=!1,this._hass=t,this.refreshCardConfig()),this._hass=t,this.entityStateProcessor.updateHass(t),this.entityStateProcessor.hasUpdates()&&this.windRoseDirigent.updateRender()}sendEvent(t){this.log.debug("sendEvent()",t),this.dispatchEvent(t)}refreshCardConfig(){this.log.debug("refreshCardConfig()");try{this.entityChecker.checkEntities(this.cardConfig,this._hass),this.measurementProvider=new qr(new Xr(this._hass),this.cardConfig),this.windRoseDirigent.init(this.cardConfig,this.measurementProvider,this.entityStateProcessor),this.entityStateProcessor.init(this.cardConfig),this.refreshMeasurements()}catch(t){Bt.error("Error during init: ",t),this.errorMessage=t,this.svg.remove()}}render(){var t;return super.render(),this.log.debug("card render()"),F`
+ */window.customCards=window.customCards||[],window.customCards.push({type:"windrose-card",name:"Windrose Card",description:"A card to show wind speed and direction in a windrose."}),console.info("%c  WINROSE-CARD  %c Version 1.16.1 ","color: orange; font-weight: bold; background: black","color: white; font-weight: bold; background: dimgray");let nn=class extends Lt{static getStubConfig(){return Gt.exampleConfig()}constructor(){super(),this.log=new xr("WindRoseCard"),this.refreshCardConfigOnHass=!1,this.warningMessage="",this.errorMessage="",this.svg=Zs().height("100%").width("100%"),this.windRoseDirigent=new Wr(this.svg,this.sendEvent.bind(this)),this.entityStateProcessor=new Hr,this.entityChecker=new zr}setConfig(t){this.config=t,this.cardConfig=new Gt(t),Bt.setLevel(this.cardConfig.logLevel),xr.setLevel(this.cardConfig.logLevel),this.log.debug("setConfig(): ",t,this._hass),this._hass?this.refreshCardConfig():this.refreshCardConfigOnHass=!0}set hass(t){this.refreshCardConfigOnHass&&(Bt.debug("hass(), refreshCardConfigOnHass"),this.refreshCardConfigOnHass=!1,this._hass=t,this.refreshCardConfig()),this._hass=t,this.entityStateProcessor.updateHass(t),this.entityStateProcessor.hasUpdates()&&this.windRoseDirigent.updateRender()}sendEvent(t){this.log.debug("sendEvent()",t),this.dispatchEvent(t)}refreshCardConfig(){this.log.debug("refreshCardConfig()");try{this.entityChecker.checkEntities(this.cardConfig,this._hass),this.measurementProvider=new qr(new Xr(this._hass),this.cardConfig),this.windRoseDirigent.init(this.cardConfig,this.measurementProvider,this.entityStateProcessor),this.entityStateProcessor.init(this.cardConfig),this.refreshMeasurements()}catch(t){Bt.error("Error during init: ",t),this.errorMessage=t,this.svg.remove()}}render(){var t;return super.render(),this.log.debug("card render()"),F`
             <ha-card header="${null===(t=this.cardConfig)||void 0===t?void 0:t.title}">
                 <div class="card-content">
                     <div id="error-container">${this.errorMessage}</div>
@@ -95,7 +95,8 @@ const Tt=(t,e,i)=>(i.configurable=!0,i.enumerable=!0,Reflect.decorate&&"object"!
                 flex-direction: row;
                 justify-content: space-between;
                 flex-wrap: wrap;
-                margin: 0 -5px 0 -5px;
+                row-gap: 8px;
+                column-gap: 8px;
             }
             #period-selector.top {
                 margin-bottom: 10px;
@@ -109,8 +110,8 @@ const Tt=(t,e,i)=>(i.configurable=!0,i.enumerable=!0,Reflect.decorate&&"object"!
                 border-style: solid;
                 border-color: rgb(100, 100, 100);
                 cursor: pointer;
-                margin: 0 5px;
-                padding: 2px;
+                padding: 4px;
+                white-space: nowrap;
             }
             #period-selector > div.active {
                 color: red;

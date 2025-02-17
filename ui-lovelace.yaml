@@ -1,1 +1,2 @@
+---
 streamline_templates: !include_dir_named ../streamline_templates/

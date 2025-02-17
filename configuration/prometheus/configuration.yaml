@@ -1,3 +1,4 @@
+---
 namespace: hass
 requires_auth: true
 component_config_glob:

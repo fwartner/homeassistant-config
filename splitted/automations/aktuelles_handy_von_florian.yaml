@@ -1,0 +1,42 @@
+actions:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - iPhoneToPixel
+    sequence:
+    - action: input_text.set_value
+      data:
+        value: device_tracker.pixel_9
+      metadata: {}
+      target:
+        entity_id: input_text.florian_handy
+  - conditions:
+    - condition: trigger
+      id:
+      - pixelToIphone
+    sequence:
+    - action: input_text.set_value
+      data:
+        value: device_tracker.iphone_von_florian
+      metadata: {}
+      target:
+        entity_id: input_text.florian_handy
+alias: Aktuelles Handy von Florian
+conditions: []
+description: ''
+id: '1739751430350'
+mode: single
+triggers:
+- entity_id:
+  - input_select.alles_handy_von_florian
+  from: iPhone
+  id: iPhoneToPixel
+  to: Pixel 9
+  trigger: state
+- entity_id:
+  - input_select.alles_handy_von_florian
+  from: Pixel 9
+  id: pixelToIphone
+  to: iPhone
+  trigger: state

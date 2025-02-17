@@ -3,12 +3,12 @@
   sensors:
     location_florian:
       value_template: >
-        {% if is_state('device_tracker.pixel_9', 'home') %}
+        {% if is_state('input_text.florian_handy', 'home') %}
           Zuhause
-        {% elif is_state("device_tracker.pixel_9", "not_home") %}
+        {% elif is_state("input_text.florian_handy", "not_home") %}
           Unterwegs
         {% else %}
-          {{ states("device_tracker.pixel_9") }}
+          {{ states("input_text.florian_handy") }}
         {% endif %}
     location_florian_color:
       value_template: >

@@ -17,9 +17,9 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3427
+Number of entities | 3428
 Number of sensors | 1866
-Number of automations | 113
+Number of automations | 114
 Number of scripts | 54
 Number of scenes | 31
 Number of zones | 24
@@ -97,8 +97,8 @@ Number of binary sensors | 280
 - [Hvac Group](https://github.com/tetele/hvac_group)
 - [Icloud3 V3 Idevice Tracker](https://github.com/gcobb321/icloud3)
 - [Llm Vision](https://github.com/valentinfrlch/ha-llmvision)
-- [Local Llm Conversation](https://github.com/fixtse/home-llm)
 - [Local Llm Conversation](https://github.com/acon96/home-llm)
+- [Local Llm Conversation](https://github.com/fixtse/home-llm)
 - [Mail And Packages](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages)
 - [Media Player Template](https://github.com/Sennevds/media_player.template)
 - [Microsoft 365   Calendar](https://github.com/RogerSelwyn/MS365-Calendar)

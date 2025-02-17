@@ -5,13 +5,3 @@ recorder:
   commit_interval: 30
   auto_purge: true
   auto_repack: true
-  exclude:
-    domains:
-      - sun
-    entities:
-      - sensor.last_boot
-      - sensor.date
-      - sensor.icloud3_event_log
-    entity_globs:
-      - sensor.weather_*
-      - sensor.flightradar24_*

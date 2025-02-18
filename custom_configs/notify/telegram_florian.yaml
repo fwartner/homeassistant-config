@@ -1,0 +1,4 @@
+---
+- platform: telegram
+  name: telegram_florian
+  chat_id: !secret telegram_id_florian

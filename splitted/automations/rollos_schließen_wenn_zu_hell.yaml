@@ -1,4 +1,4 @@
-action:
+actions:
 - choose:
   - conditions:
     - condition: trigger
@@ -28,7 +28,7 @@ action:
       - kucheRollosOn
     sequence: []
 alias: "Rollos schlie\xDFen wenn zu hell"
-condition:
+conditions:
 - condition: and
   conditions:
   - condition: state
@@ -43,22 +43,18 @@ condition:
 description: ''
 id: '1691320563612'
 mode: single
-trigger:
-- above: 6000
+triggers:
+- above: 10000
   device_id: cc409c26cddb1137902b367f0bbcc342
   domain: sensor
-  entity_id: 92fbba10867e030bf34955d6b0015ff3
+  entity_id: fdf41f9caeca9372e6285dca0cc7d60f
   id: wohnzimmerRollosOn
-  platform: device
+  trigger: device
   type: illuminance
-- below: 4500
+- below: 500
   device_id: cc409c26cddb1137902b367f0bbcc342
   domain: sensor
-  entity_id: 92fbba10867e030bf34955d6b0015ff3
-  for:
-    hours: 0
-    minutes: 2
-    seconds: 0
+  entity_id: fdf41f9caeca9372e6285dca0cc7d60f
   id: wohnzimmerRollosOff
-  platform: device
+  trigger: device
   type: illuminance

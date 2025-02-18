@@ -324,26 +324,22 @@
 - id: '1691320563612'
   alias: Rollos schließen wenn zu hell
   description: ''
-  trigger:
+  triggers:
   - type: illuminance
-    platform: device
     device_id: cc409c26cddb1137902b367f0bbcc342
-    entity_id: 92fbba10867e030bf34955d6b0015ff3
+    entity_id: fdf41f9caeca9372e6285dca0cc7d60f
     domain: sensor
-    above: 6000
+    trigger: device
     id: wohnzimmerRollosOn
+    above: 10000
   - type: illuminance
-    platform: device
     device_id: cc409c26cddb1137902b367f0bbcc342
-    entity_id: 92fbba10867e030bf34955d6b0015ff3
+    entity_id: fdf41f9caeca9372e6285dca0cc7d60f
     domain: sensor
+    trigger: device
     id: wohnzimmerRollosOff
-    below: 4500
-    for:
-      hours: 0
-      minutes: 2
-      seconds: 0
-  condition:
+    below: 500
+  conditions:
   - condition: and
     conditions:
     - condition: state
@@ -355,7 +351,7 @@
     - condition: state
       entity_id: input_boolean.wartung
       state: 'off'
-  action:
+  actions:
   - choose:
     - conditions:
       - condition: trigger
@@ -3034,7 +3030,7 @@
   description: ''
   triggers:
   - entity_id:
-    - sensor.mi_light_sensor_wohnzimmer_illuminance_lux
+    - sensor.mi_light_sensor_wohnzimmer_illuminance
     below: 30
     trigger: numeric_state
   conditions:
@@ -3388,15 +3384,6 @@
     input:
       integration: Zigbee2MQTT
       controller_entity: sensor.ikea_stybar_weiss_schlafzimmer_action
-- id: '1727983350551'
-  alias: IKEA Stybar Weiss Optional
-  description: ''
-  use_blueprint:
-    path: EPMatt/ikea_e2001_e2002.yaml
-    input:
-      integration: Zigbee2MQTT
-      controller_entity: sensor.ikea_stybar_weiss_optional_action
-      helper_last_controller_event: input_text.last_controller
 - id: '1727983565081'
   alias: IKEA Rodret Optional
   description: ''

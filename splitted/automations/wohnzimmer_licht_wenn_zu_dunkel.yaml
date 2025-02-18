@@ -46,5 +46,5 @@ mode: single
 triggers:
 - below: 30
   entity_id:
-  - sensor.mi_light_sensor_wohnzimmer_illuminance_lux
+  - sensor.mi_light_sensor_wohnzimmer_illuminance
   trigger: numeric_state

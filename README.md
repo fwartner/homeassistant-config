@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3365
+Number of entities | 3366
 Number of sensors | 1850
 Number of automations | 113
 Number of scripts | 54
@@ -42,6 +42,7 @@ Number of binary sensors | 270
 - openWakeWord
 - Piper
 - PS5 MQTT
+- room-assistant
 - Samba share
 - Silicon Labs Multiprotocol
 - Spotify Connect

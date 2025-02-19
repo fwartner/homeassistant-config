@@ -1,0 +1,134 @@
+- entities:
+    cover.ikea_rollo_balkontur:
+      current_position: 100
+      friendly_name: "IKEA Rollo Balkont\xFCr"
+      state: open
+      supported_features: 15
+    cover.rollos_wohnzimmer_fensterbank:
+      current_position: 100
+      entity_id:
+      - cover.ikea_rollo_links_wohnzimmer
+      - cover.ikea_rollo_rechts_wohnzimmer
+      friendly_name: Rollos Wohnzimmer Fensterbank
+      state: open
+      supported_features: 15
+    light.tv_bank:
+      brightness: null
+      color_mode: null
+      dynamics: none
+      friendly_name: TV Bank
+      mode: normal
+      state: 'off'
+      supported_color_modes:
+      - brightness
+      supported_features: 40
+    media_player.appletv_wohnzimmer:
+      app_id: com.google.ios.youtube
+      app_name: YouTube
+      friendly_name: AppleTV Wohnzimmer
+      icon: phu:apple-tv
+      media_album_name: ''
+      media_artist: simon42
+      media_duration: 1971
+      media_position: 5
+      media_title: "Das musst du wissen \u2013 Fu\xDFbodenheizung intelligent steuern\
+        \ mit Home Assistant!"
+      source_list:
+      - Airbnb
+      - Apple Events
+      - "App\_Store"
+      - Arcade
+      - ARD Mediathek
+      - ARTE
+      - Chefkoch TV
+      - Classix
+      - Computer
+      - Das Erste
+      - Developer
+      - Disney+
+      - Einstellungen
+      - Facebook Watch
+      - Filme
+      - Fitness
+      - Fotos
+      - Gamepass
+      - HomeCenter
+      - IKEA Catalogue
+      - Joyn
+      - kabel eins
+      - kabel eins Doku
+      - KAYAK
+      - Kitchen Stories
+      - Musik
+      - Netflix
+      - NordVPN
+      - Paramount+
+      - Plex
+      - Pluto TV
+      - Podcasts
+      - Prime Video
+      - ProSieben
+      - ProSieben MAXX
+      - REWE
+      - RTL+
+      - SAT.1
+      - SAT.1 Gold
+      - Shadow PC
+      - sixx
+      - Sky Q
+      - Speedtest
+      - Spotify
+      - Steam Link
+      - Suchen
+      - Tagesschau
+      - Tastemade
+      - TestFlight
+      - TripAdvisor
+      - TV
+      - TV-Sendungen
+      - Twitch
+      - Twitter
+      - Udemy
+      - VLC
+      - Vodafone
+      - wetter.com live
+      - WOW
+      - YouTube
+      - Zattoo
+      - ZDFmediathek
+      state: standby
+      supported_features: 450487
+    media_player.sonos_ray_wohnzimmer:
+      device_class: speaker
+      friendly_name: Sonos Ray Wohnzimmer
+      group_members:
+      - media_player.sonos_ray_wohnzimmer
+      icon: phu:sonos-ray
+      is_volume_muted: false
+      media_content_id: x-sonos-htastream:RINCON_F0F6C1F0FCCC01400:spdif
+      media_content_type: music
+      media_title: TV
+      queue_size: 1
+      repeat: 'off'
+      shuffle: false
+      source: TV
+      state: playing
+      supported_features: 4127295
+      volume_level: 0.1
+    remote.appletv_wohnzimmer:
+      friendly_name: AppleTV Wohnzimmer
+      state: 'on'
+      supported_features: 0
+    switch.steckdose_tv_bank_wohnzimmer:
+      device_class: outlet
+      friendly_name: Steckdose TV Bank Wohnzimmer
+      icon: mdi:power
+      state: 'off'
+  icon: mdi:light-switch-off
+  id: '1739974242661'
+  metadata:
+    cover.ikea_rollo_balkontur:
+      entity_only: true
+    cover.rollos_wohnzimmer_fensterbank:
+      entity_only: true
+  name: Wohnzimmer Aus

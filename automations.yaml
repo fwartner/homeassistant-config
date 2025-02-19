@@ -4064,4 +4064,16 @@
           transition: 5
         target:
           entity_id: scene.wohnzimmer_aus
+      - type: turn_off
+        device_id: cbed685d51c54392c35961266c9566f1
+        entity_id: f564dc00c2557356ac0d4f531b608d1c
+        domain: switch
+      - action: cover.open_cover
+        metadata: {}
+        data: {}
+        target:
+          area_id: wohnzimmer
+          device_id:
+          - 2c6903e160b7b9dfaf222a7360bc0015
+          - 5556afe8383ee4a45f5b74e6cc1d57ee
   mode: single

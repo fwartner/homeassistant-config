@@ -3942,3 +3942,29 @@
     metadata: {}
     data: {}
   mode: single
+- id: '1739973037216'
+  alias: Universal Remote Test
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - event.universal_remote_rollos
+  conditions: []
+  actions:
+  - if:
+    - condition: state
+      entity_id: cover.rollos_wohnzimmer_fensterbank
+      state: closed
+    then:
+    - action: cover.open_cover
+      metadata: {}
+      data: {}
+      target:
+        entity_id: cover.rollos_wohnzimmer_fensterbank
+    else:
+    - action: cover.close_cover
+      metadata: {}
+      data: {}
+      target:
+        entity_id: cover.rollos_wohnzimmer_fensterbank
+  mode: single

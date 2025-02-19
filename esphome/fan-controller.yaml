@@ -1,7 +1,8 @@
 esphome:
   name: fan-controller
   friendly_name: Fan Controller
-  platform: ESP8266
+
+esp8266:
   board: nodemcu
 
 logger:

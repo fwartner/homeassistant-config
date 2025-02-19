@@ -3874,7 +3874,7 @@
     - Schlafzimmer reinigen
   conditions: []
   actions:
-  - action: script.staubsauger_schlafzimmer_reinigen_reinigen
+  - action: script.staubsauger_schlafzimmer_reinigen
     metadata: {}
     data: {}
   mode: single
@@ -3924,6 +3924,21 @@
   conditions: []
   actions:
   - action: script.staubsauger_badezimmer_reinigen
+    metadata: {}
+    data: {}
+  mode: single
+- id: '1739970032316'
+  alias: Küche Reinigen
+  description: ''
+  triggers:
+  - trigger: conversation
+    command:
+    - Reinige die Küche
+    - Schicke den Staubsauger in die Küche
+    - Küche reinigen
+  conditions: []
+  actions:
+  - action: script.staubsauger_kuche_reinigen
     metadata: {}
     data: {}
   mode: single

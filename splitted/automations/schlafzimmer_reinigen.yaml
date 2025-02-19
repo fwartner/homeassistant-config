@@ -1,5 +1,5 @@
 actions:
-- action: script.staubsauger_schlafzimmer_reinigen_reinigen
+- action: script.staubsauger_schlafzimmer_reinigen
   data: {}
   metadata: {}
 alias: Schlafzimmer Reinigen

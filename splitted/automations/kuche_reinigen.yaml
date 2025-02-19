@@ -1,0 +1,15 @@
+actions:
+- action: script.staubsauger_kuche_reinigen
+  data: {}
+  metadata: {}
+alias: "K\xFCche Reinigen"
+conditions: []
+description: ''
+id: '1739970032316'
+mode: single
+triggers:
+- command:
+  - "Reinige die K\xFCche"
+  - "Schicke den Staubsauger in die K\xFCche"
+  - "K\xFCche reinigen"
+  trigger: conversation

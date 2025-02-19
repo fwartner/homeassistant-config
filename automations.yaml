@@ -4027,3 +4027,52 @@
         target:
           entity_id: input_text.florian_handy
   mode: single
+- id: '1739922705305'
+  alias: Licht Büro An/Aus
+  description: ''
+  triggers:
+  - type: motion
+    device_id: 4c197550e4dbe59f91927b89f482e4d4
+    entity_id: 626bf75a2265e9e869c442cd8b9e083c
+    domain: binary_sensor
+    metadata:
+      secondary: false
+    trigger: device
+    id: buroWaveOn
+  - type: no_motion
+    device_id: 4c197550e4dbe59f91927b89f482e4d4
+    entity_id: 626bf75a2265e9e869c442cd8b9e083c
+    domain: binary_sensor
+    trigger: device
+    id: buroWaveOff
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  conditions:
+  - condition: numeric_state
+    entity_id: sensor.mi_light_sensor_kuche_illuminance
+    below: 30
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - buroWaveOn
+      sequence:
+      - action: light.turn_on
+        metadata: {}
+        data: {}
+        target:
+          device_id: 974ca6245b3f8c8fbd28620c1275ef85
+    - conditions:
+      - condition: trigger
+        id:
+        - buroWaveOff
+      sequence:
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          device_id: 974ca6245b3f8c8fbd28620c1275ef85
+  mode: single

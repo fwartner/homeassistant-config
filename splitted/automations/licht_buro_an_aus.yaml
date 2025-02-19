@@ -1,0 +1,49 @@
+actions:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - buroWaveOn
+    sequence:
+    - action: light.turn_on
+      data: {}
+      metadata: {}
+      target:
+        device_id: 974ca6245b3f8c8fbd28620c1275ef85
+  - conditions:
+    - condition: trigger
+      id:
+      - buroWaveOff
+    sequence:
+    - action: light.turn_off
+      data: {}
+      metadata: {}
+      target:
+        device_id: 974ca6245b3f8c8fbd28620c1275ef85
+alias: "Licht B\xFCro An/Aus"
+conditions:
+- below: 30
+  condition: numeric_state
+  entity_id: sensor.mi_light_sensor_kuche_illuminance
+description: ''
+id: '1739922705305'
+mode: single
+triggers:
+- device_id: 4c197550e4dbe59f91927b89f482e4d4
+  domain: binary_sensor
+  entity_id: 626bf75a2265e9e869c442cd8b9e083c
+  id: buroWaveOn
+  metadata:
+    secondary: false
+  trigger: device
+  type: motion
+- device_id: 4c197550e4dbe59f91927b89f482e4d4
+  domain: binary_sensor
+  entity_id: 626bf75a2265e9e869c442cd8b9e083c
+  for:
+    hours: 0
+    minutes: 0
+    seconds: 10
+  id: buroWaveOff
+  trigger: device
+  type: no_motion

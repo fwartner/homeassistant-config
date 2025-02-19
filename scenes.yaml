@@ -812,3 +812,131 @@
       state: idle
   icon: mdi:police-badge
   metadata: {}
+- id: '1739973742541'
+  name: Fernsehen
+  entities:
+    switch.steckdose_tv_bank_wohnzimmer:
+      device_class: outlet
+      icon: mdi:power
+      friendly_name: Steckdose TV Bank Wohnzimmer
+      state: 'on'
+    media_player.appletv_wohnzimmer:
+      source_list:
+      - Airbnb
+      - Apple Events
+      - App Store
+      - Arcade
+      - ARD Mediathek
+      - ARTE
+      - Chefkoch TV
+      - Classix
+      - Computer
+      - Das Erste
+      - Developer
+      - Disney+
+      - Einstellungen
+      - Facebook Watch
+      - Filme
+      - Fitness
+      - Fotos
+      - Gamepass
+      - HomeCenter
+      - IKEA Catalogue
+      - Joyn
+      - kabel eins
+      - kabel eins Doku
+      - KAYAK
+      - Kitchen Stories
+      - Musik
+      - Netflix
+      - NordVPN
+      - Paramount+
+      - Plex
+      - Pluto TV
+      - Podcasts
+      - Prime Video
+      - ProSieben
+      - ProSieben MAXX
+      - REWE
+      - RTL+
+      - SAT.1
+      - SAT.1 Gold
+      - Shadow PC
+      - sixx
+      - Sky Q
+      - Speedtest
+      - Spotify
+      - Steam Link
+      - Suchen
+      - Tagesschau
+      - Tastemade
+      - TestFlight
+      - TripAdvisor
+      - TV
+      - TV-Sendungen
+      - Twitch
+      - Twitter
+      - Udemy
+      - VLC
+      - Vodafone
+      - wetter.com live
+      - WOW
+      - YouTube
+      - Zattoo
+      - ZDFmediathek
+      media_duration: 1971
+      media_position: 8
+      media_title: Das musst du wissen – Fußbodenheizung intelligent steuern mit Home
+        Assistant!
+      media_artist: simon42
+      media_album_name: ''
+      app_id: com.google.ios.youtube
+      app_name: YouTube
+      icon: phu:apple-tv
+      friendly_name: AppleTV Wohnzimmer
+      supported_features: 450487
+      media_position_updated_at: '2025-02-19T14:04:18.272357+00:00'
+      state: playing
+    remote.appletv_wohnzimmer:
+      friendly_name: AppleTV Wohnzimmer
+      supported_features: 0
+      state: 'on'
+    media_player.sonos_ray_wohnzimmer:
+      group_members:
+      - media_player.sonos_ray_wohnzimmer
+      volume_level: 0.1
+      is_volume_muted: false
+      media_content_id: x-sonos-htastream:RINCON_F0F6C1F0FCCC01400:spdif
+      media_content_type: music
+      media_title: TV
+      source: TV
+      shuffle: false
+      repeat: 'off'
+      queue_size: 1
+      device_class: speaker
+      icon: phu:sonos-ray
+      friendly_name: Sonos Ray Wohnzimmer
+      supported_features: 4127295
+      state: playing
+    cover.rollos_wohnzimmer_fensterbank:
+      current_position: 0
+      entity_id:
+      - cover.ikea_rollo_links_wohnzimmer
+      - cover.ikea_rollo_rechts_wohnzimmer
+      friendly_name: Rollos Wohnzimmer Fensterbank
+      supported_features: 15
+      state: closed
+    light.tv_bank:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 150
+      mode: normal
+      dynamics: none
+      friendly_name: TV Bank
+      supported_features: 40
+      state: 'on'
+  metadata:
+    cover.rollos_wohnzimmer_fensterbank:
+      entity_only: true
+  icon: mdi:popcorn

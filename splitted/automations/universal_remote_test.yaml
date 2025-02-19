@@ -1,20 +1,37 @@
 actions:
-- else:
-  - action: cover.close_cover
-    data: {}
-    metadata: {}
-    target:
-      entity_id: cover.rollos_wohnzimmer_fensterbank
-  if:
-  - condition: state
-    entity_id: cover.rollos_wohnzimmer_fensterbank
-    state: closed
-  then:
-  - action: cover.open_cover
-    data: {}
-    metadata: {}
-    target:
-      entity_id: cover.rollos_wohnzimmer_fensterbank
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - universalRemoteRollos
+    sequence:
+    - else:
+      - action: cover.close_cover
+        data: {}
+        metadata: {}
+        target:
+          entity_id: cover.rollos_wohnzimmer_fensterbank
+      if:
+      - condition: state
+        entity_id: cover.rollos_wohnzimmer_fensterbank
+        state: closed
+      then:
+      - action: cover.open_cover
+        data: {}
+        metadata: {}
+        target:
+          entity_id: cover.rollos_wohnzimmer_fensterbank
+  - conditions:
+    - condition: trigger
+      id:
+      - universalRemoteFernsehen
+    sequence:
+    - action: scene.turn_on
+      data:
+        transition: 5
+      metadata: {}
+      target:
+        entity_id: scene.fernsehen
 alias: Universal Remote Test
 conditions: []
 description: ''
@@ -23,4 +40,9 @@ mode: single
 triggers:
 - entity_id:
   - event.universal_remote_rollos
+  id: universalRemoteRollos
+  trigger: state
+- entity_id:
+  - event.universal_remote_fernsehen
+  id: universalRemoteFernsehen
   trigger: state

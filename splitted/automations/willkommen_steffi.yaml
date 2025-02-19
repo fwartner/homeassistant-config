@@ -33,10 +33,6 @@ triggers:
 - above: 1
   entity_id:
   - sensor.people_home
-  for:
-    hours: 0
-    minutes: 5
-    seconds: 30
   id: steffiZuhause
   trigger: numeric_state
 - event_data:

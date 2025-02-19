@@ -2693,26 +2693,6 @@
   - service: timer.start
     data:
       entity_id: timer.z2m_permit_join
-- id: z2m_disable_join_timer
-  alias: '[Zigbee2MQTT] Disable Z2M Join (By Timer)'
-  description: ''
-  trigger:
-  - platform: event
-    event_type: timer.z2m_permit_join
-    event_data:
-      entity_id: timer.z2m_permit_join
-  condition:
-  - condition: state
-    entity_id: input_boolean.wartung
-    state: 'off'
-  action:
-  - service: mqtt.publish
-    data:
-      topic: zigbee2mqtt/bridge/config/permit_join
-      payload: 'false'
-  - service: input_boolean.turn_off
-    data:
-      entity_id: input_boolean.z2m_permit_join
 - id: '1717147845731'
   alias: '[Zigbee2MQTT] Disable Z2M Join'
   description: ''
@@ -3736,10 +3716,6 @@
   - trigger: numeric_state
     entity_id:
     - sensor.people_home
-    for:
-      hours: 0
-      minutes: 5
-      seconds: 30
     above: 1
     id: steffiZuhause
   - trigger: event

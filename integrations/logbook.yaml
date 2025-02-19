@@ -2,7 +2,6 @@
 logbook:
   exclude:
     domains:
-      - automation
       - button
       - calendar
       - group
@@ -14,7 +13,6 @@ logbook:
       - input_text
       - number
       - schedule
-      - script
       - select
       - sensor
       - switch

@@ -8,7 +8,7 @@
       prob_given_true: 2
       prob_given_false: 0
       value_template: >
-        {{ states('sensor.kuche_temperature') | int > states('sensor.flur_temperature') | int + 3 }}
+        {{ states('sensor.aqara_thermo_kuche_temperature') | int > states('sensor.aqara_thermo_flur_temperature') | int + 3 }}
     - platform: state
       prob_given_true: 3
       prob_given_false: 0
@@ -29,13 +29,3 @@
       prob_given_false: 0
       value_template: >
         {{ (as_timestamp(now()) - as_timestamp(states.binary_sensor.aqara_contact_kuhlschrank_contact.last_changed)) < 900 }}
-    - platform: template
-      prob_given_true: 3
-      prob_given_false: 0
-      value_template: >
-        {{ states('sensor.shelly_em3_verbrauch_aktuell') | int > 1650 }}
-    - platform: template
-      prob_given_true: 3
-      prob_given_false: 0
-      value_template: >
-        {{ states('sensor.shelly_em3_verbrauch_aktuell') | int > 2700 }}

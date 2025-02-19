@@ -26,12 +26,67 @@ actions:
       id:
       - universalRemoteFernsehen
     sequence:
+    - action: input_boolean.toggle
+      data: {}
+      metadata: {}
+      target:
+        entity_id: input_boolean.fernsehen_szene
+    - else:
+      - action: scene.turn_on
+        data:
+          transition: 5
+        metadata: {}
+        target:
+          entity_id: scene.wohnzimmer_aus
+      if:
+      - condition: state
+        entity_id: input_boolean.fernsehen_szene
+        state: 'on'
+      then:
+      - action: scene.turn_on
+        data:
+          transition: 5
+        metadata: {}
+        target:
+          entity_id: scene.fernsehen
+  - conditions:
+    - condition: trigger
+      id:
+      - universalRemoteZocken
+    sequence:
+    - action: input_boolean.toggle
+      data: {}
+      metadata: {}
+      target:
+        entity_id: input_boolean.zocken_szene
+    - else:
+      - action: scene.turn_on
+        data:
+          transition: 5
+        metadata: {}
+        target:
+          entity_id: scene.wohnzimmer_aus
+      if:
+      - condition: state
+        entity_id: input_boolean.zocken_szene
+        state: 'on'
+      then:
+      - action: scene.turn_on
+        data: {}
+        metadata: {}
+        target:
+          entity_id: scene.zocken
+  - conditions:
+    - condition: trigger
+      id:
+      - universalRemoteWohnzimmerAus
+    sequence:
     - action: scene.turn_on
       data:
         transition: 5
       metadata: {}
       target:
-        entity_id: scene.fernsehen
+        entity_id: scene.wohnzimmer_aus
 alias: Universal Remote Test
 conditions: []
 description: ''
@@ -45,4 +100,12 @@ triggers:
 - entity_id:
   - event.universal_remote_fernsehen
   id: universalRemoteFernsehen
+  trigger: state
+- entity_id:
+  - event.universal_remote_zocken
+  id: universalRemoteZocken
+  trigger: state
+- entity_id:
+  - event.universal_remote_wohnzimmer_aus
+  id: universalRemoteWohnzimmerAus
   trigger: state

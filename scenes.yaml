@@ -1068,6 +1068,10 @@
       friendly_name: Sonos Ray Wohnzimmer
       supported_features: 4127295
       state: playing
+    switch.ps5_801_power:
+      icon: mdi:sony-playstation
+      friendly_name: PS5-801 power
+      state: 'on'
   icon: mdi:light-switch-off
   metadata:
     cover.rollos_wohnzimmer_fensterbank:

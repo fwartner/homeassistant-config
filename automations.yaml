@@ -3954,6 +3954,14 @@
     entity_id:
     - event.universal_remote_fernsehen
     id: universalRemoteFernsehen
+  - trigger: state
+    entity_id:
+    - event.universal_remote_zocken
+    id: universalRemoteZocken
+  - trigger: state
+    entity_id:
+    - event.universal_remote_wohnzimmer_aus
+    id: universalRemoteWohnzimmerAus
   conditions: []
   actions:
   - choose:
@@ -3983,10 +3991,65 @@
         id:
         - universalRemoteFernsehen
       sequence:
+      - action: input_boolean.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_boolean.fernsehen_szene
+      - if:
+        - condition: state
+          entity_id: input_boolean.fernsehen_szene
+          state: 'on'
+        then:
+        - action: scene.turn_on
+          metadata: {}
+          data:
+            transition: 5
+          target:
+            entity_id: scene.fernsehen
+        else:
+        - action: scene.turn_on
+          metadata: {}
+          data:
+            transition: 5
+          target:
+            entity_id: scene.wohnzimmer_aus
+    - conditions:
+      - condition: trigger
+        id:
+        - universalRemoteZocken
+      sequence:
+      - action: input_boolean.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_boolean.zocken_szene
+      - if:
+        - condition: state
+          entity_id: input_boolean.zocken_szene
+          state: 'on'
+        then:
+        - action: scene.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id: scene.zocken
+        else:
+        - action: scene.turn_on
+          metadata: {}
+          data:
+            transition: 5
+          target:
+            entity_id: scene.wohnzimmer_aus
+    - conditions:
+      - condition: trigger
+        id:
+        - universalRemoteWohnzimmerAus
+      sequence:
       - action: scene.turn_on
         metadata: {}
         data:
           transition: 5
         target:
-          entity_id: scene.fernsehen
+          entity_id: scene.wohnzimmer_aus
   mode: single

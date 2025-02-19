@@ -119,6 +119,10 @@
       friendly_name: AppleTV Wohnzimmer
       state: 'on'
       supported_features: 0
+    switch.ps5_801_power:
+      friendly_name: PS5-801 power
+      icon: mdi:sony-playstation
+      state: 'on'
     switch.steckdose_tv_bank_wohnzimmer:
       device_class: outlet
       friendly_name: Steckdose TV Bank Wohnzimmer

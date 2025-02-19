@@ -4001,6 +4001,10 @@
           entity_id: input_boolean.fernsehen_szene
           state: 'on'
         then:
+        - action: notify.alexa_media_echo_show_wohnzimmer
+          metadata: {}
+          data:
+            message: Ich richte das Wohnzimmer für gemütliches Fernsehen her.
         - action: scene.turn_on
           metadata: {}
           data:
@@ -4029,6 +4033,10 @@
           entity_id: input_boolean.zocken_szene
           state: 'on'
         then:
+        - action: notify.alexa_media_echo_show_wohnzimmer
+          metadata: {}
+          data:
+            message: Ich richte das Wohnzimmer für gemütliches Zocken her.
         - action: scene.turn_on
           metadata: {}
           data: {}
@@ -4041,6 +4049,10 @@
             transition: 5
           target:
             entity_id: scene.wohnzimmer_aus
+        - type: turn_off
+          device_id: cbed685d51c54392c35961266c9566f1
+          entity_id: f564dc00c2557356ac0d4f531b608d1c
+          domain: switch
     - conditions:
       - condition: trigger
         id:

@@ -43,6 +43,10 @@ actions:
         entity_id: input_boolean.fernsehen_szene
         state: 'on'
       then:
+      - action: notify.alexa_media_echo_show_wohnzimmer
+        data:
+          message: "Ich richte das Wohnzimmer f\xFCr gem\xFCtliches Fernsehen her."
+        metadata: {}
       - action: scene.turn_on
         data:
           transition: 5
@@ -66,11 +70,19 @@ actions:
         metadata: {}
         target:
           entity_id: scene.wohnzimmer_aus
+      - device_id: cbed685d51c54392c35961266c9566f1
+        domain: switch
+        entity_id: f564dc00c2557356ac0d4f531b608d1c
+        type: turn_off
       if:
       - condition: state
         entity_id: input_boolean.zocken_szene
         state: 'on'
       then:
+      - action: notify.alexa_media_echo_show_wohnzimmer
+        data:
+          message: "Ich richte das Wohnzimmer f\xFCr gem\xFCtliches Zocken her."
+        metadata: {}
       - action: scene.turn_on
         data: {}
         metadata: {}

@@ -944,85 +944,14 @@
   name: Wohnzimmer Aus
   entities:
     media_player.appletv_wohnzimmer:
-      source_list:
-      - Airbnb
-      - Apple Events
-      - App Store
-      - Arcade
-      - ARD Mediathek
-      - ARTE
-      - Chefkoch TV
-      - Classix
-      - Computer
-      - Das Erste
-      - Developer
-      - Disney+
-      - Einstellungen
-      - Facebook Watch
-      - Filme
-      - Fitness
-      - Fotos
-      - Gamepass
-      - HomeCenter
-      - IKEA Catalogue
-      - Joyn
-      - kabel eins
-      - kabel eins Doku
-      - KAYAK
-      - Kitchen Stories
-      - Musik
-      - Netflix
-      - NordVPN
-      - Paramount+
-      - Plex
-      - Pluto TV
-      - Podcasts
-      - Prime Video
-      - ProSieben
-      - ProSieben MAXX
-      - REWE
-      - RTL+
-      - SAT.1
-      - SAT.1 Gold
-      - Shadow PC
-      - sixx
-      - Sky Q
-      - Speedtest
-      - Spotify
-      - Steam Link
-      - Suchen
-      - Tagesschau
-      - Tastemade
-      - TestFlight
-      - TripAdvisor
-      - TV
-      - TV-Sendungen
-      - Twitch
-      - Twitter
-      - Udemy
-      - VLC
-      - Vodafone
-      - wetter.com live
-      - WOW
-      - YouTube
-      - Zattoo
-      - ZDFmediathek
-      media_duration: 1971
-      media_position: 5
-      media_title: Das musst du wissen – Fußbodenheizung intelligent steuern mit Home
-        Assistant!
-      media_artist: simon42
-      media_album_name: ''
-      app_id: com.google.ios.youtube
-      app_name: YouTube
       icon: phu:apple-tv
       friendly_name: AppleTV Wohnzimmer
-      supported_features: 450487
-      state: standby
+      supported_features: 448439
+      state: 'off'
     remote.appletv_wohnzimmer:
       friendly_name: AppleTV Wohnzimmer
       supported_features: 0
-      state: 'on'
+      state: 'off'
     light.tv_bank:
       supported_color_modes:
       - brightness
@@ -1039,13 +968,13 @@
       friendly_name: Steckdose TV Bank Wohnzimmer
       state: 'off'
     cover.rollos_wohnzimmer_fensterbank:
-      current_position: 100
+      current_position: 0
       entity_id:
       - cover.ikea_rollo_links_wohnzimmer
       - cover.ikea_rollo_rechts_wohnzimmer
       friendly_name: Rollos Wohnzimmer Fensterbank
       supported_features: 15
-      state: open
+      state: closed
     cover.ikea_rollo_balkontur:
       current_position: 100
       friendly_name: IKEA Rollo Balkontür
@@ -1071,7 +1000,42 @@
     switch.ps5_801_power:
       icon: mdi:sony-playstation
       friendly_name: PS5-801 power
-      state: 'on'
+      state: 'off'
+    light.tv:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - None
+      - candle
+      - fire
+      - prism
+      - sparkle
+      - opal
+      - glisten
+      - unknown
+      - unknown
+      - unknown
+      - unknown
+      - sunrise
+      - sunset
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      mode: normal
+      dynamics: none
+      friendly_name: TV
+      supported_features: 44
+      state: 'off'
   icon: mdi:light-switch-off
   metadata:
     cover.rollos_wohnzimmer_fensterbank:
@@ -1091,13 +1055,55 @@
       friendly_name: PS5-801 power
       state: 'on'
     cover.rollos_wohnzimmer_fensterbank:
-      current_position: 0
+      current_position: 10
       entity_id:
       - cover.ikea_rollo_links_wohnzimmer
       - cover.ikea_rollo_rechts_wohnzimmer
       friendly_name: Rollos Wohnzimmer Fensterbank
       supported_features: 15
-      state: closed
+      state: open
+    light.tv:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - None
+      - candle
+      - fire
+      - prism
+      - sparkle
+      - opal
+      - glisten
+      - unknown
+      - unknown
+      - unknown
+      - unknown
+      - sunrise
+      - sunset
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect: None
+      color_mode: xy
+      brightness: 178
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 9.231
+      - 66.275
+      rgb_color:
+      - 255
+      - 112
+      - 86
+      xy_color:
+      - 0.589
+      - 0.329
+      mode: normal
+      dynamics: none
+      friendly_name: TV
+      supported_features: 44
+      state: 'on'
   icon: mdi:controller
   metadata:
     cover.rollos_wohnzimmer_fensterbank:

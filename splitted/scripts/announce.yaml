@@ -1,9 +1,0 @@
-announce:
-  alias: Announce
-  icon: mdi:account-voice
-  use_blueprint:
-    input:
-      media_player:
-      - media_player.echo_show_wohnzimmer
-      text_to_speech_engine: tts.elevenlabs_tts
-    path: balloob/announce-text-to-speech-on-media-player.yaml

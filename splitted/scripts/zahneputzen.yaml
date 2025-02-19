@@ -1,9 +1,0 @@
-zahneputzen:
-  alias: "Z\xE4hneputzen"
-  icon: mdi:toothbrush
-  mode: single
-  sequence:
-  - data: {}
-    service: timer.start
-    target:
-      entity_id: timer.zahneputzen

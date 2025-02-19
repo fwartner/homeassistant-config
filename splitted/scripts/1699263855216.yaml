@@ -1,6 +1,0 @@
-'1699263855216':
-  alias: '[Zigbee2MQTT] Restart'
-  sequence:
-  - data:
-      topic: zigbee2mqtt/bridge/request/restart
-    service: mqtt.publish

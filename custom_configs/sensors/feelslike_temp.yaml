@@ -2,44 +2,44 @@
 - platform: apparent_temperature
   name: "Gefühlte Wohnzimmer Temperatur"
   source:
-    - sensor.wohnzimmer_temperature
-    - sensor.wohnzimmer_humidity
+    - sensor.aqara_thermo_wohnzimmer_temperature
+    - sensor.aqara_thermo_wohnzimmer_humidity
 
 - platform: apparent_temperature
   name: "Gefühlte Schlafzimmer Temperatur"
   source:
-    - sensor.schlafzimmer_temperature
-    - sensor.schlafzimmer_humidity
+    - sensor.aqara_thermo_schlafzimmer_temperature
+    - sensor.aqara_thermo_schlafzimmer_humidity
 
 - platform: apparent_temperature
   name: "Gefühlte Küchen Temperatur"
   source:
-    - sensor.kuche_temperature
-    - sensor.kuche_humidity
+    - sensor.aqara_thermo_kuche_temperature
+    - sensor.aqara_thermo_kuche_humidity
 
 - platform: apparent_temperature
   name: "Gefühlte Balkon Temperatur"
   source:
-    - sensor.balkon_temperature
-    - sensor.balkon_humidity
+    - sensor.aqara_thermo_balkon_temperature
+    - sensor.aqara_thermo_balkon_humidity
 
 - platform: apparent_temperature
   name: "Gefühlte Flur Temperatur"
   source:
-    - sensor.flur_temperature
-    - sensor.flur_humidity
+    - sensor.aqara_thermo_flur_temperature
+    - sensor.aqara_thermo_flur_humidity
 
 - platform: apparent_temperature
   name: "Gefühlte Badezimmer Temperatur"
   source:
-    - sensor.badezimmer_temperature
-    - sensor.badezimmer_humidity
+    - sensor.aqara_thermo_badezimmer_temperature
+    - sensor.aqara_thermo_badezimmer_humidity
 
 - platform: apparent_temperature
   name: "Gefühlte Kinderzimmer Temperatur"
   source:
-    - sensor.kinderzimmer_temperature
-    - sensor.kinderzimmer_humidity
+    - sensor.aqara_thermo_kinderzimmer_temperature
+    - sensor.aqara_thermo_kinderzimmer_humidity
 
 - platform: apparent_temperature
   name: "Gefühlte Stadt Temperatur"

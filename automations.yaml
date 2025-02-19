@@ -2730,57 +2730,6 @@
     target:
       entity_id: input_boolean.staubsauger_wassertank
   mode: single
-- id: '1718549485698'
-  alias: '[NFC Tag] Waschmaschinentabs'
-  description: ''
-  trigger:
-  - platform: tag
-    tag_id: waschmaschinentabs
-  condition:
-  - condition: state
-    entity_id: input_boolean.wartung
-    state: 'off'
-  action:
-  - service: counter.decrement
-    target:
-      entity_id:
-      - counter.waschmaschinentabs
-    data: {}
-  mode: single
-- id: '1718550615267'
-  alias: '[NFC Tag] Waschmaschinentabs'
-  description: ''
-  trigger:
-  - platform: tag
-    tag_id: waschmaschinentabs
-  condition:
-  - condition: state
-    entity_id: input_boolean.wartung
-    state: 'off'
-  action:
-  - service: input_number.decrement
-    metadata: {}
-    data: {}
-    target:
-      entity_id: input_number.waschmaschinentabs
-  mode: single
-- id: '1718550657718'
-  alias: '[NFC Tag] Spülmaschinentabs'
-  description: ''
-  trigger:
-  - platform: tag
-    tag_id: spuelmaschinentabs
-  condition:
-  - condition: state
-    entity_id: input_boolean.wartung
-    state: 'off'
-  action:
-  - service: input_number.decrement
-    metadata: {}
-    data: {}
-    target:
-      entity_id: input_number.spulmaschinentabs
-  mode: single
 - id: '1718561693469'
   alias: '[NFC Tag] Kaffeebohnen Einkaufsliste'
   description: ''

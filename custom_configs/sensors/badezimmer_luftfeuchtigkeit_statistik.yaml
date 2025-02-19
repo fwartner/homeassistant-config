@@ -1,7 +1,0 @@
----
-- platform: statistics
-  name: Statistiken zur Luftfeuchtigkeit im Badezimmer
-  entity_id: sensor.badezimmer_humidity
-  sampling_size: 86400
-  max_age: "24:00:00"
-  state_characteristic: mean

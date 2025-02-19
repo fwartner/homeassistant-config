@@ -8,7 +8,7 @@ supervisor_update_available:
   title: "Es ist ein Update für den Supervisor verfügbar"
   message: "Die neue version ist {{ state_attr('sensor.supervisor_updates', 'newest_version') }}. Zurzeit auf Version {{ state_attr('sensor.supervisor_updates', 'current_version') }}"
   notifiers:
-    - "florians_iphone"
+    - florian_all
   data:
     tag: "supervisor-update-available"
     url: "https://ha.wartner.cloud/hassio/dashboard"

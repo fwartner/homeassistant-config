@@ -282,7 +282,7 @@ announce:
   use_blueprint:
     path: balloob/announce-text-to-speech-on-media-player.yaml
     input:
-      text_to_speech_engine: tts.elevenlabs_tts
+      text_to_speech_engine: tts.elevenlabs
       media_player:
       - media_player.echo_show_wohnzimmer
   icon: mdi:account-voice

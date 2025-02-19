@@ -5,5 +5,5 @@ announce:
     input:
       media_player:
       - media_player.echo_show_wohnzimmer
-      text_to_speech_engine: tts.elevenlabs_tts
+      text_to_speech_engine: tts.elevenlabs
     path: balloob/announce-text-to-speech-on-media-player.yaml

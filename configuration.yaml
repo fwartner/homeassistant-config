@@ -40,3 +40,5 @@ prometheus: !include configuration/prometheus/configuration.yaml
 
 frontend:
   themes: !include_dir_merge_named themes/
+  extra_module_url:
+    - /local/community/custom-brand-icons/custom-brand-icons.js

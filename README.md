@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3336
+Number of entities | 3340
 Number of sensors | 1826
 Number of automations | 114
 Number of scripts | 54
@@ -169,6 +169,7 @@ Number of binary sensors | 267
 - [Compass Card](https://github.com/tomvanswam/compass-card)
 - [Cover Position Preset Row](https://github.com/finity69x2/cover-position-preset-row)
 - [Custom Brand Icons](https://github.com/elax46/custom-brand-icons)
+- [Custom Features For Home Assistant Cards](https://github.com/Nerwyn/service-call-tile-feature)
 - [Decluttering Card](https://github.com/custom-cards/decluttering-card)
 - [Default Dashboard](https://github.com/daredoes/default-dashboard)
 - [Digital Clock](https://github.com/wassy92x/lovelace-digital-clock)
@@ -195,6 +196,8 @@ Number of binary sensors | 267
 - [Lovelace Card Templater](https://github.com/gadgetchnnel/lovelace-card-templater)
 - [Lovelace Grocy Chores Card](https://github.com/isabellaalstrom/lovelace-grocy-chores-card)
 - [Lovelace Home Feed Card](https://github.com/gadgetchnnel/lovelace-home-feed-card)
+- [Map Card](https://github.com/nathan-gs/ha-map-card)
+- [Maxi Media Player](https://github.com/punxaphil/maxi-media-player)
 - [Media Source Image Card](https://github.com/luixal/lovelace-media-source-image-card)
 - [Mini Graph Card](https://github.com/kalkih/mini-graph-card)
 - [Mini Media Player](https://github.com/kalkih/mini-media-player)
@@ -233,6 +236,7 @@ Number of binary sensors | 267
 - [Timer Bar Card](https://github.com/rianadon/timer-bar-card)
 - [Trashcard](https://github.com/idaho/hassio-trash-card)
 - [Unused Card](https://github.com/custom-cards/unused-card)
+- [Upcoming Media Card](https://github.com/custom-cards/upcoming-media-card)
 - [Upcoming Media Card](https://github.com/NemesisRE/upcoming-media-card)
 - [Uptime Card](https://github.com/dylandoamaral/uptime-card)
 - [Vacuum Card](https://github.com/denysdovhan/vacuum-card)

@@ -1,0 +1,31 @@
+duschen_vorbereiten:
+  alias: Duschen Vorbereiten
+  icon: fas:shower
+  mode: single
+  sequence:
+  - data:
+      data:
+        method: all
+        type: announce
+      message: "Ich bereite das Badezimmer f\xFCr dich vor, damit du in ein paar Minuten\
+        \ in aller Ruhe duschen gehen kannst. Ich gebe dir Bescheid, wenn ich damit\
+        \ fertig bin."
+      target:
+      - media_player.echo_badezimmer
+      - media_player.echo_flur
+      - media_player.echo_schlafzimmer
+      - media_player.echo_schlafzimmer
+      title: Ich bereite das Badezimmer vor
+    service: notify.alexa_media
+  - data:
+      hvac_mode: heat
+      temperature: 22
+    service: climate.set_temperature
+    target:
+      entity_id: climate.heizung_badezimmer
+  - data: {}
+    service: input_boolean.turn_on
+    target:
+      entity_id:
+      - input_boolean.duschen_vorbereiten
+      - input_boolean.duschen_besetzt

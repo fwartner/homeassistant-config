@@ -1,0 +1,7 @@
+run_chores:
+  alias: Run Chores
+  icon: mdi:broom
+  mode: single
+  sequence:
+  - data: {}
+    service: shell_command.run_chores

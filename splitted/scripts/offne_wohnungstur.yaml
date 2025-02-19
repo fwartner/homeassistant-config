@@ -1,0 +1,9 @@
+offne_wohnungstur:
+  alias: "\xD6ffne Wohnungst\xFCr"
+  icon: mdi:lock-open
+  mode: single
+  sequence:
+  - device_id: bb8a84cf268277f3d38063aee6ce698e
+    domain: lock
+    entity_id: 7b91d36587ba4469f26de8a280995404
+    type: open

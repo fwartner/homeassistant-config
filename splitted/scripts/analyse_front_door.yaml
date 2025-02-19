@@ -1,0 +1,22 @@
+analyse_front_door:
+  alias: Analyse Front Door
+  description: ''
+  icon: mdi:cube-scan
+  sequence:
+  - action: llmvision.image_analyzer
+    data:
+      detail: low
+      image_entity:
+      - camera.kamera_flur
+      include_filename: false
+      max_tokens: 60
+      message: Is a person or a package at the front door?
+      provider: 01JDKZXB9EHRC39AT0ZFSCEXA7
+      temperature: 0.5
+    response_variable: response
+  - action: input_text.set_value
+    data:
+      value: '{{response.response_text}}'
+    metadata: {}
+    target:
+      entity_id: input_text.llmvision_response

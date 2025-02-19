@@ -1,0 +1,8 @@
+zeit_furs_bett:
+  alias: "Zeit f\xFCrs Bett"
+  icon: mdi:bed-clock
+  mode: single
+  sequence:
+  - data:
+      message: ''
+    service: notify.alexa_media_echo_schlafzimmer

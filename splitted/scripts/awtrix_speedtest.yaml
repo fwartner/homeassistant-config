@@ -1,0 +1,29 @@
+awtrix_speedtest:
+  alias: AWTRIX Speedtest
+  icon: mdi:speedometer
+  mode: single
+  sequence:
+  - alias: Publish AWTRIX Wohnzimmer Download
+    data:
+      payload: "{\"text\":\"Download-Geschwindigkeit betr\xE4gt {{ states.sensor.speedtest_download.state}}\
+        \  Mbp/s\",\"icon\":58101,\"pushIcon\":0,\"repeat\":1,\"textCase\":2}"
+      topic: awtrix_wohnzimmer/notify
+    service: mqtt.publish
+  - alias: Publish AWTRIX Wohnzimmer Upload
+    data:
+      payload: "{\"text\":\"Upload-Geschwindigkeit betr\xE4gt {{ states.sensor.speedtest_upload.state}}\
+        \  Mbp/s\",\"icon\":41181,\"pushIcon\":0,\"repeat\":1,\"textCase\":2}"
+      topic: awtrix_wohnzimmer/notify
+    service: mqtt.publish
+  - alias: "Publish AWTRIX B\xFCro Download"
+    data:
+      payload: "{\"text\":\"Download-Geschwindigkeit betr\xE4gt {{ states.sensor.speedtest_download.state}}\
+        \  Mbp/s\",\"icon\":58101,\"pushIcon\":0,\"repeat\":1,\"textCase\":2}"
+      topic: awtrix_buro/notify
+    service: mqtt.publish
+  - alias: "Publish AWTRIX B\xFCro Upload"
+    data:
+      payload: "{\"text\":\"Upload-Geschwindigkeit betr\xE4gt {{ states.sensor.speedtest_upload.state}}\
+        \  Mbp/s\",\"icon\":41181,\"pushIcon\":0,\"repeat\":1,\"textCase\":2}"
+      topic: awtrix_buro/notify
+    service: mqtt.publish

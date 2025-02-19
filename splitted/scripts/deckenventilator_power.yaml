@@ -1,0 +1,13 @@
+deckenventilator_power:
+  alias: Deckenventilator Power
+  description: ''
+  icon: mdi:ceiling-fan
+  sequence:
+  - data:
+      command: power
+      device: deckenventilator_schlafzimmer
+      num_repeats: 1
+    metadata: {}
+    service: remote.send_command
+    target:
+      device_id: 4ed17b33e4a244aaabf58d21cbfc92db

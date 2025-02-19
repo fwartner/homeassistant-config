@@ -1,0 +1,16 @@
+actions:
+- action: script.staubsauger_badezimmer_reinigen
+  data: {}
+  metadata: {}
+alias: Badezimmer Reinigen
+conditions: []
+description: ''
+id: '1739969970217'
+mode: single
+triggers:
+- command:
+  - Reinige das Badezimmer
+  - Reinige das Bad
+  - Schicke den Staubsauger ins Badezimmer
+  - Schicke den Staubsauger ins Bad
+  trigger: conversation

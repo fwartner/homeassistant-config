@@ -1,0 +1,18 @@
+actions:
+- action: script.staubsauger_buro_reinigen
+  data: {}
+  metadata: {}
+alias: Kinderzimmer Reinigen
+conditions: []
+description: ''
+id: '1739969874565'
+mode: single
+triggers:
+- command:
+  - Reinige das Kinderzimmer
+  - "Reinige das B\xFCro"
+  - Schicke den Staubsauger ins Kinderzimmer
+  - "Schicke den Staubsauger ins B\xFCro"
+  - Kinderzimmer reinigen
+  - "B\xFCro reinigen"
+  trigger: conversation

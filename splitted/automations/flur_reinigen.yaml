@@ -1,0 +1,15 @@
+actions:
+- action: script.staubsauger_flur_reinigen
+  data: {}
+  metadata: {}
+alias: Flur Reinigen
+conditions: []
+description: ''
+id: '1739969924503'
+mode: single
+triggers:
+- command:
+  - Reinige den Flur
+  - Reinige den Flur
+  - Schicke den Staubsauger in den Flur
+  trigger: conversation

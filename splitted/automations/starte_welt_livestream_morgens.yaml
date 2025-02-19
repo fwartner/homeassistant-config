@@ -25,7 +25,7 @@ alias: Starte WELT Livestream morgens
 conditions:
 - condition: and
   conditions:
-  - after: 07:00:00
+  - after: 06:00:00
     before: 09:00:00
     condition: time
     weekday:

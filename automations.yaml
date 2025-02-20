@@ -1881,23 +1881,6 @@
     data: {}
     response_variable: backup_response
   mode: single
-- id: '1713209693062'
-  alias: Admin - Watchman
-  description: ''
-  trigger:
-  - platform: time_pattern
-    hours: '3'
-  condition:
-  - condition: state
-    entity_id: input_boolean.wartung
-    state: 'off'
-  action:
-  - service: watchman.report
-    metadata: {}
-    data:
-      create_file: true
-      parse_config: true
-  mode: single
 - id: database_repack
   alias: System - Database Repack (Weekly)
   description: ''

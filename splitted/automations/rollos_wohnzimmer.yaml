@@ -1,0 +1,25 @@
+actions: []
+alias: Rollos Wohnzimmer
+conditions: []
+description: ''
+id: '1740091713939'
+mode: single
+triggers:
+- above: 1000
+  entity_id:
+  - sensor.mi_light_sensor_wohnzimmer_illuminance
+  for:
+    hours: 0
+    minutes: 3
+    seconds: 0
+  id: wohnzimmerHellAn
+  trigger: numeric_state
+- below: 300
+  entity_id:
+  - sensor.mi_light_sensor_wohnzimmer_illuminance
+  for:
+    hours: 0
+    minutes: 5
+    seconds: 0
+  id: wohnzimmerHellAus
+  trigger: numeric_state

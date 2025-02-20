@@ -30,6 +30,9 @@ conditions:
   - condition: state
     entity_id: input_boolean.manuell
     state: 'off'
+  - condition: state
+    entity_id: input_boolean.rollos_schlafzimmer
+    state: 'off'
 description: ''
 id: '1729247777105'
 mode: single

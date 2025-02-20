@@ -3243,6 +3243,9 @@
     - condition: state
       entity_id: input_boolean.manuell
       state: 'off'
+    - condition: state
+      entity_id: input_boolean.rollos_schlafzimmer
+      state: 'off'
   actions:
   - choose:
     - conditions:
@@ -3597,70 +3600,6 @@
 
         All in german please.'
       preview_mode: Snapshot
-- id: '1737570190214'
-  alias: Trinkerinnerung
-  description: ''
-  triggers:
-  - trigger: time_pattern
-    hours: '1'
-  conditions:
-  - condition: time
-    after: 08:00
-    before: '22:00'
-  - condition: numeric_state
-    entity_id: sensor.wasseraufnahme
-    below: input_number.water_goal
-  - condition: state
-    entity_id: device_tracker.pixel_9
-    state: home
-  actions:
-  - action: notify.mobile_app_pixel_9
-    data:
-      data:
-        actions:
-        - action: DRINK_200
-          title: 200 ml getrunken
-        - action: DRINK_300
-          title: 300 ml getrunken
-        - action: DRINK_500
-          title: 500 ml getrunken
-      message: "Vergiss nicht zu trinken! \U0001F6B0"
-  mode: single
-- id: '1737570681778'
-  alias: Wasseraktionen verarbeiten
-  description: ''
-  triggers:
-  - event_type: mobile_app_notification_action
-    trigger: event
-  conditions: []
-  actions:
-  - choose:
-    - conditions:
-      - condition: template
-        value_template: '{{ trigger.event.data.action == ''DRINK_200'' }}'
-      sequence:
-      - data:
-          amount: 200
-        action: script.log_water
-    - conditions:
-      - condition: template
-        value_template: '{{ trigger.event.data.action == ''DRINK_300'' }}'
-      sequence:
-      - data:
-          amount: 300
-        action: script.log_water
-    - conditions:
-      - condition: template
-        value_template: '{{ trigger.event.data.action == ''DRINK_500'' }}'
-      sequence:
-      - data:
-          amount: 500
-        action: script.log_water
-  - action: persistent_notification.dismiss
-    metadata: {}
-    data:
-      notification_id: '{{ trigger.event.data.notification_id }}'
-  mode: single
 - id: '1737626947619'
   alias: Meeting
   description: ''
@@ -4091,4 +4030,29 @@
         data: {}
         target:
           device_id: 67feb204d2fca3cfd31e143defa33fe5
+  mode: single
+- id: '1740091713939'
+  alias: Rollos Wohnzimmer
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.mi_light_sensor_wohnzimmer_illuminance
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+    above: 1000
+    id: wohnzimmerHellAn
+  - trigger: numeric_state
+    entity_id:
+    - sensor.mi_light_sensor_wohnzimmer_illuminance
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    id: wohnzimmerHellAus
+    below: 300
+  conditions: []
+  actions: []
   mode: single

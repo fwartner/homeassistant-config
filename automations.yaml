@@ -4053,6 +4053,41 @@
       seconds: 0
     id: wohnzimmerHellAus
     below: 300
-  conditions: []
-  actions: []
+  conditions:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.manuell
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.rollos_wohnzimmer
+      state: 'off'
+    - condition: numeric_state
+      entity_id: sensor.people_home
+      above: 0
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - wohnzimmerHellAn
+      sequence:
+      - action: cover.close_cover
+        metadata: {}
+        data: {}
+        target:
+          entity_id: cover.rollos_wohnzimmer_fensterbank
+    - conditions:
+      - condition: trigger
+        id:
+        - wohnzimmerHellAus
+      sequence:
+      - action: cover.open_cover
+        metadata: {}
+        data: {}
+        target:
+          entity_id: cover.rollos_wohnzimmer_fensterbank
   mode: single

@@ -1,6 +1,41 @@
-actions: []
+actions:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - wohnzimmerHellAn
+    sequence:
+    - action: cover.close_cover
+      data: {}
+      metadata: {}
+      target:
+        entity_id: cover.rollos_wohnzimmer_fensterbank
+  - conditions:
+    - condition: trigger
+      id:
+      - wohnzimmerHellAus
+    sequence:
+    - action: cover.open_cover
+      data: {}
+      metadata: {}
+      target:
+        entity_id: cover.rollos_wohnzimmer_fensterbank
 alias: Rollos Wohnzimmer
-conditions: []
+conditions:
+- condition: and
+  conditions:
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.manuell
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.rollos_wohnzimmer
+    state: 'off'
+  - above: 0
+    condition: numeric_state
+    entity_id: sensor.people_home
 description: ''
 id: '1740091713939'
 mode: single

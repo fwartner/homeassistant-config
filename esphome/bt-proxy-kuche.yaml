@@ -9,7 +9,6 @@ api:
 packages:
   base: !include common/base_32.yaml
   ble: !include common/ble_gateway.yaml
-  wifi: !include common/wifi.yaml
 
 wifi:
   manual_ip:

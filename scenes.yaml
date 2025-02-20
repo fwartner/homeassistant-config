@@ -918,14 +918,6 @@
       friendly_name: Sonos Ray Wohnzimmer
       supported_features: 4127295
       state: playing
-    cover.rollos_wohnzimmer_fensterbank:
-      current_position: 0
-      entity_id:
-      - cover.ikea_rollo_links_wohnzimmer
-      - cover.ikea_rollo_rechts_wohnzimmer
-      friendly_name: Rollos Wohnzimmer Fensterbank
-      supported_features: 15
-      state: closed
     light.tv_bank:
       supported_color_modes:
       - brightness
@@ -936,9 +928,7 @@
       friendly_name: TV Bank
       supported_features: 40
       state: 'on'
-  metadata:
-    cover.rollos_wohnzimmer_fensterbank:
-      entity_only: true
+  metadata: {}
   icon: mdi:popcorn
 - id: '1739974242661'
   name: Wohnzimmer Aus
@@ -1054,14 +1044,6 @@
       icon: mdi:sony-playstation
       friendly_name: PS5-801 power
       state: 'on'
-    cover.rollos_wohnzimmer_fensterbank:
-      current_position: 10
-      entity_id:
-      - cover.ikea_rollo_links_wohnzimmer
-      - cover.ikea_rollo_rechts_wohnzimmer
-      friendly_name: Rollos Wohnzimmer Fensterbank
-      supported_features: 15
-      state: open
     light.tv:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6535
@@ -1105,6 +1087,4 @@
       supported_features: 44
       state: 'on'
   icon: mdi:controller
-  metadata:
-    cover.rollos_wohnzimmer_fensterbank:
-      entity_only: true
+  metadata: {}

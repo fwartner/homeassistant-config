@@ -1,12 +1,4 @@
 - entities:
-    cover.rollos_wohnzimmer_fensterbank:
-      current_position: 10
-      entity_id:
-      - cover.ikea_rollo_links_wohnzimmer
-      - cover.ikea_rollo_rechts_wohnzimmer
-      friendly_name: Rollos Wohnzimmer Fensterbank
-      state: open
-      supported_features: 15
     light.tv:
       brightness: 178
       color_mode: xy
@@ -60,7 +52,5 @@
       state: 'on'
   icon: mdi:controller
   id: '1739974475118'
-  metadata:
-    cover.rollos_wohnzimmer_fensterbank:
-      entity_only: true
+  metadata: {}
   name: Zocken

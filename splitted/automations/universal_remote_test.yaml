@@ -31,6 +31,11 @@ actions:
       metadata: {}
       target:
         entity_id: input_boolean.fernsehen_szene
+    - action: remote.turn_on
+      data: {}
+      metadata: {}
+      target:
+        device_id: 67feb204d2fca3cfd31e143defa33fe5
     - else:
       - action: scene.turn_on
         data:
@@ -38,6 +43,11 @@ actions:
         metadata: {}
         target:
           entity_id: scene.wohnzimmer_aus
+      - action: remote.turn_off
+        data: {}
+        metadata: {}
+        target:
+          device_id: 67feb204d2fca3cfd31e143defa33fe5
       if:
       - condition: state
         entity_id: input_boolean.fernsehen_szene
@@ -99,10 +109,6 @@ actions:
       metadata: {}
       target:
         entity_id: scene.wohnzimmer_aus
-    - device_id: cbed685d51c54392c35961266c9566f1
-      domain: switch
-      entity_id: f564dc00c2557356ac0d4f531b608d1c
-      type: turn_off
     - action: cover.open_cover
       data: {}
       metadata: {}
@@ -111,6 +117,15 @@ actions:
         device_id:
         - 2c6903e160b7b9dfaf222a7360bc0015
         - 5556afe8383ee4a45f5b74e6cc1d57ee
+    - device_id: cbed685d51c54392c35961266c9566f1
+      domain: switch
+      entity_id: f564dc00c2557356ac0d4f531b608d1c
+      type: turn_off
+    - action: remote.turn_off
+      data: {}
+      metadata: {}
+      target:
+        device_id: 67feb204d2fca3cfd31e143defa33fe5
 alias: Universal Remote Test
 conditions: []
 description: ''

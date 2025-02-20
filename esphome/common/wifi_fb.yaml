@@ -4,8 +4,5 @@ wifi:
   ap:
     ssid: ${node_name}
     password: !secret wifi_password
-  manual_ip:
-    gateway: 192.168.1.1
-    subnet: 255.255.255.0
 
 captive_portal:

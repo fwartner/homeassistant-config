@@ -9,10 +9,7 @@ api:
 packages:
   base: !include common/base_32.yaml
   ble: !include common/ble_gateway.yaml
-
-wifi:
-  manual_ip:
-    static_ip: 10.182.1.43
+  wifi: !include common/wifi_fb.yaml
 
 web_server:
   version: 2

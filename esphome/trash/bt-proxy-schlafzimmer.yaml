@@ -1,6 +1,6 @@
 substitutions:
-  node_name: bt-proxy-wohnzimmer
-  friendly_name: BT Proxy Wohnzimmer
+  node_name: bt-proxy-schlafzimmer
+  friendly_name: BT Proxy Schlafzimmer
 
 api:
   encryption:

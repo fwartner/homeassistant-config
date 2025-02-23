@@ -351,6 +351,9 @@
     - condition: state
       entity_id: input_boolean.wartung
       state: 'off'
+    - condition: state
+      entity_id: input_boolean.rollos_wohnzimmer
+      state: 'off'
   actions:
   - choose:
     - conditions:

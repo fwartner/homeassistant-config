@@ -40,6 +40,9 @@ conditions:
   - condition: state
     entity_id: input_boolean.wartung
     state: 'off'
+  - condition: state
+    entity_id: input_boolean.rollos_wohnzimmer
+    state: 'off'
 description: ''
 id: '1691320563612'
 mode: single

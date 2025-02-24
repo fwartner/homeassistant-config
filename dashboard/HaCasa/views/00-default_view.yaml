@@ -1,0 +1,16 @@
+title: Home
+path: "home"
+cards:
+  - type: vertical-stack
+    cards:
+      - type: custom:button-card
+        template: hc_header_card
+        variables:
+          security_entity:
+          person_entity: person.florian_wartner
+      - type: custom:button-card
+        template: hc_glance_card
+        variables:
+          entity1: <your first entity>
+          entity2: <your second entity>
+          entity3: <your third entity>

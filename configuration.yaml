@@ -45,6 +45,7 @@ frontend:
     - /local/community/custom-brand-icons/custom-brand-icons.js
 
 lovelace:
+  mode: "yaml"
   resources:
     - url: "/hacsfiles/button-card/button-card.js"
       type: "module"

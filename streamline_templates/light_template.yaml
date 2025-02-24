@@ -1,9 +1,0 @@
----
-light_template:
-  default:
-    - light_icon: mdi:ceiling-light
-  card:
-    type: custom:bubble-card
-    name: "[[room_name]] Licht"
-    icon: "[[light_icon]]"
-    entity: "[[light_entity]]"

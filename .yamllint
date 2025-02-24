@@ -32,6 +32,7 @@ ignore: |
   custom_configs/sensors/bkw_power.yaml
   custom_configs/binary_sensors/kitchen_cooking.yaml
   custom_configs/binary_sensors/wohnzimmer_tv.yaml
+  button_card_templates/
 rules:
   braces:
     level: error

@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3408
+Number of entities | 3409
 Number of sensors | 1828
 Number of automations | 112
 Number of scripts | 54
@@ -99,8 +99,8 @@ Number of binary sensors | 267
 - [Hvac Group](https://github.com/tetele/hvac_group)
 - [Icloud3 V3 Idevice Tracker](https://github.com/gcobb321/icloud3)
 - [Llm Vision](https://github.com/valentinfrlch/ha-llmvision)
-- [Local Llm Conversation](https://github.com/fixtse/home-llm)
 - [Local Llm Conversation](https://github.com/acon96/home-llm)
+- [Local Llm Conversation](https://github.com/fixtse/home-llm)
 - [Mail And Packages](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages)
 - [Media Player Template](https://github.com/Sennevds/media_player.template)
 - [Microsoft 365   Calendar](https://github.com/RogerSelwyn/MS365-Calendar)
@@ -205,6 +205,7 @@ Number of binary sensors | 267
 - [Multiple Entity Row](https://github.com/benct/lovelace-multiple-entity-row)
 - [Mushroom](https://github.com/piitaya/lovelace-mushroom)
 - [Mushroom   Better Sliders](https://github.com/phischdev/lovelace-mushroom-better-sliders)
+- [My Cards Bundle](https://github.com/AnthonMS/my-cards)
 - [Number Box](https://github.com/junkfix/numberbox-card)
 - [Paper Buttons Row](https://github.com/jcwillox/lovelace-paper-buttons-row)
 - [Plan Coordinates](https://github.com/custom-cards/plan-coordinates)
@@ -237,8 +238,8 @@ Number of binary sensors | 267
 - [Timer Bar Card](https://github.com/rianadon/timer-bar-card)
 - [Trashcard](https://github.com/idaho/hassio-trash-card)
 - [Unused Card](https://github.com/custom-cards/unused-card)
-- [Upcoming Media Card](https://github.com/NemesisRE/upcoming-media-card)
 - [Upcoming Media Card](https://github.com/custom-cards/upcoming-media-card)
+- [Upcoming Media Card](https://github.com/NemesisRE/upcoming-media-card)
 - [Uptime Card](https://github.com/dylandoamaral/uptime-card)
 - [Vacuum Card](https://github.com/denysdovhan/vacuum-card)
 - [Vertical Stack In Card](https://github.com/ofekashery/vertical-stack-in-card)

@@ -1,0 +1,49 @@
+actions:
+- action: media_player.volume_set
+  data:
+    volume_level: 0.5
+  metadata: {}
+  target:
+    entity_id:
+    - media_player.echo_show_wohnzimmer
+    - media_player.echo_flur
+- parallel:
+  - action: notify.alexa_media_echo_show_wohnzimmer
+    data:
+      message: ALARM! ALARM! ALARM! Der Bewohner dieses Objekts ist bereits informiert
+        und die Polizei wird gerufen! ALARM! ALARM! ALARM!
+    metadata: {}
+  - action: notify.alexa_media_echo_flur
+    data:
+      message: ALARM! ALARM! ALARM! Der Bewohner dieses Objekts ist bereits informiert
+        und die Polizei wird gerufen! ALARM! ALARM! ALARM!
+    metadata: {}
+  - action: light.toggle
+    data:
+      brightness_pct: 100
+      flash: long
+      rgb_color:
+      - 218
+      - 1
+      - 1
+    metadata: {}
+    target:
+      entity_id: light.alle_lampen
+- action: media_player.volume_set
+  data:
+    volume_level: 0.3
+  metadata: {}
+  target:
+    entity_id:
+    - media_player.echo_show_wohnzimmer
+    - media_player.echo_flur
+alias: Alarm Test
+conditions: []
+description: ''
+id: '1740441250192'
+mode: single
+triggers:
+- attribute: open_sensors
+  entity_id:
+  - alarm_control_panel.alarmo
+  trigger: state

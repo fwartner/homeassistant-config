@@ -4077,3 +4077,52 @@
         target:
           entity_id: cover.rollos_wohnzimmer_fensterbank
   mode: single
+- id: '1740441250192'
+  alias: Alarm Test
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - alarm_control_panel.alarmo
+    attribute: open_sensors
+  conditions: []
+  actions:
+  - action: media_player.volume_set
+    metadata: {}
+    data:
+      volume_level: 0.5
+    target:
+      entity_id:
+      - media_player.echo_show_wohnzimmer
+      - media_player.echo_flur
+  - parallel:
+    - action: notify.alexa_media_echo_show_wohnzimmer
+      metadata: {}
+      data:
+        message: ALARM! ALARM! ALARM! Der Bewohner dieses Objekts ist bereits informiert
+          und die Polizei wird gerufen! ALARM! ALARM! ALARM!
+    - action: notify.alexa_media_echo_flur
+      metadata: {}
+      data:
+        message: ALARM! ALARM! ALARM! Der Bewohner dieses Objekts ist bereits informiert
+          und die Polizei wird gerufen! ALARM! ALARM! ALARM!
+    - action: light.toggle
+      metadata: {}
+      data:
+        rgb_color:
+        - 218
+        - 1
+        - 1
+        brightness_pct: 100
+        flash: long
+      target:
+        entity_id: light.alle_lampen
+  - action: media_player.volume_set
+    metadata: {}
+    data:
+      volume_level: 0.3
+    target:
+      entity_id:
+      - media_player.echo_show_wohnzimmer
+      - media_player.echo_flur
+  mode: single

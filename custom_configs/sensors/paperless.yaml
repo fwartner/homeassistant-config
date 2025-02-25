@@ -11,8 +11,30 @@
   unit_of_measurement: Dokumente
 
 - platform: rest
-  name: Paperless Inbox
-  resource: http://10.0.1.99:8000/api/tags/7/
+  name: Paperless Verträge
+  resource: http://10.0.1.99:8000/api/tags/1/
+  method: GET
+  headers:
+    Authorization: !secret paperless_token
+  value_template: "{{ value_json.document_count }}"
+  scan_interval: 300
+  unique_id: paperless_inbox
+  unit_of_measurement: Dokumente
+
+- platform: rest
+  name: Paperless Rechnungen
+  resource: http://10.0.1.99:8000/api/tags/3/
+  method: GET
+  headers:
+    Authorization: !secret paperless_token
+  value_template: "{{ value_json.document_count }}"
+  scan_interval: 300
+  unique_id: paperless_inbox
+  unit_of_measurement: Dokumente
+
+- platform: rest
+  name: Paperless Mahnungen
+  resource: http://10.0.1.99:8000/api/tags/2/
   method: GET
   headers:
     Authorization: !secret paperless_token

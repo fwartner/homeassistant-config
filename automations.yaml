@@ -469,6 +469,11 @@
         target:
           device_id: 9d14dca47a5773d55c5f7f9d16c58476
         action: switch.turn_on
+      - action: alarmo.disarm
+        metadata: {}
+        data:
+          entity_id: alarm_control_panel.alarmo
+          code: '8182'
     - conditions:
       - condition: trigger
         id:
@@ -620,32 +625,39 @@
 - id: '1692084370120'
   alias: Verlassen
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - sensor.people_home
     to: '0'
     id: anyoneHomeOff
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: input_boolean.wartung
     state: 'off'
-  action:
+  actions:
   - choose:
     - conditions:
       - condition: trigger
         id:
         - anyoneHomeOff
       sequence:
-      - service: light.turn_off
-        data: {}
+      - data: {}
         target:
           entity_id: light.alle_lampen
-      - service: switch.turn_off
-        data: {}
+        action: light.turn_off
+      - data: {}
         target:
           entity_id:
           - switch.alle_steckdosen
+        action: switch.turn_off
+      - action: alarmo.arm
+        metadata: {}
+        data:
+          mode: away
+          skip_delay: true
+          force: true
+          entity_id: alarm_control_panel.alarmo
   mode: single
 - id: '1692134639284'
   alias: Türklingel
@@ -4078,7 +4090,7 @@
           entity_id: cover.rollos_wohnzimmer_fensterbank
   mode: single
 - id: '1740441250192'
-  alias: Alarm Test
+  alias: Alarmanlage
   description: ''
   triggers:
   - trigger: state
@@ -4106,17 +4118,23 @@
       data:
         message: ALARM! ALARM! ALARM! Der Bewohner dieses Objekts ist bereits informiert
           und die Polizei wird gerufen! ALARM! ALARM! ALARM!
-    - action: light.toggle
-      metadata: {}
-      data:
-        rgb_color:
-        - 218
-        - 1
-        - 1
-        brightness_pct: 100
-        flash: long
-      target:
-        entity_id: light.alle_lampen
+  - repeat:
+      sequence:
+      - action: light.toggle
+        metadata: {}
+        data:
+          rgb_color:
+          - 218
+          - 1
+          - 1
+          brightness_pct: 100
+          flash: long
+        target:
+          entity_id: light.alle_lampen
+      until:
+      - condition: state
+        entity_id: alarm_control_panel.alarmo
+        state: disarmed
   - action: media_player.volume_set
     metadata: {}
     data:

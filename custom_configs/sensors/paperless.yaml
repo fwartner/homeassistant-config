@@ -17,6 +17,6 @@
   headers:
     Authorization: !secret paperless_token
   value_template: "{{ value_json.document_count }}"
-  scan_interval: 60
+  scan_interval: 300
   unique_id: paperless_inbox
   unit_of_measurement: Dokumente

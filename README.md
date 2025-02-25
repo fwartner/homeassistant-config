@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3406
+Number of entities | 3402
 Number of sensors | 1828
 Number of automations | 109
 Number of scripts | 54
@@ -84,7 +84,6 @@ Number of binary sensors | 267
 - [EPG](https://github.com/yohaybn/HomeAssistant-EPG)
 - [Eufy Security](https://github.com/fuatakgun/eufy_security)
 - [Expose Camera Stream Source](https://github.com/felipecrs/hass-expose-camera-stream-source)
-- [Extended Openai Conversation](https://github.com/jekalmin/extended_openai_conversation)
 - [Feedparser](https://github.com/custom-components/feedparser)
 - [Flightradar24](https://github.com/AlexandrErohin/home-assistant-flightradar24)
 - [Fontawesome](https://github.com/thomasloven/hass-fontawesome)
@@ -100,10 +99,8 @@ Number of binary sensors | 267
 - [Icloud3 V3 Idevice Tracker](https://github.com/gcobb321/icloud3)
 - [Llm Vision](https://github.com/valentinfrlch/ha-llmvision)
 - [Local Llm Conversation](https://github.com/fixtse/home-llm)
-- [Local Llm Conversation](https://github.com/acon96/home-llm)
 - [Mail And Packages](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages)
 - [Media Player Template](https://github.com/Sennevds/media_player.template)
-- [Microsoft 365   Calendar](https://github.com/RogerSelwyn/MS365-Calendar)
 - [Microsoft 365   Teams](https://github.com/RogerSelwyn/MS365-Teams)
 - [Multiscrape](https://github.com/danieldotnl/ha-multiscrape)
 - [Music Assistant](https://github.com/music-assistant/hass-music-assistant)
@@ -123,7 +120,6 @@ Number of binary sensors | 267
 - [Samsungtv Smart](https://github.com/ollo69/ha-samsungtv-smart)
 - [Scheduler Component](https://github.com/nielsfaber/scheduler-component)
 - [Simpleicons](https://github.com/vigonotion/hass-simpleicons)
-- [Skyq](https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer)
 - [Sonoff Lan](https://github.com/AlexxIT/SonoffLAN)
 - [Spook 👻 Your Homie](https://github.com/frenck/spook)
 - [Spoolman](https://github.com/Disane87/spoolman-homeassistant)
@@ -238,8 +234,8 @@ Number of binary sensors | 267
 - [Timer Bar Card](https://github.com/rianadon/timer-bar-card)
 - [Trashcard](https://github.com/idaho/hassio-trash-card)
 - [Unused Card](https://github.com/custom-cards/unused-card)
-- [Upcoming Media Card](https://github.com/NemesisRE/upcoming-media-card)
 - [Upcoming Media Card](https://github.com/custom-cards/upcoming-media-card)
+- [Upcoming Media Card](https://github.com/NemesisRE/upcoming-media-card)
 - [Uptime Card](https://github.com/dylandoamaral/uptime-card)
 - [Vacuum Card](https://github.com/denysdovhan/vacuum-card)
 - [Vertical Stack In Card](https://github.com/ofekashery/vertical-stack-in-card)

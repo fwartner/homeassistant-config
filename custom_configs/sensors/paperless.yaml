@@ -1,7 +1,7 @@
 ---
 - platform: rest
   name: Paperless Documents
-  resource: https://paperless.wartner.cloud/api/documents/
+  resource: https://paperless.wartner.cloud /api/documents/
   method: GET
   headers:
     Authorization: !secret paperless_token

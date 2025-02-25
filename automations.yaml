@@ -250,28 +250,6 @@
           - cover.rollos_schlafzimmer
         data: {}
   mode: single
-- id: '1690714818053'
-  alias: Rollos hoch wenn jemand nach Hause kommt
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.people_home
-    from: '0'
-    to: '1'
-  condition:
-  - condition: state
-    entity_id: input_boolean.wartung
-    state: 'off'
-  action:
-  - service: cover.open_cover
-    data: {}
-    target:
-      entity_id:
-      - cover.ikea_rollo_balkontur
-      - cover.rollos_schlafzimmer
-      - cover.rollos_wohnzimmer_fensterbank
-  mode: single
 - id: '1691151128778'
   alias: Nachtlicht Küche
   description: ''

@@ -11,9 +11,3 @@
   state_topic: "espresense/devices/apple:1007:11-12"
   timeout: 10
   away_timeout: 30
-- platform: mqtt_room
-  device_id: "sdgsdgsd"
-  name: "Android von Steffi Presence"
-  state_topic: "espresense/devices/sdgfsdgs"
-  timeout: 10
-  away_timeout: 30

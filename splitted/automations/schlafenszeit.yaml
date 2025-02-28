@@ -101,9 +101,6 @@ conditions:
   - condition: zone
     entity_id: person.florian_wartner
     zone: zone.home
-  - condition: zone
-    entity_id: person.steffi
-    zone: zone.home
 description: ''
 id: '1731345953307'
 mode: single

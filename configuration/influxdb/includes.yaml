@@ -16,7 +16,6 @@ domains:
 entities:
   - sensor.stromverbrauch_aktuell
   - person.florian_wartner
-  - person.steffi
   - weather.openweathermap
 entity_globs:
   - sensor.aqara_thermo_*_temperature

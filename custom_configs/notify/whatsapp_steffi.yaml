@@ -1,4 +1,0 @@
----
-- platform: whatsapper
-  name: whatsapp_steffi
-  chat_id: !secret whatsapp_steffi

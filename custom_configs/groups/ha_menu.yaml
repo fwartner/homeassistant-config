@@ -1,0 +1,9 @@
+---
+ha_menu:
+  name: HA Menu Switches
+  entities:
+    - cover.aqara_rollo_kuche
+    - cover.rollos_wohnzimmer_fensterbank
+    - cover.rollos_schlafzimmer
+    - cover.aqara_rollo_kuche
+    - 

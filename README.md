@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3344
+Number of entities | 3345
 Number of sensors | 1789
 Number of automations | 108
 Number of scripts | 54
@@ -74,6 +74,7 @@ Number of binary sensors | 259
 - [Blitzortung.Org Lightning Detector](https://github.com/mrk-its/homeassistant-blitzortung)
 - [Brewdog](https://github.com/custom-components/brewdog)
 - [Browser Mod](https://github.com/thomasloven/hass-browser_mod)
+- [Chime Tts](https://github.com/nimroddolev/chime_tts)
 - [Cupertino Icons](https://github.com/menahishayan/HomeAssistant-Cupertino-Icons)
 - [Daily Schedule](https://github.com/amitfin/daily_schedule)
 - [Daily Sensor](https://github.com/jeroenterheerdt/HADailySensor)

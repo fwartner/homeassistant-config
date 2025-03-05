@@ -17,13 +17,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3339
-Number of sensors | 1787
+Number of entities | 3335
+Number of sensors | 1783
 Number of automations | 108
 Number of scripts | 54
 Number of scenes | 34
 Number of zones | 22
-Number of binary sensors | 259
+Number of binary sensors | 258
 
 ## Demo of my dashboard
 ![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)
@@ -42,6 +42,7 @@ Number of binary sensors | 259
 - openWakeWord
 - Piper
 - PS5 MQTT
+- Puppet
 - room-assistant
 - Samba share
 - Silicon Labs Multiprotocol

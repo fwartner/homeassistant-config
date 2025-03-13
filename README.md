@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3342
+Number of entities | 3345
 Number of sensors | 1789
 Number of automations | 108
 Number of scripts | 54
@@ -35,6 +35,8 @@ Number of binary sensors | 258
 - AirSonos
 - Assist Microphone
 - ESPHome Device Builder
+- Immich Openvino
+- Immich Power Tools
 - Matter Server
 - Mosquitto broker
 - Music Assistant Server
@@ -42,7 +44,6 @@ Number of binary sensors | 258
 - openWakeWord
 - Piper
 - PS5 MQTT
-- Puppet
 - room-assistant
 - Samba share
 - Silicon Labs Multiprotocol
@@ -52,6 +53,7 @@ Number of binary sensors | 258
 - SwitchBot-Mqtt
 - TasmoAdmin
 - Uptime Kuma
+- VLC
 - Whatsapper
 - Whisper
 - Zigbee2MQTT

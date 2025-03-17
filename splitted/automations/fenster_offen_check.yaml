@@ -1,4 +1,4 @@
-action:
+actions:
 - continue_on_timeout: false
   wait_template: "{% set fenster = [\n            'binary_sensor.eve_contact_schlafzimmer_fenster_rechts',\n\
     \            'binary_sensor.aqara_contact_balkontur_contact'\n            ] %}\n\
@@ -9,21 +9,22 @@ action:
     entity_id: input_boolean.nicht_storen
     state: 'off'
   then:
-  - data:
+  - action: notify.home_ai
+    data:
       message: "Es sieht so aus, als w\xE4ren noch eines oder mehrere Fenster offen.\
         \ Pr\xFCfe doch mal nach, welche das sein k\xF6nnten und schlie\xDFe sie gegebenenfalls\
         \ bevor du gehst."
       title: Es sind noch Fenster offen
     metadata: {}
-    service: notify.home_ai
-- data:
+- action: notify.alexa_media_echo_flur
+  data:
     message: "Es sieht so aus, als w\xE4ren noch eines oder mehrere Fenster offen.\
       \ Pr\xFCfe doch mal nach, welche das sein k\xF6nnten und schlie\xDFe sie gegebenenfalls\
       \ bevor du gehst."
+  enabled: false
   metadata: {}
-  service: notify.alexa_media_echo_flur
 alias: Fenster Offen Check
-condition:
+conditions:
 - condition: and
   conditions:
   - condition: state
@@ -35,10 +36,10 @@ condition:
 description: ''
 id: '1713181882652'
 mode: single
-trigger:
+triggers:
 - device_id: 67bc89621a1ceb0aced67ad07618a34b
   domain: hue
-  platform: device
   subtype: 2
+  trigger: device
   type: short_release
   unique_id: 8d3f7a5f-3828-4f9f-96c9-fcc402888bfc

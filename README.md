@@ -35,7 +35,7 @@ Number of binary sensors | 258
 - AirSonos
 - Assist Microphone
 - ESPHome Device Builder
-- Immich Power Tools
+- Immich Openvino
 - Matter Server
 - Mosquitto broker
 - Music Assistant Server

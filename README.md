@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3270
+Number of entities | 3271
 Number of sensors | 1758
 Number of automations | 102
 Number of scripts | 54
@@ -39,6 +39,7 @@ Number of binary sensors | 258
 - Matter Server
 - Mosquitto broker
 - Music Assistant Server
+- Newt Add-on
 - Node-RED
 - openWakeWord
 - Piper

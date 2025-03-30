@@ -17,13 +17,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3196
-Number of sensors | 1703
+Number of entities | 3202
+Number of sensors | 1706
 Number of automations | 102
 Number of scripts | 54
 Number of scenes | 34
 Number of zones | 22
-Number of binary sensors | 255
+Number of binary sensors | 259
 
 ## Demo of my dashboard
 ![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)
@@ -36,7 +36,6 @@ Number of binary sensors | 255
 - Assist Microphone
 - ESPHome Device Builder
 - Grocy
-- Immich Openvino
 - Matter Server
 - Mealie
 - Mosquitto broker

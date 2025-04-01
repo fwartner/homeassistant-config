@@ -17,13 +17,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3208
-Number of sensors | 1711
+Number of entities | 3291
+Number of sensors | 1747
 Number of automations | 102
 Number of scripts | 54
 Number of scenes | 34
 Number of zones | 22
-Number of binary sensors | 260
+Number of binary sensors | 261
 
 ## Demo of my dashboard
 ![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)
@@ -122,7 +122,6 @@ Number of binary sensors | 260
 - [Pyscript](https://github.com/custom-components/pyscript)
 - [Qr Code Generator](https://github.com/DeerMaximum/QR-Code-Generator)
 - [Retry](https://github.com/amitfin/retry)
-- [Roborock](https://github.com/humbertogontijo/homeassistant-roborock)
 - [Ryanair](https://github.com/jampez77/Ryanair)
 - [Samsungtv Smart](https://github.com/ollo69/ha-samsungtv-smart)
 - [Scheduler Component](https://github.com/nielsfaber/scheduler-component)

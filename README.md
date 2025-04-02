@@ -17,13 +17,13 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3325
-Number of sensors | 1764
+Number of entities | 3318
+Number of sensors | 1756
 Number of automations | 102
 Number of scripts | 54
 Number of scenes | 34
 Number of zones | 22
-Number of binary sensors | 266
+Number of binary sensors | 267
 
 ## Demo of my dashboard
 ![Dashboard](https://wartner.io/content/images/2023/08/CleanShot-2023-08-11-at-08.56.03-1.gif)
@@ -240,8 +240,8 @@ Number of binary sensors | 266
 - [Timer Bar Card](https://github.com/rianadon/timer-bar-card)
 - [Trashcard](https://github.com/idaho/hassio-trash-card)
 - [Unused Card](https://github.com/custom-cards/unused-card)
-- [Upcoming Media Card](https://github.com/custom-cards/upcoming-media-card)
 - [Upcoming Media Card](https://github.com/NemesisRE/upcoming-media-card)
+- [Upcoming Media Card](https://github.com/custom-cards/upcoming-media-card)
 - [Uptime Card](https://github.com/dylandoamaral/uptime-card)
 - [Vacuum Card](https://github.com/denysdovhan/vacuum-card)
 - [Vertical Stack In Card](https://github.com/ofekashery/vertical-stack-in-card)

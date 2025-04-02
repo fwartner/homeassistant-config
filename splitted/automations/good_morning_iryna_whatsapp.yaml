@@ -1,0 +1,14 @@
+actions:
+- action: notify.whatsapp_iryna
+  data:
+    message: '{{ state_attr(''sensor.good_morning_iryna'', ''messages'') | random
+      }}'
+  metadata: {}
+alias: Good Morning Iryna WhatsApp
+conditions: []
+description: ''
+id: '1743600218230'
+mode: single
+triggers:
+- at: 06:30:00
+  trigger: time

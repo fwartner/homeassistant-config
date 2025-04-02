@@ -17,9 +17,9 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3327
-Number of sensors | 1765
-Number of automations | 102
+Number of entities | 3261
+Number of sensors | 1738
+Number of automations | 103
 Number of scripts | 54
 Number of scenes | 34
 Number of zones | 22
@@ -65,7 +65,6 @@ Number of binary sensors | 267
 - [Adsb.Lol For Homeassistant](https://github.com/vingerha/ha_adsb_lol)
 - [Ai Automation Suggester](https://github.com/ITSpecialist111/ai_automation_suggester)
 - [Alarmo](https://github.com/nielsfaber/alarmo)
-- [Alexa Media Player](https://github.com/alandtse/alexa_media_player)
 - [Anniversaries](https://github.com/pinkywafer/Anniversaries)
 - [Apparent Temperature](https://github.com/Limych/ha-apparent-temperature)
 - [Attributes Extractor](https://github.com/pilotak/homeassistant-attributes)

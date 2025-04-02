@@ -3478,3 +3478,17 @@
         target:
           entity_id: cover.rollos_wohnzimmer_fensterbank
   mode: single
+- id: '1743600218230'
+  alias: Good Morning Iryna WhatsApp
+  description: ''
+  triggers:
+  - trigger: time
+    at: 06:30:00
+  conditions: []
+  actions:
+  - action: notify.whatsapp_iryna
+    metadata: {}
+    data:
+      message: '{{ state_attr(''sensor.good_morning_iryna'', ''messages'') | random
+        }}'
+  mode: single

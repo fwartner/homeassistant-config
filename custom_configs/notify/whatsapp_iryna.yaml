@@ -1,0 +1,4 @@
+---
+- platform: whatsapper
+  name: whatsapp_iryna
+  chat_id: 491753234682@c.us

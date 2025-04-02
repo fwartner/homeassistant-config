@@ -3144,48 +3144,6 @@
     path: music-assistant/mass_assist_blueprint_de.yaml
     input:
       default_player_entity_id_input: media_player.sonos_wohnzimmer
-- id: '1739751430350'
-  alias: Aktuelles Handy von Florian
-  description: ''
-  triggers:
-  - trigger: state
-    entity_id:
-    - input_select.alles_handy_von_florian
-    from: iPhone
-    to: Pixel 9
-    id: iPhoneToPixel
-  - trigger: state
-    entity_id:
-    - input_select.alles_handy_von_florian
-    from: Pixel 9
-    to: iPhone
-    id: pixelToIphone
-  conditions: []
-  actions:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - iPhoneToPixel
-      sequence:
-      - action: input_text.set_value
-        metadata: {}
-        data:
-          value: device_tracker.pixel_9
-        target:
-          entity_id: input_text.florian_handy
-    - conditions:
-      - condition: trigger
-        id:
-        - pixelToIphone
-      sequence:
-      - action: input_text.set_value
-        metadata: {}
-        data:
-          value: device_tracker.iphone_von_florian
-        target:
-          entity_id: input_text.florian_handy
-  mode: single
 - id: '1739922705305'
   alias: Licht Büro An/Aus
   description: ''

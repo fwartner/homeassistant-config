@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3118
+Number of entities | 3119
 Number of sensors | 1628
 Number of automations | 100
 Number of scripts | 54
@@ -146,6 +146,7 @@ Number of binary sensors | 240
 - [Watchman](https://github.com/dummylabs/thewatchman)
 - [Webrtc Camera](https://github.com/AlexxIT/WebRTC)
 - [Whatsapper Notification](https://github.com/baldarn/whatsapper-ha-integration)
+- [Xtend Tuya](https://github.com/azerty9971/xtend_tuya)
 - [Ytube Music Player](https://github.com/KoljaWindeler/ytube_music_player)
 
 ### Lovelace plugins

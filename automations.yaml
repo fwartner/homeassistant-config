@@ -2624,54 +2624,6 @@
       entity_id: cover.ikea_rollo_balkontur
     data: {}
   mode: single
-- id: '1726234446658'
-  alias: Heizung Kontrolle
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.aqara_contact_balkontur_contact
-    to: 'on'
-    id: balkonDoorOpen
-  - platform: state
-    entity_id:
-    - binary_sensor.aqara_contact_balkontur_contact
-    to: 'on'
-    id: balkonDoorClosed
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - balkonDoorOpen
-      sequence:
-      - if:
-        - condition: state
-          entity_id: climate.eve_heizung_wohnzimmer
-          state: heat
-        then:
-        - device_id: b4caf944bee99395e23b319efe0618b7
-          domain: climate
-          entity_id: 163bf4ce33a250745098a4632c52a7e3
-          type: set_hvac_mode
-          hvac_mode: 'off'
-    - conditions:
-      - condition: trigger
-        id:
-        - balkonDoorClosed
-      sequence:
-      - if:
-        - condition: state
-          entity_id: climate.eve_heizung_wohnzimmer
-          state: 'off'
-        then:
-        - device_id: b4caf944bee99395e23b319efe0618b7
-          domain: climate
-          entity_id: 163bf4ce33a250745098a4632c52a7e3
-          type: set_hvac_mode
-          hvac_mode: heat
-  mode: single
 - id: '1726392490651'
   alias: Luftreiniger nach Qualität
   description: ''

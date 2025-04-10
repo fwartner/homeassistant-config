@@ -1,62 +1,59 @@
 ---
-good_morning_iryna:
-  platform: template
-  name: "good_morning_iryna"
-  attributes:
-    messages:
-      - Good morning! A new day full of possibilities awaits.
-      - Rise and shine! The world is brighter with positivity and kindness.
-      - Good morning! May today bring happiness and success.
-      - A fresh start, a new opportunity – make the most of it!
-      - Good morning! Let’s make today a great one.
-      - Every sunrise is a reminder of new beginnings.
-      - Good morning! Stay positive and embrace the day ahead.
-      - Wake up and welcome the opportunities of the day.
-      - Good morning! May today be filled with joy and inspiration.
-      - A new day, a new chance to grow and achieve.
-      - Start the day with a smile and good things will follow.
-      - Good morning! Wishing you a peaceful and productive day.
-      - Embrace the morning with optimism and gratitude.
-      - Good morning! May today be filled with wonderful moments.
-      - Rise and shine! Let’s make today meaningful.
-      - A bright morning brings fresh energy – use it wisely!
-      - Good morning! Every day is a step towards new achievements.
-      - Start the day with purpose and positivity.
-      - Good morning! Small steps lead to great success.
-      - A new dawn, a fresh perspective – make today count!
-      - Good morning! Let today be the start of something amazing.
-      - The morning sun brings new hope and fresh energy.
-      - Good morning! A positive mind brings positive outcomes.
-      - A brand-new day, a brand-new opportunity – go for it!
-      - Good morning! Shine bright and spread kindness today.
-      - Wake up with enthusiasm – the world is waiting for you!
-      - Good morning! May today be filled with laughter and success.
-      - The best way to start the day is with gratitude and joy.
-      - Good morning! A little progress each day leads to great results.
-      - Every day is a gift – unwrap it with excitement!
-      - Good morning! May your day be filled with love and inspiration.
-      - A new morning, a new adventure – embrace it fully!
-      - Good morning! Set your intentions and chase your dreams.
-      - Start today with positivity, and the rest will follow.
-      - Good morning! Believe in yourself, and great things will happen.
-      - Take a deep breath – it’s a beautiful day ahead!
-      - Good morning! Let’s make today count in the best way.
-      - Rise and shine! You have everything it takes to succeed.
-      - A positive morning leads to a positive day – stay motivated!
-      - Good morning! Let go of worries and embrace the present moment.
-      - Wake up, be grateful, and make today unforgettable.
-      - Good morning! The best is yet to come, so keep moving forward.
-      - Each morning is a blank canvas – paint it beautifully!
-      - Good morning! Step forward with confidence and purpose.
-      - Today is another chance to be the best version of yourself.
-      - Good morning! Focus on progress, not perfection.
-      - Every sunrise is a fresh start – make it amazing!
-      - Good morning! You are capable of achieving incredible things.
-      - Wake up with determination and go to bed with satisfaction.
-      - Good morning! Find joy in the little moments today.
-      - The morning breeze whispers new possibilities – listen to it.
-      - Good morning! You have the power to make today great.
-      - Life is too short to wake up with regrets – embrace the day!
-      - Good morning! Keep moving forward, step by step.
-      - The sun is shining, and so should you – rise and shine!
-      - Good morning! Make the most of every moment today.
+- platform: template
+  sensors:
+    greeting:
+      friendly_name: "Greeting"
+      value_template: >
+        {% set greetings = [
+          "Good morning! A new day full of possibilities awaits.",
+          "Rise and shine! Embrace the opportunities of today.",
+          "Good morning! Let your light shine bright today.",
+          "Wake up and greet the day with joy and courage.",
+          "Good morning! Today is a canvas awaiting your masterpiece.",
+          "Rise and shine! A fresh start begins now.",
+          "Good morning! Make every moment count.",
+          "Step into the day with confidence and optimism.",
+          "Good morning! Today holds endless potential.",
+          "Rise and shine! The world is yours to explore.",
+          "Good morning! Each day is a new adventure.",
+          "Embrace the dawn of a beautiful new day.",
+          "Good morning! Let passion fuel your journey today.",
+          "Wake up to the promise of a wonderful day ahead.",
+          "Good morning! Today is the day to achieve your dreams.",
+          "Rise and shine! Seize the day with enthusiasm.",
+          "Good morning! Let inspiration guide your steps.",
+          "Welcome the new day with an open heart and mind.",
+          "Good morning! Today is your day to make a difference.",
+          "Rise and shine! The future is bright and filled with hope.",
+          "Good morning! Embrace the challenges and joys of today.",
+          "Start your day with a smile and positive energy.",
+          "Good morning! May today be filled with happiness and success.",
+          "Rise and shine! A fresh journey begins with the morning sun.",
+          "Good morning! Let every moment inspire you.",
+          "Wake up, it's a new day to shine and succeed.",
+          "Good morning! Today is the perfect day to start afresh.",
+          "Embrace today with courage and passion.",
+          "Good morning! Fill your day with creativity and joy.",
+          "Rise and shine! Let your dreams set sail today.",
+          "Good morning! A brand new day awaits your brilliance.",
+          "Start your morning with gratitude and positivity.",
+          "Good morning! Today's opportunities are as vast as the sky.",
+          "Rise and shine! Let the morning sun energize your spirit.",
+          "Good morning! Every day is a chance to rewrite your story.",
+          "Greet the day with hope, passion, and determination.",
+          "Good morning! Embrace the magic of a new beginning.",
+          "Rise and shine! Today is a chapter of endless promise.",
+          "Good morning! Let your ambitions soar high.",
+          "Wake up and witness the beauty of a new sunrise.",
+          "Good morning! Every moment is a stepping stone to greatness.",
+          "Embrace the day with zest and an open heart.",
+          "Good morning! Let your inner strength lead the way.",
+          "Rise and shine! Today is a gift waiting to be unwrapped.",
+          "Good morning! May your day be filled with positive surprises.",
+          "Welcome the morning with a spirit full of possibilities.",
+          "Good morning! Let today inspire your journey.",
+          "Rise and shine! New challenges lead to new achievements.",
+          "Good morning! Seize the day and make your dreams come true.",
+          "Wake up and embrace the beauty of a fresh start."
+        ] %}
+        {{ greetings | random }}

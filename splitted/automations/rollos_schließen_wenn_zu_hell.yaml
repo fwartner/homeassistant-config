@@ -47,7 +47,7 @@ description: ''
 id: '1691320563612'
 mode: single
 triggers:
-- above: 10000
+- above: 9000
   device_id: cc409c26cddb1137902b367f0bbcc342
   domain: sensor
   entity_id: fdf41f9caeca9372e6285dca0cc7d60f
@@ -58,6 +58,10 @@ triggers:
   device_id: cc409c26cddb1137902b367f0bbcc342
   domain: sensor
   entity_id: fdf41f9caeca9372e6285dca0cc7d60f
+  for:
+    hours: 0
+    minutes: 5
+    seconds: 0
   id: wohnzimmerRollosOff
   trigger: device
   type: illuminance

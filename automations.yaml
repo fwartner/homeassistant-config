@@ -309,7 +309,7 @@
     domain: sensor
     trigger: device
     id: wohnzimmerRollosOn
-    above: 10000
+    above: 9000
   - type: illuminance
     device_id: cc409c26cddb1137902b367f0bbcc342
     entity_id: fdf41f9caeca9372e6285dca0cc7d60f
@@ -317,6 +317,10 @@
     trigger: device
     id: wohnzimmerRollosOff
     below: 500
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
   conditions:
   - condition: and
     conditions:

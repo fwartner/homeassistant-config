@@ -1,8 +1,15 @@
 actions:
+- action: template.reload
+  data: {}
+  metadata: {}
+- delay:
+    hours: 0
+    milliseconds: 0
+    minutes: 0
+    seconds: 10
 - action: notify.whatsapp_iryna
   data:
-    message: '{{ state_attr(''sensor.good_morning_iryna'', ''messages'') | random
-      }}'
+    message: '{{ states(''sensor.good_morning_iryna'') }}'
   metadata: {}
 alias: Good Morning Iryna WhatsApp
 conditions: []

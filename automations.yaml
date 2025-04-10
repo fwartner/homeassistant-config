@@ -3307,9 +3307,16 @@
     at: 06:30:00
   conditions: []
   actions:
+  - action: template.reload
+    metadata: {}
+    data: {}
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
   - action: notify.whatsapp_iryna
     metadata: {}
     data:
-      message: '{{ state_attr(''sensor.good_morning_iryna'', ''messages'') | random
-        }}'
+      message: '{{ states(''sensor.good_morning_iryna'') }}'
   mode: single

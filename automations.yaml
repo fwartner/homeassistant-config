@@ -3304,17 +3304,9 @@
   description: ''
   triggers:
   - trigger: time
-    at: 06:30:00
+    at: '{{ states(''sensor.random_morning_action_time'') }}'
   conditions: []
   actions:
-  - action: template.reload
-    metadata: {}
-    data: {}
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 10
-      milliseconds: 0
   - action: notify.whatsapp_iryna
     metadata: {}
     data:

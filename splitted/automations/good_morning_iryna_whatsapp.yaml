@@ -1,12 +1,4 @@
 actions:
-- action: template.reload
-  data: {}
-  metadata: {}
-- delay:
-    hours: 0
-    milliseconds: 0
-    minutes: 0
-    seconds: 10
 - action: notify.whatsapp_iryna
   data:
     message: '{{ states(''sensor.good_morning_iryna'') }}'
@@ -17,5 +9,5 @@ description: ''
 id: '1743600218230'
 mode: single
 triggers:
-- at: 06:30:00
+- at: '{{ states(''sensor.random_morning_action_time'') }}'
   trigger: time

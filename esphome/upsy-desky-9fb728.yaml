@@ -21,3 +21,8 @@ wifi:
     static_ip: 10.182.1.231
     gateway: 10.182.1.1
     subnet: 255.255.255.0
+
+esp32_ble_tracker:
+
+bluetooth_proxy:
+  active: true

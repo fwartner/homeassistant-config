@@ -185,7 +185,7 @@ Number of binary sensors | 241
 - [Flex Table   Highly Customizable, Data Visualization](https://github.com/custom-cards/flex-table-card)
 - [Fold Entity Row](https://github.com/thomasloven/lovelace-fold-entity-row)
 - [Ha Dashboard](https://github.com/wassy92x/lovelace-ha-dashboard)
-- [Ha Floorplan 🖌🎨 | Your Imagination Just Became The New Limit](https://github.com/ExperienceLovelace/ha-floorplan)
+- [Ha Floorplan 🖌🎨 | Your Imagination (Almost) Defines The Limits](https://github.com/ExperienceLovelace/ha-floorplan)
 - [Hass Hue Icons](https://github.com/arallsopp/hass-hue-icons)
 - [Header Cards](https://github.com/gadgetchnnel/lovelace-header-cards)
 - [Home Assistant Swipe Navigation](https://github.com/zanna-37/hass-swipe-navigation)

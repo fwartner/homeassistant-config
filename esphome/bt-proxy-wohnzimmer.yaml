@@ -1,0 +1,19 @@
+substitutions:
+  node_name: bt-proxy-wohnzimmer
+  friendly_name: BT Proxy Wohnzimmer
+
+api:
+  encryption:
+    key: "VdWdR0EFbyMuhaEr4QRjEb7BZA/2TmAwCGTPkKe5Pzs="
+
+packages:
+  base: !include common/base_32.yaml
+  ble: !include common/ble_gateway.yaml
+
+wifi:
+  manual_ip:
+    static_ip: 10.182.1.43
+
+web_server:
+  version: 2
+  include_internal: true

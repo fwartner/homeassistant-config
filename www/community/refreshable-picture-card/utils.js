@@ -19,7 +19,7 @@ export function handleAction(node, hass, config, actionConfig) {
     }
     case "navigate":
       if (actionConfig.navigation_path) {
-        navigate(actionConfig.navigation_path);
+        navigate(actionConfig.navigation_path); // Uses the navigate function
       } else {
         showToast(node, {
           message: hass.localize(
@@ -76,6 +76,14 @@ export function handleAction(node, hass, config, actionConfig) {
       fireEvent(node, "ll-custom", actionConfig);
     }
   }
+}
+
+// Add the navigate function
+export function navigate(path) {
+  history.pushState(null, "", path);
+  const navigateEvent = new Event("location-changed", { bubbles: true, composed: true });
+  navigateEvent.detail = { replace: false };
+  window.dispatchEvent(navigateEvent);
 }
 
 const forwardHaptic = (hapticType) => fireEvent(window, "haptic", hapticType);

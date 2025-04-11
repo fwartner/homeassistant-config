@@ -28,7 +28,7 @@ class ResfeshablePictureCard extends LitElement {
   static getStubConfig() {
     return {
       type: "custom:refreshable-picture-card",
-      title: "Refreshable Picture",
+      title: "", // Default to empty title
       refresh_interval: 30,
       url: "",
       entity: "",
@@ -52,7 +52,7 @@ class ResfeshablePictureCard extends LitElement {
     super.connectedCallback?.();
     const refreshTime = (this.config.refresh_interval || 30) * 1000;
 
-    if(this._refreshInterval) {
+    if (this._refreshInterval) {
       clearInterval(this._refreshInterval);
     }
     this._refreshInterval = setInterval(
@@ -61,10 +61,7 @@ class ResfeshablePictureCard extends LitElement {
     );
 
     // calling it after 10 ms ensures this.hass will be set
-    setTimeout(
-        () => (this.pictureUrl = this._getTimestampedUrl()),
-        10
-    );
+    setTimeout(() => (this.pictureUrl = this._getTimestampedUrl()), 10);
   }
 
   disconnectedCallback() {
@@ -87,14 +84,20 @@ class ResfeshablePictureCard extends LitElement {
   }
 
   render() {
-    const { noMargin, title } = this.config;
+    const { noMargin, title = '', tap_action } = this.config; // Default empty title
+    const navigationPath = tap_action?.navigation_path || ""; // Extract navigation_path
+
     return html`
-      <ha-card header=${title} @click="${this._onClick}">
+	  <!-- Tooltip with navigation path -->
+      <ha-card 
+        header=${title} 
+        @click="${this._onClick}" 
+        title="${navigationPath}"
+      >
         <div class=${noMargin ? "withoutMargin" : "withMargin"}>
-          ${this.pictureUrl != '' ?
-            html`<img class="center" @error="${this.onError}" @load="${this.onLoad}" src="${this.pictureUrl}" />` :
-            ''
-          }
+          ${this.pictureUrl != ''
+            ? html`<img class="center" @error="${this.onError}" @load="${this.onLoad}" src="${this.pictureUrl}" />`
+            : ''}
         </div>
       </ha-card>
     `;
@@ -144,6 +147,14 @@ class ResfeshablePictureCard extends LitElement {
       letter-spacing: -0.012em;
       line-height: 32px;
     }
+    ha-card {
+      cursor: pointer; /* Changes the cursor to a pointer to indicate clickability */
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+    ha-card:hover {
+      transform: scale(1.02); /* Slightly enlarges the card on hover */
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* Adds a shadow effect on hover */
+    }
   `;
 
   _getPictureUrl() {
@@ -157,13 +168,13 @@ class ResfeshablePictureCard extends LitElement {
 
   _getTimestampedUrl() {
     let url = this._getPictureUrl();
-    
-    if(url.indexOf("?") > -1){
-        url = url + "&currentTimeCache=" + (new Date().getTime())
-      }else{
-        url = url + "?currentTimeCache=" + (new Date().getTime())
-      }
-    
+
+    if (url.indexOf("?") > -1) {
+      url = url + "&currentTimeCache=" + new Date().getTime();
+    } else {
+      url = url + "?currentTimeCache=" + new Date().getTime();
+    }
+
     return url || "";
   }
 

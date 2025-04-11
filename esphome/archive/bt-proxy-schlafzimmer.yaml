@@ -1,10 +1,10 @@
-substitutions:
-  node_name: bt-proxy-schlafzimmer
+esphome:
+  name: bt-proxy-schlafzimmer
   friendly_name: BT Proxy Schlafzimmer
 
 api:
   encryption:
-    key: "ko8prsmAAnCe5/UL++9RND+lO6iS6PkaistqPGWnCpc="
+    key: "TY8gy3WZM2NaaYGgsiVcuyDo9L5i4HqIGSPiFJVzK2A="
 
 packages:
   base: !include common/base_32.yaml

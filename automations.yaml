@@ -640,6 +640,7 @@
           skip_delay: true
           force: true
           entity_id: alarm_control_panel.alarmo
+        enabled: false
   mode: single
 - id: '1692134639284'
   alias: Türklingel

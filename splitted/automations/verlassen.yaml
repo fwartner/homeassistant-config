@@ -20,6 +20,7 @@ actions:
         force: true
         mode: away
         skip_delay: true
+      enabled: false
       metadata: {}
 alias: Verlassen
 conditions:

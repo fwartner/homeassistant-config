@@ -497,12 +497,6 @@
         enabled: true
       sequence:
       - metadata: {}
-        data:
-          volume_level: 0.25
-        target:
-          device_id: 5d251a0a20f76a8251bbdb9e1b1b0178
-        action: media_player.volume_set
-      - metadata: {}
         data: {}
         action: script.willkommen_florian
   mode: single

@@ -9,11 +9,6 @@ actions:
       data: {}
       target:
         device_id: 9d14dca47a5773d55c5f7f9d16c58476
-    - action: alarmo.disarm
-      data:
-        code: '8182'
-        entity_id: alarm_control_panel.alarmo
-      metadata: {}
   - conditions:
     - condition: trigger
       id:

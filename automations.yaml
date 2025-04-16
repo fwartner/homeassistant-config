@@ -451,11 +451,6 @@
         target:
           device_id: 9d14dca47a5773d55c5f7f9d16c58476
         action: switch.turn_on
-      - action: alarmo.disarm
-        metadata: {}
-        data:
-          entity_id: alarm_control_panel.alarmo
-          code: '8182'
     - conditions:
       - condition: trigger
         id:

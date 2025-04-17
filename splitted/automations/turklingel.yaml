@@ -1,6 +1,6 @@
 actions:
 - parallel:
-  - action: notify.mobile_app_mac_mini_von_florian
+  - action: notify.mobile_app_mac_mini
     data:
       message: "Jemand scheint an der T\xFCr zu sein\u2026"
       title: Es hat geklingelt!

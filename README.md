@@ -17,7 +17,7 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3142
+Number of entities | 3144
 Number of sensors | 1645
 Number of automations | 99
 Number of scripts | 54
@@ -240,8 +240,8 @@ Number of binary sensors | 241
 - [Timer Bar Card](https://github.com/rianadon/timer-bar-card)
 - [Trashcard](https://github.com/idaho/hassio-trash-card)
 - [Unused Card](https://github.com/custom-cards/unused-card)
-- [Upcoming Media Card](https://github.com/NemesisRE/upcoming-media-card)
 - [Upcoming Media Card](https://github.com/custom-cards/upcoming-media-card)
+- [Upcoming Media Card](https://github.com/NemesisRE/upcoming-media-card)
 - [Uptime Card](https://github.com/dylandoamaral/uptime-card)
 - [Vacuum Card](https://github.com/denysdovhan/vacuum-card)
 - [Vertical Stack In Card](https://github.com/ofekashery/vertical-stack-in-card)

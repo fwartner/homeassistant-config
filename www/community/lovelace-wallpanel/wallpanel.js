@@ -3,7 +3,7 @@
  * Released under the GNU General Public License v3.0
  */
 
-const version = "4.43.0";
+const version = "4.44.0";
 const defaultConfig = {
 	enabled: false,
 	enabled_on_tabs: [],
@@ -52,7 +52,8 @@ const defaultConfig = {
 	image_fit: "cover", // cover / contain / fill
 	image_list_update_interval: 3600,
 	image_order: "sorted", // sorted / random
-	image_excludes: [],
+	exclude_filenames: [], // Excluded filenames (regex)
+	exclude_media_types: [], // Exclude media types (image / video)
 	image_background: "color", // color / image
 	video_loop: false,
 	touch_zone_size_next_image: 15,
@@ -446,12 +447,19 @@ function mergeConfig(target, ...sources) {
 	const source = sources.shift();
 
 	if (isObject(target) && isObject(source)) {
-		for (const key in source) {
-			if (isObject(source[key])) {
+		for (let key in source) {
+			let val = source[key];
+			if (key == "image_excludes") {
+				logger.warn(
+					"The configuration option 'image_excludes' has been renamed to 'exclude_filenames'. Please update your wallpanel configuration accordingly."
+				);
+				key = "exclude_filenames";
+			}
+
+			if (isObject(val)) {
 				if (!target[key]) Object.assign(target, { [key]: {} });
-				mergeConfig(target[key], source[key]);
+				mergeConfig(target[key], val);
 			} else {
-				let val = source[key];
 				function replacer(match, entityId) {
 					if (!(entityId in configEntityStates)) {
 						configEntityStates[entityId] = "";
@@ -2069,33 +2077,41 @@ function initWallpanel() {
 		updateImageList(preload = false, preloadCallback = null) {
 			if (!config.image_url) return;
 
+			const wp = this;
 			let updateFunction = null;
 			if (imageSourceType() == "unsplash-api") {
-				updateFunction = this.updateImageListFromUnsplashAPI;
+				updateFunction = wp.updateImageListFromUnsplashAPI;
 			} else if (imageSourceType() == "immich-api") {
-				updateFunction = this.updateImageListFromImmichAPI;
+				updateFunction = wp.updateImageListFromImmichAPI;
 			} else if (imageSourceType() == "media-source") {
-				updateFunction = this.updateImageListFromMediaSource;
+				updateFunction = wp.updateImageListFromMediaSource;
 			} else {
 				return;
 			}
 
-			const wp = this;
-			if (this.updatingImageList) {
-				this.cancelUpdatingImageList = true;
+			function doUpdateImageList() {
+				wp.cancelUpdatingImageList = false;
+				try {
+					updateFunction.bind(wp)(preload, preloadCallback);
+				} catch (e) {
+					logger.warn("Failed to update image list, will retry in 3 seconds", e);
+					setTimeout(doUpdateImageList, 3000);
+				}
+			}
+
+			if (wp.updatingImageList) {
+				wp.cancelUpdatingImageList = true;
 				const start = Date.now();
 				function _checkUpdating() {
-					if (!this.updatingImageList || Date.now() - start >= 5000) {
-						this.cancelUpdatingImageList = false;
-						updateFunction.bind(wp)(preload, preloadCallback);
+					if (!wp.updatingImageList || Date.now() - start >= 5000) {
+						doUpdateImageList();
 					} else {
 						setTimeout(_checkUpdating, 50);
 					}
 				}
 				setTimeout(_checkUpdating, 1);
 			} else {
-				this.cancelUpdatingImageList = false;
-				updateFunction.bind(wp)(preload, preloadCallback);
+				doUpdateImageList();
 			}
 		}
 
@@ -2103,8 +2119,8 @@ function initWallpanel() {
 			const wp = this;
 			logger.debug(`findMedias: ${mediaContentId}`);
 			const excludeRegExp = [];
-			if (config.image_excludes) {
-				for (const imageExclude of config.image_excludes) {
+			if (config.exclude_filenames) {
+				for (const imageExclude of config.exclude_filenames) {
 					excludeRegExp.push(new RegExp(imageExclude));
 				}
 			}
@@ -2126,6 +2142,11 @@ function initWallpanel() {
 									}
 								}
 								if (["image", "video"].includes(child.media_class)) {
+									if (config.exclude_media_types && config.exclude_media_types.includes(child.media_class)) {
+										// Media type excluded
+										return;
+									}
+
 									//logger.debug(child);
 									return child.media_content_id;
 								}
@@ -2233,30 +2254,46 @@ function initWallpanel() {
 			const urls = [];
 			const data = {};
 			const apiUrl = config.image_url.replace(/^immich\+/, "");
+			const excludeRegExp = [];
+			if (config.exclude_filenames) {
+				for (const imageExclude of config.exclude_filenames) {
+					excludeRegExp.push(new RegExp(imageExclude));
+				}
+			}
 
 			function processAssets(assets, folderName = null) {
 				assets.forEach((asset) => {
 					logger.debug(asset);
 					const assetType = asset.type.toLowerCase();
-					if (["image", "video"].includes(assetType)) {
-						let resolution = "original";
-						if (config.immich_resolution == "preview") {
-							if (assetType == "video") {
-								resolution = "video/playback";
-							} else {
-								resolution = "thumbnail?size=preview";
-							}
-						}
-						const url = `${apiUrl}/assets/${asset.id}/${resolution}`;
-						data[url] = asset.exifInfo || {};
-
-						data[url]["mediaType"] = assetType;
-						data[url]["image"] = {
-							filename: asset.originalFileName,
-							folderName: folderName
-						};
-						urls.push(url);
+					if (!["image", "video"].includes(assetType)) {
+						return;
 					}
+					if (config.exclude_media_types && config.exclude_media_types.includes(assetType)) {
+						return;
+					}
+					for (const exclude of excludeRegExp) {
+						if (exclude.test(asset.originalFileName)) {
+							return;
+						}
+					}
+
+					let resolution = "original";
+					if (config.immich_resolution == "preview") {
+						if (assetType == "video") {
+							resolution = "video/playback";
+						} else {
+							resolution = "thumbnail?size=preview";
+						}
+					}
+					const url = `${apiUrl}/assets/${asset.id}/${resolution}`;
+					data[url] = asset.exifInfo || {};
+
+					data[url]["mediaType"] = assetType;
+					data[url]["image"] = {
+						filename: asset.originalFileName,
+						folderName: folderName
+					};
+					urls.push(url);
 				});
 			}
 

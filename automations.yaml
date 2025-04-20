@@ -3306,3 +3306,18 @@
     data:
       message: '{{ states(''sensor.good_morning_iryna'') }}'
   mode: single
+- id: '1745139592246'
+  alias: Proxmox Network TX High Usage Alert
+  description: ''
+  triggers:
+  - entity_id: sensor.glances_proxmox_pve_01_veth115i0_tx
+    above: 10
+    trigger: numeric_state
+  conditions: []
+  actions:
+  - data:
+      message: 'High network transmit detected on Proxmox VM veth115i0. Current rate:
+        {{ states(''sensor.glances_proxmox_pve_01_veth115i0_tx'') }} Mbit/s'
+      title: Proxmox Network Alert
+    action: notify.persistent_notification
+  mode: single

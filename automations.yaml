@@ -3337,3 +3337,25 @@
       message: High network receive rate ({{ states('sensor.glances_proxmox_pve_01_veth107i0_rx')
         }} Mbit/s) on Proxmox PVE-01 veth107i0.
     action: notify.persistent_notification
+- id: '1745140263730'
+  alias: Disable AdGuard Filtering at Night
+  description: ''
+  triggers:
+  - at: '23:00:00'
+    trigger: time
+  conditions: []
+  actions:
+  - target:
+      entity_id: switch.adguard_home_filterung
+    action: switch.turn_off
+- id: '1745140339650'
+  alias: Enable AdGuard Filtering in the Morning
+  description: ''
+  triggers:
+  - at: 07:00:00
+    trigger: time
+  conditions: []
+  actions:
+  - target:
+      entity_id: switch.adguard_home_filterung
+    action: switch.turn_on

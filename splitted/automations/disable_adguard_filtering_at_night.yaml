@@ -1,0 +1,11 @@
+actions:
+- action: switch.turn_off
+  target:
+    entity_id: switch.adguard_home_filterung
+alias: Disable AdGuard Filtering at Night
+conditions: []
+description: ''
+id: '1745140263730'
+triggers:
+- at: '23:00:00'
+  trigger: time

@@ -17,9 +17,9 @@ My personal home assistant configuation files.
 
 Description | Count
 -- | --
-Number of entities | 3168
-Number of sensors | 1663
-Number of automations | 99
+Number of entities | 3177
+Number of sensors | 1667
+Number of automations | 101
 Number of scripts | 54
 Number of scenes | 34
 Number of zones | 22
@@ -107,6 +107,7 @@ Number of binary sensors | 243
 - [Llm Vision](https://github.com/valentinfrlch/ha-llmvision)
 - [Local Llm Conversation](https://github.com/fixtse/home-llm)
 - [Mail And Packages](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages)
+- [Material Symbols](https://github.com/beecho01/material-symbols)
 - [Media Player Template](https://github.com/Sennevds/media_player.template)
 - [Microsoft 365   Teams](https://github.com/RogerSelwyn/MS365-Teams)
 - [Multiscrape](https://github.com/danieldotnl/ha-multiscrape)
@@ -169,11 +170,13 @@ Number of binary sensors | 243
 - [Card Mod](https://github.com/thomasloven/lovelace-card-mod)
 - [Card To Display Bar Chart Oriented To Display Power Sensors](https://github.com/tdvtdv/ha-tdv-bar)
 - [Circular Timer Card](https://github.com/karlis-vagalis/circular-timer-card)
+- [Clock Weather Card](https://github.com/pkissling/clock-weather-card)
 - [Collapsable Cards](https://github.com/RossMcMillan92/lovelace-collapsable-cards)
 - [Compass Card](https://github.com/tomvanswam/compass-card)
 - [Cover Position Preset Row](https://github.com/finity69x2/cover-position-preset-row)
 - [Custom Brand Icons](https://github.com/elax46/custom-brand-icons)
 - [Custom Features For Home Assistant Cards](https://github.com/Nerwyn/service-call-tile-feature)
+- [Custom Icons](https://github.com/Mariusthvdb/custom-icons)
 - [Decluttering Card](https://github.com/custom-cards/decluttering-card)
 - [Default Dashboard](https://github.com/daredoes/default-dashboard)
 - [Digital Clock](https://github.com/wassy92x/lovelace-digital-clock)
@@ -241,8 +244,8 @@ Number of binary sensors | 243
 - [Timer Bar Card](https://github.com/rianadon/timer-bar-card)
 - [Trashcard](https://github.com/idaho/hassio-trash-card)
 - [Unused Card](https://github.com/custom-cards/unused-card)
-- [Upcoming Media Card](https://github.com/NemesisRE/upcoming-media-card)
 - [Upcoming Media Card](https://github.com/custom-cards/upcoming-media-card)
+- [Upcoming Media Card](https://github.com/NemesisRE/upcoming-media-card)
 - [Uptime Card](https://github.com/dylandoamaral/uptime-card)
 - [Vacuum Card](https://github.com/denysdovhan/vacuum-card)
 - [Vertical Stack In Card](https://github.com/ofekashery/vertical-stack-in-card)

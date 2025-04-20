@@ -1,0 +1,16 @@
+actions:
+- action: notify.persistent_notification
+  data:
+    message: High network receive rate ({{ states('sensor.glances_proxmox_pve_01_veth107i0_rx')
+      }} Mbit/s) on Proxmox PVE-01 veth107i0.
+    title: Proxmox Network RX Alert
+alias: Proxmox Network RX High Alert
+conditions: []
+description: ''
+id: '1745140180061'
+triggers:
+- above: 10
+  entity_id: sensor.glances_proxmox_pve_01_veth107i0_rx
+  for:
+    minutes: 1
+  trigger: numeric_state

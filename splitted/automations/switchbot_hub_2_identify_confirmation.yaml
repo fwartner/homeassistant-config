@@ -1,0 +1,12 @@
+actions:
+- action: notify.persistent_notification
+  data:
+    message: SwitchBot Hub 2 identify button was pressed.
+    title: SwitchBot Hub 2
+alias: SwitchBot Hub 2 Identify Confirmation
+description: Sends a notification when the SwitchBot Hub 2 Identify button is pressed.
+id: '1745225954610'
+triggers:
+- entity_id: button.switchbot_hub_2_identifizieren
+  to: unavailable
+  trigger: state

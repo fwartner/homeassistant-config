@@ -25,5 +25,7 @@ description: ''
 id: '1745231811625'
 mode: single
 triggers:
-- event_type: event.universal_remote_rollos
+- context: {}
+  event_data: {}
+  event_type: event.universal_remote_rollos
   trigger: event

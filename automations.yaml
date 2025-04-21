@@ -3371,3 +3371,32 @@
       message: SwitchBot Hub 2 identify button was pressed.
       title: SwitchBot Hub 2
     action: notify.persistent_notification
+- id: '1745231811625'
+  alias: Universal Remote Rollos
+  description: ''
+  triggers:
+  - trigger: event
+    event_type: event.universal_remote_rollos
+  conditions: []
+  actions:
+  - if:
+    - condition: state
+      entity_id: cover.rollos_wohnzimmer_fensterbank
+      state: open
+    then:
+    - action: cover.close_cover
+      metadata: {}
+      data: {}
+      target:
+        entity_id: cover.rollos_wohnzimmer_fensterbank
+  - if:
+    - condition: state
+      entity_id: cover.rollos_wohnzimmer_fensterbank
+      state: closed
+    then:
+    - action: cover.open_cover
+      metadata: {}
+      data: {}
+      target:
+        entity_id: cover.rollos_wohnzimmer_fensterbank
+  mode: single

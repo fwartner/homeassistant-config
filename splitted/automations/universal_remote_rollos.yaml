@@ -1,0 +1,29 @@
+actions:
+- if:
+  - condition: state
+    entity_id: cover.rollos_wohnzimmer_fensterbank
+    state: open
+  then:
+  - action: cover.close_cover
+    data: {}
+    metadata: {}
+    target:
+      entity_id: cover.rollos_wohnzimmer_fensterbank
+- if:
+  - condition: state
+    entity_id: cover.rollos_wohnzimmer_fensterbank
+    state: closed
+  then:
+  - action: cover.open_cover
+    data: {}
+    metadata: {}
+    target:
+      entity_id: cover.rollos_wohnzimmer_fensterbank
+alias: Universal Remote Rollos
+conditions: []
+description: ''
+id: '1745231811625'
+mode: single
+triggers:
+- event_type: event.universal_remote_rollos
+  trigger: event

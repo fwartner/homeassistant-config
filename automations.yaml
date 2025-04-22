@@ -3377,3 +3377,51 @@
         target:
           entity_id: input_boolean.night_mode
   mode: single
+- id: '1745357440159'
+  alias: Nachtlicht Wohnzimmer
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_wohnzimmer_allgemein
+    from: 'off'
+    to: 'on'
+    id: presenceOn
+  - trigger: state
+    entity_id:
+    - binary_sensor.presence_wohnzimmer_allgemein
+    from: 'on'
+    to: 'off'
+    id: presenceOff
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  conditions:
+  - condition: state
+    entity_id: input_boolean.night_mode
+    state: 'on'
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - presenceOn
+      sequence:
+      - action: light.turn_on
+        metadata: {}
+        data:
+          brightness_pct: 20
+        target:
+          entity_id: light.tv_bank
+    - conditions:
+      - condition: trigger
+        id:
+        - presenceOff
+      sequence:
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.tv_bank
+  mode: single

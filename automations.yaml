@@ -3341,3 +3341,39 @@
     target:
       entity_id: vacuum.roborock_s7_maxv
   mode: single
+- id: '1745356989733'
+  alias: Nightmode Toggle
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunset
+    offset: '1'
+    id: sunOff
+  - trigger: sun
+    event: sunrise
+    offset: 0
+    id: sunOn
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - sunOff
+      sequence:
+      - action: input_boolean.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_boolean.night_mode
+    - conditions:
+      - condition: trigger
+        id:
+        - sunOn
+      sequence:
+      - action: input_boolean.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_boolean.night_mode
+  mode: single

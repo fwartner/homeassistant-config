@@ -3285,3 +3285,59 @@
       target:
         entity_id: cover.rollos_wohnzimmer_fensterbank
   mode: single
+- id: '1745312564357'
+  alias: Bad und Küche reinigen täglich
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunset
+    offset: 0
+  conditions: []
+  actions:
+  - action: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - button.roborock_s7_maxv_kuche_voll
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - action: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - button.roborock_s7_maxv_badezimmer_voll
+  mode: single
+- id: '1745312911625'
+  alias: Wohnung reinigen komplett
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.people_home
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+    below: 1
+  conditions:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    after: 08:00:00
+    before: '20:00:00'
+  actions:
+  - action: vacuum.start
+    metadata: {}
+    data: {}
+    target:
+      entity_id: vacuum.roborock_s7_maxv
+  mode: single

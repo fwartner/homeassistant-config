@@ -3146,24 +3146,6 @@
     metadata: {}
     data: {}
   mode: single
-- id: '1739969874565'
-  alias: Kinderzimmer Reinigen
-  description: ''
-  triggers:
-  - trigger: conversation
-    command:
-    - Reinige das Kinderzimmer
-    - Reinige das Büro
-    - Schicke den Staubsauger ins Kinderzimmer
-    - Schicke den Staubsauger ins Büro
-    - Kinderzimmer reinigen
-    - Büro reinigen
-  conditions: []
-  actions:
-  - action: script.staubsauger_buro_reinigen
-    metadata: {}
-    data: {}
-  mode: single
 - id: '1739969924503'
   alias: Flur Reinigen
   description: ''

@@ -3425,3 +3425,20 @@
         target:
           entity_id: light.tv_bank
   mode: single
+- id: alexa_media_player_authentication_required
+  alias: Alexa Media Player Authentication Required
+  description: ''
+  triggers:
+  - event_type: alexa_media_relogin_required
+    trigger: event
+  conditions: []
+  actions:
+  - action: notify.all_iphones
+    data:
+      title: Alexa Media Player Integration
+      message: "\U0001F511 Authentication Required"
+      data:
+        actions:
+        - action: URI
+          title: Resolve now!
+          uri: /lovelace/home

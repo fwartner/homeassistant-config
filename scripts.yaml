@@ -863,3 +863,19 @@ llm_script_for_music_assistant_voice_requests_2:
       default_player: media_player.sonos_wohnzimmer
       play_continuously: Never
   description: ''
+alexa_room_aware_temperature:
+  alias: Alexa Room-Aware Temperature
+  sequence:
+  - data:
+      target: '{{ states("sensor.last_alexa") }}'
+      data:
+        type: tts
+      message: '{{active_therm}}'
+    action: notify.alexa_media
+  mode: single
+  variables:
+    active_therm: "{%- set echo_area = area_name(states('sensor.last_alexa')) %}\n{%-
+      for s in expand('group.indoor_thermometers')|map(attribute = 'entity_id') |
+      list %}\n  {% if area_name(s) == echo_area %}\n  Die Temperatur im {{ area_name(s)|lower
+      }} beträgt {{states(s)}} Grad Celsius\n  {% endif %}\n{% endfor %}"
+  description: ''

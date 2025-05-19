@@ -33,6 +33,13 @@ conditions:
   - condition: state
     entity_id: input_boolean.rollos_schlafzimmer
     state: 'off'
+  - condition: time
+    weekday:
+    - fri
+    - thu
+    - wed
+    - tue
+    - mon
 description: ''
 id: '1729247777105'
 mode: single

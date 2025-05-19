@@ -3,7 +3,7 @@
  * Released under the GNU General Public License v3.0
  */
 
-const version = "4.44.1";
+const version = "4.45.0";
 const defaultConfig = {
 	enabled: false,
 	enabled_on_tabs: [],
@@ -38,6 +38,7 @@ const defaultConfig = {
 	stop_screensaver_on_location_change: true,
 	disable_screensaver_on_browser_mod_popup: false,
 	disable_screensaver_on_browser_mod_popup_func: "",
+	disable_screensaver_when_assist_active: true,
 	show_images: true,
 	image_url: "https://picsum.photos/${width}/${height}?random=${timestamp}",
 	image_url_entity: "",
@@ -49,7 +50,8 @@ const defaultConfig = {
 	immich_persons: [],
 	immich_memories: false,
 	immich_resolution: "preview",
-	image_fit: "cover", // cover / contain / fill
+	image_fit_landscape: "cover", // cover / contain / fill
+	image_fit_portrait: "contain", // cover / contain / fill
 	image_list_update_interval: 3600,
 	image_order: "sorted", // sorted / random
 	exclude_filenames: [], // Excluded filenames (regex)
@@ -455,6 +457,12 @@ function mergeConfig(target, ...sources) {
 				);
 				key = "exclude_filenames";
 			}
+			if (key == "image_fit") {
+				logger.warn(
+					"The configuration option 'image_fit' has been renamed to 'image_fit_landscape'. Please update your wallpanel configuration accordingly."
+				);
+				key = "image_fit_landscape";
+			}
 
 			if (isObject(val)) {
 				if (!target[key]) Object.assign(target, { [key]: {} });
@@ -631,6 +639,17 @@ function isActive() {
 	) {
 		logger.debug(`Wallpanel not enabled on current tab ${activeTab}`);
 		return false;
+	}
+	if (config.disable_screensaver_when_assist_active) {
+		const voiceCommandDialog = elHass.shadowRoot.querySelector("ha-voice-command-dialog");
+		if (
+			voiceCommandDialog &&
+			voiceCommandDialog.shadowRoot &&
+			voiceCommandDialog.shadowRoot.querySelector("ha-dialog")
+		) {
+			logger.debug("Assist is active, wallpanel disabled");
+			return false;
+		}
 	}
 	if (
 		wallpanel &&
@@ -1199,8 +1218,8 @@ function initWallpanel() {
 			this.style.transition = `opacity ${Math.round(config.fade_in_time * 1000)}ms ease-in-out`;
 			this.imageOneContainer.style.transition = `opacity ${Math.round(config.crossfade_time * 1000)}ms ease-in-out`;
 			this.imageTwoContainer.style.transition = `opacity ${Math.round(config.crossfade_time * 1000)}ms ease-in-out`;
-			this.imageOne.style.objectFit = config.image_fit;
-			this.imageTwo.style.objectFit = config.image_fit;
+			this.imageOne.style.objectFit = config.image_fit_landscape;
+			this.imageTwo.style.objectFit = config.image_fit_landscape;
 
 			if (config.info_animation_duration_x) {
 				this.infoBoxPosX.style.animation = `moveX ${config.info_animation_duration_x}s ${config.info_animation_timing_function_x} infinite alternate`;
@@ -2919,6 +2938,13 @@ function initWallpanel() {
 			}
 		}
 
+		getImageFit(width, height) {
+			if (width >= height) {
+				return config.image_fit_landscape;
+			}
+			return config.image_fit_portrait;
+		}
+
 		_switchActiveImage(crossfadeMillis = null) {
 			if (this.afterFadeoutTimer) {
 				clearTimeout(this.afterFadeoutTimer);
@@ -2953,6 +2979,8 @@ function initWallpanel() {
 			if (curActive.style.opacity != 0) {
 				curActive.style.opacity = 0;
 			}
+			// Determine if the new image is landscape or portrait, and set the appropriate image_fit
+			newImg.style.objectFit = this.getImageFit(newImg.naturalWidth, newImg.naturalHeight);
 
 			this.startPlayingActiveMedia();
 			this.restartProgressBarAnimation();
@@ -3026,6 +3054,11 @@ function initWallpanel() {
 			this.setupScreensaver();
 			this.setImageURLEntityState();
 			this.startPlayingActiveMedia();
+
+			// Set the correct objectFit for the active image
+			const activeImage = this.getActiveImageElement();
+			activeImage.style.objectFit = this.getImageFit(activeImage.naturalWith, activeImage.naturalHeight);
+
 			this.restartProgressBarAnimation();
 			this.restartKenBurnsEffect();
 
@@ -3510,10 +3543,10 @@ function waitForEnv(callback, startTime = null) {
 	const startupSeconds = (now - startTime) / 1000;
 
 	elHass = document.querySelector("body > home-assistant");
-	if (elHass) {
+	if (elHass && elHass.shadowRoot) {
 		elHaMain = elHass.shadowRoot.querySelector("home-assistant-main");
 	}
-	if (!elHass || !elHaMain) {
+	if (!elHass || !elHass.shadowRoot || !elHaMain) {
 		if (startupSeconds >= 5.0) {
 			logger.error(
 				`Wallpanel startup failed after ${startupSeconds} seconds, element home-assistant / home-assistant-main not found.`
@@ -4314,7 +4347,7 @@ function readThumbnailImage(dataView, tiffStart, firstIFDOffset, bigEnd) {
 		// logger.log('******** IFD1Offset is outside the bounds of the DataView ********');
 		return {};
 	}
-	// logger.log('*******  thumbnail IFD offset (IFD1) is: %s', IFD1OffsetPointer);
+	// logger.log('*******	thumbnail IFD offset (IFD1) is: %s', IFD1OffsetPointer);
 
 	var thumbTags = readTags(dataView, tiffStart, tiffStart + IFD1OffsetPointer, IFD1Tags, bigEnd);
 
@@ -4371,7 +4404,7 @@ function getStringFromDB(buffer, start, length) {
 }
 
 // adopted from:
-//   http://www.onicos.com/staff/iz/amuse/javascript/expert/utf.txt
+//	 http://www.onicos.com/staff/iz/amuse/javascript/expert/utf.txt
 
 /* utf.js - UTF-8 <=> UTF-16 convertion
  *

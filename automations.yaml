@@ -2890,6 +2890,13 @@
     - condition: state
       entity_id: input_boolean.rollos_schlafzimmer
       state: 'off'
+    - condition: time
+      weekday:
+      - fri
+      - thu
+      - wed
+      - tue
+      - mon
   actions:
   - choose:
     - conditions:
@@ -3442,3 +3449,185 @@
         - action: URI
           title: Resolve now!
           uri: /lovelace/home
+- id: '1747227567252'
+  alias: Alexa Timer Check
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.echo_schlafzimmer_next_timer
+    attribute: status
+    to: 'ON'
+    id: echoSZ
+  - trigger: state
+    entity_id:
+    - sensor.echo_buro_next_timer
+    attribute: status
+    to: 'ON'
+    id: echoBU
+  - trigger: state
+    entity_id:
+    - sensor.echo_flur_next_timer
+    attribute: status
+    to: 'ON'
+    id: echoFL
+  - trigger: state
+    entity_id:
+    - sensor.echo_badezimmer_next_timer
+    attribute: status
+    to: 'ON'
+    id: echoBZ
+  - trigger: state
+    entity_id:
+    - sensor.echo_show_wohnzimmer_next_timer
+    attribute: status
+    to: 'ON'
+    id: echoWZ
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - echoSZ
+      sequence:
+      - action: input_text.set_value
+        metadata: {}
+        data:
+          value: sensor.echo_schlafzimmer_next_timer
+        target:
+          entity_id: input_text.last_timer_echo
+    - conditions:
+      - condition: trigger
+        id:
+        - echoBU
+      sequence:
+      - action: input_text.set_value
+        metadata: {}
+        data:
+          value: sensor.echo_buro_next_timer
+        target:
+          entity_id: input_text.last_timer_echo
+    - conditions:
+      - condition: trigger
+        id:
+        - echoFL
+      sequence:
+      - action: input_text.set_value
+        metadata: {}
+        data:
+          value: sensor.echo_flur_next_timer
+        target:
+          entity_id: input_text.last_timer_echo
+    - conditions:
+      - condition: trigger
+        id:
+        - echoBZ
+      sequence:
+      - action: input_text.set_value
+        metadata: {}
+        data:
+          value: sensor.echo_badezimmer_next_timer
+        target:
+          entity_id: input_text.last_timer_echo
+    - conditions:
+      - condition: trigger
+        id:
+        - echoWZ
+      sequence:
+      - action: input_text.set_value
+        metadata: {}
+        data:
+          value: sensor.echo_show_wohnzimmer_next_timer
+        target:
+          entity_id: input_text.last_timer_echo
+  mode: single
+- id: '1747228226174'
+  alias: Alexa Last Timer DELETE
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.echo_schlafzimmer_next_timer
+    attribute: status
+    to: 'OFF'
+    id: echoSZ
+  - trigger: state
+    entity_id:
+    - sensor.echo_buro_next_timer
+    attribute: status
+    to: 'OFF'
+    id: echoBU
+  - trigger: state
+    entity_id:
+    - sensor.echo_flur_next_timer
+    attribute: status
+    to: 'OFF'
+    id: echoFL
+  - trigger: state
+    entity_id:
+    - sensor.echo_badezimmer_next_timer
+    attribute: status
+    to: 'OFF'
+    id: echoBZ
+  - trigger: state
+    entity_id:
+    - sensor.echo_show_wohnzimmer_next_timer
+    attribute: status
+    to: 'OFF'
+    id: echoWZ
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - echoWZ
+      sequence:
+      - action: input_text.set_value
+        metadata: {}
+        data:
+          value:
+        target:
+          entity_id: input_text.last_timer_echo
+    - conditions:
+      - condition: trigger
+        id:
+        - echoSZ
+      sequence:
+      - action: input_text.set_value
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_text.last_timer_echo
+    - conditions:
+      - condition: trigger
+        id:
+        - echoBU
+      sequence:
+      - action: input_text.set_value
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_text.last_timer_echo
+    - conditions:
+      - condition: trigger
+        id:
+        - echoFL
+      sequence:
+      - action: input_text.set_value
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_text.last_timer_echo
+    - conditions:
+      - condition: trigger
+        id:
+        - echoBZ
+      sequence:
+      - action: input_text.set_value
+        metadata: {}
+        data: {}
+        target:
+          entity_id: input_text.last_timer_echo
+  mode: single

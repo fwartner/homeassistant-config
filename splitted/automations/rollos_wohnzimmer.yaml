@@ -32,7 +32,7 @@ conditions:
     state: 'off'
   - condition: state
     entity_id: input_boolean.rollos_wohnzimmer
-    state: 'off'
+    state: 'on'
   - above: 0
     condition: numeric_state
     entity_id: sensor.people_home

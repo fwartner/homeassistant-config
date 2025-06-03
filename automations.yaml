@@ -51,10 +51,10 @@
           state: 'off'
         then:
         - parallel:
-          - service: script.3_minuten_bettzeit
-            data: {}
-          - service: script.10_minuten_boost_wohnzimmer
-            data: {}
+          - data: {}
+            action: script.3_minuten_bettzeit
+          - data: {}
+            action: script.10_minuten_boost_wohnzimmer
       single_action:
       - if:
         - condition: state
@@ -71,10 +71,10 @@
               entity_id: cover.rollos_schlafzimmer
               state: closed
           then:
-          - service: cover.open_cover
-            data: {}
+          - data: {}
             target:
               entity_id: cover.rollos_schlafzimmer
+            action: cover.open_cover
           else:
           - if:
             - condition: or
@@ -86,10 +86,50 @@
                 entity_id: cover.rollos_schlafzimmer
                 state: open
             then:
-            - service: cover.close_cover
-              data: {}
+            - data: {}
               target:
                 entity_id: cover.rollos_schlafzimmer
+              action: cover.close_cover
+      hold_action:
+      - if:
+        - condition: state
+          entity_id: input_boolean.wartung
+          state: 'off'
+        then:
+        - if:
+          - condition: or
+            conditions:
+            - condition: state
+              entity_id: cover.rollos_schlafzimmer
+              state: closing
+            - condition: state
+              entity_id: cover.rollos_schlafzimmer
+              state: closed
+          then:
+          - data: {}
+            target:
+              entity_id: cover.rollos_schlafzimmer
+            action: cover.open_cover
+          else:
+          - if:
+            - condition: or
+              conditions:
+              - condition: state
+                entity_id: cover.rollos_schlafzimmer
+                state: opening
+              - condition: state
+                entity_id: cover.rollos_schlafzimmer
+                state: open
+            then:
+            - data: {}
+              target:
+                entity_id: cover.rollos_schlafzimmer
+              action: cover.close_cover
+        - action: remote.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id: remote.tv_schlafzimmer_dlna
 - id: '1674670778068'
   alias: Kaffeemaschine
   description: Fü vier Stunden
@@ -1742,82 +1782,6 @@
     metadata: {}
     data: {}
   mode: single
-- id: '1713444406391'
-  alias: 'Motion: Schlafzimmer Steckdosen An'
-  description: ''
-  triggers:
-  - type: motion
-    device_id: 7166fbfe0af7d53d4673741c96c3863d
-    entity_id: 94bfc27f3b165fc352e2cc04541190d1
-    domain: binary_sensor
-    trigger: device
-  conditions:
-  - condition: and
-    conditions:
-    - condition: time
-      after: '21:00:00'
-      weekday:
-      - mon
-      - fri
-      - sat
-      - sun
-      - tue
-      - wed
-      - thu
-      before: 00:00:00
-    - condition: and
-      conditions:
-      - condition: state
-        entity_id: input_boolean.wartung
-        state: 'off'
-      - condition: state
-        entity_id: input_boolean.manuell
-        state: 'off'
-  actions:
-  - if:
-    - condition: state
-      entity_id: switch.steckdose_bett
-      state: 'off'
-    - condition: state
-      entity_id: switch.steckdose_tv_schlafzimmer
-      state: 'off'
-    then:
-    - parallel:
-      - type: turn_on
-        device_id: cee4b3caf72c6c64e4cf9115e5ad0c40
-        entity_id: 82f42d86b638d5bf6c7b3f54ee19ac1a
-        domain: switch
-      - type: turn_on
-        device_id: 687585a826f140c103f447d4384f11a8
-        entity_id: 107487a20fd417d6c27308fc10f3df40
-        domain: switch
-  mode: single
-- id: '1713444564715'
-  alias: Steckdosen Schlafzimmer Morgens Aus
-  description: ''
-  triggers:
-  - at: 08:00:00
-    trigger: time
-  conditions:
-  - condition: and
-    conditions:
-    - condition: state
-      entity_id: input_boolean.wartung
-      state: 'off'
-    - condition: state
-      entity_id: input_boolean.manuell
-      state: 'off'
-  actions:
-  - parallel:
-    - type: turn_off
-      device_id: cee4b3caf72c6c64e4cf9115e5ad0c40
-      entity_id: 82f42d86b638d5bf6c7b3f54ee19ac1a
-      domain: switch
-    - type: turn_off
-      device_id: 687585a826f140c103f447d4384f11a8
-      entity_id: 107487a20fd417d6c27308fc10f3df40
-      domain: switch
-  mode: single
 - id: '1713448133488'
   alias: Schalter Flur Deckenlicht
   description: ''
@@ -2804,13 +2768,6 @@
     input:
       integration: Zigbee2MQTT
       controller_entity: sensor.ikea_stybar_weiss_schlafzimmer_action
-- id: '1727983565081'
-  alias: IKEA Rodret Optional
-  description: ''
-  use_blueprint:
-    path: damru/ikea-rodret_E2201_ZHA-Z2M_control-anything.yaml
-    input:
-      remote_name: IKEA Rodret Optional
 - id: '1728284886485'
   alias: Home Assistant Auto-update on a schedule base
   description: ''
@@ -2942,7 +2899,18 @@
       seconds: 0
     id: coreTempOff
     below: 250
-  conditions: []
+  conditions:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+    - sun
+    after: 08:00:00
+    before: '21:00:00'
   actions:
   - choose:
     - conditions:
@@ -3156,7 +3124,7 @@
       state: 'off'
     - condition: state
       entity_id: input_boolean.rollos_wohnzimmer
-      state: 'off'
+      state: 'on'
     - condition: numeric_state
       entity_id: sensor.people_home
       above: 0
@@ -3182,19 +3150,6 @@
         data: {}
         target:
           entity_id: cover.rollos_wohnzimmer_fensterbank
-  mode: single
-- id: '1743600218230'
-  alias: Good Morning Iryna WhatsApp
-  description: ''
-  triggers:
-  - trigger: time
-    at: '{{ states(''sensor.random_morning_action_time'') }}'
-  conditions: []
-  actions:
-  - action: notify.whatsapp_iryna
-    metadata: {}
-    data:
-      message: '{{ states(''sensor.good_morning_iryna'') }}'
   mode: single
 - id: '1745139592246'
   alias: Proxmox Network TX High Usage Alert
@@ -3630,4 +3585,124 @@
         data: {}
         target:
           entity_id: input_text.last_timer_echo
+  mode: single
+- id: '1747657519437'
+  alias: Luftfeuchtigkeit Badezimmer Notification
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.aqara_thermo_badezimmer_humidity
+    above: 65
+  conditions: []
+  actions:
+  - action: notify.alexa_media_last_called
+    metadata: {}
+    data:
+      message: Die Luftfeuchtigkeit im Badezimmer liegt bei über 65 Prozent. Vielleicht
+        solltest du mal das Fenster öffnen..
+  - action: chime_tts.say
+    metadata: {}
+    data:
+      chime_path: error
+      message: Die Luftfeuchtigkeit im Badezimmer liegt bei über 65 Prozent. Vielleicht
+        solltest du mal das Fenster öffnen..
+    target:
+      device_id: 60bb8c68f9bfd9f765c17ecc133f0034
+  mode: single
+- id: '1747658887532'
+  alias: Nuki Auto-Unlock iPhone Battery Low
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.iphone_von_florian_battery_plus_low
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    id: iphoneBatteryLowOn
+  - trigger: state
+    entity_id:
+    - sensor.iphone_von_florian_battery_plus
+    from: 'on'
+    to: 'off'
+    id: iphoneBatteryLowOff
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - iphoneBatteryLowOn
+      sequence:
+      - action: switch.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.nuki_haustur_continuous_mode
+    - conditions:
+      - condition: trigger
+        id:
+        - iphoneBatteryLowOff
+      sequence:
+      - action: switch.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.nuki_haustur_continuous_mode
+  mode: single
+- id: '1748208734437'
+  alias: WLED TV SZ ON OFF
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.steckdose_tv_schlafzimmer_energy_power
+    id: wledTVOn
+    above: 20
+  - trigger: numeric_state
+    entity_id:
+    - sensor.steckdose_tv_schlafzimmer_energy_power
+    below: 20
+    id: wledTVOff
+  - trigger: time_pattern
+    seconds: '2'
+    id: checkPower
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - wledTVOn
+      sequence:
+      - action: light.turn_on
+        metadata: {}
+        data:
+          transition: 2
+        target:
+          entity_id: light.wled_stand
+    - conditions:
+      - condition: trigger
+        id:
+        - wledTVOff
+      sequence:
+      - action: light.turn_off
+        metadata: {}
+        data:
+          transition: 2
+        target:
+          entity_id: light.wled_stand
+    - conditions:
+      - condition: trigger
+        id:
+        - checkPower
+      sequence:
+      - action: homeassistant.update_entity
+        data:
+          entity_id:
+          - sensor.steckdose_tv_schlafzimmer_energy_power
   mode: single

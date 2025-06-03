@@ -1,0 +1,96 @@
+---
+- resource: "https://api.dhl.com/location-finder/v1/locations/8007-423566219"
+  scan_interval: 240
+  headers:
+    DHL-API-Key: !secret dhl_api_key
+  sensor:
+    - name: "DHL Packstation Aldi Montag"
+      icon: mdi:package
+      value_template: >-
+        {% if value_json.averageCapacityDayOfWeek[0].capacity == 'very-low'  %}
+        Sehr Hoch
+        {% elif value_json.averageCapacityDayOfWeek[0].capacity == 'low'   %}
+        Hoch
+        {% elif value_json.averageCapacityDayOfWeek[0].capacity == 'high'   %}
+        Niedrig
+        {% else %}
+        Unbekannt
+        {% endif %}
+      unique_id: dhl_packstation_aldi_monday
+    - name: "DHL Packstation Aldi Dienstag"
+      icon: mdi:package
+      value_template: >-
+        {% if value_json.averageCapacityDayOfWeek[1].capacity == 'very-low'  %}
+        Sehr Hoch
+        {% elif value_json.averageCapacityDayOfWeek[1].capacity == 'low'   %}
+        Hoch
+        {% elif value_json.averageCapacityDayOfWeek[1].capacity == 'high'   %}
+        Niedrig
+        {% else %}
+        Unbekannt
+        {% endif %}
+      unique_id: dhl_packstation_aldi_tuesday
+    - name: "DHL Packstation Aldi Mittwoch"
+      icon: mdi:package
+      value_template: >-
+        {% if value_json.averageCapacityDayOfWeek[2].capacity == 'very-low'  %}
+        Sehr Hoch
+        {% elif value_json.averageCapacityDayOfWeek[2].capacity == 'low'   %}
+        Hoch
+        {% elif value_json.averageCapacityDayOfWeek[2].capacity == 'high'   %}
+        Niedrig
+        {% else %}
+        Unbekannt
+        {% endif %}
+      unique_id: dhl_packstation_aldi_wednesday
+    - name: "DHL Packstation Aldi Donnerstag"
+      icon: mdi:package
+      value_template: >-
+        {% if value_json.averageCapacityDayOfWeek[3].capacity == 'very-low'  %}
+        Sehr Hoch
+        {% elif value_json.averageCapacityDayOfWeek[3].capacity == 'low'   %}
+        Hoch
+        {% elif value_json.averageCapacityDayOfWeek[3].capacity == 'high'   %}
+        Niedrig
+        {% else %}
+        Unbekannt
+        {% endif %}
+      unique_id: dhl_packstation_aldi_thursday
+    - name: "DHL Packstation Aldi Freitag"
+      unique_id: dhl_packstation_aldi_friday
+      icon: mdi:package
+      value_template: >-
+        {% if value_json.averageCapacityDayOfWeek[4].capacity == 'very-low'  %}
+        Sehr Hoch
+        {% elif value_json.averageCapacityDayOfWeek[4].capacity == 'low'   %}
+        Hoch
+        {% elif value_json.averageCapacityDayOfWeek[4].capacity == 'high'   %}
+        Niedrig
+        {% else %}
+        Unbekannt
+        {% endif %}
+    - name: "DHL Packstation Aldi Samstag"
+      icon: mdi:package
+      value_template: >-
+        {% if value_json.averageCapacityDayOfWeek[5].capacity == 'very-low'  %}
+        Sehr Hoch
+        {% elif value_json.averageCapacityDayOfWeek[5].capacity == 'low'   %}
+        Hoch
+        {% elif value_json.averageCapacityDayOfWeek[5].capacity == 'high'   %}
+        Niedrig
+        {% else %}
+        Unbekannt
+        {% endif %}
+      unique_id: dhl_packstation_aldi_saturday
+    - name: "DHL Packstation Aldi Sonntag"
+      value_template: >
+        {% if value_json.averageCapacityDayOfWeek[6].capacity == 'very-low'  %}
+        Sehr Hoch
+        {% elif value_json.averageCapacityDayOfWeek[6].capacity == 'low'   %}
+        Hoch
+        {% elif value_json.averageCapacityDayOfWeek[6].capacity == 'high'   %}
+        Niedrig
+        {% else %}
+        Unbekannt
+        {% endif %}
+      unique_id: dhl_packstation_aldi_sunday

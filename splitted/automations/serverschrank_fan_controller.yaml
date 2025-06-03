@@ -21,7 +21,18 @@ actions:
         device_id:
         - 4bd2421af39cbb87537914ffe272415d
 alias: Serverschrank Fan Controller
-conditions: []
+conditions:
+- after: 08:00:00
+  before: '21:00:00'
+  condition: time
+  weekday:
+  - mon
+  - tue
+  - wed
+  - thu
+  - fri
+  - sat
+  - sun
 description: ''
 id: '1729514153134'
 mode: single

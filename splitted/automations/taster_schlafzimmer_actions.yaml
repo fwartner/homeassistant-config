@@ -11,10 +11,50 @@ use_blueprint:
         state: 'off'
       then:
       - parallel:
-        - data: {}
-          service: script.3_minuten_bettzeit
-        - data: {}
-          service: script.10_minuten_boost_wohnzimmer
+        - action: script.3_minuten_bettzeit
+          data: {}
+        - action: script.10_minuten_boost_wohnzimmer
+          data: {}
+    hold_action:
+    - if:
+      - condition: state
+        entity_id: input_boolean.wartung
+        state: 'off'
+      then:
+      - else:
+        - if:
+          - condition: or
+            conditions:
+            - condition: state
+              entity_id: cover.rollos_schlafzimmer
+              state: opening
+            - condition: state
+              entity_id: cover.rollos_schlafzimmer
+              state: open
+          then:
+          - action: cover.close_cover
+            data: {}
+            target:
+              entity_id: cover.rollos_schlafzimmer
+        if:
+        - condition: or
+          conditions:
+          - condition: state
+            entity_id: cover.rollos_schlafzimmer
+            state: closing
+          - condition: state
+            entity_id: cover.rollos_schlafzimmer
+            state: closed
+        then:
+        - action: cover.open_cover
+          data: {}
+          target:
+            entity_id: cover.rollos_schlafzimmer
+      - action: remote.turn_on
+        data: {}
+        metadata: {}
+        target:
+          entity_id: remote.tv_schlafzimmer_dlna
     single_action:
     - if:
       - condition: state
@@ -32,8 +72,8 @@ use_blueprint:
               entity_id: cover.rollos_schlafzimmer
               state: open
           then:
-          - data: {}
-            service: cover.close_cover
+          - action: cover.close_cover
+            data: {}
             target:
               entity_id: cover.rollos_schlafzimmer
         if:
@@ -46,8 +86,8 @@ use_blueprint:
             entity_id: cover.rollos_schlafzimmer
             state: closed
         then:
-        - data: {}
-          service: cover.open_cover
+        - action: cover.open_cover
+          data: {}
           target:
             entity_id: cover.rollos_schlafzimmer
   path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml

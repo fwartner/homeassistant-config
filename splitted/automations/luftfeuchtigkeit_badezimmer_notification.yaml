@@ -1,0 +1,24 @@
+actions:
+- action: notify.alexa_media_last_called
+  data:
+    message: "Die Luftfeuchtigkeit im Badezimmer liegt bei \xFCber 65 Prozent. Vielleicht\
+      \ solltest du mal das Fenster \xF6ffnen.."
+  metadata: {}
+- action: chime_tts.say
+  data:
+    chime_path: error
+    message: "Die Luftfeuchtigkeit im Badezimmer liegt bei \xFCber 65 Prozent. Vielleicht\
+      \ solltest du mal das Fenster \xF6ffnen.."
+  metadata: {}
+  target:
+    device_id: 60bb8c68f9bfd9f765c17ecc133f0034
+alias: Luftfeuchtigkeit Badezimmer Notification
+conditions: []
+description: ''
+id: '1747657519437'
+mode: single
+triggers:
+- above: 65
+  entity_id:
+  - sensor.aqara_thermo_badezimmer_humidity
+  trigger: numeric_state

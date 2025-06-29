@@ -1,21 +1,36 @@
-action:
-- data: {}
-  service: hassio.host_reboot
-- delay:
-    hours: 0
-    milliseconds: 0
-    minutes: 10
-    seconds: 0
-- data: {}
-  service: homeassistant.reload_all
 alias: Restart Nightly
-condition:
-- condition: state
-  entity_id: input_boolean.wartung
-  state: 'off'
-description: ''
+description: 'Safely restart Home Assistant host during maintenance window with comprehensive safety checks'
 id: '1719501882967'
 mode: single
 trigger:
 - at: 04:00:00
   platform: time
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
+- condition: template
+  value_template: "{{ now().weekday() in [0,1,2,3,4] }}"
+- condition: template
+  value_template: "{{ not has_value('binary_sensor.backup_running') or is_state('binary_sensor.backup_running', 'off') }}"
+- condition: template
+  value_template: "{{ state_attr('sensor.ha_supervisor_updates', 'addons') | length == 0 }}"
+- condition: numeric_state
+  entity_id: sensor.processor_use
+  below: 50
+- condition: template
+  value_template: "{{ states('sensor.uptime') | int > 24 }}"
+action:
+- service: notify.florian_all
+  data:
+    title: "🔄 System Restart"
+    message: "Nightly system restart initiated. System will be back online in ~5 minutes."
+- delay:
+    seconds: 5
+- service: persistent_notification.create
+  data:
+    title: "System Restart in Progress"
+    message: "Automated nightly restart initiated at {{ now().strftime('%H:%M') }}"
+    notification_id: "restart_notification"
+- service: hassio.host_reboot
+  continue_on_error: false

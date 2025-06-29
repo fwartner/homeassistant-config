@@ -1,20 +1,63 @@
 esphome_update_all_devices:
   alias: 'ESPHome: Update All Devices'
+  description: 'Safely update all ESPHome devices with error handling and progress tracking'
   icon: si:esphome
   mode: single
+  max: 1
   sequence:
+  - variables:
+      esphome_updates: '{{ states.update | selectattr(''state'', ''eq'', ''on'') | map(attribute=''entity_id'') | select(''in'', integration_entities(''esphome'')) | list }}'
+      total_updates: '{{ esphome_updates | count }}'
+      failed_updates: []
+      successful_updates: []
+  - condition: template
+    value_template: "{{ total_updates > 0 }}"
+  - service: persistent_notification.create
+    data:
+      title: "ESPHome Updates Starting"
+      message: "Starting update of {{ total_updates }} ESPHome devices"
+      notification_id: "esphome_update_progress"
   - repeat:
-      for_each: '{{ states.update | selectattr(''state'', ''eq'', ''on'') | map(attribute=''entity_id'')
-        | select(''in'', integration_entities(''esphome'')) | list }} '
+      for_each: '{{ esphome_updates }}'
       sequence:
-      - data: {}
-        service: update.install
+      - variables:
+          current_device: '{{ repeat.item }}'
+          device_name: '{{ state_attr(repeat.item, ''friendly_name'') or repeat.item }}'
+          current_index: '{{ repeat.index }}'
+      - service: persistent_notification.create
+        data:
+          title: "ESPHome Update Progress"
+          message: "Updating {{ device_name }} ({{ current_index }}/{{ total_updates }})"
+          notification_id: "esphome_update_progress"
+      - condition: template
+        value_template: "{{ not is_state(current_device, 'unavailable') }}"
+      - service: update.install
         target:
-          entity_id: '{{ repeat.item }}'
-      - continue_on_timeout: true
-        wait_template: '{{ is_state(repeat.item, ''off'') }}'
+          entity_id: '{{ current_device }}'
+        continue_on_error: true
+      - wait_template: '{{ is_state(current_device, ''off'') or is_state(current_device, ''unavailable'') }}'
+        timeout: '00:10:00'
+        continue_on_timeout: true
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: "{{ wait.completed and is_state(current_device, 'off') }}"
+          sequence:
+          - variables:
+              successful_updates: '{{ successful_updates + [device_name] }}'
+        default:
+        - variables:
+            failed_updates: '{{ failed_updates + [device_name] }}'
       - delay:
-          hours: 0
-          milliseconds: 0
-          minutes: 3
-          seconds: 0
+          seconds: 30
+  - service: persistent_notification.create
+    data:
+      title: "ESPHome Updates Complete"
+      message: |
+        Updates finished!
+        ✅ Successful: {{ successful_updates | count }}
+        ❌ Failed: {{ failed_updates | count }}
+        {% if failed_updates | count > 0 %}
+        Failed devices: {{ failed_updates | join(', ') }}
+        {% endif %}
+      notification_id: "esphome_update_complete"

@@ -1,37 +1,64 @@
-action:
-- device_id: ecebaf73a60aa0461a4709ead7d7c698
-  domain: switch
-  entity_id: a4472801d90a581649f903138a92e29c
-  type: turn_on
-- data: {}
-  metadata: {}
-  service: script.esphome_update_all_devices
-- delay:
-    hours: 0
-    milliseconds: 0
-    minutes: 10
-    seconds: 0
-- data:
-    addon: 5c53de3b_esphome
-  service: hassio.addon_restart
-- delay:
-    hours: 0
-    milliseconds: 0
-    minutes: 10
-    seconds: 0
-- device_id: ecebaf73a60aa0461a4709ead7d7c698
-  domain: switch
-  entity_id: a4472801d90a581649f903138a92e29c
-  type: turn_off
 alias: ESPHome Auto-Update
+description: 'Safely auto-update ESPHome devices with error handling and notification'
+id: '1713785658342'
+mode: single
+max_exceeded: silent
+trigger:
+- platform: template
+  value_template: '{{ integration_entities(''esphome'') | select(''match'', ''^update.'') | select(''is_state'', ''on'') | list | count > 0 }}'
+  for:
+    minutes: 5
 condition:
 - condition: state
   entity_id: input_boolean.wartung
   state: 'off'
-description: ''
-id: '1713785658342'
-mode: single
-trigger:
-- platform: template
-  value_template: '{{ integration_entities(''esphome'') | select(''match'', ''^update.'')
-    | select(''is_state'', ''on'') | list | count > 0 }}'
+- condition: time
+  after: '02:00:00'
+  before: '06:00:00'
+- condition: template
+  value_template: "{{ states('sensor.processor_use') | int < 70 }}"
+- condition: template
+  value_template: "{{ not is_state('binary_sensor.backup_running', 'on') }}"
+action:
+- service: notify.florian_all
+  data:
+    title: "🔄 ESPHome Updates"
+    message: "Starting ESPHome device updates. Found {{ integration_entities('esphome') | select('match', '^update.') | select('is_state', 'on') | list | count }} updates available."
+  continue_on_error: true
+- service: switch.turn_on
+  target:
+    entity_id: switch.addon_5c53de3b_esphome_update_all_entities
+  continue_on_error: true
+- service: script.esphome_update_all_devices
+  continue_on_error: true
+- wait_template: "{{ integration_entities('esphome') | select('match', '^update.') | select('is_state', 'on') | list | count == 0 }}"
+  timeout: '00:30:00'
+  continue_on_timeout: true
+- choose:
+  - conditions:
+    - condition: template
+      value_template: "{{ wait.completed }}"
+    sequence:
+    - service: notify.florian_all
+      data:
+        title: "✅ ESPHome Updates Complete"
+        message: "All ESPHome devices updated successfully."
+      continue_on_error: true
+  default:
+  - service: notify.florian_all
+    data:
+      title: "⚠️ ESPHome Update Timeout"
+      message: "ESPHome updates did not complete within 30 minutes. Please check manually."
+    continue_on_error: true
+- delay:
+    minutes: 2
+- service: hassio.addon_restart
+  data:
+    addon: 5c53de3b_esphome
+  continue_on_error: true
+- delay:
+    minutes: 5
+- service: switch.turn_off
+  target:
+    entity_id: switch.addon_5c53de3b_esphome_update_all_entities
+  continue_on_error: true

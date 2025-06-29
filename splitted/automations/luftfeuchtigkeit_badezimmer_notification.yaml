@@ -1,24 +1,41 @@
-actions:
-- action: notify.alexa_media_last_called
-  data:
-    message: "Die Luftfeuchtigkeit im Badezimmer liegt bei \xFCber 65 Prozent. Vielleicht\
-      \ solltest du mal das Fenster \xF6ffnen.."
-  metadata: {}
-- action: chime_tts.say
-  data:
-    chime_path: error
-    message: "Die Luftfeuchtigkeit im Badezimmer liegt bei \xFCber 65 Prozent. Vielleicht\
-      \ solltest du mal das Fenster \xF6ffnen.."
-  metadata: {}
-  target:
-    device_id: 60bb8c68f9bfd9f765c17ecc133f0034
 alias: Luftfeuchtigkeit Badezimmer Notification
-conditions: []
-description: ''
+description: 'Alert when bathroom humidity is too high for extended period to prevent mold'
 id: '1747657519437'
 mode: single
+max_exceeded: silent
 triggers:
 - above: 65
   entity_id:
   - sensor.aqara_thermo_badezimmer_humidity
   trigger: numeric_state
+  for:
+    minutes: 10
+conditions:
+- condition: template
+  value_template: "{{ not is_state('sensor.aqara_thermo_badezimmer_humidity', 'unavailable') }}"
+- condition: template
+  value_template: "{{ not is_state('sensor.aqara_thermo_badezimmer_humidity', 'unknown') }}"
+- condition: time
+  after: '07:00:00'
+  before: '23:00:00'
+- condition: template
+  value_template: "{{ (as_timestamp(now()) - as_timestamp(state_attr('automation.luftfeuchtigkeit_badezimmer_notification', 'last_triggered') or '1970-01-01T00:00:00+00:00')) > 3600 }}"
+actions:
+- variables:
+    humidity_level: "{{ states('sensor.aqara_thermo_badezimmer_humidity') | int }}"
+- service: notify.florian_all
+  data:
+    title: "💧 Hohe Luftfeuchtigkeit"
+    message: "Die Luftfeuchtigkeit im Badezimmer liegt bei {{ humidity_level }}%. Bitte Fenster öffnen um Schimmel zu vermeiden."
+  continue_on_error: true
+- service: notify.alexa_media_last_called
+  data:
+    message: "Die Luftfeuchtigkeit im Badezimmer liegt bei {{ humidity_level }} Prozent. Vielleicht solltest du mal das Fenster öffnen."
+  continue_on_error: true
+- service: chime_tts.say
+  data:
+    chime_path: warning
+    message: "Die Luftfeuchtigkeit im Badezimmer liegt bei {{ humidity_level }} Prozent. Vielleicht solltest du mal das Fenster öffnen."
+  target:
+    entity_id: media_player.badezimmer_echo
+  continue_on_error: true

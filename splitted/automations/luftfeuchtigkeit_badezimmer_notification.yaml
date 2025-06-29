@@ -1,9 +1,12 @@
 actions:
+<<<<<<< HEAD
 - action: notify.alexa_media_last_called
   data:
     message: "Die Luftfeuchtigkeit im Badezimmer liegt bei \xFCber 65 Prozent. Vielleicht\
       \ solltest du mal das Fenster \xF6ffnen.."
   metadata: {}
+=======
+>>>>>>> 1f6dbfaf ([2025.7.0b4]: 29-06-2025 22:13:13)
 - action: chime_tts.say
   data:
     chime_path: error

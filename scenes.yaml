@@ -1,18 +1,18 @@
-- id: '1693826667643'
+- id: "1693826667643"
   name: 3 Minuten Bettzeit
   entities:
     script.3_minuten_bettzeit:
-      last_triggered: '2023-09-04T08:21:32.786654+00:00'
+      last_triggered: "2023-09-04T08:21:32.786654+00:00"
       mode: single
       current: 0
       icon: mdi:bed-clock
       friendly_name: 3 Minuten Bettzeit
-      state: 'off'
+      state: "off"
   icon: mdi:bed
   metadata:
     script.3_minuten_bettzeit:
       entity_only: true
-- id: '1700176197523'
+- id: "1700176197523"
   name: Movietime
   entities:
     number.sync_box_brightness:
@@ -20,61 +20,61 @@
       max: 100
       step: 1
       mode: auto
-      unit_of_measurement: '%'
+      unit_of_measurement: "%"
       icon: mdi:brightness-5
       friendly_name: Sync Box Brightness
-      state: '100'
+      state: "100"
     select.sync_box_hdmi_input:
       options:
-      - 'Apple TV '
-      - PlayStation 5
-      - Nintendo Switch
-      - Vodafone
+        - "Apple TV "
+        - PlayStation 5
+        - Nintendo Switch
+        - Vodafone
       icon: mdi:hdmi-port
       friendly_name: Sync Box HDMI Input
       state: PlayStation 5
     select.sync_box_intensity:
       options:
-      - subtle
-      - moderate
-      - high
-      - intense
+        - subtle
+        - moderate
+        - high
+        - intense
       icon: mdi:sine-wave
       friendly_name: Sync Box Intensity
       state: high
     select.sync_box_sync_mode:
       options:
-      - video
-      - music
-      - game
+        - video
+        - music
+        - game
       friendly_name: Sync Box Sync mode
       state: video
     switch.sync_box_power:
       icon: mdi:power
       friendly_name: Sync Box Power
-      state: 'on'
+      state: "on"
     switch.sync_box_light_sync:
       icon: mdi:television-ambient-light
       friendly_name: Sync Box Light Sync
-      state: 'on'
+      state: "on"
     light.tv_bank:
       supported_color_modes:
-      - brightness
+        - brightness
       color_mode:
       brightness:
       mode: normal
       dynamics: none
       friendly_name: TV Bank
       supported_features: 40
-      state: 'off'
+      state: "off"
     input_boolean.movietime:
       editable: true
       icon: mdi:theater
       friendly_name: Movietime
-      state: 'on'
+      state: "on"
     media_player.sonos_ray:
       group_members:
-      - media_player.sonos_ray
+        - media_player.sonos_ray
       volume_level: 0.12
       is_volume_muted: false
       media_content_id: x-sonos-htastream:RINCON_F0F6C1F0FCCC01400:spdif
@@ -82,7 +82,7 @@
       media_title: TV
       source: TV
       shuffle: false
-      repeat: 'off'
+      repeat: "off"
       queue_size: 1
       device_class: speaker
       icon: phu:sonos-beam
@@ -93,7 +93,7 @@
   metadata:
     input_boolean.movietime:
       entity_only: true
-- id: '1716114597259'
+- id: "1716114597259"
   name: Lesen Schlafzimmer
   entities:
     light.bett:
@@ -102,33 +102,33 @@
       min_mireds: 153
       max_mireds: 500
       supported_color_modes:
-      - color_temp
-      - xy
+        - color_temp
+        - xy
       color_mode: color_temp
       brightness: 255
       color_temp_kelvin: 5025
       color_temp: 199
       hs_color:
-      - 27.028
-      - 18.905
+        - 27.028
+        - 18.905
       rgb_color:
-      - 255
-      - 228
-      - 206
+        - 255
+        - 228
+        - 206
       xy_color:
-      - 0.371
-      - 0.349
+        - 0.371
+        - 0.349
       mode: normal
       dynamics: none
       friendly_name: Bett
       supported_features: 40
-      state: 'on'
+      state: "on"
     light.stehlampe:
       effect_list:
-      - None
-      - candle
+        - None
+        - candle
       supported_color_modes:
-      - brightness
+        - brightness
       effect: None
       color_mode: brightness
       brightness: 128
@@ -136,10 +136,10 @@
       dynamics: none
       friendly_name: Stehlampe
       supported_features: 44
-      state: 'on'
+      state: "on"
   icon: phu:other-reading
   metadata: {}
-- id: '1720440801295'
+- id: "1720440801295"
   name: Chill
   entities:
     light.tv:
@@ -148,48 +148,48 @@
       min_mireds: 153
       max_mireds: 500
       effect_list:
-      - None
-      - candle
-      - fire
-      - prism
-      - sparkle
-      - opal
-      - glisten
-      - sunrise
-      - unknown
+        - None
+        - candle
+        - fire
+        - prism
+        - sparkle
+        - opal
+        - glisten
+        - sunrise
+        - unknown
       supported_color_modes:
-      - color_temp
-      - xy
+        - color_temp
+        - xy
       effect: None
       color_mode: color_temp
       brightness: 102
       color_temp_kelvin: 3521
       color_temp: 284
       hs_color:
-      - 27.152
-      - 44.32
+        - 27.152
+        - 44.32
       rgb_color:
-      - 255
-      - 193
-      - 141
+        - 255
+        - 193
+        - 141
       xy_color:
-      - 0.453
-      - 0.374
+        - 0.453
+        - 0.374
       mode: normal
       dynamics: none
       friendly_name: TV
       supported_features: 44
-      state: 'on'
+      state: "on"
     media_player.sonos_ray_wohnzimmer:
       group_members:
-      - media_player.sonos_ray_wohnzimmer
+        - media_player.sonos_ray_wohnzimmer
       volume_level: 0.12
       is_volume_muted: false
       media_content_id: x-sonos-spotify:spotify%3atrack%3a2wk7mBr6JlorYMwESY7lyi?sid=9&flags=8232&sn=2
       media_content_type: music
       media_title: Stay by My Side
       shuffle: false
-      repeat: 'off'
+      repeat: "off"
       queue_size: 100
       device_class: speaker
       icon: phu:sonos-ray
@@ -197,7 +197,7 @@
       supported_features: 4127295
       media_duration: 111
       media_position: 0
-      media_position_updated_at: '2024-07-08T12:11:55.582512+00:00'
+      media_position_updated_at: "2024-07-08T12:11:55.582512+00:00"
       media_artist: SRTW
       media_album_name: Stay by My Side
       queue_position: 1
@@ -209,75 +209,75 @@
       min_mireds: 153
       max_mireds: 500
       effect_list:
-      - None
-      - candle
-      - fire
-      - prism
-      - sparkle
-      - opal
-      - glisten
+        - None
+        - candle
+        - fire
+        - prism
+        - sparkle
+        - opal
+        - glisten
       supported_color_modes:
-      - color_temp
-      - xy
+        - color_temp
+        - xy
       effect: None
       color_mode: color_temp
       brightness: 102
       color_temp_kelvin: 3521
       color_temp: 284
       hs_color:
-      - 27.152
-      - 44.32
+        - 27.152
+        - 44.32
       rgb_color:
-      - 255
-      - 193
-      - 141
+        - 255
+        - 193
+        - 141
       xy_color:
-      - 0.453
-      - 0.374
+        - 0.453
+        - 0.374
       mode: normal
       dynamics: none
       friendly_name: Hugo Rechts
       supported_features: 44
-      state: 'on'
+      state: "on"
     light.tv_bank:
       supported_color_modes:
-      - brightness
+        - brightness
       color_mode: brightness
       brightness: 102
       mode: normal
       dynamics: none
       friendly_name: TV Bank
       supported_features: 40
-      state: 'on'
+      state: "on"
     light.regal:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6535
       min_mireds: 153
       max_mireds: 500
       supported_color_modes:
-      - color_temp
-      - xy
+        - color_temp
+        - xy
       color_mode: color_temp
       brightness: 102
       color_temp_kelvin: 3521
       color_temp: 284
       hs_color:
-      - 27.152
-      - 44.32
+        - 27.152
+        - 44.32
       rgb_color:
-      - 255
-      - 193
-      - 141
+        - 255
+        - 193
+        - 141
       xy_color:
-      - 0.453
-      - 0.374
+        - 0.453
+        - 0.374
       mode: normal
       dynamics: none
       friendly_name: Regal
       supported_features: 40
-      state: 'on'
+      state: "on"
   metadata: {}
-- id: '1726219875674'
+- id: "1726219875674"
   name: Einbrecher
   entities:
     light.tv:
@@ -286,432 +286,432 @@
       min_mireds: 153
       max_mireds: 500
       effect_list:
-      - None
-      - candle
-      - fire
-      - prism
-      - sparkle
-      - opal
-      - glisten
-      - sunrise
-      - sunset
+        - None
+        - candle
+        - fire
+        - prism
+        - sparkle
+        - opal
+        - glisten
+        - sunrise
+        - sunset
       supported_color_modes:
-      - color_temp
-      - xy
+        - color_temp
+        - xy
       effect: None
       color_mode: xy
       brightness: 178
       color_temp_kelvin:
       color_temp:
       hs_color:
-      - 9.231
-      - 66.275
+        - 9.231
+        - 66.275
       rgb_color:
-      - 255
-      - 112
-      - 86
+        - 255
+        - 112
+        - 86
       xy_color:
-      - 0.589
-      - 0.329
+        - 0.589
+        - 0.329
       mode: normal
       dynamics: none
       friendly_name: TV
       supported_features: 44
-      state: 'on'
+      state: "on"
     light.regal:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6535
       min_mireds: 153
       max_mireds: 500
       supported_color_modes:
-      - color_temp
-      - xy
+        - color_temp
+        - xy
       color_mode: xy
       brightness: 178
       color_temp_kelvin:
       color_temp:
       hs_color:
-      - 9.231
-      - 66.275
+        - 9.231
+        - 66.275
       rgb_color:
-      - 255
-      - 112
-      - 86
+        - 255
+        - 112
+        - 86
       xy_color:
-      - 0.589
-      - 0.329
+        - 0.589
+        - 0.329
       mode: normal
       dynamics: none
       friendly_name: Regal
       supported_features: 40
-      state: 'on'
+      state: "on"
     light.hugo_rechts:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6535
       min_mireds: 153
       max_mireds: 500
       effect_list:
-      - None
-      - candle
-      - fire
-      - prism
-      - sparkle
-      - opal
-      - glisten
+        - None
+        - candle
+        - fire
+        - prism
+        - sparkle
+        - opal
+        - glisten
       supported_color_modes:
-      - color_temp
-      - xy
+        - color_temp
+        - xy
       effect: None
       color_mode: xy
       brightness: 178
       color_temp_kelvin:
       color_temp:
       hs_color:
-      - 9.231
-      - 66.275
+        - 9.231
+        - 66.275
       rgb_color:
-      - 255
-      - 112
-      - 86
+        - 255
+        - 112
+        - 86
       xy_color:
-      - 0.589
-      - 0.329
+        - 0.589
+        - 0.329
       mode: normal
       dynamics: none
       friendly_name: Hugo Rechts
       supported_features: 44
-      state: 'on'
+      state: "on"
     light.decke_flur:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6535
       min_mireds: 153
       max_mireds: 500
       effect_list:
-      - None
-      - candle
-      - fire
-      - prism
-      - sparkle
-      - opal
-      - glisten
-      - sunrise
-      - sunset
+        - None
+        - candle
+        - fire
+        - prism
+        - sparkle
+        - opal
+        - glisten
+        - sunrise
+        - sunset
       supported_color_modes:
-      - color_temp
-      - xy
+        - color_temp
+        - xy
       effect: None
       color_mode: xy
       brightness: 255
       color_temp_kelvin:
       color_temp:
       hs_color:
-      - 9.231
-      - 66.275
+        - 9.231
+        - 66.275
       rgb_color:
-      - 255
-      - 112
-      - 86
+        - 255
+        - 112
+        - 86
       xy_color:
-      - 0.589
-      - 0.329
+        - 0.589
+        - 0.329
       mode: normal
       dynamics: none
       friendly_name: Decke Flur
       supported_features: 44
-      state: 'on'
+      state: "on"
     light.kuchenschrank:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6535
       min_mireds: 153
       max_mireds: 500
       supported_color_modes:
-      - color_temp
-      - hs
+        - color_temp
+        - hs
       color_mode: hs
       brightness: 255
       color_temp_kelvin:
       color_temp:
       hs_color:
-      - 9
-      - 67.1
+        - 9
+        - 67.1
       rgb_color:
-      - 255
-      - 109
-      - 83
+        - 255
+        - 109
+        - 83
       xy_color:
-      - 0.591
-      - 0.328
+        - 0.591
+        - 0.328
       friendly_name: Küchenschrank
       supported_features: 0
-      state: 'on'
+      state: "on"
     light.moodlight_flur:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6535
       min_mireds: 153
       max_mireds: 500
       supported_color_modes:
-      - color_temp
-      - hs
+        - color_temp
+        - hs
       color_mode: hs
       brightness: 255
       color_temp_kelvin:
       color_temp:
       hs_color:
-      - 9
-      - 67.1
+        - 9
+        - 67.1
       rgb_color:
-      - 255
-      - 109
-      - 83
+        - 255
+        - 109
+        - 83
       xy_color:
-      - 0.591
-      - 0.328
+        - 0.591
+        - 0.328
       friendly_name: Moodlight Flur
       supported_features: 0
-      state: 'on'
+      state: "on"
     light.bett:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6535
       min_mireds: 153
       max_mireds: 500
       supported_color_modes:
-      - color_temp
-      - xy
+        - color_temp
+        - xy
       color_mode: xy
       brightness: 252
       color_temp_kelvin:
       color_temp:
       hs_color:
-      - 9.231
-      - 66.275
+        - 9.231
+        - 66.275
       rgb_color:
-      - 255
-      - 112
-      - 86
+        - 255
+        - 112
+        - 86
       xy_color:
-      - 0.589
-      - 0.329
+        - 0.589
+        - 0.329
       mode: normal
       dynamics: none
       friendly_name: Bett
       supported_features: 40
-      state: 'on'
+      state: "on"
     select.wled_wohnzimmer_wand_playlist:
       options: []
       friendly_name: WLED Wohnzimmer Wand Wiedergabeliste
       state: unavailable
     select.wled_wohnzimmer_wand_preset:
       options:
-      - c37
+        - c37
       friendly_name: WLED Wohnzimmer Wand Voreinstellung
       state: unknown
     light.wled_wohnzimmer_wand:
       effect_list:
-      - Solid
-      - Blink
-      - Breathe
-      - Wipe
-      - Wipe Random
-      - Random Colors
-      - Sweep
-      - Dynamic
-      - Colorloop
-      - Rainbow
-      - Scan
-      - Scan Dual
-      - Fade
-      - Theater
-      - Theater Rainbow
-      - Running
-      - Saw
-      - Twinkle
-      - Dissolve
-      - Dissolve Rnd
-      - Sparkle
-      - Sparkle Dark
-      - Sparkle+
-      - Strobe
-      - Strobe Rainbow
-      - Strobe Mega
-      - Blink Rainbow
-      - Android
-      - Chase
-      - Chase Random
-      - Chase Rainbow
-      - Chase Flash
-      - Chase Flash Rnd
-      - Rainbow Runner
-      - Colorful
-      - Traffic Light
-      - Sweep Random
-      - Chase 2
-      - Aurora
-      - Stream
-      - Scanner
-      - Lighthouse
-      - Fireworks
-      - Rain
-      - Tetrix
-      - Fire Flicker
-      - Gradient
-      - Loading
-      - Rolling Balls
-      - Fairy
-      - Two Dots
-      - Fairytwinkle
-      - Running Dual
-      - RSVD
-      - Chase 3
-      - Tri Wipe
-      - Tri Fade
-      - Lightning
-      - ICU
-      - Multi Comet
-      - Scanner Dual
-      - Stream 2
-      - Oscillate
-      - Pride 2015
-      - Juggle
-      - Palette
-      - Fire 2012
-      - Colorwaves
-      - Bpm
-      - Fill Noise
-      - Noise 1
-      - Noise 2
-      - Noise 3
-      - Noise 4
-      - Colortwinkles
-      - Lake
-      - Meteor
-      - Meteor Smooth
-      - Railway
-      - Ripple
-      - Twinklefox
-      - Twinklecat
-      - Halloween Eyes
-      - Solid Pattern
-      - Solid Pattern Tri
-      - Spots
-      - Spots Fade
-      - Glitter
-      - Candle
-      - Fireworks Starburst
-      - Fireworks 1D
-      - Bouncing Balls
-      - Sinelon
-      - Sinelon Dual
-      - Sinelon Rainbow
-      - Popcorn
-      - Drip
-      - Plasma
-      - Percent
-      - Ripple Rainbow
-      - Heartbeat
-      - Pacifica
-      - Candle Multi
-      - Solid Glitter
-      - Sunrise
-      - Phased
-      - Twinkleup
-      - Noise Pal
-      - Sine
-      - Phased Noise
-      - Flow
-      - Chunchun
-      - Dancing Shadows
-      - Washing Machine
-      - RSVD
-      - Blends
-      - TV Simulator
-      - Dynamic Smooth
-      - Spaceships
-      - Crazy Bees
-      - Ghost Rider
-      - Blobs
-      - Scrolling Text
-      - Drift Rose
-      - Distortion Waves
-      - Soap
-      - Octopus
-      - Waving Cell
-      - Pixels
-      - Pixelwave
-      - Juggles
-      - Matripix
-      - Gravimeter
-      - Plasmoid
-      - Puddles
-      - Midnoise
-      - Noisemeter
-      - Freqwave
-      - Freqmatrix
-      - GEQ
-      - Waterfall
-      - Freqpixels
-      - RSVD
-      - Noisefire
-      - Puddlepeak
-      - Noisemove
-      - Noise2D
-      - Perlin Move
-      - Ripple Peak
-      - Firenoise
-      - Squared Swirl
-      - RSVD
-      - DNA
-      - Matrix
-      - Metaballs
-      - Freqmap
-      - Gravcenter
-      - Gravcentric
-      - Gravfreq
-      - DJ Light
-      - Funky Plank
-      - RSVD
-      - Pulser
-      - Blurz
-      - Drift
-      - Waverly
-      - Sun Radiation
-      - Colored Bursts
-      - Julia
-      - RSVD
-      - RSVD
-      - RSVD
-      - Game Of Life
-      - Tartan
-      - Polar Lights
-      - Swirl
-      - Lissajous
-      - Frizzles
-      - Plasma Ball
-      - Flow Stripe
-      - Hiphotic
-      - Sindots
-      - DNA Spiral
-      - Black Hole
-      - Wavesins
-      - Rocktaves
-      - Akemi
+        - Solid
+        - Blink
+        - Breathe
+        - Wipe
+        - Wipe Random
+        - Random Colors
+        - Sweep
+        - Dynamic
+        - Colorloop
+        - Rainbow
+        - Scan
+        - Scan Dual
+        - Fade
+        - Theater
+        - Theater Rainbow
+        - Running
+        - Saw
+        - Twinkle
+        - Dissolve
+        - Dissolve Rnd
+        - Sparkle
+        - Sparkle Dark
+        - Sparkle+
+        - Strobe
+        - Strobe Rainbow
+        - Strobe Mega
+        - Blink Rainbow
+        - Android
+        - Chase
+        - Chase Random
+        - Chase Rainbow
+        - Chase Flash
+        - Chase Flash Rnd
+        - Rainbow Runner
+        - Colorful
+        - Traffic Light
+        - Sweep Random
+        - Chase 2
+        - Aurora
+        - Stream
+        - Scanner
+        - Lighthouse
+        - Fireworks
+        - Rain
+        - Tetrix
+        - Fire Flicker
+        - Gradient
+        - Loading
+        - Rolling Balls
+        - Fairy
+        - Two Dots
+        - Fairytwinkle
+        - Running Dual
+        - RSVD
+        - Chase 3
+        - Tri Wipe
+        - Tri Fade
+        - Lightning
+        - ICU
+        - Multi Comet
+        - Scanner Dual
+        - Stream 2
+        - Oscillate
+        - Pride 2015
+        - Juggle
+        - Palette
+        - Fire 2012
+        - Colorwaves
+        - Bpm
+        - Fill Noise
+        - Noise 1
+        - Noise 2
+        - Noise 3
+        - Noise 4
+        - Colortwinkles
+        - Lake
+        - Meteor
+        - Meteor Smooth
+        - Railway
+        - Ripple
+        - Twinklefox
+        - Twinklecat
+        - Halloween Eyes
+        - Solid Pattern
+        - Solid Pattern Tri
+        - Spots
+        - Spots Fade
+        - Glitter
+        - Candle
+        - Fireworks Starburst
+        - Fireworks 1D
+        - Bouncing Balls
+        - Sinelon
+        - Sinelon Dual
+        - Sinelon Rainbow
+        - Popcorn
+        - Drip
+        - Plasma
+        - Percent
+        - Ripple Rainbow
+        - Heartbeat
+        - Pacifica
+        - Candle Multi
+        - Solid Glitter
+        - Sunrise
+        - Phased
+        - Twinkleup
+        - Noise Pal
+        - Sine
+        - Phased Noise
+        - Flow
+        - Chunchun
+        - Dancing Shadows
+        - Washing Machine
+        - RSVD
+        - Blends
+        - TV Simulator
+        - Dynamic Smooth
+        - Spaceships
+        - Crazy Bees
+        - Ghost Rider
+        - Blobs
+        - Scrolling Text
+        - Drift Rose
+        - Distortion Waves
+        - Soap
+        - Octopus
+        - Waving Cell
+        - Pixels
+        - Pixelwave
+        - Juggles
+        - Matripix
+        - Gravimeter
+        - Plasmoid
+        - Puddles
+        - Midnoise
+        - Noisemeter
+        - Freqwave
+        - Freqmatrix
+        - GEQ
+        - Waterfall
+        - Freqpixels
+        - RSVD
+        - Noisefire
+        - Puddlepeak
+        - Noisemove
+        - Noise2D
+        - Perlin Move
+        - Ripple Peak
+        - Firenoise
+        - Squared Swirl
+        - RSVD
+        - DNA
+        - Matrix
+        - Metaballs
+        - Freqmap
+        - Gravcenter
+        - Gravcentric
+        - Gravfreq
+        - DJ Light
+        - Funky Plank
+        - RSVD
+        - Pulser
+        - Blurz
+        - Drift
+        - Waverly
+        - Sun Radiation
+        - Colored Bursts
+        - Julia
+        - RSVD
+        - RSVD
+        - RSVD
+        - Game Of Life
+        - Tartan
+        - Polar Lights
+        - Swirl
+        - Lissajous
+        - Frizzles
+        - Plasma Ball
+        - Flow Stripe
+        - Hiphotic
+        - Sindots
+        - DNA Spiral
+        - Black Hole
+        - Wavesins
+        - Rocktaves
+        - Akemi
       supported_color_modes:
-      - rgb
+        - rgb
       effect: Solid
       color_mode: rgb
       brightness: 255
       hs_color:
-      - 9.123
-      - 67.059
+        - 9.123
+        - 67.059
       rgb_color:
-      - 255
-      - 110
-      - 84
+        - 255
+        - 110
+        - 84
       xy_color:
-      - 0.589
-      - 0.329
+        - 0.589
+        - 0.329
       friendly_name: WLED Wohnzimmer Wand
       supported_features: 36
-      state: 'on'
+      state: "on"
     media_player.sonos_wohnzimmer:
       group_members: []
       mass_player_id: RINCON_F0F6C1F0FCCC01400
@@ -731,103 +731,104 @@
       app_id: spotify
       source: spotify
       shuffle: false
-      repeat: 'off'
+      repeat: "off"
       entity_picture_local:
       state: idle
   icon: mdi:police-badge
   metadata: {}
-- id: '1739973742541'
+- id: "1739973742541"
   name: Fernsehen
   entities:
     switch.steckdose_tv_bank_wohnzimmer:
       device_class: outlet
       icon: mdi:power
       friendly_name: Steckdose TV Bank Wohnzimmer
-      state: 'on'
+      state: "on"
     media_player.appletv_wohnzimmer:
       source_list:
-      - Airbnb
-      - Apple Events
-      - App Store
-      - Arcade
-      - ARD Mediathek
-      - ARTE
-      - Chefkoch TV
-      - Classix
-      - Computer
-      - Das Erste
-      - Developer
-      - Disney+
-      - Einstellungen
-      - Facebook Watch
-      - Filme
-      - Fitness
-      - Fotos
-      - Gamepass
-      - HomeCenter
-      - IKEA Catalogue
-      - Joyn
-      - kabel eins
-      - kabel eins Doku
-      - KAYAK
-      - Kitchen Stories
-      - Musik
-      - Netflix
-      - NordVPN
-      - Paramount+
-      - Plex
-      - Pluto TV
-      - Podcasts
-      - Prime Video
-      - ProSieben
-      - ProSieben MAXX
-      - REWE
-      - RTL+
-      - SAT.1
-      - SAT.1 Gold
-      - Shadow PC
-      - sixx
-      - Sky Q
-      - Speedtest
-      - Spotify
-      - Steam Link
-      - Suchen
-      - Tagesschau
-      - Tastemade
-      - TestFlight
-      - TripAdvisor
-      - TV
-      - TV-Sendungen
-      - Twitch
-      - Twitter
-      - Udemy
-      - VLC
-      - Vodafone
-      - wetter.com live
-      - WOW
-      - YouTube
-      - Zattoo
-      - ZDFmediathek
+        - Airbnb
+        - Apple Events
+        - App Store
+        - Arcade
+        - ARD Mediathek
+        - ARTE
+        - Chefkoch TV
+        - Classix
+        - Computer
+        - Das Erste
+        - Developer
+        - Disney+
+        - Einstellungen
+        - Facebook Watch
+        - Filme
+        - Fitness
+        - Fotos
+        - Gamepass
+        - HomeCenter
+        - IKEA Catalogue
+        - Joyn
+        - kabel eins
+        - kabel eins Doku
+        - KAYAK
+        - Kitchen Stories
+        - Musik
+        - Netflix
+        - NordVPN
+        - Paramount+
+        - Plex
+        - Pluto TV
+        - Podcasts
+        - Prime Video
+        - ProSieben
+        - ProSieben MAXX
+        - REWE
+        - RTL+
+        - SAT.1
+        - SAT.1 Gold
+        - Shadow PC
+        - sixx
+        - Sky Q
+        - Speedtest
+        - Spotify
+        - Steam Link
+        - Suchen
+        - Tagesschau
+        - Tastemade
+        - TestFlight
+        - TripAdvisor
+        - TV
+        - TV-Sendungen
+        - Twitch
+        - Twitter
+        - Udemy
+        - VLC
+        - Vodafone
+        - wetter.com live
+        - WOW
+        - YouTube
+        - Zattoo
+        - ZDFmediathek
       media_duration: 1971
       media_position: 8
-      media_title: Das musst du wissen – Fußbodenheizung intelligent steuern mit Home
+      media_title:
+        Das musst du wissen – Fußbodenheizung intelligent steuern mit Home
         Assistant!
       media_artist: simon42
-      media_album_name: ''
+      media_album_name: ""
       app_id: com.google.ios.youtube
       app_name: YouTube
       icon: phu:apple-tv
       friendly_name: AppleTV Wohnzimmer
       supported_features: 450487
-      media_position_updated_at: '2025-02-19T14:04:18.272357+00:00'
+      media_position_updated_at: "2025-02-19T14:04:18.272357+00:00"
       state: playing
     remote.appletv_wohnzimmer:
       friendly_name: AppleTV Wohnzimmer
       supported_features: 0
-      state: 'on'
+      state: "on"
     media_player.sonos_ray_wohnzimmer:
       group_members:
-      - media_player.sonos_ray_wohnzimmer
+        - media_player.sonos_ray_wohnzimmer
       volume_level: 0.1
       is_volume_muted: false
       media_content_id: x-sonos-htastream:RINCON_F0F6C1F0FCCC01400:spdif
@@ -835,7 +836,7 @@
       media_title: TV
       source: TV
       shuffle: false
-      repeat: 'off'
+      repeat: "off"
       queue_size: 1
       device_class: speaker
       icon: phu:sonos-ray
@@ -844,48 +845,48 @@
       state: playing
     light.tv_bank:
       supported_color_modes:
-      - brightness
+        - brightness
       color_mode: brightness
       brightness: 150
       mode: normal
       dynamics: none
       friendly_name: TV Bank
       supported_features: 40
-      state: 'on'
+      state: "on"
   metadata: {}
   icon: mdi:popcorn
-- id: '1739974242661'
+- id: "1739974242661"
   name: Wohnzimmer Aus
   entities:
     media_player.appletv_wohnzimmer:
       icon: phu:apple-tv
       friendly_name: AppleTV Wohnzimmer
       supported_features: 448439
-      state: 'off'
+      state: "off"
     remote.appletv_wohnzimmer:
       friendly_name: AppleTV Wohnzimmer
       supported_features: 0
-      state: 'off'
+      state: "off"
     light.tv_bank:
       supported_color_modes:
-      - brightness
+        - brightness
       color_mode:
       brightness:
       mode: normal
       dynamics: none
       friendly_name: TV Bank
       supported_features: 40
-      state: 'off'
+      state: "off"
     switch.steckdose_tv_bank_wohnzimmer:
       device_class: outlet
       icon: mdi:power
       friendly_name: Steckdose TV Bank Wohnzimmer
-      state: 'off'
+      state: "off"
     cover.rollos_wohnzimmer_fensterbank:
       current_position: 0
       entity_id:
-      - cover.ikea_rollo_links_wohnzimmer
-      - cover.ikea_rollo_rechts_wohnzimmer
+        - cover.ikea_rollo_links_wohnzimmer
+        - cover.ikea_rollo_rechts_wohnzimmer
       friendly_name: Rollos Wohnzimmer Fensterbank
       supported_features: 15
       state: closed
@@ -896,7 +897,7 @@
       state: open
     media_player.sonos_ray_wohnzimmer:
       group_members:
-      - media_player.sonos_ray_wohnzimmer
+        - media_player.sonos_ray_wohnzimmer
       volume_level: 0.1
       is_volume_muted: false
       media_content_id: x-sonos-htastream:RINCON_F0F6C1F0FCCC01400:spdif
@@ -904,7 +905,7 @@
       media_title: TV
       source: TV
       shuffle: false
-      repeat: 'off'
+      repeat: "off"
       queue_size: 1
       device_class: speaker
       icon: phu:sonos-ray
@@ -914,29 +915,29 @@
     switch.ps5_801_power:
       icon: mdi:sony-playstation
       friendly_name: PS5-801 power
-      state: 'off'
+      state: "off"
     light.tv:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6535
       min_mireds: 153
       max_mireds: 500
       effect_list:
-      - None
-      - candle
-      - fire
-      - prism
-      - sparkle
-      - opal
-      - glisten
-      - unknown
-      - unknown
-      - unknown
-      - unknown
-      - sunrise
-      - sunset
+        - None
+        - candle
+        - fire
+        - prism
+        - sparkle
+        - opal
+        - glisten
+        - unknown
+        - unknown
+        - unknown
+        - unknown
+        - sunrise
+        - sunset
       supported_color_modes:
-      - color_temp
-      - xy
+        - color_temp
+        - xy
       effect:
       color_mode:
       brightness:
@@ -949,66 +950,66 @@
       dynamics: none
       friendly_name: TV
       supported_features: 44
-      state: 'off'
+      state: "off"
   icon: mdi:light-switch-off
   metadata:
     cover.rollos_wohnzimmer_fensterbank:
       entity_only: true
     cover.ikea_rollo_balkontur:
       entity_only: true
-- id: '1739974475118'
+- id: "1739974475118"
   name: Zocken
   entities:
     switch.steckdose_tv_bank_wohnzimmer:
       device_class: outlet
       icon: mdi:power
       friendly_name: Steckdose TV Bank Wohnzimmer
-      state: 'on'
+      state: "on"
     switch.ps5_801_power:
       icon: mdi:sony-playstation
       friendly_name: PS5-801 power
-      state: 'on'
+      state: "on"
     light.tv:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6535
       min_mireds: 153
       max_mireds: 500
       effect_list:
-      - None
-      - candle
-      - fire
-      - prism
-      - sparkle
-      - opal
-      - glisten
-      - unknown
-      - unknown
-      - unknown
-      - unknown
-      - sunrise
-      - sunset
+        - None
+        - candle
+        - fire
+        - prism
+        - sparkle
+        - opal
+        - glisten
+        - unknown
+        - unknown
+        - unknown
+        - unknown
+        - sunrise
+        - sunset
       supported_color_modes:
-      - color_temp
-      - xy
+        - color_temp
+        - xy
       effect: None
       color_mode: xy
       brightness: 178
       color_temp_kelvin:
       color_temp:
       hs_color:
-      - 9.231
-      - 66.275
+        - 9.231
+        - 66.275
       rgb_color:
-      - 255
-      - 112
-      - 86
+        - 255
+        - 112
+        - 86
       xy_color:
-      - 0.589
-      - 0.329
+        - 0.589
+        - 0.329
       mode: normal
       dynamics: none
       friendly_name: TV
       supported_features: 44
-      state: 'on'
+      state: "on"
   icon: mdi:controller
   metadata: {}

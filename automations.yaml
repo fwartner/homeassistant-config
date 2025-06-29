@@ -3565,11 +3565,6 @@
     above: 65
   conditions: []
   actions:
-  - action: notify.alexa_media_last_called
-    metadata: {}
-    data:
-      message: Die Luftfeuchtigkeit im Badezimmer liegt bei über 65 Prozent. Vielleicht
-        solltest du mal das Fenster öffnen..
   - action: chime_tts.say
     metadata: {}
     data:
@@ -3674,79 +3669,4 @@
         data:
           entity_id:
           - sensor.steckdose_tv_schlafzimmer_energy_power
-  mode: single
-- id: '1751028090574'
-  alias: iPad Dashboard Battery Saver
-  description: ''
-  triggers:
-  - trigger: numeric_state
-    entity_id:
-    - sensor.ipad_pro_von_florian_battery_level
-    below: 15
-    id: ipadBatteryOn
-  - trigger: numeric_state
-    entity_id:
-    - sensor.ipad_pro_von_florian_battery_level
-    id: ipadBatteryOff
-    above: 80
-  conditions: []
-  actions:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - ipadBatteryOn
-      sequence:
-      - action: switch.turn_on
-        metadata: {}
-        data: {}
-        target:
-          device_id: 2fb509ac68da3729bfa88fc04c2bb9e4
-    - conditions:
-      - condition: trigger
-        id:
-        - ipadBatteryOff
-      sequence:
-      - action: switch.turn_off
-        metadata: {}
-        data: {}
-        target:
-          device_id: 2fb509ac68da3729bfa88fc04c2bb9e4
-  mode: single
-- id: '1751030437295'
-  alias: iPad bei Nacht aus
-  description: ''
-  triggers:
-  - trigger: time
-    at: '22:30:00'
-    id: ipadOff
-  - trigger: time
-    at: 07:30:00
-    id: ipadOn
-  conditions:
-  - condition: numeric_state
-    entity_id: sensor.people_home
-    above: 0
-  actions:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - ipadOff
-      sequence:
-      - action: light.turn_off
-        metadata: {}
-        data: {}
-        target:
-          entity_id: light.ipad_pro_screen
-    - conditions:
-      - condition: trigger
-        id:
-        - ipadOn
-      sequence:
-      - action: light.turn_on
-        metadata: {}
-        data: {}
-        target:
-          entity_id: light.ipad_pro_screen
   mode: single

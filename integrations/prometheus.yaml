@@ -17,3 +17,4 @@ prometheus:
       - climate
     include_entity_globs:
       - binary_sensor.*_occupancy
+      - sensor.aqara_thermo_*_temperature

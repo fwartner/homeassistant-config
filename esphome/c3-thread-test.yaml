@@ -1,0 +1,32 @@
+esphome:
+  name: c3-test
+  friendly_name: C3 Test
+
+esp32:
+  board: esp32-c3-devkitm-1
+  framework:
+    type: esp-idf
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "uQLzovs0WvhRSldnfR/09Sqafj6TKPWyR/Uv+0b6SRQ="
+
+ota:
+  - platform: esphome
+    password: "dad3b22b64aff6a9658377e0a4de42ac"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "C3-Thread-Test Fallback Hotspot"
+    password: "0xBepaqLHpfc"
+
+captive_portal:
+

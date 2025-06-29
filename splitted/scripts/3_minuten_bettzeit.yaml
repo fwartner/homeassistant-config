@@ -1,82 +1,60 @@
 3_minuten_bettzeit:
   alias: 3 Minuten Bettzeit
-  description: 'Bedtime routine with 3-minute countdown timer and gradual lighting shutdown'
   icon: mdi:bed-clock
-  mode: restart
-  max: 1
+  mode: single
   sequence:
-  - condition: template
-    value_template: "{{ not is_state('timer.3_minuten_bett', 'active') }}"
-  - service: notify.florian_all
-    data:
-      title: "🌙 Bettzeit"
-      message: "3-Minuten Bettzeit-Routine gestartet"
-    continue_on_error: true
   - parallel:
-    - condition: template
-      value_template: "{{ not is_state('cover.rollos_schlafzimmer', 'unavailable') }}"
-      sequence:
-      - service: cover.close_cover
-        target:
-          entity_id: cover.rollos_schlafzimmer
-        continue_on_error: true
-    - sequence:
-      - service: switch.turn_off
-        target:
-          entity_id:
-          - switch.dashboard_flur_bildschirm
-          - switch.lenovo_tab_m10_bildschirm
-        continue_on_error: true
-    - condition: template
-      value_template: "{{ not is_state('lock.nuki_wohnungstur_lock', 'unavailable') }}"
-      sequence:
-      - service: lock.lock
-        target:
-          entity_id: lock.nuki_wohnungstur_lock
-        continue_on_error: true
-    - sequence:
-      - service: light.turn_off
-        target:
-          entity_id: light.alle_lampen
-        continue_on_error: true
-    - sequence:
-      - service: switch.turn_off
-        target:
-          entity_id: switch.alle_steckdosen
-        continue_on_error: true
+    - data: {}
+      metadata: {}
+      service: cover.close_cover
+      target:
+        entity_id: cover.rollos_schlafzimmer
+    - data: {}
+      service: switch.turn_off
+      target:
+        entity_id:
+        - switch.dashboard_flur_bildschirm
+        - switch.lenovo_tab_m10_bildschirm
+    - data: {}
+      service: lock.lock
+      target:
+        entity_id: lock.nuki_wohnungstur_lock
+    - data: {}
+      service: light.turn_off
+      target:
+        entity_id: light.alle_lampen
+    - data: {}
+      service: switch.turn_off
+      target:
+        entity_id: switch.alle_steckdosen
   - delay:
+      hours: 0
+      milliseconds: 0
+      minutes: 0
       seconds: 2
-  - service: switch.turn_on
-    target:
-      entity_id: switch.schlafzimmer_luftreiniger_power
-    continue_on_error: true
-  - service: light.turn_on
-    data:
+  - device_id: 687585a826f140c103f447d4384f11a8
+    domain: switch
+    entity_id: 107487a20fd417d6c27308fc10f3df40
+    type: turn_on
+  - data:
       brightness_pct: 30
-      color_temp: 400
+    service: light.turn_on
     target:
       entity_id: light.bett
-    continue_on_error: true
-  - service: switch.turn_on
-    target:
-      entity_id: switch.schlafzimmer_nachtlicht_power
-    continue_on_error: true
-  - service: timer.start
+  - device_id: cee4b3caf72c6c64e4cf9115e5ad0c40
+    domain: switch
+    entity_id: 82f42d86b638d5bf6c7b3f54ee19ac1a
+    type: turn_on
+  - data: {}
+    service: timer.start
     target:
       entity_id: timer.3_minuten_bett
-    continue_on_error: true
-  - wait_for_trigger:
-    - platform: state
-      entity_id: timer.3_minuten_bett
-      to: 'idle'
-    timeout: '00:04:00'
-    continue_on_timeout: true
-  - service: light.turn_off
-    target:
-      entity_id: light.bett
-    continue_on_error: true
-  - service: notify.florian_all
-    data:
-      title: "😴 Gute Nacht"
-      message: "3-Minuten Timer abgelaufen. Gute Nacht!"
-    continue_on_error: true
+  - delay:
+      hours: 0
+      milliseconds: 0
+      minutes: 3
+      seconds: 0
+  - device_id: 5b11b0840d4c4062ffc65bf3e4390f30
+    domain: light
+    entity_id: bce45d1352e6bb15287c05e343ace4b7
+    type: turn_off

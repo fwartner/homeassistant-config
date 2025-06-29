@@ -1,63 +1,44 @@
-alias: Nuki Auto-Unlock iPhone Battery Low
-description: 'Enable Nuki continuous mode when iPhone battery is low to prevent lockout, disable when battery recovers'
-id: '1747658887532'
-mode: restart
-max_exceeded: silent
-triggers:
-- entity_id:
-  - binary_sensor.iphone_von_florian_battery_plus_low
-  for:
-    minutes: 5
-  from: 'off'
-  id: iphoneBatteryLowOn
-  to: 'on'
-  trigger: state
-- entity_id:
-  - binary_sensor.iphone_von_florian_battery_plus_low
-  for:
-    minutes: 10
-  from: 'on'
-  id: iphoneBatteryLowOff
-  to: 'off'
-  trigger: state
-conditions:
-- condition: template
-  value_template: "{{ not is_state('switch.nuki_haustur_continuous_mode', 'unavailable') }}"
-- condition: template
-  value_template: "{{ not is_state('binary_sensor.iphone_von_florian_battery_plus_low', 'unavailable') }}"
 actions:
 - choose:
   - conditions:
     - condition: trigger
       id:
       - iphoneBatteryLowOn
-    - condition: state
-      entity_id: switch.nuki_haustur_continuous_mode
-      state: 'off'
     sequence:
-    - service: notify.florian_all
-      data:
-        title: "🔋⚠️ iPhone Battery Low"
-        message: "iPhone battery is low ({{ states('sensor.iphone_von_florian_battery_plus') }}%). Enabling Nuki continuous mode to prevent lockout."
-      continue_on_error: true
-    - service: switch.turn_on
+    - action: switch.turn_on
+      data: {}
+      metadata: {}
       target:
         entity_id: switch.nuki_haustur_continuous_mode
-      continue_on_error: true
   - conditions:
     - condition: trigger
       id:
       - iphoneBatteryLowOff
-    - condition: state
-      entity_id: switch.nuki_haustur_continuous_mode
-      state: 'on'
     sequence:
-    - service: notify.florian_all
-      data:
-        title: "🔋✅ iPhone Battery Recovered"
-        message: "iPhone battery recovered ({{ states('sensor.iphone_von_florian_battery_plus') }}%). Disabling Nuki continuous mode."
-      continue_on_error: true
-    - service: switch.turn_off
+    - action: switch.turn_off
+      data: {}
+      metadata: {}
       target:
         entity_id: switch.nuki_haustur_continuous_mode
-      continue_on_error: true
+alias: Nuki Auto-Unlock iPhone Battery Low
+conditions: []
+description: ''
+id: '1747658887532'
+mode: single
+triggers:
+- entity_id:
+  - binary_sensor.iphone_von_florian_battery_plus_low
+  for:
+    hours: 0
+    minutes: 5
+    seconds: 0
+  from: 'off'
+  id: iphoneBatteryLowOn
+  to: 'on'
+  trigger: state
+- entity_id:
+  - sensor.iphone_von_florian_battery_plus
+  from: 'on'
+  id: iphoneBatteryLowOff
+  to: 'off'
+  trigger: state

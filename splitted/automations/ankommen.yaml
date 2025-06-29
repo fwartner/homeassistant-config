@@ -4,24 +4,15 @@ actions:
     - condition: trigger
       id:
       - anyoneHomeOn
-    - condition: template
-      value_template: "{{ not is_state('switch.wohnzimmer_steckdose_power', 'unavailable') }}"
     sequence:
     - action: switch.turn_on
       data: {}
       target:
-        entity_id: switch.wohnzimmer_steckdose_power
-      continue_on_error: true
+        device_id: 9d14dca47a5773d55c5f7f9d16c58476
   - conditions:
     - condition: trigger
       id:
       - doorOpenOn
-    - condition: template
-      enabled: true
-      value_template: '{{ not is_state(''media_player.spotify_florian'', ''unavailable'') }}'
-    - condition: template
-      enabled: true
-      value_template: '{{ not is_state(''media_player.sonos_ray_wohnzimmer'', ''unavailable'') }}'
     - condition: template
       enabled: true
       value_template: '{{ is_state_attr(''media_player.spotify_florian'', ''source'',
@@ -31,32 +22,24 @@ actions:
       value_template: '{{ is_state(''media_player.spotify_florian'', ''playing'')
         }}'
     sequence:
-    - action: notify.florian_all
+    - action: notify.florian_notify
       data:
         message: Ich habe die Musik von deinem iPhone auf Sonos Ray gestellt
-        title: "Willkommen Zuhause 🏠"
-      continue_on_error: true
+        title: "Willkommen Zuhause \U0001F3E0"
     - action: media_player.select_source
       data:
         source: Spotify Connect
       target:
         entity_id: media_player.sonos_ray_wohnzimmer
-      continue_on_error: true
-    - delay:
-        seconds: 2
     - action: media_player.select_source
       data:
         source: Sonos Ray
       target:
         entity_id: media_player.spotify_florian
-      continue_on_error: true
-    - delay:
-        seconds: 1
     - action: media_player.media_play
       data: {}
       target:
         entity_id: media_player.sonos_ray_wohnzimmer
-      continue_on_error: true
   - conditions:
     - condition: trigger
       id:
@@ -70,18 +53,15 @@ actions:
       data: {}
       metadata: {}
 alias: Ankommen
-description: 'Welcome home automation that turns on lights when someone arrives and handles Spotify music transfer from iPhone to Sonos'
-id: '1691741828322'
-mode: restart
-max_exceeded: silent
 conditions:
 - condition: and
   conditions:
   - condition: state
     entity_id: input_boolean.guestmode
     state: 'off'
-  - condition: template
-    value_template: "{{ not is_state('binary_sensor.aqara_contact_wohnungstur_contact', 'unavailable') }}"
+description: ''
+id: '1691741828322'
+mode: single
 triggers:
 - enabled: true
   entity_id:

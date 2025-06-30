@@ -6,18 +6,6 @@ action:
       - condition: trigger
         id:
         - fanOn
-      - after: 07:00:00
-        before: '22:00:00'
-        condition: time
-        enabled: false
-        weekday:
-        - mon
-        - tue
-        - wed
-        - thu
-        - fri
-        - sat
-        - sun
     sequence:
     - data:
         percentage: 60
@@ -43,7 +31,9 @@ condition:
   - condition: state
     entity_id: input_boolean.wartung
     state: 'off'
-description: "An: Wenn \xFCber 26 Grad\nAus: Wenn unter 24 Grad"
+  - condition: template
+    value_template: '{{ now().month in [6,7,8] }}'
+description: "An: Wenn \xFCber 25 Grad im Sommer, Aus: Wenn unter 23 Grad"
 id: '1686557247104'
 mode: single
 trigger:

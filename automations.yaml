@@ -176,9 +176,7 @@
   mode: single
 - id: '1686557247104'
   alias: Ventilator
-  description: 'An: Wenn über 26 Grad
-
-    Aus: Wenn unter 24 Grad'
+  description: 'An: Wenn über 25 Grad im Sommer, Aus: Wenn unter 23 Grad'
   trigger:
   - platform: numeric_state
     entity_id:
@@ -199,6 +197,8 @@
     - condition: state
       entity_id: input_boolean.wartung
       state: 'off'
+    - condition: template
+      value_template: "{{ now().month in [6,7,8] }}"
   action:
   - choose:
     - conditions:
@@ -207,18 +207,6 @@
         - condition: trigger
           id:
           - fanOn
-        - condition: time
-          weekday:
-          - mon
-          - tue
-          - wed
-          - thu
-          - fri
-          - sat
-          - sun
-          before: '22:00:00'
-          after: 07:00:00
-          enabled: false
       sequence:
       - service: fan.turn_on
         data:

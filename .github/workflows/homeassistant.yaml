@@ -46,7 +46,7 @@ jobs:
         run: |
           HA_VERSION=$(<.HA_VERSION)
           echo $HA_VERSION
-          echo "{current_version}={$HA_VERSION}" >> $GITHUB_OUTPUT
+          echo "current_version=$HA_VERSION" >> $GITHUB_OUTPUT
 
   home_assistant:
     name: "🏠 Home Assistant Core ${{ matrix.version }} Configuration Check"
@@ -77,7 +77,7 @@ jobs:
         run: |
           cd config
           echo $PWD
-          echo "{config_location}={$PWD}" >> $GITHUB_OUTPUT
+          echo "config_location=$PWD" >> $GITHUB_OUTPUT
       - name: 🚀  Run Home Assistant Configuration Check
         uses: frenck/action-home-assistant@v1.4
         with:

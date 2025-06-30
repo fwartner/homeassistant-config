@@ -480,12 +480,6 @@
     climate.luftreiniger_schlafzimmer:
       hvac_mode: "auto"
       fan_mode: "low"
-    climate.luftreiniger_wohnzimmer:
-      hvac_mode: "auto"
-      fan_mode: "medium"
-    climate.luftreiniger_schlafzimmer:
-      hvac_mode: "auto"
-      fan_mode: "low"
     media_player.sonos_wohnzimmer:
       state: "playing"
       volume_level: 0.25

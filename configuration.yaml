@@ -46,7 +46,6 @@ system_log:
   fire_event: true
 
 # Network discovery
-discovery:
 upnp:
 
 # Cloud integration

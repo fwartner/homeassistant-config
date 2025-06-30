@@ -2,6 +2,7 @@
     climate.luftreiniger_wohnzimmer:
       fan_mode: low
       hvac_mode: auto
+      state: auto
     cover.alle_rollos:
       state: open
     input_boolean.arbeitsplatz_modus:

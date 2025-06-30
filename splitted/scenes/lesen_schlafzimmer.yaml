@@ -2,6 +2,7 @@
     climate.luftreiniger_schlafzimmer:
       fan_mode: low
       hvac_mode: auto
+      state: auto
     cover.rollos_schlafzimmer:
       state: closed
     light.bett:

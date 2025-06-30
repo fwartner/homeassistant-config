@@ -1,39 +1,44 @@
 actions:
-- brightness_pct: 60
-  device_id: 4b04528f90d6106276926f279e2d4cb6
-  domain: light
-  entity_id: 95eab0e0f096de60d69cc6204752c455
-  type: turn_on
-- delay:
-    hours: 0
-    milliseconds: 0
-    minutes: 1
-    seconds: 0
-- device_id: 4b04528f90d6106276926f279e2d4cb6
-  domain: light
-  entity_id: 95eab0e0f096de60d69cc6204752c455
-  type: turn_off
+- action: light.turn_on
+  data:
+    brightness_pct: 60
+    transition: 1
+  target:
+    entity_id: light.lightener_flur
+- continue_on_timeout: true
+  timeout: 00:05:00
+  wait_for_trigger:
+  - entity_id: binary_sensor.hlk_flur_belegung
+    from: 'on'
+    to: 'off'
+    trigger: state
+- action: light.turn_off
+  data:
+    transition: 2
+  target:
+    entity_id: light.lightener_flur
 alias: "Flur: Licht an wenn T\xFCr auf"
 conditions:
 - condition: and
   conditions:
   - after: sunset
-    after_offset: '1'
+    after_offset: +01:00:00
     before: sunrise
     condition: sun
   - condition: state
     entity_id: input_boolean.wartung
     state: 'off'
-description: ''
+  - below: 10
+    condition: numeric_state
+    entity_id: sensor.awtrix_ed6030_illuminance
+description: "Automatisches Flur-Licht bei T\xFCr\xF6ffnung w\xE4hrend Dunkelheit\
+  \ mit Auto-Aus Timer"
 id: '1669632865548'
 mode: single
 triggers:
-- device_id: d62a1a0d66691a20f54abe4cdfb6d6c9
-  domain: binary_sensor
-  entity_id: 9a9c1257a5aa466af0aaed31c0e7735d
+- entity_id: binary_sensor.aqara_contact_wohnungstur_contact
   for:
-    hours: 0
-    minutes: 0
     seconds: 1
-  trigger: device
-  type: opened
+  from: 'off'
+  to: 'on'
+  trigger: state

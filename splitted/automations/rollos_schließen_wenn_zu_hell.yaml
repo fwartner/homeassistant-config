@@ -2,31 +2,41 @@ actions:
 - choose:
   - conditions:
     - condition: trigger
-      id:
-      - wohnzimmerRollosOn
+      id: wohnzimmerRollosOn
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: cover.ikea_rollo_links_wohnzimmer
+        state: open
+      - condition: state
+        entity_id: cover.ikea_rollo_rechts_wohnzimmer
+        state: open
     sequence:
+    - action: notify.alexa_media_echo_show_wohnzimmer
+      data:
+        message: Rollos werden aufgrund der Helligkeit geschlossen
     - action: cover.close_cover
-      data: {}
       target:
         entity_id:
         - cover.ikea_rollo_links_wohnzimmer
         - cover.ikea_rollo_rechts_wohnzimmer
   - conditions:
     - condition: trigger
-      id:
-      - wohnzimmerRollosOff
+      id: wohnzimmerRollosOff
+    - condition: and
+      conditions:
+      - condition: state
+        entity_id: cover.ikea_rollo_links_wohnzimmer
+        state: closed
+      - condition: state
+        entity_id: cover.ikea_rollo_rechts_wohnzimmer
+        state: closed
     sequence:
     - action: cover.open_cover
-      data: {}
       target:
         entity_id:
         - cover.ikea_rollo_links_wohnzimmer
         - cover.ikea_rollo_rechts_wohnzimmer
-  - conditions:
-    - condition: trigger
-      id:
-      - kucheRollosOn
-    sequence: []
 alias: "Rollos schlie\xDFen wenn zu hell"
 conditions:
 - condition: and
@@ -43,25 +53,26 @@ conditions:
   - condition: state
     entity_id: input_boolean.rollos_wohnzimmer
     state: 'off'
-description: ''
+  - after: 06:00:00
+    before: '22:00:00'
+    condition: time
+  - condition: state
+    entity_id: binary_sensor.workday_sensor
+    state: 'on'
+description: "Intelligente Rollosteuerung basierend auf Lichst\xE4rke mit Zeitverz\xF6\
+  gerung und mehreren Sicherheitsbedingungen"
 id: '1691320563612'
 mode: single
 triggers:
-- above: 9000
-  device_id: cc409c26cddb1137902b367f0bbcc342
-  domain: sensor
-  entity_id: fdf41f9caeca9372e6285dca0cc7d60f
-  id: wohnzimmerRollosOn
-  trigger: device
-  type: illuminance
-- below: 500
-  device_id: cc409c26cddb1137902b367f0bbcc342
-  domain: sensor
-  entity_id: fdf41f9caeca9372e6285dca0cc7d60f
+- above: 15000
+  entity_id: sensor.awtrix_ed6030_illuminance
   for:
-    hours: 0
-    minutes: 5
-    seconds: 0
+    minutes: 10
+  id: wohnzimmerRollosOn
+  trigger: numeric_state
+- below: 1000
+  entity_id: sensor.awtrix_ed6030_illuminance
+  for:
+    minutes: 15
   id: wohnzimmerRollosOff
-  trigger: device
-  type: illuminance
+  trigger: numeric_state

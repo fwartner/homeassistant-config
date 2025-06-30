@@ -37,10 +37,110 @@ media_player: !include_dir_merge_list custom_configs/media_players/
 influxdb: !include configuration/influxdb/configuration.yaml
 prometheus: !include configuration/prometheus/configuration.yaml
 
+# Performance and stability optimizations
+system_health:
+recorder:
+  auto_purge: true
+  purge_keep_days: 30
+  commit_interval: 5
+  exclude:
+    domains:
+      - camera
+      - media_player
+    entity_globs:
+      - sensor.*_energy_*
+      - sensor.*_power_*
+    entities:
+      - sun.sun
+      - sensor.last_boot
+      - sensor.date
+      - sensor.time
+
+# Security enhancements
+auth:
+  providers:
+    - type: homeassistant
+    - type: trusted_networks
+      trusted_networks:
+        - 192.168.1.0/24
+        - 127.0.0.1
+        - ::1
+      trusted_users:
+        192.168.1.0/24:
+          - !secret admin_user_id
+      allow_bypass_login: true
+
+# Additional monitoring
+system_log:
+  max_entries: 50
+  fire_event: true
+
+# Energy management
+energy:
+
+# Mobile app support
+mobile_app:
+
+# Text-to-speech
+tts:
+  - platform: elevenlabs
+    api_key: !secret elevenlabs_api_key
+    voice: !secret elevenlabs_voice_id
+    model: eleven_multilingual_v2
+    stability: 0.5
+    similarity_boost: 0.5
+    style: 0.2
+
+# Advanced automation features
+counter:
+timer:
+input_datetime:
+zone:
+
+# Network discovery
+discovery:
+upnp:
+
+# Cloud integration
+cloud:
+
+# Analytics (privacy-focused)
+analytics:
+  exclude:
+    domains:
+      - person
+      - device_tracker
+
 frontend:
   themes: !include_dir_merge_named themes/
+  # Font enhancements
   extra_module_url:
+    # Essential HACS Cards
     - /local/community/custom-brand-icons/custom-brand-icons.js
-    - /local/community/button-card/button-card.js"
-    - /local/community/lovelace-card-mod/card-mod.js"
-    - /local/community/mini-graph-card/mini-graph-card-bundle.js"
+    - /local/community/button-card/button-card.js
+    - /local/community/lovelace-card-mod/card-mod.js
+    - /local/community/mini-graph-card/mini-graph-card-bundle.js
+    - /local/community/Bubble-Card/bubble-card.js
+    - /local/community/advanced-camera-card/advanced-camera-card.js
+    - /local/community/Home-Assistant-Lovelace-HTML-Jinja2-Template-card/html-template-card.js
+    # Chart and Graph Cards
+    - /local/community/apexcharts-card/apexcharts-card.js
+    - /local/community/mini-media-player/mini-media-player-bundle.js
+    - /local/community/plotly-graph-card/plotly-graph-card.js
+    # UI Enhancement Cards
+    - /local/community/atomic-calendar-revive/atomic-calendar-revive.js
+    - /local/community/banner-card/banner-card.js
+    - /local/community/battery-state-card/battery-state-card.js
+    - /local/community/better-thermostat-ui-card/better-thermostat-ui-card.js
+    - /local/community/circular-timer-card/circular-timer-card.js
+    - /local/community/config-template-card/config-template-card.js
+    - /local/community/decluttering-card/decluttering-card.js
+    - /local/community/flex-table-card/flex-table-card.js
+    - /local/community/kiosk-mode/kiosk-mode.js
+    - /local/community/layout-card/layout-card.js
+    - /local/community/mushroom/mushroom.js
+    - /local/community/slider-entity-row/slider-entity-row.js
+    - /local/community/swipe-card/swipe-card.js
+    - /local/community/text-divider-row/text-divider-row.js
+    - /local/community/vertical-stack-in-card/vertical-stack-in-card.js
+    - /local/community/weather-card/weather-card.js

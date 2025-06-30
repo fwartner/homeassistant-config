@@ -1,3 +1,4 @@
+---
 # MQTT Connection, if empty will query and use hassio provided mqtt
 mqtt:
   host:

@@ -1,0 +1,22 @@
+- entities:
+    climate.luftreiniger_wohnzimmer:
+      fan_mode: low
+      hvac_mode: auto
+    cover.alle_rollos:
+      state: open
+    input_boolean.arbeitsplatz_modus:
+      state: 'on'
+    light.awtrix_ed6030_matrix:
+      brightness: 180
+      state: 'on'
+    light.lightener_buro:
+      brightness: 255
+      color_temp_kelvin: 5000
+      state: 'on'
+      transition: 3
+    switch.steckdose_schreibtisch:
+      state: 'on'
+  icon: mdi:desktop-classic
+  id: '1739974700003'
+  metadata: {}
+  name: Arbeitsplatz Optimiert

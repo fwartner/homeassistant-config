@@ -1,60 +1,77 @@
 3_minuten_bettzeit:
   alias: 3 Minuten Bettzeit
+  description: Erweiterte Bettzeit-Routine mit verbesserter Fehlerbehandlung und Timing
   icon: mdi:bed-clock
   mode: single
   sequence:
   - parallel:
-    - data: {}
-      metadata: {}
-      service: cover.close_cover
-      target:
+    - sequence:
+      - condition: state
         entity_id: cover.rollos_schlafzimmer
-    - data: {}
-      service: switch.turn_off
-      target:
-        entity_id:
-        - switch.dashboard_flur_bildschirm
-        - switch.lenovo_tab_m10_bildschirm
-    - data: {}
-      service: lock.lock
-      target:
+        state: open
+      - action: cover.close_cover
+        target:
+          entity_id: cover.rollos_schlafzimmer
+    - sequence:
+      - action: switch.turn_off
+        continue_on_error: true
+        target:
+          entity_id:
+          - switch.dashboard_flur_bildschirm
+          - switch.lenovo_tab_m10_bildschirm
+    - sequence:
+      - condition: state
         entity_id: lock.nuki_wohnungstur_lock
-    - data: {}
-      service: light.turn_off
-      target:
-        entity_id: light.alle_lampen
-    - data: {}
-      service: switch.turn_off
-      target:
-        entity_id: switch.alle_steckdosen
+        state: unlocked
+      - action: lock.lock
+        target:
+          entity_id: lock.nuki_wohnungstur_lock
+    - sequence:
+      - action: light.turn_off
+        data:
+          transition: 3
+        target:
+          entity_id: light.alle_lampen
+    - sequence:
+      - action: switch.turn_off
+        continue_on_error: true
+        target:
+          entity_id: switch.alle_steckdosen
   - delay:
-      hours: 0
-      milliseconds: 0
-      minutes: 0
-      seconds: 2
-  - device_id: 687585a826f140c103f447d4384f11a8
-    domain: switch
-    entity_id: 107487a20fd417d6c27308fc10f3df40
-    type: turn_on
-  - data:
+      seconds: 3
+  - action: climate.set_fan_mode
+    continue_on_error: true
+    data:
+      fan_mode: low
+    target:
+      entity_id: climate.luftreiniger_schlafzimmer
+  - action: light.turn_on
+    data:
       brightness_pct: 30
-    service: light.turn_on
+      color_temp_kelvin: 2700
+      transition: 2
     target:
       entity_id: light.bett
-  - device_id: cee4b3caf72c6c64e4cf9115e5ad0c40
-    domain: switch
-    entity_id: 82f42d86b638d5bf6c7b3f54ee19ac1a
-    type: turn_on
-  - data: {}
-    service: timer.start
+  - action: media_player.play_media
+    continue_on_error: true
+    data:
+      media_content_id: https://minio.srv.wartner.io/homeassistant/white_noise.mp3
+      media_content_type: music
+      volume_level: 0.1
+    target:
+      entity_id: media_player.alle_player
+  - action: timer.start
     target:
       entity_id: timer.3_minuten_bett
-  - delay:
-      hours: 0
-      milliseconds: 0
-      minutes: 3
-      seconds: 0
-  - device_id: 5b11b0840d4c4062ffc65bf3e4390f30
-    domain: light
-    entity_id: bce45d1352e6bb15287c05e343ace4b7
-    type: turn_off
+  - continue_on_timeout: true
+    timeout: 00:04:00
+    wait_for_trigger:
+    - entity_id: timer.3_minuten_bett
+      from: active
+      to: idle
+      trigger: state
+  - action: light.turn_off
+    data:
+      transition: 10
+    target:
+      entity_id: light.bett

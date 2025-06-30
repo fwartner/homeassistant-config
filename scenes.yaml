@@ -8,6 +8,16 @@
       icon: mdi:bed-clock
       friendly_name: 3 Minuten Bettzeit
       state: "off"
+    light.bett:
+      state: "on"
+      brightness: 77
+      color_temp_kelvin: 2700
+      transition: 2
+    climate.luftreiniger_schlafzimmer:
+      hvac_mode: "auto"
+      fan_mode: "low"
+    cover.rollos_schlafzimmer:
+      state: "closed"
   icon: mdi:bed
   metadata:
     script.3_minuten_bettzeit:
@@ -97,644 +107,85 @@
   name: Lesen Schlafzimmer
   entities:
     light.bett:
-      min_color_temp_kelvin: 2000
-      max_color_temp_kelvin: 6535
-      min_mireds: 153
-      max_mireds: 500
-      supported_color_modes:
-        - color_temp
-        - xy
-      color_mode: color_temp
+      state: "on"
       brightness: 255
-      color_temp_kelvin: 5025
-      color_temp: 199
-      hs_color:
-        - 27.028
-        - 18.905
-      rgb_color:
-        - 255
-        - 228
-        - 206
-      xy_color:
-        - 0.371
-        - 0.349
-      mode: normal
-      dynamics: none
-      friendly_name: Bett
-      supported_features: 40
-      state: "on"
+      color_temp_kelvin: 3000
+      transition: 3
     light.stehlampe:
-      effect_list:
-        - None
-        - candle
-      supported_color_modes:
-        - brightness
-      effect: None
-      color_mode: brightness
-      brightness: 128
-      mode: normal
-      dynamics: none
-      friendly_name: Stehlampe
-      supported_features: 44
       state: "on"
+      brightness: 140
+      effect: "None"
+      transition: 3
+    cover.rollos_schlafzimmer:
+      state: "closed"
+    switch.white_noise_schlafzimmer:
+      state: "on"
+    climate.luftreiniger_schlafzimmer:
+      hvac_mode: "auto"
+      fan_mode: "low"
   icon: phu:other-reading
   metadata: {}
 - id: "1720440801295"
   name: Chill
   entities:
     light.tv:
-      min_color_temp_kelvin: 2000
-      max_color_temp_kelvin: 6535
-      min_mireds: 153
-      max_mireds: 500
-      effect_list:
-        - None
-        - candle
-        - fire
-        - prism
-        - sparkle
-        - opal
-        - glisten
-        - sunrise
-        - unknown
-      supported_color_modes:
-        - color_temp
-        - xy
-      effect: None
-      color_mode: color_temp
-      brightness: 102
-      color_temp_kelvin: 3521
-      color_temp: 284
-      hs_color:
-        - 27.152
-        - 44.32
-      rgb_color:
-        - 255
-        - 193
-        - 141
-      xy_color:
-        - 0.453
-        - 0.374
-      mode: normal
-      dynamics: none
-      friendly_name: TV
-      supported_features: 44
       state: "on"
-    media_player.sonos_ray_wohnzimmer:
-      group_members:
-        - media_player.sonos_ray_wohnzimmer
-      volume_level: 0.12
-      is_volume_muted: false
-      media_content_id: x-sonos-spotify:spotify%3atrack%3a2wk7mBr6JlorYMwESY7lyi?sid=9&flags=8232&sn=2
-      media_content_type: music
-      media_title: Stay by My Side
-      shuffle: false
-      repeat: "off"
-      queue_size: 100
-      device_class: speaker
-      icon: phu:sonos-ray
-      friendly_name: Sonos Ray Wohnzimmer
-      supported_features: 4127295
-      media_duration: 111
-      media_position: 0
-      media_position_updated_at: "2024-07-08T12:11:55.582512+00:00"
-      media_artist: SRTW
-      media_album_name: Stay by My Side
-      queue_position: 1
-      entity_picture: /api/media_player_proxy/media_player.sonos_ray_wohnzimmer?token=fba104519b041ecfe24b9f92fe096cdcb2f68a149a4e7a1230a9dc9afbc98988&cache=c2b389479ba73689
-      state: playing
+      brightness: 102
+      color_temp_kelvin: 2800
+      effect: "None"
+      transition: 5
     light.hugo_rechts:
-      min_color_temp_kelvin: 2000
-      max_color_temp_kelvin: 6535
-      min_mireds: 153
-      max_mireds: 500
-      effect_list:
-        - None
-        - candle
-        - fire
-        - prism
-        - sparkle
-        - opal
-        - glisten
-      supported_color_modes:
-        - color_temp
-        - xy
-      effect: None
-      color_mode: color_temp
-      brightness: 102
-      color_temp_kelvin: 3521
-      color_temp: 284
-      hs_color:
-        - 27.152
-        - 44.32
-      rgb_color:
-        - 255
-        - 193
-        - 141
-      xy_color:
-        - 0.453
-        - 0.374
-      mode: normal
-      dynamics: none
-      friendly_name: Hugo Rechts
-      supported_features: 44
       state: "on"
+      brightness: 102
+      color_temp_kelvin: 2800
+      effect: "None"
+      transition: 5
     light.tv_bank:
-      supported_color_modes:
-        - brightness
-      color_mode: brightness
-      brightness: 102
-      mode: normal
-      dynamics: none
-      friendly_name: TV Bank
-      supported_features: 40
       state: "on"
+      brightness: 80
+      transition: 5
     light.regal:
-      min_color_temp_kelvin: 2000
-      max_color_temp_kelvin: 6535
-      min_mireds: 153
-      max_mireds: 500
-      supported_color_modes:
-        - color_temp
-        - xy
-      color_mode: color_temp
-      brightness: 102
-      color_temp_kelvin: 3521
-      color_temp: 284
-      hs_color:
-        - 27.152
-        - 44.32
-      rgb_color:
-        - 255
-        - 193
-        - 141
-      xy_color:
-        - 0.453
-        - 0.374
-      mode: normal
-      dynamics: none
-      friendly_name: Regal
-      supported_features: 40
       state: "on"
+      brightness: 102
+      color_temp_kelvin: 2800
+      transition: 5
+    media_player.sonos_wohnzimmer:
+      state: "playing"
+      volume_level: 0.15
+      source: "spotify"
+    cover.rollos_wohnzimmer_fensterbank:
+      state: "closed"
+    climate.luftreiniger_wohnzimmer:
+      hvac_mode: "auto"
+      fan_mode: "low"
   metadata: {}
 - id: "1726219875674"
-  name: Einbrecher
+  name: Sicherheitsmodus
   entities:
-    light.tv:
-      min_color_temp_kelvin: 2000
-      max_color_temp_kelvin: 6535
-      min_mireds: 153
-      max_mireds: 500
-      effect_list:
-        - None
-        - candle
-        - fire
-        - prism
-        - sparkle
-        - opal
-        - glisten
-        - sunrise
-        - sunset
-      supported_color_modes:
-        - color_temp
-        - xy
-      effect: None
-      color_mode: xy
-      brightness: 178
-      color_temp_kelvin:
-      color_temp:
-      hs_color:
-        - 9.231
-        - 66.275
-      rgb_color:
-        - 255
-        - 112
-        - 86
-      xy_color:
-        - 0.589
-        - 0.329
-      mode: normal
-      dynamics: none
-      friendly_name: TV
-      supported_features: 44
+    light.alle_lampen:
       state: "on"
-    light.regal:
-      min_color_temp_kelvin: 2000
-      max_color_temp_kelvin: 6535
-      min_mireds: 153
-      max_mireds: 500
-      supported_color_modes:
-        - color_temp
-        - xy
-      color_mode: xy
-      brightness: 178
-      color_temp_kelvin:
-      color_temp:
-      hs_color:
-        - 9.231
-        - 66.275
-      rgb_color:
-        - 255
-        - 112
-        - 86
-      xy_color:
-        - 0.589
-        - 0.329
-      mode: normal
-      dynamics: none
-      friendly_name: Regal
-      supported_features: 40
-      state: "on"
-    light.hugo_rechts:
-      min_color_temp_kelvin: 2000
-      max_color_temp_kelvin: 6535
-      min_mireds: 153
-      max_mireds: 500
-      effect_list:
-        - None
-        - candle
-        - fire
-        - prism
-        - sparkle
-        - opal
-        - glisten
-      supported_color_modes:
-        - color_temp
-        - xy
-      effect: None
-      color_mode: xy
-      brightness: 178
-      color_temp_kelvin:
-      color_temp:
-      hs_color:
-        - 9.231
-        - 66.275
-      rgb_color:
-        - 255
-        - 112
-        - 86
-      xy_color:
-        - 0.589
-        - 0.329
-      mode: normal
-      dynamics: none
-      friendly_name: Hugo Rechts
-      supported_features: 44
-      state: "on"
-    light.decke_flur:
-      min_color_temp_kelvin: 2000
-      max_color_temp_kelvin: 6535
-      min_mireds: 153
-      max_mireds: 500
-      effect_list:
-        - None
-        - candle
-        - fire
-        - prism
-        - sparkle
-        - opal
-        - glisten
-        - sunrise
-        - sunset
-      supported_color_modes:
-        - color_temp
-        - xy
-      effect: None
-      color_mode: xy
       brightness: 255
-      color_temp_kelvin:
-      color_temp:
-      hs_color:
-        - 9.231
-        - 66.275
-      rgb_color:
-        - 255
-        - 112
-        - 86
-      xy_color:
-        - 0.589
-        - 0.329
-      mode: normal
-      dynamics: none
-      friendly_name: Decke Flur
-      supported_features: 44
-      state: "on"
-    light.kuchenschrank:
-      min_color_temp_kelvin: 2000
-      max_color_temp_kelvin: 6535
-      min_mireds: 153
-      max_mireds: 500
-      supported_color_modes:
-        - color_temp
-        - hs
-      color_mode: hs
-      brightness: 255
-      color_temp_kelvin:
-      color_temp:
-      hs_color:
-        - 9
-        - 67.1
-      rgb_color:
-        - 255
-        - 109
-        - 83
-      xy_color:
-        - 0.591
-        - 0.328
-      friendly_name: Küchenschrank
-      supported_features: 0
-      state: "on"
-    light.moodlight_flur:
-      min_color_temp_kelvin: 2000
-      max_color_temp_kelvin: 6535
-      min_mireds: 153
-      max_mireds: 500
-      supported_color_modes:
-        - color_temp
-        - hs
-      color_mode: hs
-      brightness: 255
-      color_temp_kelvin:
-      color_temp:
-      hs_color:
-        - 9
-        - 67.1
-      rgb_color:
-        - 255
-        - 109
-        - 83
-      xy_color:
-        - 0.591
-        - 0.328
-      friendly_name: Moodlight Flur
-      supported_features: 0
-      state: "on"
-    light.bett:
-      min_color_temp_kelvin: 2000
-      max_color_temp_kelvin: 6535
-      min_mireds: 153
-      max_mireds: 500
-      supported_color_modes:
-        - color_temp
-        - xy
-      color_mode: xy
-      brightness: 252
-      color_temp_kelvin:
-      color_temp:
-      hs_color:
-        - 9.231
-        - 66.275
-      rgb_color:
-        - 255
-        - 112
-        - 86
-      xy_color:
-        - 0.589
-        - 0.329
-      mode: normal
-      dynamics: none
-      friendly_name: Bett
-      supported_features: 40
-      state: "on"
-    select.wled_wohnzimmer_wand_playlist:
-      options: []
-      friendly_name: WLED Wohnzimmer Wand Wiedergabeliste
-      state: unavailable
-    select.wled_wohnzimmer_wand_preset:
-      options:
-        - c37
-      friendly_name: WLED Wohnzimmer Wand Voreinstellung
-      state: unknown
+      rgb_color: [255, 0, 0]
+      effect: "Strobe"
     light.wled_wohnzimmer_wand:
-      effect_list:
-        - Solid
-        - Blink
-        - Breathe
-        - Wipe
-        - Wipe Random
-        - Random Colors
-        - Sweep
-        - Dynamic
-        - Colorloop
-        - Rainbow
-        - Scan
-        - Scan Dual
-        - Fade
-        - Theater
-        - Theater Rainbow
-        - Running
-        - Saw
-        - Twinkle
-        - Dissolve
-        - Dissolve Rnd
-        - Sparkle
-        - Sparkle Dark
-        - Sparkle+
-        - Strobe
-        - Strobe Rainbow
-        - Strobe Mega
-        - Blink Rainbow
-        - Android
-        - Chase
-        - Chase Random
-        - Chase Rainbow
-        - Chase Flash
-        - Chase Flash Rnd
-        - Rainbow Runner
-        - Colorful
-        - Traffic Light
-        - Sweep Random
-        - Chase 2
-        - Aurora
-        - Stream
-        - Scanner
-        - Lighthouse
-        - Fireworks
-        - Rain
-        - Tetrix
-        - Fire Flicker
-        - Gradient
-        - Loading
-        - Rolling Balls
-        - Fairy
-        - Two Dots
-        - Fairytwinkle
-        - Running Dual
-        - RSVD
-        - Chase 3
-        - Tri Wipe
-        - Tri Fade
-        - Lightning
-        - ICU
-        - Multi Comet
-        - Scanner Dual
-        - Stream 2
-        - Oscillate
-        - Pride 2015
-        - Juggle
-        - Palette
-        - Fire 2012
-        - Colorwaves
-        - Bpm
-        - Fill Noise
-        - Noise 1
-        - Noise 2
-        - Noise 3
-        - Noise 4
-        - Colortwinkles
-        - Lake
-        - Meteor
-        - Meteor Smooth
-        - Railway
-        - Ripple
-        - Twinklefox
-        - Twinklecat
-        - Halloween Eyes
-        - Solid Pattern
-        - Solid Pattern Tri
-        - Spots
-        - Spots Fade
-        - Glitter
-        - Candle
-        - Fireworks Starburst
-        - Fireworks 1D
-        - Bouncing Balls
-        - Sinelon
-        - Sinelon Dual
-        - Sinelon Rainbow
-        - Popcorn
-        - Drip
-        - Plasma
-        - Percent
-        - Ripple Rainbow
-        - Heartbeat
-        - Pacifica
-        - Candle Multi
-        - Solid Glitter
-        - Sunrise
-        - Phased
-        - Twinkleup
-        - Noise Pal
-        - Sine
-        - Phased Noise
-        - Flow
-        - Chunchun
-        - Dancing Shadows
-        - Washing Machine
-        - RSVD
-        - Blends
-        - TV Simulator
-        - Dynamic Smooth
-        - Spaceships
-        - Crazy Bees
-        - Ghost Rider
-        - Blobs
-        - Scrolling Text
-        - Drift Rose
-        - Distortion Waves
-        - Soap
-        - Octopus
-        - Waving Cell
-        - Pixels
-        - Pixelwave
-        - Juggles
-        - Matripix
-        - Gravimeter
-        - Plasmoid
-        - Puddles
-        - Midnoise
-        - Noisemeter
-        - Freqwave
-        - Freqmatrix
-        - GEQ
-        - Waterfall
-        - Freqpixels
-        - RSVD
-        - Noisefire
-        - Puddlepeak
-        - Noisemove
-        - Noise2D
-        - Perlin Move
-        - Ripple Peak
-        - Firenoise
-        - Squared Swirl
-        - RSVD
-        - DNA
-        - Matrix
-        - Metaballs
-        - Freqmap
-        - Gravcenter
-        - Gravcentric
-        - Gravfreq
-        - DJ Light
-        - Funky Plank
-        - RSVD
-        - Pulser
-        - Blurz
-        - Drift
-        - Waverly
-        - Sun Radiation
-        - Colored Bursts
-        - Julia
-        - RSVD
-        - RSVD
-        - RSVD
-        - Game Of Life
-        - Tartan
-        - Polar Lights
-        - Swirl
-        - Lissajous
-        - Frizzles
-        - Plasma Ball
-        - Flow Stripe
-        - Hiphotic
-        - Sindots
-        - DNA Spiral
-        - Black Hole
-        - Wavesins
-        - Rocktaves
-        - Akemi
-      supported_color_modes:
-        - rgb
-      effect: Solid
-      color_mode: rgb
-      brightness: 255
-      hs_color:
-        - 9.123
-        - 67.059
-      rgb_color:
-        - 255
-        - 110
-        - 84
-      xy_color:
-        - 0.589
-        - 0.329
-      friendly_name: WLED Wohnzimmer Wand
-      supported_features: 36
       state: "on"
+      brightness: 255
+      effect: "Police"
+      rgb_color: [255, 0, 0]
     media_player.sonos_wohnzimmer:
-      group_members: []
-      mass_player_id: RINCON_F0F6C1F0FCCC01400
-      mass_player_type: player
-      group_leader:
-      active_queue: spotify
-      active_group:
-      items_in_queue:
-      queue_index:
-      device_class: speaker
-      icon: phu:sonos-ray
-      friendly_name: Sonos Wohnzimmer
-      supported_features: 4126655
-      volume_level: 0.3
-      is_volume_muted: false
-      media_content_type: music
-      app_id: spotify
-      source: spotify
-      shuffle: false
-      repeat: "off"
-      entity_picture_local:
-      state: idle
-  icon: mdi:police-badge
+      state: "playing"
+      volume_level: 0.6
+      media_content_type: "music"
+      media_content_id: "https://minio.srv.wartner.io/homeassistant/alarm.mp3"
+    lock.nuki_wohnungstur_lock:
+      state: "locked"
+    cover.alle_rollos:
+      state: "closed"
+    switch.alle_steckdosen:
+      state: "off"
+    input_boolean.sicherheitsmodus:
+      state: "on"
+  icon: mdi:shield-alert
   metadata: {}
 - id: "1739973742541"
   name: Fernsehen
@@ -1012,4 +463,87 @@
       supported_features: 44
       state: "on"
   icon: mdi:controller
+  metadata: {}
+- id: "1739974600000"
+  name: Guten Morgen
+  entities:
+    light.alle_lampen:
+      state: "on"
+      brightness: 180
+      color_temp_kelvin: 4000
+      transition: 10
+    cover.alle_rollos:
+      state: "open"
+    climate.luftreiniger_wohnzimmer:
+      hvac_mode: "auto"
+      fan_mode: "medium"
+    climate.luftreiniger_schlafzimmer:
+      hvac_mode: "auto"
+      fan_mode: "low"
+    climate.luftreiniger_wohnzimmer:
+      hvac_mode: "auto"
+      fan_mode: "medium"
+    climate.luftreiniger_schlafzimmer:
+      hvac_mode: "auto"
+      fan_mode: "low"
+    media_player.sonos_wohnzimmer:
+      state: "playing"
+      volume_level: 0.25
+      source: "spotify"
+    switch.steckdose_kaffeemaschine:
+      state: "on"
+    input_boolean.guten_morgen_routine:
+      state: "on"
+  icon: mdi:weather-sunny
+  metadata: {}
+- id: "1739974700003"
+  name: Arbeitsplatz Optimiert
+  entities:
+    light.lightener_buro:
+      state: "on"
+      brightness: 255
+      color_temp_kelvin: 5000
+      transition: 3
+    light.awtrix_ed6030_matrix:
+      state: "on"
+      brightness: 180
+    climate.luftreiniger_wohnzimmer:
+      hvac_mode: "auto"
+      fan_mode: "low"
+    switch.steckdose_schreibtisch:
+      state: "on"
+    cover.alle_rollos:
+      state: "open"
+    input_boolean.arbeitsplatz_modus:
+      state: "on"
+  icon: mdi:desktop-classic
+  metadata: {}
+- id: "1739974700004"
+  name: Entspannung Abend
+  entities:
+    light.alle_lampen:
+      state: "on"
+      brightness: 120
+      color_temp_kelvin: 2200
+      transition: 8
+    light.wled_stand:
+      state: "on"
+      brightness: 80
+      effect: "Fire Flicker"
+      rgb_color: [255, 140, 60]
+    media_player.alle_player:
+      state: "playing"
+      volume_level: 0.2
+      source: "spotify"
+    climate.luftreiniger_wohnzimmer:
+      hvac_mode: "auto"
+      fan_mode: "silent"
+    climate.luftreiniger_schlafzimmer:
+      hvac_mode: "auto"
+      fan_mode: "silent"
+    cover.alle_rollos:
+      state: "closed"
+    input_boolean.entspannung_modus:
+      state: "on"
+  icon: mdi:spa
   metadata: {}

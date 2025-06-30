@@ -1,0 +1,134 @@
+/* Home Assistant Custom Fonts Configuration */
+
+/* Import Google Fonts for better typography */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&display=swap');
+
+/* Material Design Icons */
+@import url('https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css');
+
+/* Font Awesome Icons */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
+/* Custom Font Variables */
+:root {
+  --primary-font-family: 'Inter', 'Roboto', 'Segoe UI', 'Arial', sans-serif;
+  --monospace-font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+  --body-font-family: 'Noto Sans', 'Roboto', 'Arial', sans-serif;
+  
+  /* Font weights */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  /* Font sizes */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+}
+
+/* Global font improvements */
+ha-app,
+body,
+.main-title {
+  font-family: var(--primary-font-family) !important;
+  font-weight: var(--font-weight-normal);
+  line-height: 1.5;
+}
+
+/* Card headers */
+.card-header {
+  font-family: var(--primary-font-family) !important;
+  font-weight: var(--font-weight-semibold) !important;
+  font-size: var(--font-size-lg) !important;
+}
+
+/* Button text */
+.mdc-button,
+ha-button,
+mwc-button {
+  font-family: var(--primary-font-family) !important;
+  font-weight: var(--font-weight-medium) !important;
+}
+
+/* Entity names and states */
+.entity .name,
+.entity-row .name {
+  font-family: var(--primary-font-family) !important;
+  font-weight: var(--font-weight-medium);
+}
+
+/* Code and configuration text */
+.code,
+code,
+pre,
+.yaml-editor {
+  font-family: var(--monospace-font-family) !important;
+  font-weight: var(--font-weight-normal);
+}
+
+/* Navigation and menu items */
+.mdc-list-item__text,
+.paper-listbox paper-item,
+paper-item {
+  font-family: var(--primary-font-family) !important;
+}
+
+/* Sidebar and navigation */
+.menu .iron-selected paper-item,
+.menu a {
+  font-family: var(--primary-font-family) !important;
+  font-weight: var(--font-weight-medium);
+}
+
+/* Notification text */
+.toast-message,
+.notification-content {
+  font-family: var(--body-font-family) !important;
+}
+
+/* More UI components */
+.secondary,
+.more-info-content {
+  font-family: var(--body-font-family) !important;
+}
+
+/* Ensure proper rendering across different browsers */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Responsive font scaling */
+@media (max-width: 768px) {
+  :root {
+    --font-size-base: 0.9rem;
+    --font-size-lg: 1rem;
+    --font-size-xl: 1.125rem;
+  }
+}
+
+/* Dark mode font adjustments */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+  }
+}
+
+/* Print styles */
+@media print {
+  * {
+    font-family: var(--body-font-family) !important;
+    color: black !important;
+  }
+}

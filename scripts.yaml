@@ -1,70 +1,111 @@
 3_minuten_bettzeit:
   alias: 3 Minuten Bettzeit
+  description: 'Erweiterte Bettzeit-Routine mit verbesserter Fehlerbehandlung und Timing'
   sequence:
     - parallel:
-        - service: cover.close_cover
-          metadata: {}
-          data: {}
-          target:
+        - sequence:
+          - condition: state
             entity_id: cover.rollos_schlafzimmer
-        - service: switch.turn_off
-          data: {}
-          target:
-            entity_id:
-              - switch.dashboard_flur_bildschirm
-              - switch.lenovo_tab_m10_bildschirm
-        - service: lock.lock
-          target:
+            state: 'open'
+          - action: cover.close_cover
+            target:
+              entity_id: cover.rollos_schlafzimmer
+        - sequence:
+          - action: switch.turn_off
+            target:
+              entity_id:
+                - switch.dashboard_flur_bildschirm
+                - switch.lenovo_tab_m10_bildschirm
+            continue_on_error: true
+        - sequence:
+          - condition: state
             entity_id: lock.nuki_wohnungstur_lock
-          data: {}
-        - service: light.turn_off
-          target:
-            entity_id: light.alle_lampen
-          data: {}
-        - service: switch.turn_off
-          target:
-            entity_id: switch.alle_steckdosen
-          data: {}
+            state: 'unlocked'
+          - action: lock.lock
+            target:
+              entity_id: lock.nuki_wohnungstur_lock
+        - sequence:
+          - action: light.turn_off
+            target:
+              entity_id: light.alle_lampen
+            data:
+              transition: 3
+        - sequence:
+          - action: switch.turn_off
+            target:
+              entity_id: switch.alle_steckdosen
+            continue_on_error: true
     - delay:
-        hours: 0
-        minutes: 0
-        seconds: 2
-        milliseconds: 0
-    - type: turn_on
-      device_id: 687585a826f140c103f447d4384f11a8
-      entity_id: 107487a20fd417d6c27308fc10f3df40
-      domain: switch
-    - service: light.turn_on
+        seconds: 3
+    - action: climate.set_fan_mode
+      target:
+        entity_id: climate.luftreiniger_schlafzimmer
+      data:
+        fan_mode: 'low'
+      continue_on_error: true
+    - action: light.turn_on
       target:
         entity_id: light.bett
       data:
         brightness_pct: 30
-    - type: turn_on
-      device_id: cee4b3caf72c6c64e4cf9115e5ad0c40
-      entity_id: 82f42d86b638d5bf6c7b3f54ee19ac1a
-      domain: switch
-    - service: timer.start
-      data: {}
+        color_temp_kelvin: 2700
+        transition: 2
+    - action: media_player.play_media
+      target:
+        entity_id: media_player.alle_player
+      data:
+        media_content_type: 'music'
+        media_content_id: 'https://minio.srv.wartner.io/homeassistant/white_noise.mp3'
+        volume_level: 0.1
+      continue_on_error: true
+    - action: timer.start
       target:
         entity_id: timer.3_minuten_bett
-    - delay:
-        hours: 0
-        minutes: 3
-        seconds: 0
-        milliseconds: 0
-    - type: turn_off
-      device_id: 5b11b0840d4c4062ffc65bf3e4390f30
-      entity_id: bce45d1352e6bb15287c05e343ace4b7
-      domain: light
+    - wait_for_trigger:
+      - entity_id: timer.3_minuten_bett
+        from: 'active'
+        to: 'idle'
+        trigger: state
+      timeout: '00:04:00'
+      continue_on_timeout: true
+    - action: light.turn_off
+      target:
+        entity_id: light.bett
+      data:
+        transition: 10
   mode: single
   icon: mdi:bed-clock
 zahneputzen:
   alias: Zähneputzen
+  description: 'Erweiterte Zähneputz-Routine mit Audio-Feedback und Timing'
   sequence:
-    - service: timer.start
-      data: {}
+    - action: timer.start
       target:
         entity_id: timer.zahneputzen
+    - action: notify.alexa_media_echo_badezimmer
+      data:
+        message: 'Zähneputzen gestartet! Ich sage Bescheid, wenn die 2 Minuten um sind.'
+        data:
+          type: tts
+    - action: light.turn_on
+      target:
+        entity_id: light.badezimmer_spiegel
+      data:
+        brightness_pct: 100
+        color_temp_kelvin: 4000
+      continue_on_error: true
+    - wait_for_trigger:
+      - entity_id: timer.zahneputzen
+        from: 'active'
+        to: 'idle'
+        trigger: state
+      timeout: '00:03:00'
+      continue_on_timeout: true
+    - action: notify.alexa_media_echo_badezimmer
+      data:
+        message: 'Perfekt! Zähneputzen ist fertig. Gut gemacht!'
+        data:
+          type: tts
   mode: single
   icon: mdi:toothbrush
 offne_wohnungstur:
@@ -126,13 +167,14 @@ run_chores:
   icon: mdi:broom
 duschen_vorbereiten:
   alias: Duschen Vorbereiten
+  description: 'Intelligente Dusch-Vorbereitung mit Temperaturkontrolle und Zeitoptimierung'
   sequence:
-    - service: notify.alexa_media
+    - action: notify.alexa_media
       data:
-        message:
-          Ich bereite das Badezimmer für dich vor, damit du in ein paar Minuten
-          in aller Ruhe duschen gehen kannst. Ich gebe dir Bescheid, wenn ich damit
-          fertig bin.
+        message: >
+          Ich bereite das Badezimmer für dich vor. Die Heizung wird angestellt,
+          das Licht optimiert und die Belüftung eingeschaltet. Ich gebe dir Bescheid,
+          wenn alles bereit ist - das dauert etwa 10 Minuten.
         data:
           method: all
           type: announce
@@ -140,20 +182,45 @@ duschen_vorbereiten:
           - media_player.echo_badezimmer
           - media_player.echo_flur
           - media_player.echo_schlafzimmer
-          - media_player.echo_schlafzimmer
-        title: Ich bereite das Badezimmer vor
-    - service: climate.set_temperature
-      data:
-        hvac_mode: heat
-        temperature: 22
-      target:
-        entity_id: climate.heizung_badezimmer
-    - service: input_boolean.turn_on
-      data: {}
+        title: Badezimmer wird vorbereitet
+    - parallel:
+      - sequence:
+        - action: climate.set_temperature
+          data:
+            hvac_mode: heat
+            temperature: 24
+          target:
+            entity_id: climate.heizung_badezimmer
+      - sequence:
+        - action: light.turn_on
+          target:
+            entity_id: light.badezimmer
+          data:
+            brightness_pct: 80
+            color_temp_kelvin: 3500
+          continue_on_error: true
+      - sequence:
+        - action: climate.set_fan_mode
+          target:
+            entity_id: climate.luftreiniger_wohnzimmer
+          data:
+            fan_mode: 'medium'
+          continue_on_error: true
+    - action: input_boolean.turn_on
       target:
         entity_id:
           - input_boolean.duschen_vorbereiten
           - input_boolean.duschen_besetzt
+    - delay:
+        minutes: 8
+    - condition: numeric_state
+      entity_id: sensor.aqara_thermo_badezimmer_temperature
+      above: 22
+    - action: notify.alexa_media_echo_badezimmer
+      data:
+        message: 'Das Badezimmer ist jetzt bereit! Die Temperatur beträgt {{ states("sensor.aqara_thermo_badezimmer_temperature") }} Grad.'
+        data:
+          type: tts
   mode: single
   icon: fas:shower
 10_minuten_boost_schlafzimmer:
@@ -519,30 +586,44 @@ wassertank_aufgefullt_2:
   icon: mdi:water
 briefing:
   alias: Briefing
+  description: 'Erweiterte Morgen-Briefing mit Wetter, News, Kalender und Hausautomation-Status'
   sequence:
-    - service: conversation.process
-      metadata: {}
+    - action: conversation.process
       data:
         language: german
         agent_id: conversation.chatgpt
-        text:
-          "Acting as a personal assistant, summarize the following information in
-          an concise and humourous manner. Try to make sure that the information fits
-          in 12 sentences. It's {{ as_timestamp(now()) | timestamp_custom('%H:%M') }}
-          Currently {{ states.weather.forecast_home }}°C outside, high of {{ states.weather.forecast_home
-          }}°C and a low of {{ states.weather.forecast_home }}°C \nThe current headlines
-          are:  {{ states.sensor.ntv_politik }} {{ states.sensor.heise_news }} {{ states.sensor.heise_security_news
-          }}\nCalendar for today: {% for cal_events in expand(states.calendar.florian_wartner_io)
-          %} {% if cal_events.attributes.all_day == False %} {{ as_timestamp(cal_events.attributes.start_time)
-          | timestamp_custom('%H:%M') }} @ {{ cal_events.attributes.message }} {% endif
-          %} {%- endfor -%}"
+        text: >
+          Als persönlicher Assistent, fasse die folgenden Informationen prägnant und
+          freundlich zusammen. Halte es unter 15 Sätzen. Es ist jetzt 
+          {{ as_timestamp(now()) | timestamp_custom('%H:%M Uhr') }}.
+          
+          Wetter: Aktuell {{ states('sensor.aqara_thermo_wohnzimmer_temperature') }}°C drinnen,
+          {{ states('weather.forecast_home') }}°C draußen mit {{ state_attr('weather.forecast_home', 'forecast')[0].condition if state_attr('weather.forecast_home', 'forecast') else 'unbekannten Bedingungen' }}.
+          Höchsttemperatur heute: {{ state_attr('weather.forecast_home', 'forecast')[0].temperature if state_attr('weather.forecast_home', 'forecast') else 'unbekannt' }}°C.
+          
+          Hausautomation: 
+          - Türschloss: {{ 'verriegelt' if is_state('lock.nuki_wohnungstur_lock', 'locked') else 'entriegelt' }}
+          - Anwesende Personen: {{ states('sensor.people_home') }}
+          - Stromverbrauch aktuell: {{ states('sensor.shelly_3em_power') }}W
+          
+          Termine heute: 
+          {% for cal_events in expand('calendar.florian_wartner_io') if cal_events.attributes.start_time | as_timestamp | timestamp_custom('%Y-%m-%d') == now().strftime('%Y-%m-%d') %}
+          - {{ as_timestamp(cal_events.attributes.start_time) | timestamp_custom('%H:%M') }}: {{ cal_events.attributes.message }}
+          {% endfor %}
+          
+          Aktuelle Schlagzeilen: {{ states('sensor.heise_news') if states('sensor.heise_news') != 'unavailable' else 'Keine News verfügbar' }}
       response_variable: agent
-    - service: notify.alexa_media_echo_show_wohnzimmer
-      metadata: {}
+    - action: notify.alexa_media_echo_show_wohnzimmer
       data:
         message: "{{ agent.response.speech.plain.speech }}"
+        data:
+          type: tts
+    - action: script.store_mqtt_sensor
+      data:
+        name: 'last_briefing'
+        state: '{{ now().strftime("%Y-%m-%d %H:%M:%S") }}'
+        attributes: '{{ agent.response.speech.plain.speech }}'
   fields: {}
-  description: ""
   icon: mdi:newspaper
 deckenventilator_power:
   alias: Deckenventilator Power

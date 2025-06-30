@@ -1,3 +1,4 @@
+---
 mqtt:
   enabled: true
   host: 10.182.1.68

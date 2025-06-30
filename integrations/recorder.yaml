@@ -5,3 +5,15 @@ recorder:
   commit_interval: 30
   auto_purge: true
   auto_repack: true
+  exclude:
+    domains:
+      - camera
+      - media_player
+    entity_globs:
+      - sensor.*_energy_*
+      - sensor.*_power_*
+    entities:
+      - sun.sun
+      - sensor.last_boot
+      - sensor.date
+      - sensor.time

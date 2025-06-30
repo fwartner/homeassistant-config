@@ -42,3 +42,6 @@ frigate.db-shm
 
 go2rtc.yaml
 .jwt_secret
+
+GEMINI.md
+CLAUDE.md

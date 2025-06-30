@@ -98,7 +98,6 @@ input_datetime:
 zone:
 
 # Network discovery
-discovery:
 upnp:
 
 # Cloud integration

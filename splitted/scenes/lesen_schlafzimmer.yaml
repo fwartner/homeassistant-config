@@ -1,45 +1,22 @@
 - entities:
+    climate.luftreiniger_schlafzimmer:
+      fan_mode: low
+      hvac_mode: auto
+      state: auto
+    cover.rollos_schlafzimmer:
+      state: closed
     light.bett:
       brightness: 255
-      color_mode: color_temp
-      color_temp: 199
-      color_temp_kelvin: 5025
-      dynamics: none
-      friendly_name: Bett
-      hs_color:
-      - 27.028
-      - 18.905
-      max_color_temp_kelvin: 6535
-      max_mireds: 500
-      min_color_temp_kelvin: 2000
-      min_mireds: 153
-      mode: normal
-      rgb_color:
-      - 255
-      - 228
-      - 206
+      color_temp_kelvin: 3000
       state: 'on'
-      supported_color_modes:
-      - color_temp
-      - xy
-      supported_features: 40
-      xy_color:
-      - 0.371
-      - 0.349
+      transition: 3
     light.stehlampe:
-      brightness: 128
-      color_mode: brightness
-      dynamics: none
+      brightness: 140
       effect: None
-      effect_list:
-      - None
-      - candle
-      friendly_name: Stehlampe
-      mode: normal
       state: 'on'
-      supported_color_modes:
-      - brightness
-      supported_features: 44
+      transition: 3
+    switch.white_noise_schlafzimmer:
+      state: 'on'
   icon: phu:other-reading
   id: '1716114597259'
   metadata: {}

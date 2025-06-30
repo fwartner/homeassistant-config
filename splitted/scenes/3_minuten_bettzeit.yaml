@@ -1,4 +1,15 @@
 - entities:
+    climate.luftreiniger_schlafzimmer:
+      fan_mode: low
+      hvac_mode: auto
+      state: auto
+    cover.rollos_schlafzimmer:
+      state: closed
+    light.bett:
+      brightness: 77
+      color_temp_kelvin: 2700
+      state: 'on'
+      transition: 2
     script.3_minuten_bettzeit:
       current: 0
       friendly_name: 3 Minuten Bettzeit

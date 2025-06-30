@@ -1,0 +1,28 @@
+- entities:
+    climate.luftreiniger_schlafzimmer:
+      fan_mode: low
+      hvac_mode: auto
+      state: auto
+    climate.luftreiniger_wohnzimmer:
+      fan_mode: medium
+      hvac_mode: auto
+      state: auto
+    cover.alle_rollos:
+      state: open
+    input_boolean.guten_morgen_routine:
+      state: 'on'
+    light.alle_lampen:
+      brightness: 180
+      color_temp_kelvin: 4000
+      state: 'on'
+      transition: 10
+    media_player.sonos_wohnzimmer:
+      source: spotify
+      state: playing
+      volume_level: 0.25
+    switch.steckdose_kaffeemaschine:
+      state: 'on'
+  icon: mdi:weather-sunny
+  id: '1739974600000'
+  metadata: {}
+  name: Guten Morgen

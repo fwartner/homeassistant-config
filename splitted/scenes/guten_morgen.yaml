@@ -2,9 +2,11 @@
     climate.luftreiniger_schlafzimmer:
       fan_mode: low
       hvac_mode: auto
+      state: auto
     climate.luftreiniger_wohnzimmer:
       fan_mode: medium
       hvac_mode: auto
+      state: auto
     cover.alle_rollos:
       state: open
     input_boolean.guten_morgen_routine:

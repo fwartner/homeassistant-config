@@ -2,6 +2,7 @@
     climate.luftreiniger_wohnzimmer:
       fan_mode: low
       hvac_mode: auto
+      state: auto
     cover.rollos_wohnzimmer_fensterbank:
       state: closed
     light.hugo_rechts:

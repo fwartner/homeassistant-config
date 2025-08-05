@@ -1,6 +1,7 @@
 - id: '1669632865548'
   alias: 'Flur: Licht an wenn Tür auf'
-  description: 'Automatisches Flur-Licht bei Türöffnung während Dunkelheit mit Auto-Aus Timer'
+  description: Automatisches Flur-Licht bei Türöffnung während Dunkelheit mit Auto-Aus
+    Timer
   triggers:
   - entity_id: binary_sensor.aqara_contact_wohnungstur_contact
     from: 'off'
@@ -14,7 +15,7 @@
     - condition: sun
       after: sunset
       before: sunrise
-      after_offset: '+01:00:00'
+      after_offset: +01:00:00
     - condition: state
       entity_id: input_boolean.wartung
       state: 'off'
@@ -33,7 +34,7 @@
       from: 'on'
       to: 'off'
       trigger: state
-    timeout: '00:05:00'
+    timeout: 00:05:00
     continue_on_timeout: true
   - action: light.turn_off
     target:
@@ -198,7 +199,7 @@
       entity_id: input_boolean.wartung
       state: 'off'
     - condition: template
-      value_template: "{{ now().month in [6,7,8] }}"
+      value_template: '{{ now().month in [6,7,8] }}'
   action:
   - choose:
     - conditions:
@@ -284,7 +285,7 @@
   mode: single
 - id: '1691151128778'
   alias: Nachtlicht Küche
-  description: 'Intelligente Küchenbeleuchtung basierend auf Anwesenheit und Tageszeit'
+  description: Intelligente Küchenbeleuchtung basierend auf Anwesenheit und Tageszeit
   triggers:
   - entity_id: binary_sensor.hlk_ld2410_7137_anwesenheit
     from: 'off'
@@ -305,15 +306,12 @@
     conditions:
     - condition: sun
       after: sunset
-      after_offset: '+01:00:00'
+      after_offset: +01:00:00
       before: sunrise
-      before_offset: '-01:00:00'
+      before_offset: -01:00:00
     - condition: state
       entity_id: input_boolean.wartung
       state: 'off'
-    - condition: numeric_state
-      entity_id: sensor.aqara_thermo_kuche_illuminance_lux
-      below: 20
   actions:
   - choose:
     - conditions:
@@ -344,7 +342,8 @@
   mode: single
 - id: '1691320563612'
   alias: Rollos schließen wenn zu hell
-  description: 'Intelligente Rollosteuerung basierend auf Lichstärke mit Zeitverzögerung und mehreren Sicherheitsbedingungen'
+  description: Intelligente Rollosteuerung basierend auf Lichstärke mit Zeitverzögerung
+    und mehreren Sicherheitsbedingungen
   triggers:
   - entity_id: sensor.awtrix_ed6030_illuminance
     above: 15000
@@ -374,7 +373,7 @@
       entity_id: input_boolean.rollos_wohnzimmer
       state: 'off'
     - condition: time
-      after: '06:00:00'
+      after: 06:00:00
       before: '22:00:00'
     - condition: state
       entity_id: binary_sensor.workday_sensor
@@ -388,14 +387,14 @@
         conditions:
         - condition: state
           entity_id: cover.ikea_rollo_links_wohnzimmer
-          state: 'open'
+          state: open
         - condition: state
           entity_id: cover.ikea_rollo_rechts_wohnzimmer
-          state: 'open'
+          state: open
       sequence:
       - action: notify.alexa_media_echo_show_wohnzimmer
         data:
-          message: 'Rollos werden aufgrund der Helligkeit geschlossen'
+          message: Rollos werden aufgrund der Helligkeit geschlossen
       - action: cover.close_cover
         target:
           entity_id:
@@ -408,10 +407,10 @@
         conditions:
         - condition: state
           entity_id: cover.ikea_rollo_links_wohnzimmer
-          state: 'closed'
+          state: closed
         - condition: state
           entity_id: cover.ikea_rollo_rechts_wohnzimmer
-          state: 'closed'
+          state: closed
       sequence:
       - action: cover.open_cover
         target:
@@ -3685,7 +3684,8 @@
   mode: single
 - id: '1739974700001'
   alias: 'Küche: Intelligente Kochassistenz'
-  description: 'Automatische Beleuchtung und Ventilation beim Kochen basierend auf Kühlschrank-Nutzung'
+  description: Automatische Beleuchtung und Ventilation beim Kochen basierend auf
+    Kühlschrank-Nutzung
   triggers:
   - entity_id: binary_sensor.aqara_contact_kuhlschrank_contact
     from: 'off'
@@ -3697,7 +3697,8 @@
     to: 'on'
     trigger: state
     id: kochenDetected
-  - entity_id: binary_sensor.hlk_kuche_belegung
+  - entity_id:
+    - binary_sensor.hlk_ld2410_7137_anwesenheit
     from: 'off'
     to: 'on'
     trigger: state
@@ -3731,11 +3732,11 @@
         target:
           entity_id: climate.luftreiniger_wohnzimmer
         data:
-          fan_mode: 'high'
+          fan_mode: high
         continue_on_error: true
       - action: notify.alexa_media_echo_show_wohnzimmer
         data:
-          message: 'Küchenbeleuchtung und Belüftung wurden für das Kochen optimiert'
+          message: Küchenbeleuchtung und Belüftung wurden für das Kochen optimiert
           data:
             type: tts
   mode: restart

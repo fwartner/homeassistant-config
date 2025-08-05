@@ -48,7 +48,8 @@ triggers:
   id: kochenDetected
   to: 'on'
   trigger: state
-- entity_id: binary_sensor.hlk_kuche_belegung
+- entity_id:
+  - binary_sensor.hlk_ld2410_7137_anwesenheit
   for:
     seconds: 30
   from: 'off'

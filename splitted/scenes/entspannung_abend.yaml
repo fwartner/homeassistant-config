@@ -9,8 +9,6 @@
       state: auto
     cover.alle_rollos:
       state: closed
-    input_boolean.entspannung_modus:
-      state: 'on'
     light.alle_lampen:
       brightness: 120
       color_temp_kelvin: 2200

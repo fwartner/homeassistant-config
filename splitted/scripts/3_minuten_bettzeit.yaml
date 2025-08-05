@@ -10,20 +10,15 @@
         entity_id: cover.rollos_schlafzimmer
         state: open
       - action: cover.close_cover
+        data: {}
         target:
           entity_id: cover.rollos_schlafzimmer
-    - sequence:
-      - action: switch.turn_off
-        continue_on_error: true
-        target:
-          entity_id:
-          - switch.dashboard_flur_bildschirm
-          - switch.lenovo_tab_m10_bildschirm
     - sequence:
       - condition: state
         entity_id: lock.nuki_wohnungstur_lock
         state: unlocked
       - action: lock.lock
+        data: {}
         target:
           entity_id: lock.nuki_wohnungstur_lock
     - sequence:
@@ -35,6 +30,7 @@
     - sequence:
       - action: switch.turn_off
         continue_on_error: true
+        data: {}
         target:
           entity_id: switch.alle_steckdosen
   - delay:
@@ -61,6 +57,7 @@
     target:
       entity_id: media_player.alle_player
   - action: timer.start
+    data: {}
     target:
       entity_id: timer.3_minuten_bett
   - continue_on_timeout: true

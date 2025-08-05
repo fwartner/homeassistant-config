@@ -5,6 +5,7 @@ zahneputzen:
   mode: single
   sequence:
   - action: timer.start
+    data: {}
     target:
       entity_id: timer.zahneputzen
   - action: notify.alexa_media_echo_badezimmer
@@ -13,13 +14,6 @@ zahneputzen:
         type: tts
       message: "Z\xE4hneputzen gestartet! Ich sage Bescheid, wenn die 2 Minuten um\
         \ sind."
-  - action: light.turn_on
-    continue_on_error: true
-    data:
-      brightness_pct: 100
-      color_temp_kelvin: 4000
-    target:
-      entity_id: light.badezimmer_spiegel
   - continue_on_timeout: true
     timeout: 00:03:00
     wait_for_trigger:

@@ -1,29 +1,29 @@
-- id: "1693826667643"
+- id: '1693826667643'
   name: 3 Minuten Bettzeit
   entities:
     script.3_minuten_bettzeit:
-      last_triggered: "2023-09-04T08:21:32.786654+00:00"
+      last_triggered: '2023-09-04T08:21:32.786654+00:00'
       mode: single
       current: 0
       icon: mdi:bed-clock
       friendly_name: 3 Minuten Bettzeit
-      state: "off"
+      state: 'off'
     light.bett:
-      state: "on"
+      state: 'on'
       brightness: 77
       color_temp_kelvin: 2700
       transition: 2
     climate.luftreiniger_schlafzimmer:
-      state: "auto"
-      hvac_mode: "auto"
-      fan_mode: "low"
+      state: auto
+      hvac_mode: auto
+      fan_mode: low
     cover.rollos_schlafzimmer:
-      state: "closed"
+      state: closed
   icon: mdi:bed
   metadata:
     script.3_minuten_bettzeit:
       entity_only: true
-- id: "1700176197523"
+- id: '1700176197523'
   name: Movietime
   entities:
     number.sync_box_brightness:
@@ -31,61 +31,61 @@
       max: 100
       step: 1
       mode: auto
-      unit_of_measurement: "%"
+      unit_of_measurement: '%'
       icon: mdi:brightness-5
       friendly_name: Sync Box Brightness
-      state: "100"
+      state: '100'
     select.sync_box_hdmi_input:
       options:
-        - "Apple TV "
-        - PlayStation 5
-        - Nintendo Switch
-        - Vodafone
+      - 'Apple TV '
+      - PlayStation 5
+      - Nintendo Switch
+      - Vodafone
       icon: mdi:hdmi-port
       friendly_name: Sync Box HDMI Input
       state: PlayStation 5
     select.sync_box_intensity:
       options:
-        - subtle
-        - moderate
-        - high
-        - intense
+      - subtle
+      - moderate
+      - high
+      - intense
       icon: mdi:sine-wave
       friendly_name: Sync Box Intensity
       state: high
     select.sync_box_sync_mode:
       options:
-        - video
-        - music
-        - game
+      - video
+      - music
+      - game
       friendly_name: Sync Box Sync mode
       state: video
     switch.sync_box_power:
       icon: mdi:power
       friendly_name: Sync Box Power
-      state: "on"
+      state: 'on'
     switch.sync_box_light_sync:
       icon: mdi:television-ambient-light
       friendly_name: Sync Box Light Sync
-      state: "on"
+      state: 'on'
     light.tv_bank:
       supported_color_modes:
-        - brightness
+      - brightness
       color_mode:
       brightness:
       mode: normal
       dynamics: none
       friendly_name: TV Bank
       supported_features: 40
-      state: "off"
+      state: 'off'
     input_boolean.movietime:
       editable: true
       icon: mdi:theater
       friendly_name: Movietime
-      state: "on"
+      state: 'on'
     media_player.sonos_ray:
       group_members:
-        - media_player.sonos_ray
+      - media_player.sonos_ray
       volume_level: 0.12
       is_volume_muted: false
       media_content_id: x-sonos-htastream:RINCON_F0F6C1F0FCCC01400:spdif
@@ -93,7 +93,7 @@
       media_title: TV
       source: TV
       shuffle: false
-      repeat: "off"
+      repeat: 'off'
       queue_size: 1
       device_class: speaker
       icon: phu:sonos-beam
@@ -104,185 +104,190 @@
   metadata:
     input_boolean.movietime:
       entity_only: true
-- id: "1716114597259"
+- id: '1716114597259'
   name: Lesen Schlafzimmer
   entities:
     light.bett:
-      state: "on"
+      state: 'on'
       brightness: 255
       color_temp_kelvin: 3000
       transition: 3
     light.stehlampe:
-      state: "on"
+      state: 'on'
       brightness: 140
-      effect: "None"
+      effect: None
       transition: 3
     cover.rollos_schlafzimmer:
-      state: "closed"
+      state: closed
     switch.white_noise_schlafzimmer:
-      state: "on"
+      state: 'on'
     climate.luftreiniger_schlafzimmer:
-      state: "auto"
-      hvac_mode: "auto"
-      fan_mode: "low"
+      state: auto
+      hvac_mode: auto
+      fan_mode: low
   icon: phu:other-reading
   metadata: {}
-- id: "1720440801295"
+- id: '1720440801295'
   name: Chill
   entities:
     light.tv:
-      state: "on"
+      state: 'on'
       brightness: 102
       color_temp_kelvin: 2800
-      effect: "None"
+      effect: None
       transition: 5
     light.hugo_rechts:
-      state: "on"
+      state: 'on'
       brightness: 102
       color_temp_kelvin: 2800
-      effect: "None"
+      effect: None
       transition: 5
     light.tv_bank:
-      state: "on"
+      state: 'on'
       brightness: 80
       transition: 5
     light.regal:
-      state: "on"
+      state: 'on'
       brightness: 102
       color_temp_kelvin: 2800
       transition: 5
     media_player.sonos_wohnzimmer:
-      state: "playing"
+      state: playing
       volume_level: 0.15
-      source: "spotify"
+      source: spotify
     cover.rollos_wohnzimmer_fensterbank:
-      state: "closed"
+      state: closed
     climate.luftreiniger_wohnzimmer:
-      state: "auto"
-      hvac_mode: "auto"
-      fan_mode: "low"
+      state: auto
+      hvac_mode: auto
+      fan_mode: low
   metadata: {}
-- id: "1726219875674"
+- id: '1726219875674'
   name: Sicherheitsmodus
   entities:
     light.alle_lampen:
-      state: "on"
+      state: 'on'
       brightness: 255
-      rgb_color: [255, 0, 0]
-      effect: "Strobe"
+      rgb_color:
+      - 255
+      - 0
+      - 0
+      effect: Strobe
     light.wled_wohnzimmer_wand:
-      state: "on"
+      state: 'on'
       brightness: 255
-      effect: "Police"
-      rgb_color: [255, 0, 0]
+      effect: Police
+      rgb_color:
+      - 255
+      - 0
+      - 0
     media_player.sonos_wohnzimmer:
-      state: "playing"
+      state: playing
       volume_level: 0.6
-      media_content_type: "music"
-      media_content_id: "https://minio.srv.wartner.io/homeassistant/alarm.mp3"
+      media_content_type: music
+      media_content_id: https://minio.srv.wartner.io/homeassistant/alarm.mp3
     lock.nuki_wohnungstur_lock:
-      state: "locked"
+      state: locked
     cover.alle_rollos:
-      state: "closed"
+      state: closed
     switch.alle_steckdosen:
-      state: "off"
+      state: 'off'
     input_boolean.sicherheitsmodus:
-      state: "on"
+      state: 'on'
   icon: mdi:shield-alert
   metadata: {}
-- id: "1739973742541"
+- id: '1739973742541'
   name: Fernsehen
   entities:
     switch.steckdose_tv_bank_wohnzimmer:
       device_class: outlet
       icon: mdi:power
       friendly_name: Steckdose TV Bank Wohnzimmer
-      state: "on"
+      state: 'on'
     media_player.appletv_wohnzimmer:
       source_list:
-        - Airbnb
-        - Apple Events
-        - App Store
-        - Arcade
-        - ARD Mediathek
-        - ARTE
-        - Chefkoch TV
-        - Classix
-        - Computer
-        - Das Erste
-        - Developer
-        - Disney+
-        - Einstellungen
-        - Facebook Watch
-        - Filme
-        - Fitness
-        - Fotos
-        - Gamepass
-        - HomeCenter
-        - IKEA Catalogue
-        - Joyn
-        - kabel eins
-        - kabel eins Doku
-        - KAYAK
-        - Kitchen Stories
-        - Musik
-        - Netflix
-        - NordVPN
-        - Paramount+
-        - Plex
-        - Pluto TV
-        - Podcasts
-        - Prime Video
-        - ProSieben
-        - ProSieben MAXX
-        - REWE
-        - RTL+
-        - SAT.1
-        - SAT.1 Gold
-        - Shadow PC
-        - sixx
-        - Sky Q
-        - Speedtest
-        - Spotify
-        - Steam Link
-        - Suchen
-        - Tagesschau
-        - Tastemade
-        - TestFlight
-        - TripAdvisor
-        - TV
-        - TV-Sendungen
-        - Twitch
-        - Twitter
-        - Udemy
-        - VLC
-        - Vodafone
-        - wetter.com live
-        - WOW
-        - YouTube
-        - Zattoo
-        - ZDFmediathek
+      - Airbnb
+      - Apple Events
+      - App Store
+      - Arcade
+      - ARD Mediathek
+      - ARTE
+      - Chefkoch TV
+      - Classix
+      - Computer
+      - Das Erste
+      - Developer
+      - Disney+
+      - Einstellungen
+      - Facebook Watch
+      - Filme
+      - Fitness
+      - Fotos
+      - Gamepass
+      - HomeCenter
+      - IKEA Catalogue
+      - Joyn
+      - kabel eins
+      - kabel eins Doku
+      - KAYAK
+      - Kitchen Stories
+      - Musik
+      - Netflix
+      - NordVPN
+      - Paramount+
+      - Plex
+      - Pluto TV
+      - Podcasts
+      - Prime Video
+      - ProSieben
+      - ProSieben MAXX
+      - REWE
+      - RTL+
+      - SAT.1
+      - SAT.1 Gold
+      - Shadow PC
+      - sixx
+      - Sky Q
+      - Speedtest
+      - Spotify
+      - Steam Link
+      - Suchen
+      - Tagesschau
+      - Tastemade
+      - TestFlight
+      - TripAdvisor
+      - TV
+      - TV-Sendungen
+      - Twitch
+      - Twitter
+      - Udemy
+      - VLC
+      - Vodafone
+      - wetter.com live
+      - WOW
+      - YouTube
+      - Zattoo
+      - ZDFmediathek
       media_duration: 1971
       media_position: 8
-      media_title:
-        Das musst du wissen – Fußbodenheizung intelligent steuern mit Home
+      media_title: Das musst du wissen – Fußbodenheizung intelligent steuern mit Home
         Assistant!
       media_artist: simon42
-      media_album_name: ""
+      media_album_name: ''
       app_id: com.google.ios.youtube
       app_name: YouTube
       icon: phu:apple-tv
       friendly_name: AppleTV Wohnzimmer
       supported_features: 450487
-      media_position_updated_at: "2025-02-19T14:04:18.272357+00:00"
+      media_position_updated_at: '2025-02-19T14:04:18.272357+00:00'
       state: playing
     remote.appletv_wohnzimmer:
       friendly_name: AppleTV Wohnzimmer
       supported_features: 0
-      state: "on"
+      state: 'on'
     media_player.sonos_ray_wohnzimmer:
       group_members:
-        - media_player.sonos_ray_wohnzimmer
+      - media_player.sonos_ray_wohnzimmer
       volume_level: 0.1
       is_volume_muted: false
       media_content_id: x-sonos-htastream:RINCON_F0F6C1F0FCCC01400:spdif
@@ -290,7 +295,7 @@
       media_title: TV
       source: TV
       shuffle: false
-      repeat: "off"
+      repeat: 'off'
       queue_size: 1
       device_class: speaker
       icon: phu:sonos-ray
@@ -299,48 +304,48 @@
       state: playing
     light.tv_bank:
       supported_color_modes:
-        - brightness
+      - brightness
       color_mode: brightness
       brightness: 150
       mode: normal
       dynamics: none
       friendly_name: TV Bank
       supported_features: 40
-      state: "on"
+      state: 'on'
   metadata: {}
   icon: mdi:popcorn
-- id: "1739974242661"
+- id: '1739974242661'
   name: Wohnzimmer Aus
   entities:
     media_player.appletv_wohnzimmer:
       icon: phu:apple-tv
       friendly_name: AppleTV Wohnzimmer
       supported_features: 448439
-      state: "off"
+      state: 'off'
     remote.appletv_wohnzimmer:
       friendly_name: AppleTV Wohnzimmer
       supported_features: 0
-      state: "off"
+      state: 'off'
     light.tv_bank:
       supported_color_modes:
-        - brightness
+      - brightness
       color_mode:
       brightness:
       mode: normal
       dynamics: none
       friendly_name: TV Bank
       supported_features: 40
-      state: "off"
+      state: 'off'
     switch.steckdose_tv_bank_wohnzimmer:
       device_class: outlet
       icon: mdi:power
       friendly_name: Steckdose TV Bank Wohnzimmer
-      state: "off"
+      state: 'off'
     cover.rollos_wohnzimmer_fensterbank:
       current_position: 0
       entity_id:
-        - cover.ikea_rollo_links_wohnzimmer
-        - cover.ikea_rollo_rechts_wohnzimmer
+      - cover.ikea_rollo_links_wohnzimmer
+      - cover.ikea_rollo_rechts_wohnzimmer
       friendly_name: Rollos Wohnzimmer Fensterbank
       supported_features: 15
       state: closed
@@ -351,7 +356,7 @@
       state: open
     media_player.sonos_ray_wohnzimmer:
       group_members:
-        - media_player.sonos_ray_wohnzimmer
+      - media_player.sonos_ray_wohnzimmer
       volume_level: 0.1
       is_volume_muted: false
       media_content_id: x-sonos-htastream:RINCON_F0F6C1F0FCCC01400:spdif
@@ -359,7 +364,7 @@
       media_title: TV
       source: TV
       shuffle: false
-      repeat: "off"
+      repeat: 'off'
       queue_size: 1
       device_class: speaker
       icon: phu:sonos-ray
@@ -369,29 +374,29 @@
     switch.ps5_801_power:
       icon: mdi:sony-playstation
       friendly_name: PS5-801 power
-      state: "off"
+      state: 'off'
     light.tv:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6535
       min_mireds: 153
       max_mireds: 500
       effect_list:
-        - None
-        - candle
-        - fire
-        - prism
-        - sparkle
-        - opal
-        - glisten
-        - unknown
-        - unknown
-        - unknown
-        - unknown
-        - sunrise
-        - sunset
+      - None
+      - candle
+      - fire
+      - prism
+      - sparkle
+      - opal
+      - glisten
+      - unknown
+      - unknown
+      - unknown
+      - unknown
+      - sunrise
+      - sunset
       supported_color_modes:
-        - color_temp
-        - xy
+      - color_temp
+      - xy
       effect:
       color_mode:
       brightness:
@@ -404,148 +409,149 @@
       dynamics: none
       friendly_name: TV
       supported_features: 44
-      state: "off"
+      state: 'off'
   icon: mdi:light-switch-off
   metadata:
     cover.rollos_wohnzimmer_fensterbank:
       entity_only: true
     cover.ikea_rollo_balkontur:
       entity_only: true
-- id: "1739974475118"
+- id: '1739974475118'
   name: Zocken
   entities:
     switch.steckdose_tv_bank_wohnzimmer:
       device_class: outlet
       icon: mdi:power
       friendly_name: Steckdose TV Bank Wohnzimmer
-      state: "on"
+      state: 'on'
     switch.ps5_801_power:
       icon: mdi:sony-playstation
       friendly_name: PS5-801 power
-      state: "on"
+      state: 'on'
     light.tv:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6535
       min_mireds: 153
       max_mireds: 500
       effect_list:
-        - None
-        - candle
-        - fire
-        - prism
-        - sparkle
-        - opal
-        - glisten
-        - unknown
-        - unknown
-        - unknown
-        - unknown
-        - sunrise
-        - sunset
+      - None
+      - candle
+      - fire
+      - prism
+      - sparkle
+      - opal
+      - glisten
+      - unknown
+      - unknown
+      - unknown
+      - unknown
+      - sunrise
+      - sunset
       supported_color_modes:
-        - color_temp
-        - xy
+      - color_temp
+      - xy
       effect: None
       color_mode: xy
       brightness: 178
       color_temp_kelvin:
       color_temp:
       hs_color:
-        - 9.231
-        - 66.275
+      - 9.231
+      - 66.275
       rgb_color:
-        - 255
-        - 112
-        - 86
+      - 255
+      - 112
+      - 86
       xy_color:
-        - 0.589
-        - 0.329
+      - 0.589
+      - 0.329
       mode: normal
       dynamics: none
       friendly_name: TV
       supported_features: 44
-      state: "on"
+      state: 'on'
   icon: mdi:controller
   metadata: {}
-- id: "1739974600000"
+- id: '1739974600000'
   name: Guten Morgen
   entities:
     light.alle_lampen:
-      state: "on"
+      state: 'on'
       brightness: 180
       color_temp_kelvin: 4000
       transition: 10
     cover.alle_rollos:
-      state: "open"
+      state: open
     climate.luftreiniger_wohnzimmer:
-      state: "auto"
-      hvac_mode: "auto"
-      fan_mode: "medium"
+      state: auto
+      hvac_mode: auto
+      fan_mode: medium
     climate.luftreiniger_schlafzimmer:
-      state: "auto"
-      hvac_mode: "auto"
-      fan_mode: "low"
+      state: auto
+      hvac_mode: auto
+      fan_mode: low
     media_player.sonos_wohnzimmer:
-      state: "playing"
+      state: playing
       volume_level: 0.25
-      source: "spotify"
+      source: spotify
     switch.steckdose_kaffeemaschine:
-      state: "on"
+      state: 'on'
     input_boolean.guten_morgen_routine:
-      state: "on"
+      state: 'on'
   icon: mdi:weather-sunny
   metadata: {}
-- id: "1739974700003"
+- id: '1739974700003'
   name: Arbeitsplatz Optimiert
   entities:
     light.lightener_buro:
-      state: "on"
+      state: 'on'
       brightness: 255
       color_temp_kelvin: 5000
       transition: 3
     light.awtrix_ed6030_matrix:
-      state: "on"
+      state: 'on'
       brightness: 180
     climate.luftreiniger_wohnzimmer:
-      state: "auto"
-      hvac_mode: "auto"
-      fan_mode: "low"
+      state: auto
+      hvac_mode: auto
+      fan_mode: low
     switch.steckdose_schreibtisch:
-      state: "on"
+      state: 'on'
     cover.alle_rollos:
-      state: "open"
+      state: open
     input_boolean.arbeitsplatz_modus:
-      state: "on"
+      state: 'on'
   icon: mdi:desktop-classic
   metadata: {}
-- id: "1739974700004"
+- id: '1739974700004'
   name: Entspannung Abend
   entities:
     light.alle_lampen:
-      state: "on"
+      state: 'on'
       brightness: 120
       color_temp_kelvin: 2200
       transition: 8
     light.wled_stand:
-      state: "on"
+      state: 'on'
       brightness: 80
-      effect: "Fire Flicker"
-      rgb_color: [255, 140, 60]
+      effect: Fire Flicker
+      rgb_color:
+      - 255
+      - 140
+      - 60
     media_player.alle_player:
-      state: "playing"
+      state: playing
       volume_level: 0.2
-      source: "spotify"
+      source: spotify
     climate.luftreiniger_wohnzimmer:
-      state: "auto"
-      hvac_mode: "auto"
-      fan_mode: "silent"
+      state: auto
+      hvac_mode: auto
+      fan_mode: silent
     climate.luftreiniger_schlafzimmer:
-      state: "auto"
-      hvac_mode: "auto"
-      fan_mode: "silent"
+      state: auto
+      hvac_mode: auto
+      fan_mode: silent
     cover.alle_rollos:
-      state: "closed"
-    input_boolean.entspannung_modus:
-      state: "on"
+      state: closed
   icon: mdi:spa
   metadata: {}

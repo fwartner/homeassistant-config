@@ -37,9 +37,6 @@ conditions:
   - condition: state
     entity_id: input_boolean.wartung
     state: 'off'
-  - below: 20
-    condition: numeric_state
-    entity_id: sensor.aqara_thermo_kuche_illuminance_lux
 description: "Intelligente K\xFCchenbeleuchtung basierend auf Anwesenheit und Tageszeit"
 id: '1691151128778'
 mode: single

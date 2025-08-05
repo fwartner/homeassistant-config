@@ -1,0 +1,95 @@
+blueprint:
+  name: AI camera analysis
+  description: Analyze camera footage with AI when motion is detected and write it
+    to the logbook.
+  domain: automation
+  author: Paulus Schoutsen
+  input:
+    motion_entity:
+      name: Motion Sensor
+      selector:
+        entity:
+          filter:
+          - device_class:
+            - motion
+            domain:
+            - binary_sensor
+          multiple: false
+    camera_target:
+      name: Camera
+      selector:
+        entity:
+          domain:
+          - camera
+          multiple: false
+    extra_instructions:
+      name: Extra Instructions
+      description: 'Additional instructions for the AI to consider when analyzing
+        the camera footage. This can be used to specify what to look for in the footage.
+
+        '
+      selector:
+        text: {}
+      default: ''
+    analysis_delay:
+      name: Delay before analysis
+      description: Time to wait before analyzing the camera after motion is detected.
+      default: 5
+      selector:
+        number:
+          min: 0.0
+          max: 3600.0
+          unit_of_measurement: seconds
+          mode: slider
+          step: 1.0
+    cooldown_time:
+      name: Cooldown
+      description: Time to wait between analyses.
+      default: 60
+      selector:
+        number:
+          min: 0.0
+          max: 3600.0
+          unit_of_measurement: seconds
+          mode: slider
+          step: 1.0
+  source_url: https://community.home-assistant.io/t/ai-camera-analysis/911634
+mode: single
+max_exceeded: silent
+triggers:
+- trigger: state
+  entity_id:
+  - !input motion_entity
+  from: 'off'
+  to: 'on'
+actions:
+- variables:
+    camera_entity: !input camera_target
+    extra_instructions: !input extra_instructions
+- delay:
+    seconds: !input analysis_delay
+- alias: Analyse camera image
+  action: ai_task.generate_data
+  data:
+    task_name: '{{ this.entity_id }}'
+    instructions: 'Give a 1 sentence analysis of what is happening on this camera
+      picture. {{ extra_instructions }}
+
+      '
+    structure:
+      analysis:
+        selector:
+          text:
+    attachments:
+      media_content_id: media-source://camera/{{ camera_entity }}
+      media_content_type: ''
+  response_variable: result
+- alias: Write analysis to logbook
+  action: logbook.log
+  data:
+    entity_id: '{{ camera_entity }}'
+    message: 'analysis: {{ result.data.analysis }}'
+    domain: ai_task
+    name: '{{ states[camera_entity].name }}'
+- delay:
+    seconds: !input cooldown_time

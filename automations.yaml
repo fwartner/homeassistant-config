@@ -1682,19 +1682,18 @@
 - id: '1713209575955'
   alias: Run Chores
   description: ''
-  trigger:
-  - platform: time_pattern
-    minutes: /10
-  condition:
+  triggers:
+  - minutes: /10
+    trigger: time_pattern
+  conditions:
   - condition: state
     entity_id: input_boolean.wartung
     state: 'off'
-  action:
-  - service: readme.generate
-    data: {}
-  - service: shell_command.run_chores
-    data: {}
-    response_variable: backup_response
+  actions:
+  - data: {}
+    action: readme.generate
+  - data: {}
+    action: shell_command.run_chores
   mode: single
 - id: database_repack
   alias: System - Database Repack (Weekly)

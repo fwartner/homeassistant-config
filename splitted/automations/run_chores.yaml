@@ -1,17 +1,16 @@
-action:
-- data: {}
-  service: readme.generate
-- data: {}
-  response_variable: backup_response
-  service: shell_command.run_chores
+actions:
+- action: readme.generate
+  data: {}
+- action: shell_command.run_chores
+  data: {}
 alias: Run Chores
-condition:
+conditions:
 - condition: state
   entity_id: input_boolean.wartung
   state: 'off'
 description: ''
 id: '1713209575955'
 mode: single
-trigger:
+triggers:
 - minutes: /10
-  platform: time_pattern
+  trigger: time_pattern

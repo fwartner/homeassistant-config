@@ -1,5 +1,5 @@
 external_components:
-  - source: github://ilarrain/esphome-components
+  - source: github://myhomeiot/esphome-components
 
 esp32_ble_tracker:
   scan_parameters:

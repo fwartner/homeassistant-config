@@ -380,14 +380,14 @@ wecker_sound_alexa:
   alias: Wecker Sound Alexa
   sequence:
   - service: input_text.set_value
-    data_template:
+    data:  # Modern syntax: data_template deprecated as of Home Assistant 0.115
       entity_id: input_text.alexa_actionable_notification
       value: '{"text": "<audio src=''https://minio.srv.wartner.io/homeassistant/wecker.mp3''/>",
         "event": "none"}
 
         '
   - service: media_player.play_media
-    data_template:
+    data:  # Modern syntax: data_template deprecated as of Home Assistant 0.115
       entity_id: "{% if alexa_device %}\n  {{ alexa_device }}\n{% else %}\n  media_player.echo_schlafzimmer\n{%
         endif %}\n"
       media_content_type: skill

@@ -1,8 +1,0 @@
----
-platform: history_stats
-name: "[Playing] Apple TV Wohnzimmer"
-entity_id: media_player.appletv_wohnzimmer
-state: "playing"
-type: time
-start: "{{ today_at() }}"
-end: "{{ now() }}"

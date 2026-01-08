@@ -1,8 +1,0 @@
----
-platform: history_stats
-name: "[Playing] Sonos Ray Wohnzimmer"
-entity_id: media_player.sonos_ray_wohnzimmer
-state: "playing"
-type: time
-start: "{{ today_at() }}"
-end: "{{ now() }}"

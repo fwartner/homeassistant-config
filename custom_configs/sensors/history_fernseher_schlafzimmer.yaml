@@ -1,8 +1,0 @@
----
-platform: history_stats
-name: "[Playing] TV Schlafzimmer"
-entity_id: media_player.tv_schlafzimmer_dlna
-state: "playing"
-type: time
-start: "{{ today_at() }}"
-end: "{{ now() }}"

@@ -3,7 +3,8 @@ appletv_american_dad:
   icon: mdi:theater
   mode: single
   sequence:
-  - data:
+  - continue_on_error: true
+    data:
       media_content_id: https://www.disneyplus.com/de-de/browse/entity-5b4ab988-e3a7-4750-a11a-9aa3d65f8cfe
       media_content_type: url
     service: media_player.play_media

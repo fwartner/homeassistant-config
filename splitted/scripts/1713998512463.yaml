@@ -17,20 +17,12 @@
     target:
       entity_id:
       - input_boolean.wecker_an_aus
-  - repeat:
-      count: "{{ (states.switch\n    | map(attribute=\"entity_id\")\n    | select(\"\
-        >\",\"switch.adaptive_lighting_adaptive_lighting_schlafzimmer\")\n    | select(\"\
-        <\", \"switch.adaptive_lighting_adaptive_lighting_schlafzimmer\")\n    | join(\"\
-        ,\")\n   ).split(\",\") | length }}\n"
-      sequence:
-      - data:
-          entity_id: switch.adaptive_lighting_adaptive_lighting_schlafzimmer
-          sunrise_time: '{{ now().strftime("%H:%M:%S") }}'
-          sunset_time: '{{ (as_timestamp(now()) + 12*60*60) | timestamp_custom("%H:%M:%S")
-            }}
-
-            '
-        service: adaptive_lighting.change_switch_settings
+  - data:
+      entity_id: switch.adaptive_lighting_adaptive_lighting_schlafzimmer
+      sunrise_time: '{{ now().strftime("%H:%M:%S") }}'
+      sunset_time: '{{ (as_timestamp(now()) + 12*60*60) | timestamp_custom("%H:%M:%S")
+        }}'
+    service: adaptive_lighting.change_switch_settings
   - data: {}
     service: script.turn_on
     target:

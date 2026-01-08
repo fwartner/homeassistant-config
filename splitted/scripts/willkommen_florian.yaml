@@ -3,7 +3,8 @@ willkommen_florian:
   icon: mdi:home-circle
   mode: single
   sequence:
-  - data:
+  - continue_on_error: true
+    data:
       message: "{{ [ \"Willkommen zu Hause, Florian! Wir haben dich vermisst!\", \"\
         Endlich bist du wieder da, Florian \u2013 das Haus war ohne dich einfach nicht\
         \ dasselbe!\", \"Florian, dein Zuhause hei\xDFt dich herzlich willkommen!\"\

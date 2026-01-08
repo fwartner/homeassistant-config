@@ -1,6 +1,7 @@
 alias: Taster Schlafzimmer Actions
 description: ''
 id: '1670802573901'
+mode: single
 use_blueprint:
   input:
     action_sensor: sensor.aqara_taster_schlafzimmer_action

@@ -3,7 +3,8 @@ appletv_family_guy:
   icon: mdi:theater
   mode: single
   sequence:
-  - data:
+  - continue_on_error: true
+    data:
       media_content_id: https://www.disneyplus.com/de-de/browse/entity-c3a22862-23b8-496d-97e0-c8e40fe44ec5
       media_content_type: url
     service: media_player.play_media

@@ -3,7 +3,8 @@ appletv_simpsons:
   icon: mdi:theater
   mode: single
   sequence:
-  - data:
+  - continue_on_error: true
+    data:
       media_content_id: https://www.disneyplus.com/de-de/browse/entity-cac75c8f-a9e2-4d95-ac73-1cf1cc7b9568
       media_content_type: url
     service: media_player.play_media

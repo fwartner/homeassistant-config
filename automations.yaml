@@ -1,3 +1,4 @@
+---
 - id: '1669632865548'
   alias: 'Flur: Licht an wenn Tür auf'
   description: Automatisches Flur-Licht bei Türöffnung während Dunkelheit mit Auto-Aus

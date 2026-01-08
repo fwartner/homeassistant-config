@@ -1,0 +1,10 @@
+---
+- sensor:
+  - name: "recorder_status"
+    unique_id: recorder_status
+    state: >
+      {% if is_state('sensor.recorder_uptime', 'unknown') %}
+        problem
+      {% else %}
+        running
+      {% endif %}

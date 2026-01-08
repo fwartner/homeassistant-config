@@ -1,0 +1,10 @@
+---
+- sensor:
+  - name: "Mac Kamera An"
+    unique_id: macs_camera_on
+    state: >
+      {% if is_state('binary_sensor.mac_mini_camera_in_use', 'on') or is_state('binary_sensor.macbook_pro_camera_in_use', 'on') %}
+        true
+      {% else %}
+        false
+      {% endif %}

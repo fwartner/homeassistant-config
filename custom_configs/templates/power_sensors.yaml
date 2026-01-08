@@ -1,0 +1,75 @@
+---
+- sensor:
+  - name: "Power Current"
+    unique_id: power_current
+    unit_of_measurement: W
+    device_class: power
+    state: >-
+      {{ states('sensor.shelly_em3_channel_a_power')|float + states('sensor.shelly_em3_channel_b_power')|float + states('sensor.shelly_em3_channel_c_power')|float }}
+    availability: >-
+      {{
+        [ states('sensor.shelly_em3_channel_a_power'),
+        states('sensor.shelly_em3_channel_b_power'),
+        states('sensor.shelly_em3_channel_c_power')
+        ] | map('is_number') | min
+      }}
+
+  - name: "Power Import"
+    unique_id: power_import
+    unit_of_measurement: W
+    device_class: power
+    state: >-
+      {% if (states('sensor.shelly_em3_channel_a_power')|float + states('sensor.shelly_em3_channel_b_power')|float + states('sensor.shelly_em3_channel_c_power')|float) > 0 %}
+        {{ states('sensor.shelly_em3_channel_a_power')|float + states('sensor.shelly_em3_channel_b_power')|float + states('sensor.shelly_em3_channel_c_power')|float }}
+      {% else %}
+        {{ 0 }}
+      {% endif %}
+    availability: >-
+      {{
+        [ states('sensor.shelly_em3_channel_a_power'),
+        states('sensor.shelly_em3_channel_b_power'),
+        states('sensor.shelly_em3_channel_c_power')
+        ] | map('is_number') | min
+      }}
+
+  - name: "Power Export"
+    unique_id: power_export
+    unit_of_measurement: W
+    device_class: power
+    state: >-
+      {% if (states('sensor.shelly_em3_channel_a_power')|float + states('sensor.shelly_em3_channel_b_power')|float + states('sensor.shelly_em3_channel_c_power')|float) < 0 %}
+        {{ (states('sensor.shelly_em3_channel_a_power')|float + states('sensor.shelly_em3_channel_b_power')|float + states('sensor.shelly_em3_channel_c_power')|float) * -1 }}
+      {% else %}
+        {{ 0 }}
+      {% endif %}
+    availability: >-
+      {{
+        [ states('sensor.shelly_em3_channel_a_power'),
+        states('sensor.shelly_em3_channel_b_power'),
+        states('sensor.shelly_em3_channel_c_power')
+        ] | map('is_number') | min
+      }}
+
+  - name: "Power Consumption"
+    unique_id: power_consumption
+    unit_of_measurement: W
+    device_class: power
+    state: >-
+      {% if (states('sensor.power_export')|float(0)) > 0 and (states('sensor.power_solargen')|float(0) - states('sensor.power_export')|float(0)) < 0 %}
+        {{ 0 }}
+      {% elif (states('sensor.power_export')|float(0)) > 0 and (states('sensor.power_solargen')|float(0) - states('sensor.power_export')|float(0)) > 0 %}
+        {{ (states('sensor.power_solargen')|float(0)) - states('sensor.power_export')|float(0) }}
+      {% else %}
+        {{ states('sensor.power_import')|float(0) + states('sensor.power_solargen')|float(0) }}
+      {% endif %}
+
+  - name: "Power Solar Generation"
+    unique_id: power_solargen
+    unit_of_measurement: W
+    device_class: power
+    state: >-
+      {% if (states('sensor.shelly_bkw_power')|float(0)) > 0 %}
+        {{ (states('sensor.shelly_bkw_power')|float(0)) }}
+      {% else %}
+        {{ 0 }}
+      {% endif %}

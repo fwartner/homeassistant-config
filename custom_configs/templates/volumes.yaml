@@ -1,0 +1,55 @@
+---
+- sensor:
+  - name: "tv_schlafzimmer_volume"
+    unique_id: tv_schlafzimmer_volume
+    unit_of_measurement: "%"
+    state: >
+      {{ state_attr("media_player.tv_schlafzimmer", "volume_level") }}
+
+  - name: "tv_wohnzimmer_volume"
+    unique_id: tv_wohnzimmer_volume
+    unit_of_measurement: "%"
+    state: >
+      {{ state_attr("media_player.tv_wohnzimmer", "volume_level") }}
+
+  - name: "sonos_ray_volume"
+    unique_id: sonos_ray_volume
+    unit_of_measurement: "%"
+    state: >
+      {{ state_attr("media_player.sonos_ray", "volume_level") }}
+
+  - name: "echo_show_wohnzimmer_volume"
+    unique_id: echo_show_wohnzimmer_volume
+    unit_of_measurement: "%"
+    state: >
+      {{ state_attr("media_player.echo_show_wohnzimmer", "volume_level") }}
+
+  - name: "echo_flur_volume"
+    unique_id: echo_flur_volume
+    unit_of_measurement: "%"
+    state: >
+      {{ state_attr("media_player.echo_flur", "volume_level") }}
+
+  - name: "echo_schlafzimmer_volume"
+    unique_id: echo_schlafzimmer_volume
+    unit_of_measurement: "%"
+    state: >
+      {{ state_attr("media_player.echo_schlafzimmer", "volume_level") }}
+
+  - name: "echo_badezimmer_volume"
+    unique_id: echo_badezimmer_volume
+    unit_of_measurement: "%"
+    state: >
+      {{ state_attr("media_player.echo_badezimmer", "volume_level") }}
+
+  - name: "echo_buero_volume"
+    unique_id: echo_buero_volume
+    unit_of_measurement: "%"
+    state: >
+      {{ state_attr("media_player.echo_buero", "volume_level") }}
+
+  - name: "echo_jonas_volume"
+    unique_id: echo_jonas_volume
+    unit_of_measurement: "%"
+    state: >
+      {{ state_attr("media_player.echo_von_jonas", "volume_level") }}

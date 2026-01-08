@@ -1,0 +1,61 @@
+---
+- sensor:
+  - name: "count_automations"
+    unique_id: count_automations
+    icon: mdi:autorenew
+    state: "{{ states.automation | count }}"
+
+  - name: "count_scripts"
+    unique_id: count_scripts
+    icon: mdi:script-text-outline
+    state: "{{ states.script| count }}"
+
+  - name: "count_device_trackers"
+    unique_id: count_device_trackers
+    icon: mdi:map-marker
+    state: "{{ states.device_tracker | count }}"
+
+  - name: "count_binary_sensors"
+    unique_id: count_binary_sensors
+    icon: mdi:unfold-more-horizontal
+    state: "{{ states.binary_sensor| count }}"
+
+  - name: "count_sensors"
+    unique_id: count_sensors
+    icon: mdi:resistor
+    state: "{{ states.sensor | count }}"
+
+  - name: "count_switches"
+    unique_id: count_switches
+    icon: mdi:light-switch
+    state: "{{ states.switch | count }}"
+
+  - name: "count_zones"
+    unique_id: count_zones
+    icon: mdi:map-marker-radius
+    state: "{{ states.zone | count }}"
+
+  - name: "count_input_booleans"
+    unique_id: count_input_booleans
+    icon: mdi:toggle-switch
+    state: "{{ states.input_boolean | count }}"
+
+  - name: "count_input_numbers"
+    unique_id: count_input_numbers
+    icon: mdi:numeric
+    state: "{{ states.input_number | count }}"
+
+  - name: "count_input_texts"
+    unique_id: count_input_texts
+    icon: mdi:alphabetical
+    state: "{{ states.input_text | count }}"
+
+  - name: "count_input_selects"
+    unique_id: count_input_selects
+    icon: mdi:view-list
+    state: "{{ states.input_select | count }}"
+
+  - name: "count_input_datetimes"
+    unique_id: count_input_datetimes
+    icon: mdi:calendar-clock
+    state: "{{ states.input_datetime | count }}"

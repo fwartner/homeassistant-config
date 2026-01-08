@@ -1,0 +1,30 @@
+---
+- sensor:
+  - name: "location_florian"
+    unique_id: location_florian
+    state: >
+      {% if is_state('device_tracker.iphone_von_florian', 'home') %}
+        Zuhause
+      {% elif is_state("device_tracker.iphone_von_florian", "not_home") %}
+        Unterwegs
+      {% else %}
+        {{ states("device_tracker.iphone_von_florian") }}
+      {% endif %}
+
+  - name: "location_florian_color"
+    unique_id: location_florian_color
+    state: >
+      {% if is_state("device_tracker.iphone_von_florian", "home") %}
+        green
+      {%- else -%}
+        red
+      {%- endif -%}
+
+  - name: "location_florian_icon"
+    unique_id: location_florian_icon
+    state: >
+      {% if is_state("device_tracker.iphone_von_florian", "home") %}
+        mdi:home
+      {%- else -%}
+        mdi:home-remove
+      {%- endif %}

@@ -1,0 +1,17 @@
+---
+- sensor:
+  - name: "Random Morning Action Time"
+    unique_id: random_morning_action_time
+    state: >
+      {% set total_minutes = range(390,511) | random %}
+      {% set hours = total_minutes // 60 %}
+      {% set minutes = total_minutes % 60 %}
+      {{ "%02d:%02d:00" | format(hours, minutes) }}
+
+  - name: "Random Afternoon Action Time"
+    unique_id: random_afternoon_action_time
+    state: >
+      {% set total_minutes = range(885,901) | random %}
+      {% set hours = total_minutes // 60 %}
+      {% set minutes = total_minutes % 60 %}
+      {{ "%02d:%02d:00" | format(hours, minutes) }}

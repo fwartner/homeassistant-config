@@ -1,0 +1,9 @@
+---
+- sensor:
+  - name: "tag_de"
+    unique_id: tag_de
+    state: "{{ ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'][now().weekday()] }}"
+
+  - name: "monat_de"
+    unique_id: monat_de
+    state: "{% set months = ['Januar', 'Februar', 'März', 'April', 'Main', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'] %} {{ now().day | string + ' ' + months[now().month-1]}}"

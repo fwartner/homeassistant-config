@@ -1,36 +1,7 @@
 ---
-- platform: template
-  sensors:
-    power_import:
-      friendly_name: "Power Import"
-      unit_of_measurement: "W"
-      value_template: >-
-        {% if (states('sensor.shelly_em3_channel_a_power')|float + states('sensor.shelly_em3_channel_b_power')|float + states('sensor.shelly_em3_channel_c_power')|float) > 0 %}
-          {{ states('sensor.shelly_em3_channel_a_power')|float + states('sensor.shelly_em3_channel_b_power')|float + states('sensor.shelly_em3_channel_c_power')|float }}
-        {% else %}
-          {{ 0 }}
-        {% endif %}
-      availability_template: "{{
-        [ states('sensor.shelly_em3_channel_a_power'),
-        states('sensor.shelly_em3_channel_b_power'),
-        states('sensor.shelly_em3_channel_c_power')
-        ] | map('is_number') | min
-        }}"
-    power_export:
-      friendly_name: "Power Export"
-      unit_of_measurement: "W"
-      value_template: >-
-        {% if (states('sensor.shelly_em3_channel_a_power')|float + states('sensor.shelly_em3_channel_b_power')|float + states('sensor.shelly_em3_channel_c_power')|float) < 0 %}
-          {{ (states('sensor.shelly_em3_channel_a_power')|float + states('sensor.shelly_em3_channel_b_power')|float + states('sensor.shelly_em3_channel_c_power')|float) * -1 }}
-        {% else %}
-          {{ 0 }}
-        {% endif %}
-      availability_template: "{{
-        [ states('sensor.shelly_em3_channel_a_power'),
-        states('sensor.shelly_em3_channel_b_power'),
-        states('sensor.shelly_em3_channel_c_power')
-        ] | map('is_number') | min
-        }}"
+# Template sensors have been moved to custom_configs/templates/power_sensors.yaml
+# Only integration platform sensors remain here
+
 - platform: integration
   source: sensor.power_import
   name: energy_import_sum

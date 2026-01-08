@@ -1,0 +1,6 @@
+---
+- sensor:
+  - name: "Moon Phase"
+    unique_id: moonphase
+    state: >
+      {{ states('sensor.moon').title().replace('_',' ') }}

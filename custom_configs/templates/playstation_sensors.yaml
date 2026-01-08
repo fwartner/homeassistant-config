@@ -1,0 +1,19 @@
+---
+- sensor:
+  - name: "playstation_image"
+    unique_id: playstation_image
+    state: >
+      {% if states("sensor.playstation_5_activity") == "playing" %}
+        {{state_attr('sensor.playstation_5_activity', 'title_image') }}
+      {% else %}
+        https://www.nicepng.com/png/full/10-104138_blue-playstation-logo-png-playstation-logo-no-background.png
+      {% endif %}
+
+  - name: "playstation_game"
+    unique_id: playstation_game
+    state: >
+      {% if states("sensor.playstation_5_activity") == "playing" %}
+        {{state_attr('sensor.playstation_5_activity', 'title_name') }}
+      {% else %}
+        Zur Zeit wird nichts gespielt
+      {% endif %}

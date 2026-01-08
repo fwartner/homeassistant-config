@@ -1,0 +1,7 @@
+---
+- sensor:
+  - name: "Jemand Zuhause"
+    unique_id: people_home
+    unit_of_measurement: "home"
+    state: >
+      {{ states['person'] | selectattr('state','eq','home') | list | count }}

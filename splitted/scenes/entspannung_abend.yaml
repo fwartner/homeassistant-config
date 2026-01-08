@@ -1,0 +1,32 @@
+- entities:
+    climate.luftreiniger_schlafzimmer:
+      fan_mode: silent
+      hvac_mode: auto
+      state: auto
+    climate.luftreiniger_wohnzimmer:
+      fan_mode: silent
+      hvac_mode: auto
+      state: auto
+    cover.alle_rollos:
+      state: closed
+    light.alle_lampen:
+      brightness: 120
+      color_temp_kelvin: 2200
+      state: 'on'
+      transition: 8
+    light.wled_stand:
+      brightness: 80
+      effect: Fire Flicker
+      rgb_color:
+      - 255
+      - 140
+      - 60
+      state: 'on'
+    media_player.alle_player:
+      source: spotify
+      state: playing
+      volume_level: 0.2
+  icon: mdi:spa
+  id: '1739974700004'
+  metadata: {}
+  name: Entspannung Abend

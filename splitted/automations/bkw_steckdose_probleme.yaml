@@ -1,0 +1,69 @@
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - bkwIssueNotificationOverheating
+      - bkwIssueNotificationOverpowering
+      - bkwIssueNotificationOvervoltage
+    sequence:
+    - data:
+        data:
+          actions:
+          - action: SWITCH_OFF_BKW
+            icon: sfsymbols:line.horizontal.3.decrease.circle
+            title: Steckdose Abschalten
+          push:
+            sound:
+              critical: 1
+              name: default
+              volume: 1
+        message: "Das BKW scheint zu \xFCberhitzen. Wie willst du vorgehen?"
+        title: "\u26A0\uFE0F Probleme mit dem BKW"
+      service: notify.home_ai
+  - conditions:
+    - condition: trigger
+      id:
+      - bkwIssueNotificationEventListener
+    sequence:
+    - device_id: 25e8395680cf11660d43d6d06ecb2d14
+      domain: switch
+      entity_id: c2b543703b09163eb220f8b8a0eb4830
+      type: turn_off
+alias: BKW Steckdose Probleme
+condition:
+- condition: and
+  conditions:
+  - condition: state
+    entity_id: input_boolean.nicht_storen
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
+description: ''
+id: '1710602590906'
+mode: single
+trigger:
+- device_id: 25e8395680cf11660d43d6d06ecb2d14
+  domain: binary_sensor
+  entity_id: f4693bd0130677bf399323ff19198c88
+  id: bkwIssueNotificationOverheating
+  platform: device
+  type: problem
+- device_id: 25e8395680cf11660d43d6d06ecb2d14
+  domain: binary_sensor
+  entity_id: 6fa52c6272a0f11bbe8eb1e3937213d7
+  id: bkwIssueNotificationOverpowering
+  platform: device
+  type: problem
+- device_id: 25e8395680cf11660d43d6d06ecb2d14
+  domain: binary_sensor
+  entity_id: 6b46f1be9a1f4a9af2ffe4adb2499125
+  id: bkwIssueNotificationOvervoltage
+  platform: device
+  type: problem
+- event_data:
+    action: SWITCH_OFF_BKW
+  event_type: mobile_app_notification_action
+  id: bkwIssueNotificationEventListener
+  platform: event

@@ -1,0 +1,27 @@
+actions:
+- action: button.press
+  data: {}
+  metadata: {}
+  target:
+    entity_id:
+    - button.roborock_s7_maxv_kuche_voll
+- delay:
+    hours: 0
+    milliseconds: 0
+    minutes: 10
+    seconds: 0
+- action: button.press
+  data: {}
+  metadata: {}
+  target:
+    entity_id:
+    - button.roborock_s7_maxv_badezimmer_voll
+alias: "Bad und K\xFCche reinigen t\xE4glich"
+conditions: []
+description: ''
+id: '1745312564357'
+mode: single
+triggers:
+- event: sunset
+  offset: 0
+  trigger: sun

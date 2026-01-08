@@ -1336,46 +1336,6 @@
           message: Spülmaschine ist fertig.
         action: notify.florian_notify
   mode: single
-- id: '1712525174898'
-  alias: Wecker
-  description: ''
-  triggers:
-  - at: input_datetime.wecker
-    enabled: true
-    trigger: time
-  conditions:
-  - condition: and
-    conditions:
-    - condition: state
-      entity_id: input_boolean.wecker_an_aus
-      state: 'on'
-    - condition: state
-      entity_id: input_boolean.nicht_storen
-      state: 'off'
-    - condition: state
-      entity_id: input_boolean.wartung
-      state: 'off'
-  actions:
-  - target:
-      device_id: 3738295208de8496912ccf373503aa6c
-    data:
-      url: https://ha.wartner.cloud/dashboard-nspanel/1
-    action: fully_kiosk.load_url
-  - device_id: bb8a84cf268277f3d38063aee6ce698e
-    domain: lock
-    entity_id: 7b91d36587ba4469f26de8a280995404
-    type: unlock
-  - if:
-    - condition: state
-      entity_id: input_boolean.auto_wecker
-      state: 'off'
-    then:
-    - metadata: {}
-      data: {}
-      target:
-        entity_id: input_boolean.wecker_an_aus
-      action: input_boolean.turn_off
-  mode: single
 - id: '1712829051695'
   alias: 'BKW: Maschinen laufen lassen Notification'
   description: ''

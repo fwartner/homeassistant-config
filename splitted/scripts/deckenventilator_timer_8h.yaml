@@ -1,0 +1,13 @@
+deckenventilator_timer_8h:
+  alias: Deckenventilator Timer 8h
+  description: ''
+  icon: mdi:ceiling-fan
+  sequence:
+  - data:
+      command: timer_8
+      device: deckenventilator_schlafzimmer
+      num_repeats: 1
+    metadata: {}
+    service: remote.send_command
+    target:
+      device_id: 4ed17b33e4a244aaabf58d21cbfc92db

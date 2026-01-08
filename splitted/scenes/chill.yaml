@@ -1,0 +1,35 @@
+- entities:
+    climate.luftreiniger_wohnzimmer:
+      fan_mode: low
+      hvac_mode: auto
+      state: auto
+    cover.rollos_wohnzimmer_fensterbank:
+      state: closed
+    light.hugo_rechts:
+      brightness: 102
+      color_temp_kelvin: 2800
+      effect: None
+      state: 'on'
+      transition: 5
+    light.regal:
+      brightness: 102
+      color_temp_kelvin: 2800
+      state: 'on'
+      transition: 5
+    light.tv:
+      brightness: 102
+      color_temp_kelvin: 2800
+      effect: None
+      state: 'on'
+      transition: 5
+    light.tv_bank:
+      brightness: 80
+      state: 'on'
+      transition: 5
+    media_player.sonos_wohnzimmer:
+      source: spotify
+      state: playing
+      volume_level: 0.15
+  id: '1720440801295'
+  metadata: {}
+  name: Chill

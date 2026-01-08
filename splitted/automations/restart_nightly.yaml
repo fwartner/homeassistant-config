@@ -1,0 +1,21 @@
+action:
+- data: {}
+  service: hassio.host_reboot
+- delay:
+    hours: 0
+    milliseconds: 0
+    minutes: 10
+    seconds: 0
+- data: {}
+  service: homeassistant.reload_all
+alias: Restart Nightly
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
+description: ''
+id: '1719501882967'
+mode: single
+trigger:
+- at: 04:00:00
+  platform: time

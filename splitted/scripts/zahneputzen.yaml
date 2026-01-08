@@ -1,0 +1,28 @@
+zahneputzen:
+  alias: "Z\xE4hneputzen"
+  description: "Erweiterte Z\xE4hneputz-Routine mit Audio-Feedback und Timing"
+  icon: mdi:toothbrush
+  mode: single
+  sequence:
+  - action: timer.start
+    data: {}
+    target:
+      entity_id: timer.zahneputzen
+  - action: notify.alexa_media_echo_badezimmer
+    data:
+      data:
+        type: tts
+      message: "Z\xE4hneputzen gestartet! Ich sage Bescheid, wenn die 2 Minuten um\
+        \ sind."
+  - continue_on_timeout: true
+    timeout: 00:03:00
+    wait_for_trigger:
+    - entity_id: timer.zahneputzen
+      from: active
+      to: idle
+      trigger: state
+  - action: notify.alexa_media_echo_badezimmer
+    data:
+      data:
+        type: tts
+      message: "Perfekt! Z\xE4hneputzen ist fertig. Gut gemacht!"

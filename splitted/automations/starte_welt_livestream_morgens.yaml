@@ -1,0 +1,59 @@
+actions:
+- device_id: d30e5e22fdee4494285af01c47713091
+  domain: switch
+  entity_id: 05785b4428b8cdd9ff015195221899c8
+  type: turn_on
+- action: rest_command.start_welt_stream
+  data: {}
+  enabled: true
+  metadata: {}
+- action: script.power_wohnzimmer
+  data: {}
+  metadata: {}
+- delay:
+    hours: 0
+    milliseconds: 0
+    minutes: 0
+    seconds: 10
+- action: media_player.play_media
+  data:
+    media_content_id: '{{ states(''input_text.latest_welt_stream'') }}'
+    media_content_type: url
+  target:
+    device_id: 67feb204d2fca3cfd31e143defa33fe5
+alias: Starte WELT Livestream morgens
+conditions:
+- condition: and
+  conditions:
+  - after: 06:00:00
+    before: 09:00:00
+    condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  - above: 0
+    condition: numeric_state
+    entity_id: sensor.people_home
+  - condition: state
+    entity_id: input_boolean.nachrichten
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
+  enabled: true
+description: ''
+id: '1713867813081'
+mode: single
+triggers:
+- entity_id:
+  - binary_sensor.presence_couch
+  for:
+    hours: 0
+    minutes: 0
+    seconds: 10
+  from: 'off'
+  to: 'on'
+  trigger: state

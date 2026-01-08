@@ -1,0 +1,93 @@
+actions:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - echoSZ
+    sequence:
+    - action: input_text.set_value
+      data:
+        value: sensor.echo_schlafzimmer_next_timer
+      metadata: {}
+      target:
+        entity_id: input_text.last_timer_echo
+  - conditions:
+    - condition: trigger
+      id:
+      - echoBU
+    sequence:
+    - action: input_text.set_value
+      data:
+        value: sensor.echo_buro_next_timer
+      metadata: {}
+      target:
+        entity_id: input_text.last_timer_echo
+  - conditions:
+    - condition: trigger
+      id:
+      - echoFL
+    sequence:
+    - action: input_text.set_value
+      data:
+        value: sensor.echo_flur_next_timer
+      metadata: {}
+      target:
+        entity_id: input_text.last_timer_echo
+  - conditions:
+    - condition: trigger
+      id:
+      - echoBZ
+    sequence:
+    - action: input_text.set_value
+      data:
+        value: sensor.echo_badezimmer_next_timer
+      metadata: {}
+      target:
+        entity_id: input_text.last_timer_echo
+  - conditions:
+    - condition: trigger
+      id:
+      - echoWZ
+    sequence:
+    - action: input_text.set_value
+      data:
+        value: sensor.echo_show_wohnzimmer_next_timer
+      metadata: {}
+      target:
+        entity_id: input_text.last_timer_echo
+alias: Alexa Timer Check
+conditions: []
+description: ''
+id: '1747227567252'
+mode: single
+triggers:
+- attribute: status
+  entity_id:
+  - sensor.echo_schlafzimmer_next_timer
+  id: echoSZ
+  to: 'ON'
+  trigger: state
+- attribute: status
+  entity_id:
+  - sensor.echo_buro_next_timer
+  id: echoBU
+  to: 'ON'
+  trigger: state
+- attribute: status
+  entity_id:
+  - sensor.echo_flur_next_timer
+  id: echoFL
+  to: 'ON'
+  trigger: state
+- attribute: status
+  entity_id:
+  - sensor.echo_badezimmer_next_timer
+  id: echoBZ
+  to: 'ON'
+  trigger: state
+- attribute: status
+  entity_id:
+  - sensor.echo_show_wohnzimmer_next_timer
+  id: echoWZ
+  to: 'ON'
+  trigger: state

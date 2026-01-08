@@ -1,0 +1,20 @@
+esphome_update_all_devices:
+  alias: 'ESPHome: Update All Devices'
+  icon: si:esphome
+  mode: single
+  sequence:
+  - repeat:
+      for_each: '{{ states.update | selectattr(''state'', ''eq'', ''on'') | map(attribute=''entity_id'')
+        | select(''in'', integration_entities(''esphome'')) | list }} '
+      sequence:
+      - data: {}
+        service: update.install
+        target:
+          entity_id: '{{ repeat.item }}'
+      - continue_on_timeout: true
+        wait_template: '{{ is_state(repeat.item, ''off'') }}'
+      - delay:
+          hours: 0
+          milliseconds: 0
+          minutes: 3
+          seconds: 0

@@ -1,0 +1,13 @@
+rollos_schlafzimmer_20_prozent:
+  alias: Rollos Schlafzimmer 20 Prozent
+  description: ''
+  icon: mdi:roller-shade
+  sequence:
+  - action: cover.set_cover_position
+    data:
+      position: 20
+    metadata: {}
+    target:
+      entity_id:
+      - cover.ikea_rollo_links_schlafzimmer
+      - cover.ikea_rollo_rechts_schlafzimmer

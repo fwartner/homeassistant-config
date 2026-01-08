@@ -1,0 +1,8 @@
+alias: IKEA Stybar Weiss Schlafzimmer
+description: ''
+id: '1727983178880'
+use_blueprint:
+  input:
+    controller_entity: sensor.ikea_stybar_weiss_schlafzimmer_action
+    integration: Zigbee2MQTT
+  path: EPMatt/ikea_e2001_e2002.yaml

@@ -1,0 +1,18 @@
+action:
+- action: cover.close_cover
+  data: {}
+  target:
+    entity_id: cover.ikea_rollo_balkontur
+alias: "Balkont\xFCr Rollo \xD6ffnen"
+condition:
+- condition: state
+  entity_id: binary_sensor.aqara_contact_balkontur_contact
+  state: 'on'
+description: ''
+id: '1726224334152'
+mode: single
+trigger:
+- entity_id:
+  - cover.ikea_rollo_balkontur
+  platform: state
+  to: opening

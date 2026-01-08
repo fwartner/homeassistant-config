@@ -1,0 +1,57 @@
+actions:
+- choose:
+  - conditions:
+    - condition: trigger
+      id: kucheOn
+    - condition: state
+      entity_id: light.lightener_kuche
+      state: 'off'
+    sequence:
+    - action: light.turn_on
+      data:
+        brightness_pct: 30
+        transition: 2
+      target:
+        entity_id: light.lightener_kuche
+  - conditions:
+    - condition: trigger
+      id: kucheOff
+    - condition: state
+      entity_id: light.lightener_kuche
+      state: 'on'
+    sequence:
+    - action: light.turn_off
+      data:
+        transition: 3
+      target:
+        entity_id: light.lightener_kuche
+alias: "Nachtlicht K\xFCche"
+conditions:
+- condition: and
+  conditions:
+  - after: sunset
+    after_offset: +01:00:00
+    before: sunrise
+    before_offset: -01:00:00
+    condition: sun
+  - condition: state
+    entity_id: input_boolean.wartung
+    state: 'off'
+description: "Intelligente K\xFCchenbeleuchtung basierend auf Anwesenheit und Tageszeit"
+id: '1691151128778'
+mode: single
+triggers:
+- entity_id: binary_sensor.hlk_ld2410_7137_anwesenheit
+  for:
+    seconds: 2
+  from: 'off'
+  id: kucheOn
+  to: 'on'
+  trigger: state
+- entity_id: binary_sensor.hlk_ld2410_7137_anwesenheit
+  for:
+    seconds: 30
+  from: 'on'
+  id: kucheOff
+  to: 'off'
+  trigger: state

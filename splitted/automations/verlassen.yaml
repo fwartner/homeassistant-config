@@ -1,0 +1,38 @@
+actions:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - anyoneHomeOff
+    sequence:
+    - action: light.turn_off
+      data: {}
+      target:
+        entity_id: light.alle_lampen
+    - action: switch.turn_off
+      data: {}
+      target:
+        entity_id:
+        - switch.alle_steckdosen
+    - action: alarmo.arm
+      data:
+        entity_id: alarm_control_panel.alarmo
+        force: true
+        mode: away
+        skip_delay: true
+      enabled: false
+      metadata: {}
+alias: Verlassen
+conditions:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
+description: ''
+id: '1692084370120'
+mode: single
+triggers:
+- entity_id:
+  - sensor.people_home
+  id: anyoneHomeOff
+  to: '0'
+  trigger: state

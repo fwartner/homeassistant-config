@@ -1,0 +1,50 @@
+actions:
+- action: light.turn_on
+  data: {}
+  metadata: {}
+  target:
+    device_id:
+    - 8d09b3d2460d7b46609a435e034c3a59
+    - 916ac0645e12fe77d93d9731956888e4
+    - 1e74380a353e5af91767df2483e266fe
+    - 171cf6e6bd2c823a2a91c916b23b3e25
+    - 3d2124b0362a0b5d69b4f905ec8a36c5
+alias: Wohnzimmer Licht wenn zu dunkel
+conditions:
+- condition: and
+  conditions:
+  - above: 0
+    condition: numeric_state
+    entity_id: sensor.people_home
+  - condition: state
+    entity_id: remote.appletv_wohnzimmer
+    state: 'on'
+  - after: sunset
+    condition: sun
+  - after: '17:00:00'
+    before: '23:00:00'
+    condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+    - sun
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.wartung
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.manuell
+      state: 'off'
+description: ''
+id: '1719174034446'
+mode: single
+triggers:
+- below: 30
+  entity_id:
+  - sensor.mi_light_sensor_wohnzimmer_illuminance
+  trigger: numeric_state

@@ -1,0 +1,16 @@
+actions:
+- action: readme.generate
+  data: {}
+- action: shell_command.run_chores
+  data: {}
+alias: Run Chores
+conditions:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
+description: ''
+id: '1713209575955'
+mode: single
+triggers:
+- minutes: /10
+  trigger: time_pattern

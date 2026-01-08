@@ -1,0 +1,19 @@
+action:
+- delay:
+    hours: 0
+    milliseconds: 0
+    minutes: 2
+    seconds: 0
+- data:
+    topic: awtrix_wohnzimmer/doupdate
+  service: mqtt.publish
+alias: Update all AWTRIX
+condition: []
+description: ''
+id: '1715335009101'
+mode: single
+trigger:
+- attribute: tag
+  entity_id:
+  - sensor.blueforcer_awtrix3_neueste_version
+  platform: state

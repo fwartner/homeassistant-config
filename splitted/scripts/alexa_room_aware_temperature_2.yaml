@@ -1,0 +1,33 @@
+alexa_room_aware_temperature_2:
+  alias: Alexa Room-Aware Temperature
+  description: ''
+  mode: single
+  sequence:
+  - action: notify.alexa_media
+    data:
+      data:
+        type: tts
+      message: '{{active_therm}}'
+      target: '{{ states("sensor.last_alexa") }}'
+  variables:
+    active_therm: "{% set last = states(\"sensor.last_alexa\") -%}  \n{%- if last\
+      \ in echo_room -%}\n  {%- set room = echo_room[last][0] -%}\n  {%- set temp\
+      \ = echo_room[last][1] -%}\n  Die Temperatur in {{ room }} betr\xE4gt {{temp}}\
+      \ Grad\n{%- else -%}\n  Die Durchschnittliche Temperatur in der Wohnung betr\xE4\
+      gt {{states(\"sensor.temperatur_wohnung\")}} Grad\n{%- endif %}"
+    echo_room:
+      media_player.echo_badezimmer:
+      - badezimmer
+      - '{{states("sensor.aqara_thermo_badezimmer_temperature")}}'
+      media_player.echo_buro:
+      - "b\xFCro"
+      - '{{states("sensor.aqara_thermo_kinderzimmer_temperature")}}'
+      media_player.echo_flur:
+      - flur
+      - '{{states("sensor.aqara_thermo_flur_temperature")}}'
+      media_player.echo_schlafzimmer:
+      - schlafzimmer
+      - '{{states("sensor.aqara_thermo_schlafzimmer_temperature")}}'
+      media_player.echo_show_wohnzimmer:
+      - wohnzimmer
+      - '{{states("sensor.aqara_thermo_wohnzimmer_temperature")}}'

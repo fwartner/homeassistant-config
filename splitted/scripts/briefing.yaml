@@ -1,0 +1,39 @@
+briefing:
+  alias: Briefing
+  description: Erweiterte Morgen-Briefing mit Wetter, News, Kalender und Hausautomation-Status
+  fields: {}
+  icon: mdi:newspaper
+  sequence:
+  - action: conversation.process
+    data:
+      agent_id: conversation.chatgpt
+      language: german
+      text: "Als pers\xF6nlicher Assistent, fasse die folgenden Informationen pr\xE4\
+        gnant und freundlich zusammen. Halte es unter 15 S\xE4tzen. Es ist jetzt \
+        \ {{ as_timestamp(now()) | timestamp_custom('%H:%M Uhr') }}.\nWetter: Aktuell\
+        \ {{ states('sensor.aqara_thermo_wohnzimmer_temperature') }}\xB0C drinnen,\
+        \ {{ states('weather.forecast_home') }}\xB0C drau\xDFen mit {{ state_attr('weather.forecast_home',\
+        \ 'forecast')[0].condition if state_attr('weather.forecast_home', 'forecast')\
+        \ else 'unbekannten Bedingungen' }}. H\xF6chsttemperatur heute: {{ state_attr('weather.forecast_home',\
+        \ 'forecast')[0].temperature if state_attr('weather.forecast_home', 'forecast')\
+        \ else 'unbekannt' }}\xB0C.\nHausautomation:  - T\xFCrschloss: {{ 'verriegelt'\
+        \ if is_state('lock.nuki_wohnungstur_lock', 'locked') else 'entriegelt' }}\
+        \ - Anwesende Personen: {{ states('sensor.people_home') }} - Stromverbrauch\
+        \ aktuell: {{ states('sensor.shelly_3em_power') }}W\nTermine heute:  {% for\
+        \ cal_events in expand('calendar.florian_wartner_io') if cal_events.attributes.start_time\
+        \ | as_timestamp | timestamp_custom('%Y-%m-%d') == now().strftime('%Y-%m-%d')\
+        \ %} - {{ as_timestamp(cal_events.attributes.start_time) | timestamp_custom('%H:%M')\
+        \ }}: {{ cal_events.attributes.message }} {% endfor %}\nAktuelle Schlagzeilen:\
+        \ {{ states('sensor.heise_news') if states('sensor.heise_news') != 'unavailable'\
+        \ else 'Keine News verf\xFCgbar' }}\n"
+    response_variable: agent
+  - action: notify.alexa_media_echo_show_wohnzimmer
+    data:
+      data:
+        type: tts
+      message: '{{ agent.response.speech.plain.speech }}'
+  - action: script.store_mqtt_sensor
+    data:
+      attributes: '{{ agent.response.speech.plain.speech }}'
+      name: last_briefing
+      state: '{{ now().strftime("%Y-%m-%d %H:%M:%S") }}'

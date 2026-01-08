@@ -1,0 +1,46 @@
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - kloAn
+    sequence:
+    - data: {}
+      metadata: {}
+      service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.klo_besetzt
+    - data: {}
+      metadata: {}
+      service: counter.increment
+      target:
+        entity_id: counter.toiletten_sitzungen
+  - conditions:
+    - condition: trigger
+      id:
+      - kloAus
+    sequence:
+    - data: {}
+      metadata: {}
+      service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.klo_besetzt
+alias: Klo Besetzt
+condition:
+- condition: state
+  entity_id: input_boolean.wartung
+  state: 'off'
+description: ''
+id: '1718565264616'
+mode: single
+trigger:
+- below: -5
+  entity_id:
+  - sensor.aqara_vibrate_katzenklo_angle_y
+  id: kloAn
+  platform: numeric_state
+- above: -5
+  entity_id:
+  - sensor.aqara_vibrate_katzenklo_angle_y
+  id: kloAus
+  platform: numeric_state

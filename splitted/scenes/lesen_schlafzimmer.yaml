@@ -1,0 +1,23 @@
+- entities:
+    climate.luftreiniger_schlafzimmer:
+      fan_mode: low
+      hvac_mode: auto
+      state: auto
+    cover.rollos_schlafzimmer:
+      state: closed
+    light.bett:
+      brightness: 255
+      color_temp_kelvin: 3000
+      state: 'on'
+      transition: 3
+    light.stehlampe:
+      brightness: 140
+      effect: None
+      state: 'on'
+      transition: 3
+    switch.white_noise_schlafzimmer:
+      state: 'on'
+  icon: phu:other-reading
+  id: '1716114597259'
+  metadata: {}
+  name: Lesen Schlafzimmer

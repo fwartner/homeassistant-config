@@ -1,0 +1,18 @@
+wecker_sound_alexa:
+  alias: Wecker Sound Alexa
+  icon: mdi:alarm
+  mode: single
+  sequence:
+  - data_template:
+      entity_id: input_text.alexa_actionable_notification
+      value: '{"text": "<audio src=''https://minio.srv.wartner.io/homeassistant/wecker.mp3''/>",
+        "event": "none"}
+
+        '
+    service: input_text.set_value
+  - data_template:
+      entity_id: "{% if alexa_device %}\n  {{ alexa_device }}\n{% else %}\n  media_player.echo_schlafzimmer\n\
+        {% endif %}\n"
+      media_content_id: amzn1.ask.skill.e4280a53-blahblahblah
+      media_content_type: skill
+    service: media_player.play_media

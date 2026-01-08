@@ -1,0 +1,10 @@
+wassertank_aufgefullt_2:
+  alias: "Wassertank Aufgef\xFCllt"
+  description: ''
+  icon: mdi:water
+  sequence:
+  - data:
+      date: '{{ states(''sensor.date'') }}'
+    service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.wassertank_aufgefullt

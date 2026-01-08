@@ -1,0 +1,11 @@
+appletv_american_dad:
+  alias: 'AppleTV: American Dad'
+  icon: mdi:theater
+  mode: single
+  sequence:
+  - data:
+      media_content_id: https://www.disneyplus.com/de-de/browse/entity-5b4ab988-e3a7-4750-a11a-9aa3d65f8cfe
+      media_content_type: url
+    service: media_player.play_media
+    target:
+      device_id: 67feb204d2fca3cfd31e143defa33fe5

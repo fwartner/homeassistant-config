@@ -1,0 +1,74 @@
+3_minuten_bettzeit:
+  alias: 3 Minuten Bettzeit
+  description: Erweiterte Bettzeit-Routine mit verbesserter Fehlerbehandlung und Timing
+  icon: mdi:bed-clock
+  mode: single
+  sequence:
+  - parallel:
+    - sequence:
+      - condition: state
+        entity_id: cover.rollos_schlafzimmer
+        state: open
+      - action: cover.close_cover
+        data: {}
+        target:
+          entity_id: cover.rollos_schlafzimmer
+    - sequence:
+      - condition: state
+        entity_id: lock.nuki_wohnungstur_lock
+        state: unlocked
+      - action: lock.lock
+        data: {}
+        target:
+          entity_id: lock.nuki_wohnungstur_lock
+    - sequence:
+      - action: light.turn_off
+        data:
+          transition: 3
+        target:
+          entity_id: light.alle_lampen
+    - sequence:
+      - action: switch.turn_off
+        continue_on_error: true
+        data: {}
+        target:
+          entity_id: switch.alle_steckdosen
+  - delay:
+      seconds: 3
+  - action: climate.set_fan_mode
+    continue_on_error: true
+    data:
+      fan_mode: low
+    target:
+      entity_id: climate.luftreiniger_schlafzimmer
+  - action: light.turn_on
+    data:
+      brightness_pct: 30
+      color_temp_kelvin: 2700
+      transition: 2
+    target:
+      entity_id: light.bett
+  - action: media_player.play_media
+    continue_on_error: true
+    data:
+      media_content_id: https://minio.srv.wartner.io/homeassistant/white_noise.mp3
+      media_content_type: music
+      volume_level: 0.1
+    target:
+      entity_id: media_player.alle_player
+  - action: timer.start
+    data: {}
+    target:
+      entity_id: timer.3_minuten_bett
+  - continue_on_timeout: true
+    timeout: 00:04:00
+    wait_for_trigger:
+    - entity_id: timer.3_minuten_bett
+      from: active
+      to: idle
+      trigger: state
+  - action: light.turn_off
+    data:
+      transition: 10
+    target:
+      entity_id: light.bett

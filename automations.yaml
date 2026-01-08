@@ -1634,51 +1634,6 @@
     action: notify.alexa_media_echo_flur
     enabled: false
   mode: single
-- id: '1713181882652'
-  alias: Fenster Offen Check
-  description: ''
-  triggers:
-  - device_id: 67bc89621a1ceb0aced67ad07618a34b
-    domain: hue
-    type: short_release
-    subtype: 2
-    unique_id: 8d3f7a5f-3828-4f9f-96c9-fcc402888bfc
-    trigger: device
-  conditions:
-  - condition: and
-    conditions:
-    - condition: state
-      entity_id: input_boolean.urlaubsmodus
-      state: 'on'
-    - condition: state
-      entity_id: input_boolean.wartung
-      state: 'off'
-  actions:
-  - wait_template: "{% set fenster = [\n            'binary_sensor.eve_contact_schlafzimmer_fenster_rechts',\n
-      \           'binary_sensor.aqara_contact_balkontur_contact'\n            ] %}\n
-      \         {% if fenster | select('is_state', 'on') | list | count > 0 %}\n            true\n
-      \         {% else %}\n            false\n          {% endif %}"
-    continue_on_timeout: false
-  - if:
-    - condition: state
-      entity_id: input_boolean.nicht_storen
-      state: 'off'
-    then:
-    - metadata: {}
-      data:
-        message: Es sieht so aus, als wären noch eines oder mehrere Fenster offen.
-          Prüfe doch mal nach, welche das sein könnten und schließe sie gegebenenfalls
-          bevor du gehst.
-        title: Es sind noch Fenster offen
-      action: notify.home_ai
-  - metadata: {}
-    data:
-      message: Es sieht so aus, als wären noch eines oder mehrere Fenster offen. Prüfe
-        doch mal nach, welche das sein könnten und schließe sie gegebenenfalls bevor
-        du gehst.
-    action: notify.alexa_media_echo_flur
-    enabled: false
-  mode: single
 - id: '1713209575955'
   alias: Run Chores
   description: ''

@@ -52,11 +52,6 @@ upnp:
 cloud:
 
 # Analytics (privacy-focused)
-analytics:
-  exclude:
-    domains:
-      - person
-      - device_tracker
 
 frontend:
   themes: !include_dir_merge_named themes/

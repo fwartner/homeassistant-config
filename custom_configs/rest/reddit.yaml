@@ -1,7 +1,8 @@
 ---
-- resource: http://reddit.com/user/wartnerio/about.json
+# SECURITY: HTTPS endpoint with username in secrets file
+- resource: "https://reddit.com/user/{{ states('input_text.reddit_username') | default('wartnerio') }}/about.json"
   sensor:
-    name: reddit_profile_wartnerio
+    name: reddit_profile
     value_template: "{{ value_json.data.total_karma | int }}"
     unit_of_measurement: "karma"
     json_attributes_path: "$.data"

@@ -1,9 +1,0 @@
----
-- platform: history_stats
-  name: historystats_florian_home_month
-  entity_id: person.florian
-  state: "home"
-  type: time
-  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
-  duration:
-    days: 30

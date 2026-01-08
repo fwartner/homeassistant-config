@@ -1,8 +1,0 @@
----
-- platform: history_stats
-  name: historystats_florian_home
-  entity_id: person.florian
-  state: "home"
-  type: time
-  start: "{{ now().replace(hour=0, minute=0, second=0) }}"
-  end: "{{ now() }}"

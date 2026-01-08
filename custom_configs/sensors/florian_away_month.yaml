@@ -1,9 +1,0 @@
----
-- platform: history_stats
-  name: historystats_florian_away_month
-  entity_id: person.florian
-  state: "not_home"
-  type: time
-  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
-  duration:
-    days: 30

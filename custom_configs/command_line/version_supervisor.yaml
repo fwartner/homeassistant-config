@@ -1,4 +1,22 @@
 ---
+# SECURITY RECOMMENDATION: Consider replacing this custom sensor with native Home Assistant integration
+# The 'hassio' integration (included in default_config) provides built-in update entities for:
+# - update.home_assistant_supervisor_update
+# - update.home_assistant_core_update
+# - update.home_assistant_operating_system_update
+# - update.<addon_name>_update (for each add-on)
+#
+# To count pending addon updates, use a template sensor instead:
+# template:
+#   - sensor:
+#       - name: "Supervisor Addon Updates"
+#         state: >
+#           {{ states.update
+#              | selectattr('entity_id', 'match', 'update\\..*_update')
+#              | selectattr('state', 'eq', 'on')
+#              | list | count }}
+#
+# Current implementation with SUPERVISOR_TOKEN:
 - sensor:
     name: Supervisor updates
     command: 'curl http://supervisor/supervisor/info -H "Authorization: Bearer $(printenv SUPERVISOR_TOKEN)" | jq ''{"newest_version":.data.version_latest,"current_version":.data.version,"update_available":.data.update_available,"addons":[.data.addons[] | select(.update_available)]}'''

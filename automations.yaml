@@ -136,6 +136,7 @@
           data: {}
           target:
             entity_id: remote.tv_schlafzimmer_dlna
+  mode: single
 - id: '1674670778068'
   alias: Kaffeemaschine
   description: Fü vier Stunden

@@ -524,35 +524,3 @@
       state: 'on'
   icon: mdi:desktop-classic
   metadata: {}
-- id: '1739974700004'
-  name: Entspannung Abend
-  entities:
-    light.alle_lampen:
-      state: 'on'
-      brightness: 120
-      color_temp_kelvin: 2200
-      transition: 8
-    light.wled_stand:
-      state: 'on'
-      brightness: 80
-      effect: Fire Flicker
-      rgb_color:
-      - 255
-      - 140
-      - 60
-    media_player.alle_player:
-      state: playing
-      volume_level: 0.2
-      source: spotify
-    climate.luftreiniger_wohnzimmer:
-      state: auto
-      hvac_mode: auto
-      fan_mode: silent
-    climate.luftreiniger_schlafzimmer:
-      state: auto
-      hvac_mode: auto
-      fan_mode: silent
-    cover.alle_rollos:
-      state: closed
-  icon: mdi:spa
-  metadata: {}

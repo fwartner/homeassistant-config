@@ -484,19 +484,14 @@ appletv_simpsons:
       entity_id:
       - input_boolean.wecker_an_aus
     data: {}
-  - repeat:
-      count: "{{ (states.switch\n    | map(attribute=\"entity_id\")\n    | select(\">\",\"switch.adaptive_lighting_adaptive_lighting_schlafzimmer\")\n
-        \   | select(\"<\", \"switch.adaptive_lighting_adaptive_lighting_schlafzimmer\")\n
-        \   | join(\",\")\n   ).split(\",\") | length }}\n"
-      sequence:
-      - service: adaptive_lighting.change_switch_settings
-        data:
-          entity_id: switch.adaptive_lighting_adaptive_lighting_schlafzimmer
-          sunrise_time: '{{ now().strftime("%H:%M:%S") }}'
-          sunset_time: '{{ (as_timestamp(now()) + 12*60*60) | timestamp_custom("%H:%M:%S")
-            }}
-
-            '
+  # FIXED: Removed broken repeat loop with malformed template
+  # Original template had logical errors (select ">" AND "<" same string = empty set)
+  # Since sequence only operates on one switch, repeat was unnecessary
+  - service: adaptive_lighting.change_switch_settings
+    data:
+      entity_id: switch.adaptive_lighting_adaptive_lighting_schlafzimmer
+      sunrise_time: '{{ now().strftime("%H:%M:%S") }}'
+      sunset_time: '{{ (as_timestamp(now()) + 12*60*60) | timestamp_custom("%H:%M:%S") }}'
   - service: script.turn_on
     data: {}
     target:

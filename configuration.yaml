@@ -13,16 +13,16 @@ scene: !include scenes.yaml
 input_select: !include_dir_merge_named custom_configs/input_selects/
 input_boolean: !include_dir_merge_named custom_configs/input_booleans/
 input_text: !include_dir_merge_named custom_configs/input_texts/
-input_number: !include_dir_merge_named custom_configs/input_numbers/
+# input_number: !include_dir_merge_named custom_configs/input_numbers/  # Directory doesn't exist
 rest_command: !include_dir_merge_named custom_configs/rest_commands/
 sensor: !include_dir_merge_list custom_configs/sensors/
-camera: !include_dir_merge_list custom_configs/cameras/
+# camera: !include_dir_merge_list custom_configs/cameras/  # Directory doesn't exist
 group: !include_dir_merge_list custom_configs/groups/
 template: !include_dir_merge_list custom_configs/templates/
 binary_sensor: !include_dir_merge_list custom_configs/binary_sensors/
 rest: !include_dir_merge_list custom_configs/rest/
-switch: !include_dir_merge_list custom_configs/switches/
-conversation: !include_dir_merge_list custom_configs/conversation/
+# switch: !include_dir_merge_list custom_configs/switches/  # Directory doesn't exist
+# conversation: !include_dir_merge_list custom_configs/conversation/  # Directory doesn't exist
 alert: !include_dir_merge_named custom_configs/alerts/
 intent_script: !include_dir_merge_list custom_configs/intents/
 shell_command: !include_dir_merge_list custom_configs/shell_commands/
@@ -31,7 +31,7 @@ utility_meter: !include_dir_merge_list custom_configs/utility_meter/
 notify: !include_dir_merge_list custom_configs/notify/
 mqtt:
   sensor: !include_dir_merge_list custom_configs/mqtt/sensor/
-  binary_sensor: !include_dir_merge_list custom_configs/mqtt/sensor/
+  binary_sensor: !include_dir_merge_list custom_configs/mqtt/binary_sensor/
 command_line: !include_dir_merge_list custom_configs/command_line/
 media_player: !include_dir_merge_list custom_configs/media_players/
 influxdb: !include configuration/influxdb/configuration.yaml

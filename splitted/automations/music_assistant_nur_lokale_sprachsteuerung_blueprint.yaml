@@ -1,7 +1,0 @@
-alias: Music Assistant - (nur) lokale Sprachsteuerung - Blueprint
-description: ''
-id: '1739707464405'
-use_blueprint:
-  input:
-    default_player_entity_id_input: media_player.sonos_wohnzimmer
-  path: music-assistant/mass_assist_blueprint_de.yaml

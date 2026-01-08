@@ -3576,58 +3576,6 @@
         target:
           entity_id: switch.nuki_haustur_continuous_mode
   mode: single
-- id: '1748208734437'
-  alias: WLED TV SZ ON OFF
-  description: ''
-  triggers:
-  - trigger: numeric_state
-    entity_id:
-    - sensor.steckdose_tv_schlafzimmer_energy_power
-    id: wledTVOn
-    above: 20
-  - trigger: numeric_state
-    entity_id:
-    - sensor.steckdose_tv_schlafzimmer_energy_power
-    below: 20
-    id: wledTVOff
-  - trigger: time_pattern
-    seconds: '2'
-    id: checkPower
-  conditions: []
-  actions:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - wledTVOn
-      sequence:
-      - action: light.turn_on
-        metadata: {}
-        data:
-          transition: 2
-        target:
-          entity_id: light.wled_stand
-    - conditions:
-      - condition: trigger
-        id:
-        - wledTVOff
-      sequence:
-      - action: light.turn_off
-        metadata: {}
-        data:
-          transition: 2
-        target:
-          entity_id: light.wled_stand
-    - conditions:
-      - condition: trigger
-        id:
-        - checkPower
-      sequence:
-      - action: homeassistant.update_entity
-        data:
-          entity_id:
-          - sensor.steckdose_tv_schlafzimmer_energy_power
-  mode: single
 - id: '1739974700001'
   alias: 'Küche: Intelligente Kochassistenz'
   description: Automatische Beleuchtung und Ventilation beim Kochen basierend auf

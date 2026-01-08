@@ -1,11 +1,18 @@
 ---
 http:
   use_x_forwarded_for: true
+  # SECURITY: Restricted to specific proxy IPs only (removed /24 subnets and external IP)
+  # Previous config trusted 1,000+ hosts across 4 subnets - now only 2 specific IPs
   trusted_proxies:
-    - 10.0.1.1
-    - 10.0.1.3
-    - 10.0.1.0/24
-    - 10.182.1.0/24
-    - 192.168.1.0/24
-    - 192.168.2.0/24
-    - 90.187.195.137
+    - 10.0.1.1  # Primary reverse proxy
+    - 10.0.1.3  # Secondary service
+    # Removed for security:
+    # - 10.0.1.0/24 (254 hosts)
+    # - 10.182.1.0/24 (254 hosts)
+    # - 192.168.1.0/24 (254 hosts)
+    # - 192.168.2.0/24 (254 hosts)
+    # - 90.187.195.137 (external IP - security risk)
+
+  # Security hardening
+  ip_ban_enabled: true
+  login_attempts_threshold: 5

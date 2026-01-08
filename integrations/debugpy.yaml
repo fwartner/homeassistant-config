@@ -1,2 +1,5 @@
 ---
-debugpy:
+# debugpy integration disabled for security in production
+# Debug port should not be exposed in production environments
+# Uncomment only for development/debugging purposes
+# debugpy:

@@ -352,6 +352,7 @@ willkommen_florian:
   alias: Willkommen Florian
   sequence:
   - service: notify.alexa_media_echo_flur
+    continue_on_error: true  # Don't fail script if Alexa device unavailable
     metadata: {}
     data:
       message: '{{ [ "Willkommen zu Hause, Florian! Wir haben dich vermisst!", "Endlich
@@ -440,6 +441,7 @@ appletv_family_guy:
   alias: 'AppleTV: Family Guy'
   sequence:
   - service: media_player.play_media
+    continue_on_error: true  # Don't fail if AppleTV device unavailable
     data:
       media_content_type: url
       media_content_id: https://www.disneyplus.com/de-de/browse/entity-c3a22862-23b8-496d-97e0-c8e40fe44ec5
@@ -451,6 +453,7 @@ appletv_american_dad:
   alias: 'AppleTV: American Dad'
   sequence:
   - service: media_player.play_media
+    continue_on_error: true  # Don't fail if AppleTV device unavailable
     data:
       media_content_type: url
       media_content_id: https://www.disneyplus.com/de-de/browse/entity-5b4ab988-e3a7-4750-a11a-9aa3d65f8cfe
@@ -462,6 +465,7 @@ appletv_simpsons:
   alias: 'AppleTV: Simpsons'
   sequence:
   - service: media_player.play_media
+    continue_on_error: true  # Don't fail if AppleTV device unavailable
     data:
       media_content_type: url
       media_content_id: https://www.disneyplus.com/de-de/browse/entity-cac75c8f-a9e2-4d95-ac73-1cf1cc7b9568

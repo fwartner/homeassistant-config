@@ -45,3 +45,5 @@ go2rtc.yaml
 
 GEMINI.md
 CLAUDE.md
+
+.ha_run.lock

@@ -1,11 +1,14 @@
 ---
-# MQTT Connection, if empty will query and use hassio provided mqtt
+# MQTT Connection
+# SECURITY: Using secrets instead of empty strings
+# If you want to use Home Assistant's MQTT broker automatically,
+# delete this mqtt section entirely
 mqtt:
-  host:
+  host: !secret espresense_mqtt_host
   port: 1883
   ssl: false
-  username:
-  password:
+  username: !secret espresense_mqtt_username
+  password: !secret espresense_mqtt_password
 
 # This gets added to the x,y,z to derive a gps location
 gps:

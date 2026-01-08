@@ -1,6 +1,6 @@
 ---
 api_version: 2
-ssl: false
+ssl: true  # HTTPS enabled for secure communication. Ensure InfluxDB server accepts SSL on port 8086 or use 8087 for HTTPS
 host: 10.182.1.222
 port: 8086
 organization: !secret influxdb_org_id

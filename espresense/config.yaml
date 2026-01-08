@@ -5,8 +5,8 @@
 # delete this mqtt section entirely
 mqtt:
   host: !secret espresense_mqtt_host
-  port: 1883
-  ssl: false
+  port: 1883  # Standard MQTT port. Change to 8883 if broker uses SSL on separate port
+  ssl: true  # SECURITY: SSL/TLS enabled for encrypted MQTT communication. Verify broker supports SSL.
   username: !secret espresense_mqtt_username
   password: !secret espresense_mqtt_password
 

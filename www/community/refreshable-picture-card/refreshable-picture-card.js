@@ -19,6 +19,8 @@ class ResfeshablePictureCard extends LitElement {
     super();
     this.pictureUrl = "";
     this.hasError = false;
+    this._displayedUrl = "";
+    this._loadingUrl = null;
   }
 
   static getConfigElement() {
@@ -31,6 +33,7 @@ class ResfeshablePictureCard extends LitElement {
       title: "", // Default to empty title
       refresh_interval: 30,
       url: "",
+      fallback_image: "",
       entity: "",
       attribute: "",
       noMargin: true,
@@ -46,6 +49,9 @@ class ResfeshablePictureCard extends LitElement {
       throw new Error("You need to define only one of url or entity");
     }
     this.config = config;
+    if (config.fallback_image) {
+      this._displayedUrl = config.fallback_image;
+    }
   }
 
   connectedCallback() {
@@ -55,13 +61,11 @@ class ResfeshablePictureCard extends LitElement {
     if (this._refreshInterval) {
       clearInterval(this._refreshInterval);
     }
-    this._refreshInterval = setInterval(
-      () => (this.pictureUrl = this._getTimestampedUrl()),
-      refreshTime
-    );
-
-    // calling it after 10 ms ensures this.hass will be set
-    setTimeout(() => (this.pictureUrl = this._getTimestampedUrl()), 10);
+    if (!this._displayedUrl) {
+      this._displayedUrl = this._getPictureUrl() || "";
+    }
+    setTimeout(() => this._refreshPicture(), 10);
+    this._refreshInterval = setInterval(() => this._refreshPicture(), refreshTime);
   }
 
   disconnectedCallback() {
@@ -73,14 +77,37 @@ class ResfeshablePictureCard extends LitElement {
   }
 
   onError() {
-    if (!this.hasError) {
-      this.hasError = true;
-      this.pictureUrl = this._getTimestampedUrl();
-    }
+    this.hasError = true;
+    this._refreshPicture();
   }
 
   onLoad() {
     this.hasError = false;
+  }
+
+  _refreshPicture() {
+    const tsUrl = this._getTimestampedUrl();
+    if (!tsUrl) return;
+    if (this._displayedUrl === tsUrl || this._loadingUrl === tsUrl) return;
+    this._loadAndDisplay(tsUrl);
+  }
+
+  _loadAndDisplay(url) {
+    this._loadingUrl = url;
+    const img = new Image();
+    img.onload = () => {
+      this._displayedUrl = url;
+      this._loadingUrl = null;
+      this.hasError = false;
+      try {
+        this.requestUpdate();
+      } catch (e) {}
+    };
+    img.onerror = () => {
+      this._loadingUrl = null;
+      this.hasError = true;
+    };
+    img.src = url;
   }
 
   render() {
@@ -95,8 +122,8 @@ class ResfeshablePictureCard extends LitElement {
         title="${navigationPath}"
       >
         <div class=${noMargin ? "withoutMargin" : "withMargin"}>
-          ${this.pictureUrl != ''
-            ? html`<img class="center" @error="${this.onError}" @load="${this.onLoad}" src="${this.pictureUrl}" />`
+          ${this._displayedUrl != ''
+            ? html`<img class="center" @error="${this.onError}" @load="${this.onLoad}" src="${this._displayedUrl}" />`
             : ''}
         </div>
       </ha-card>

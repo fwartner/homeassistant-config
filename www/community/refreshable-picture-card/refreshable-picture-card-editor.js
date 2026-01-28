@@ -8,6 +8,7 @@ import { fireEvent } from "./utils.js";
 const SCHEMA = [
   { name: "title", selector: { text: {} } },
   { name: "url", selector: { text: {} } },
+  { name: "fallback_image", selector: { text: {} } },
   {
     name: "",
     type: "grid",
@@ -56,6 +57,16 @@ class ResfeshablePictureCardEditor extends LitElement {
         .computeLabel=${this._computeLabelCallback}
         @value-changed=${this._valueChanged}
       />
+      <!-- Explicit fallback_image field: some HA versions or themes may hide custom
+           ha-form fields — render a dedicated input so users always can set it. -->
+      <div style="margin-top:12px;">
+        <label style="display:block; font-size:14px; margin-bottom:6px;">${this._computeLabelCallback({name: 'fallback_image'})}</label>
+        <ha-textfield
+          .value=${this._config.fallback_image || ''}
+          @input=${this._fallbackInput}
+          placeholder="/local/placeholder.jpg or https://..."
+        ></ha-textfield>
+      </div>
     `;
   }
 
@@ -65,6 +76,8 @@ class ResfeshablePictureCardEditor extends LitElement {
   _computeLabelCallback = (schema) => {
     const { name } = schema;
     switch (name) {
+      case "fallback_image":
+        return "Fallback image (optional)";
       case "noMargin":
         return "Remove margin";
       // return this.hass.localize(
@@ -81,6 +94,18 @@ class ResfeshablePictureCardEditor extends LitElement {
           "ui.panel.lovelace.editor.card.config.optional"
         )})`;
     }
+  };
+
+  _fallbackInput = (ev) => {
+    const value = ev.target.value;
+    const cfg = { ...(this._config || {}) };
+    if (value === '') {
+      // remove the key when empty
+      delete cfg.fallback_image;
+    } else {
+      cfg.fallback_image = value;
+    }
+    fireEvent(this, 'config-changed', { config: cfg });
   };
 
   static styles = css`

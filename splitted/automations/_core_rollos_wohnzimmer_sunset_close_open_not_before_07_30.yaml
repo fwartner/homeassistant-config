@@ -1,0 +1,58 @@
+actions:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - close
+    sequence:
+    - action: cover.close_cover
+      data: {}
+      target:
+        entity_id:
+        - cover.ikea_rollo_links_wohnzimmer
+        - cover.ikea_rollo_rechts_wohnzimmer
+        - cover.rollos_wohnzimmer_fensterbank
+  - conditions:
+    - condition: trigger
+      id:
+      - sunrise
+    - after: 07:30:00
+      condition: time
+    sequence:
+    - action: cover.open_cover
+      data: {}
+      target:
+        entity_id:
+        - cover.ikea_rollo_links_wohnzimmer
+        - cover.ikea_rollo_rechts_wohnzimmer
+        - cover.rollos_wohnzimmer_fensterbank
+  - conditions:
+    - condition: trigger
+      id:
+      - min_open
+    - after: sunrise
+      condition: sun
+    sequence:
+    - action: cover.open_cover
+      data: {}
+      target:
+        entity_id:
+        - cover.ikea_rollo_links_wohnzimmer
+        - cover.ikea_rollo_rechts_wohnzimmer
+        - cover.rollos_wohnzimmer_fensterbank
+alias: '[Core] Rollos Wohnzimmer: sunset close, open not before 07:30'
+conditions: []
+description: Closes all living room blinds at sunset. Opens at sunrise, but never
+  before 07:30 (fallback trigger at 07:30 if sunrise was earlier).
+id: '1769616020878'
+mode: single
+triggers:
+- event: sunset
+  id: close
+  trigger: sun
+- event: sunrise
+  id: sunrise
+  trigger: sun
+- at: 07:30:00
+  id: min_open
+  trigger: time

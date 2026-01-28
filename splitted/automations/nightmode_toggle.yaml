@@ -3,34 +3,71 @@ actions:
   - conditions:
     - condition: trigger
       id:
-      - sunOff
+      - night
+    - condition: time
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+    - condition: state
+      entity_id: input_boolean.guestmode
+      state: 'off'
+    - condition: not
+      conditions:
+      - condition: state
+        entity_id: input_select.presence_mode
+        state: Urlaub
     sequence:
     - action: input_boolean.turn_on
       data: {}
-      metadata: {}
       target:
         entity_id: input_boolean.night_mode
+    - action: input_select.select_option
+      data:
+        option: Nacht
+      target:
+        entity_id: input_select.presence_mode
   - conditions:
     - condition: trigger
       id:
-      - sunOn
+      - morning
+    - condition: time
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+    - condition: state
+      entity_id: input_boolean.guestmode
+      state: 'off'
+    - condition: not
+      conditions:
+      - condition: state
+        entity_id: input_select.presence_mode
+        state: Urlaub
     sequence:
     - action: input_boolean.turn_off
       data: {}
-      metadata: {}
       target:
         entity_id: input_boolean.night_mode
+    - action: input_select.select_option
+      data:
+        option: Zuhause
+      target:
+        entity_id: input_select.presence_mode
 alias: Nightmode Toggle
 conditions: []
-description: ''
+description: 'Weekday schedule: 07:30 day-mode, 22:00 night-mode. Does not override
+  Guestmode/Urlaub.'
 id: '1745356989733'
 mode: single
 triggers:
-- event: sunset
-  id: sunOff
-  offset: '1'
-  trigger: sun
-- event: sunrise
-  id: sunOn
-  offset: 0
-  trigger: sun
+- at: '22:00:00'
+  id: night
+  trigger: time
+- at: 07:30:00
+  id: morning
+  trigger: time

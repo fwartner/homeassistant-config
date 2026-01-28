@@ -1,4 +1,3 @@
----
 - id: '1669632865548'
   alias: 'Flur: Licht an wenn Tür auf'
   description: Automatisches Flur-Licht bei Türöffnung während Dunkelheit mit Auto-Aus
@@ -2754,56 +2753,67 @@
           device_id: 67feb204d2fca3cfd31e143defa33fe5
   mode: single
 - id: '1729247777105'
-  alias: Rollos Schlafzimmer
-  description: ''
+  alias: '[Core] Rollos Schlafzimmer: sunset close, open not before 07:30'
+  description: Closes bedroom blinds at sunset. Opens at sunrise, but never before
+    07:30 (fallback trigger at 07:30 if sunrise was earlier).
   triggers:
+  - trigger: sun
+    event: sunset
+    id: close
+  - trigger: sun
+    event: sunrise
+    id: sunrise
   - trigger: time
-    at: '21:00:00'
-    id: coverCloseSchlafzimmer
-  - trigger: time
-    at: 08:30:00
-    id: coverOpenSchlafzimmer
-  conditions:
-  - condition: and
-    conditions:
-    - condition: state
-      entity_id: input_boolean.wartung
-      state: 'off'
-    - condition: state
-      entity_id: input_boolean.manuell
-      state: 'off'
-    - condition: state
-      entity_id: input_boolean.rollos_schlafzimmer
-      state: 'off'
-    - condition: time
-      weekday:
-      - fri
-      - thu
-      - wed
-      - tue
-      - mon
+    at: 07:30:00
+    id: min_open
+  conditions: []
   actions:
   - choose:
     - conditions:
-      - condition: trigger
-        id:
-        - coverCloseSchlafzimmer
-      sequence:
-      - action: cover.close_cover
-        metadata: {}
-        data: {}
-        target:
-          entity_id: cover.rollos_schlafzimmer
+      - condition: state
+        entity_id: input_select.presence_mode
+        state: Urlaub
+      sequence: []
     - conditions:
       - condition: trigger
         id:
-        - coverOpenSchlafzimmer
+        - close
+      sequence:
+      - action: cover.close_cover
+        target:
+          entity_id:
+          - cover.ikea_rollo_links_schlafzimmer
+          - cover.ikea_rollo_rechts_schlafzimmer
+          - cover.rollos_schlafzimmer
+        data: {}
+    - conditions:
+      - condition: trigger
+        id:
+        - sunrise
+      - condition: time
+        after: 07:30:00
       sequence:
       - action: cover.open_cover
-        metadata: {}
-        data: {}
         target:
-          entity_id: cover.rollos_schlafzimmer
+          entity_id:
+          - cover.ikea_rollo_links_schlafzimmer
+          - cover.ikea_rollo_rechts_schlafzimmer
+          - cover.rollos_schlafzimmer
+        data: {}
+    - conditions:
+      - condition: trigger
+        id:
+        - min_open
+      - condition: sun
+        after: sunrise
+      sequence:
+      - action: cover.open_cover
+        target:
+          entity_id:
+          - cover.ikea_rollo_links_schlafzimmer
+          - cover.ikea_rollo_rechts_schlafzimmer
+          - cover.rollos_schlafzimmer
+        data: {}
   mode: single
 - id: '1729514153134'
   alias: Serverschrank Fan Controller
@@ -3194,39 +3204,76 @@
   mode: single
 - id: '1745356989733'
   alias: Nightmode Toggle
-  description: ''
+  description: 'Weekday schedule: 07:30 day-mode, 22:00 night-mode. Does not override
+    Guestmode/Urlaub.'
   triggers:
-  - trigger: sun
-    event: sunset
-    offset: '1'
-    id: sunOff
-  - trigger: sun
-    event: sunrise
-    offset: 0
-    id: sunOn
+  - trigger: time
+    at: '22:00:00'
+    id: night
+  - trigger: time
+    at: 07:30:00
+    id: morning
   conditions: []
   actions:
   - choose:
     - conditions:
       - condition: trigger
         id:
-        - sunOff
+        - night
+      - condition: time
+        weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+      - condition: state
+        entity_id: input_boolean.guestmode
+        state: 'off'
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: input_select.presence_mode
+          state: Urlaub
       sequence:
       - action: input_boolean.turn_on
-        metadata: {}
         data: {}
         target:
           entity_id: input_boolean.night_mode
+      - action: input_select.select_option
+        data:
+          option: Nacht
+        target:
+          entity_id: input_select.presence_mode
     - conditions:
       - condition: trigger
         id:
-        - sunOn
+        - morning
+      - condition: time
+        weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+      - condition: state
+        entity_id: input_boolean.guestmode
+        state: 'off'
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: input_select.presence_mode
+          state: Urlaub
       sequence:
       - action: input_boolean.turn_off
-        metadata: {}
         data: {}
         target:
           entity_id: input_boolean.night_mode
+      - action: input_select.select_option
+        data:
+          option: Zuhause
+        target:
+          entity_id: input_select.presence_mode
   mode: single
 - id: '1745357440159'
   alias: Nachtlicht Wohnzimmer
@@ -3596,3 +3643,101 @@
           data:
             type: tts
   mode: restart
+- id: '1769616020878'
+  alias: '[Core] Rollos Wohnzimmer: sunset close, open not before 07:30'
+  description: Closes all living room blinds at sunset. Opens at sunrise, but never
+    before 07:30 (fallback trigger at 07:30 if sunrise was earlier).
+  triggers:
+  - trigger: sun
+    event: sunset
+    id: close
+  - trigger: sun
+    event: sunrise
+    id: sunrise
+  - trigger: time
+    at: 07:30:00
+    id: min_open
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - close
+      sequence:
+      - action: cover.close_cover
+        data: {}
+        target:
+          entity_id:
+          - cover.ikea_rollo_links_wohnzimmer
+          - cover.ikea_rollo_rechts_wohnzimmer
+          - cover.rollos_wohnzimmer_fensterbank
+    - conditions:
+      - condition: trigger
+        id:
+        - sunrise
+      - condition: time
+        after: 07:30:00
+      sequence:
+      - action: cover.open_cover
+        data: {}
+        target:
+          entity_id:
+          - cover.ikea_rollo_links_wohnzimmer
+          - cover.ikea_rollo_rechts_wohnzimmer
+          - cover.rollos_wohnzimmer_fensterbank
+    - conditions:
+      - condition: trigger
+        id:
+        - min_open
+      - condition: sun
+        after: sunrise
+      sequence:
+      - action: cover.open_cover
+        data: {}
+        target:
+          entity_id:
+          - cover.ikea_rollo_links_wohnzimmer
+          - cover.ikea_rollo_rechts_wohnzimmer
+          - cover.rollos_wohnzimmer_fensterbank
+  mode: single
+- id: '1769616795004'
+  alias: '[Core] Adaptive Lighting: Sleep Mode Sync'
+  description: Toggles Adaptive Lighting sleep mode based on input_boolean.night_mode.
+  triggers:
+  - trigger: state
+    entity_id: input_boolean.night_mode
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.night_mode
+        state: 'on'
+      sequence:
+      - action: switch.turn_on
+        target:
+          entity_id:
+          - switch.adaptive_lighting_sleep_mode_adaptive_lighting_wohnzimmer
+          - switch.adaptive_lighting_sleep_mode_adaptive_lighting_schlafzimmer
+          - switch.adaptive_lighting_sleep_mode_adaptive_lighting_flur
+          - switch.adaptive_lighting_sleep_mode_adaptive_lighting_kuche
+          - switch.adaptive_lighting_sleep_mode_adaptive_lighting_buro
+          - switch.adaptive_lighting_sleep_mode_adaptive_lighting_badezimmer
+        data: {}
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.night_mode
+        state: 'off'
+      sequence:
+      - action: switch.turn_off
+        target:
+          entity_id:
+          - switch.adaptive_lighting_sleep_mode_adaptive_lighting_wohnzimmer
+          - switch.adaptive_lighting_sleep_mode_adaptive_lighting_schlafzimmer
+          - switch.adaptive_lighting_sleep_mode_adaptive_lighting_flur
+          - switch.adaptive_lighting_sleep_mode_adaptive_lighting_kuche
+          - switch.adaptive_lighting_sleep_mode_adaptive_lighting_buro
+          - switch.adaptive_lighting_sleep_mode_adaptive_lighting_badezimmer
+        data: {}
+  mode: single

@@ -3741,3 +3741,10 @@
           - switch.adaptive_lighting_sleep_mode_adaptive_lighting_badezimmer
         data: {}
   mode: single
+- id: '1769617739838'
+  alias: '[Core] Guest Mode Sync'
+  description: ''
+  triggers: []
+  conditions: []
+  actions: []
+  mode: single

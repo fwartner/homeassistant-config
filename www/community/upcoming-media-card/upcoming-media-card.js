@@ -2,24 +2,33 @@ class UpcomingMediaCard extends HTMLElement {
   constructor() {
     super();
     this.uniqueId = 'umc-' + Math.random().toString(36).substr(2, 9);
-    this.adjustZIndex = this.adjustZIndex.bind(this);
     this._boundClickListener;
     this.deepLinkListeners = new Map();
     this.tooltipListeners = new Map();
   }
   connectedCallback() {
-    this.adjustZIndex();
-    window.addEventListener('scroll', this.adjustZIndex);
+    this.style.position = 'relative';
+    this.style.zIndex = '0';
   }
   disconnectedCallback() {
-    window.removeEventListener('scroll', this.adjustZIndex);
     this.cleanupDeepLinkListeners();
+    this.cleanupTooltipListeners();
   }
   cleanupDeepLinkListeners() {
     this.deepLinkListeners.forEach((listener, element) => {
       element.removeEventListener('click', listener);
     });
     this.deepLinkListeners.clear();
+  }
+  cleanupTooltipListeners() {
+    this.tooltipListeners.forEach((listeners, element) => {
+      element.removeEventListener('mouseenter', listeners.mouseenter);
+      element.removeEventListener('mouseleave', listeners.mouseleave);
+      element.removeEventListener('touchstart', listeners.touchstart);
+      element.removeEventListener('touchend', listeners.touchend);
+      if (listeners.cleanup) listeners.cleanup();
+    });
+    this.tooltipListeners.clear();
   }
   addDeepLinkListener(element, url, trailer) {
     if (this.config.disable_hyperlinks) return;
@@ -110,7 +119,7 @@ class UpcomingMediaCard extends HTMLElement {
       const iframe = document.createElement('iframe');
       iframe.style.width = '100%';
       iframe.style.height = '100%';
-      iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&controls=1&rel=0&fs=1&modestbranding=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}&playsinline=1`;
+      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&rel=0&fs=1&modestbranding=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}&playsinline=1`;
       iframe.referrerPolicy = 'strict-origin-when-cross-origin';
       iframe.frameBorder = '0';
       iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
@@ -199,16 +208,6 @@ class UpcomingMediaCard extends HTMLElement {
       this.deepLinkListeners.delete(element);
     }
   }
-  // Ensure HA's toolbar takes precedence over UMC's clickable elements if overlapped
-  adjustZIndex() {
-    clearTimeout(this.adjustZIndexTimer);
-    this.adjustZIndexTimer = setTimeout(() => {
-      const toolbar = document.querySelector('app-toolbar') || document.querySelector('.toolbar');
-      const cardTop = this.getBoundingClientRect().top;
-      const toolbarBottom = toolbar ? toolbar.getBoundingClientRect().bottom : 0;
-      this.style.zIndex = cardTop < toolbarBottom ? '1' : '';
-    }, 50);
-  }
 
   set hass(hass) {
     this.classList.add(this.uniqueId);
@@ -217,6 +216,7 @@ class UpcomingMediaCard extends HTMLElement {
       card.header = this.config.title;
       this.content = document.createElement("div");
       this.content.style.padding = "5px 10px";
+      this.content.style.position = "relative";
       card.appendChild(this.content);
       this.appendChild(card);
     }
@@ -431,6 +431,7 @@ class UpcomingMediaCard extends HTMLElement {
     const accent =
       this.config.accent_color || defaultClr("var(--primary-color)", "#000");
     const border = this.config.border_color || defaultClr("#fff", "#000");
+    const corner_radius = this.config.corner_radius;
     const shadows = conf =>
       this.config.all_shadows == undefined
         ? conf == undefined
@@ -465,13 +466,16 @@ class UpcomingMediaCard extends HTMLElement {
             position: relative;
             display: inline-block;
             overflow: hidden;
+            ${corner_radius ? 'border-radius:' + corner_radius + 'px;' : ''}
           }
           .${this.uniqueId} .${service}_${view} ha-icon {
-            top: -2px;
-            right: 3px;
+            top: -1%;
+            right: 2%;
             z-index: 2;
             width: 17%;
             height: 17%;
+            --mdc-icon-size: 100%;
+            transform: scale(0.9);
             position:absolute;
             color:${icon_color};
             filter: drop-shadow( 0px 0px 1px rgba(0,0,0,1));
@@ -491,15 +495,16 @@ class UpcomingMediaCard extends HTMLElement {
           }
           .${this.uniqueId} .${service}_container_${view} {
             position:relative;
-            outline: 5px solid #fff;
+            ${corner_radius ? '' : 'outline: 5px solid #fff;'}
             width:30%;
-            outline:5px solid ${border};
+            ${corner_radius ? 'border:5px solid ' + border + '; box-sizing:border-box;' : 'outline:5px solid ' + border + ';'}
             box-shadow:${boxshdw} rgba(0,0,0,.8);
             float:left;
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
             margin:5px 0 15px 5px;
+            ${corner_radius ? 'border-radius:' + corner_radius + 'px; overflow:hidden;' : ''}
           }
           .${this.uniqueId} .${service}_flag_${view} {
             z-index: 1;
@@ -556,14 +561,17 @@ class UpcomingMediaCard extends HTMLElement {
             background-size: var(--background-size);
             box-shadow:${boxshdw} rgba(0,0,0,.8);
             position:relative;
+            ${corner_radius ? 'border-radius:' + corner_radius + 'px;' : ''}
           }
           .${this.uniqueId} .${service}_${view} ha-icon {
-            top: 5px;
-            margin-right: -19px;
+            top: 4%;
+            margin-right: -4%;
             right:0;
             z-index: 2;
             width: 15%;
             height: 15%;
+            --mdc-icon-size: 100%;
+            transform: scale(0.9);
             position:absolute;
             color:${icon_color};
             filter: drop-shadow( 0px 0px 1px rgba(0,0,0,1));
@@ -581,6 +589,7 @@ class UpcomingMediaCard extends HTMLElement {
             background: ${this.config.enable_transparency ? `linear-gradient(to right, transparent 0%, ${accent} 47%, transparent 70%, ${accent} 100%)` : `linear-gradient(to right, ${accent} 47%, transparent 70%, ${accent} 100%)`};
             margin:auto;
             box-shadow:inset 0 0 0 3px ${border};
+            ${corner_radius ? 'border-radius:' + corner_radius + 'px;' : ''}
           }
           ${this.config.enable_transparency ? `
           .${this.uniqueId} .${service}_fan_${view}::before {
@@ -629,6 +638,7 @@ class UpcomingMediaCard extends HTMLElement {
             margin-right:3px;
             right: 0;
             fill:${flag_color};
+            ${corner_radius ? 'border-radius:' + Math.max(0, corner_radius - 3) + 'px; overflow:hidden;' : ''}
           }
           .${this.uniqueId} .${service}_flag_${view} svg{
             float:right;
@@ -670,10 +680,11 @@ class UpcomingMediaCard extends HTMLElement {
       }
       this.appendChild(style);
     }
+    this.cleanupTooltipListeners();
     this.content.innerHTML = "";
 
     // Truncate text...
-    function truncate(text, chars) {
+    function truncate(text, chars, isTitle) {
 
       function decodeEntities(input) {
         var textarea = document.createElement('textarea');
@@ -687,32 +698,55 @@ class UpcomingMediaCard extends HTMLElement {
       if (text.length > chars) {
         for (let i = chars; i > 0; i--) {
           if (text.charAt(i).match(/( |\s|:|-|;|"|'|,)/) && text.charAt(i - 1).match(/[^\s:;-;"',]/)) {
-            return `${text.substring(0, i)}...`;
+            if (isTitle) return text.substring(0, i);
+            return text.charAt(i) === ',' || text.charAt(i) === ' ' ? text.substring(0, i).replace(/\s+[-&]$/, '') : `${text.substring(0, i)}...`;
           }
         }
         // The cycle above had a really big single word, so we return it anyway
-        return `${text.substring(0, chars)}...`;
+        return isTitle ? text.substring(0, chars) : `${text.substring(0, chars)}...`;
       } else {
         return text;
       }
     }
 
     function format_date(input_date, format = "mm/dd/yy") {
-      let fd_day, fd_month, fd_year;
-      if (String(input_date).match(/[T]\d+[:]\d+[:]\d+[Z]/)) {
-        fd_day = new Date(input_date).toLocaleDateString([], { day: "2-digit" });
-        fd_month = new Date(input_date).toLocaleDateString([], { month: "2-digit" });
-        fd_year = new Date(input_date).toLocaleDateString([], { year: "2-digit" });
-      } else if (String(input_date).match(/\d+[-]\d+[-]\d+/)) {
-        input_date = input_date.split("-");
+      let fd_day, fd_month, fd_year, fd_year4;
+      format = String(format || "mm/dd/yy");
+      const s = String(input_date);
+
+      if ((format === "yyyy" || format === "(yyyy)") && s.match(/^\d{4}$/)) {
+        return format === "(yyyy)" ? "(" + s + ")" : s;
+      }
+
+      if (s.match(/[T]\d+[:]\d+[:]\d+[Z]/)) {
+        const dt = new Date(input_date);
+        fd_day = dt.toLocaleDateString([], { day: "2-digit" });
+        fd_month = dt.toLocaleDateString([], { month: "2-digit" });
+        fd_year = dt.toLocaleDateString([], { year: "2-digit" });
+        const y = dt.getFullYear();
+        fd_year4 = isNaN(y) ? "" : String(y);
+      } else if (s.match(/\d+[-]\d+[-]\d+/)) {
+        input_date = s.split("-");
         fd_month = input_date[1];
         fd_day = input_date[2];
         fd_year = input_date[0].slice(-2);
+        fd_year4 = input_date[0];
       } else {
         return "";
       }
-      const formatMap = { dd: fd_day, mm: fd_month, yy: fd_year };
-      return format.replace(/dd|mm|yy/g, matched => formatMap[matched]).replace(/(\d{2})(?=\d)/g, '$1/');
+
+      const dayInt = parseInt(fd_day, 10);
+      const monthInt = parseInt(fd_month, 10);
+      const fd_day1 = isNaN(dayInt) ? fd_day : String(dayInt);
+      const fd_month1 = isNaN(monthInt) ? fd_month : String(monthInt);
+
+      const formatMap = { dd: fd_day, d: fd_day1, mm: fd_month, m: fd_month1, yyyy: fd_year4, yy: fd_year };
+      const mark = "\u0000";
+
+      return format
+        .replace(/yyyy|yy|mm|m|dd|d/g, matched => (formatMap[matched] ?? matched) + mark)
+        .replace(new RegExp(mark + "(?=\\d)", "g"), "/")
+        .replace(new RegExp(mark, "g"), "");
     }
 
     // Hide card while we prepare to display the content
@@ -768,15 +802,15 @@ class UpcomingMediaCard extends HTMLElement {
       let char = [title_size, line1_size, line2_size, line3_size, line4_size];
 
       // Keyword map for replacement, return null if empty so we can hide empty sections.
-      let keywords = /\$title|\$episode|\$genres|\$number|\$rating|\$release|\$runtime|\$studio|\$price|\$day|\$date|\$time|\$aired|\$album|\$artist|\$channel|\$views|\$likes|\$live_status|\$empty/g;
+      let keywords = /\$title|\$episode|\$genres|\$number|\$rating|\$release|\$runtime|\$studio|\$price|\$day|\$date|\$time|\$aired|\$album|\$artist|\$channel|\$views|\$likes|\$live_status|\$tmdb_id|\$empty/g;
       const format = this.config.date || "mm/dd/yy";
       const releaseFormat = this.config.date || "mm/dd/yy";
       let keys = {
         $title: item("title") || null,
         $episode: item("episode") || null,
-        $genres: item("genres") || null,
+        $genres: (Array.isArray(item("genres")) ? item("genres").join(", ") : item("genres")) || null,
         $number: item("number") || null,
-        $rating: item("rating") || null,
+        $rating: item("rating") ? String(item("rating")).replace(/\d+\.\d+/, m => parseFloat(m).toFixed(1)) : null,
         $release: (item("release") || '').replace("$date", format_date(item("airdate"), releaseFormat)).replace("$year", format_date(item("airdate"), "yy")).replace(" $time", "&nbsp;&nbsp;$time") || null,
         $runtime: runtime || null,
         $studio: item("studio") || null,
@@ -791,6 +825,7 @@ class UpcomingMediaCard extends HTMLElement {
         $views: item("views") || null,
         $likes: item("likes") || null,
         $live_status: item("live_status") || null,
+        $tmdb_id: item("tmdb_id") || null,
         $empty: ''
       };
 
@@ -817,7 +852,7 @@ class UpcomingMediaCard extends HTMLElement {
             ? (y = "-2")
             : (y = "0");
         if (view == "fanart")
-          svgshift = i == 0 ? `x="0" dy="1em" ` : `x="0" dy="1.3em" `;
+          svgshift = i == 0 ? `x="0" dy="1.15em" ` : `x="0" dy="1.3em" `;
         else
           svgshift =
             i == 0 ? `x="15" y="${y}" dy="1.3em" ` : `x="15" dy="1.3em" `;
@@ -827,10 +862,15 @@ class UpcomingMediaCard extends HTMLElement {
           ? `<tspan class="${service}_line${i}_${view}" style="fill:transparent;text-shadow:0 0 transparent;" ${svgshift}>.</tspan>`
           : `<tspan class="${service}_line${i}_${view}" ${svgshift}>${truncate(
               text,
-              char[i]
-            )}</tspan>`;
+              char[i],
+              i === 0
+            ).replace(/,\s[^,]*\.\.\.$/g, '').replace(/★(?=\s*\d)/g, '<tspan fill="#BF9E59">★</tspan>')}</tspan>`;
       }
       let deepLink = item("deep_link");
+      // Replace keywords in custom url if configured
+      if (this.url) {
+        deepLink = this.url.replace(keywords, val => keys[val]);
+      }
 
       // Mouse & touch event listeners
       function addDeepLinkListener(element, link) {
@@ -905,11 +945,9 @@ class UpcomingMediaCard extends HTMLElement {
         clickableAreaDiv.style.zIndex = '5';
         containerDiv.style.overflow = 'hidden';
         containerDiv.appendChild(clickableAreaDiv);
-        if (!this.config.disable_hyperlinks && (this.url || deepLink || (this.config.enable_trailers && item("trailer")))) {
-          if (this.config.enable_trailers && item("trailer")) {
-            this.addDeepLinkListener(clickableAreaDiv, deepLink || this.url, item("trailer"));
-          } else if (this.url) {
-            this.addDeepLinkListener(clickableAreaDiv, this.url);
+        if (!this.config.disable_hyperlinks && (deepLink || (this.config.enable_trailers && item("trailer")))) {
+          if (this.config.enable_trailers && item("trailer") && !this.url) {
+            this.addDeepLinkListener(clickableAreaDiv, deepLink, item("trailer"));
           } else if (deepLink) {
             this.addDeepLinkListener(clickableAreaDiv, deepLink);
           }
@@ -962,7 +1000,6 @@ class UpcomingMediaCard extends HTMLElement {
             </div>
         `;
         fanartContainerDiv.innerHTML = fanartContainerInnerHTML;
-        let fanartDeepLink = item("deep_link");
         let clickableAreaDivFanart = document.createElement('div');
         // Prevent clicking fanart border
         clickableAreaDivFanart.style.position = 'absolute';
@@ -974,13 +1011,11 @@ class UpcomingMediaCard extends HTMLElement {
         clickableAreaDivFanart.style.zIndex = '5';
         fanartContainerDiv.style.overflow = 'hidden';
         fanartContainerDiv.appendChild(clickableAreaDivFanart);
-        if (!this.config.disable_hyperlinks && (this.url || fanartDeepLink || (this.config.enable_trailers && item("trailer")))) {
-          if (this.config.enable_trailers && item("trailer")) {
-            this.addDeepLinkListener(clickableAreaDivFanart, fanartDeepLink || this.url, item("trailer"));
-          } else if (this.url) {
-            this.addDeepLinkListener(clickableAreaDivFanart, this.url);
-          } else if (fanartDeepLink) {
-            this.addDeepLinkListener(clickableAreaDivFanart, fanartDeepLink);
+        if (!this.config.disable_hyperlinks && (deepLink || (this.config.enable_trailers && item("trailer")))) {
+          if (this.config.enable_trailers && item("trailer") && !this.url) {
+            this.addDeepLinkListener(clickableAreaDivFanart, deepLink, item("trailer"));
+          } else if (deepLink) {
+            this.addDeepLinkListener(clickableAreaDivFanart, deepLink);
           }
           clickableAreaDivFanart.style.cursor = 'pointer';
         } else {
@@ -1015,7 +1050,7 @@ class UpcomingMediaCard extends HTMLElement {
     }
     // Display card after content is ready
     this.content.style.visibility = '';
-    this.content.style.position = '';
+    this.content.style.position = 'relative';
     this.content.style.left = '';
 
     // START: Expand/Collapse feature
@@ -1024,9 +1059,6 @@ class UpcomingMediaCard extends HTMLElement {
       // Create a container div for the placeholder and expand control
       const controlContainer = document.createElement('div');
       controlContainer.classList.add('control-container');
-      controlContainer.style.position = 'absolute';
-      controlContainer.style.top = '0';
-      controlContainer.style.right = '0';
       controlContainer.style.display = 'flex';
       controlContainer.style.flexDirection = 'column';
       controlContainer.style.alignItems = 'flex-end';
@@ -1056,34 +1088,17 @@ class UpcomingMediaCard extends HTMLElement {
             placeholder.style.display = 'inline-block';
             placeholder.style.maxWidth = '100%';
             placeholderContainer.appendChild(placeholder);
-            const topOffsetPixels = 10;
-            function adjust() {
-              controlContainer.style.top = `${topOffsetPixels}px`;
-              controlContainer.style.height = '20px';
-            }
-            adjust();
-            window.addEventListener('resize', adjust);
+            controlContainer.style.marginTop = '10px';
             controlContainer.insertBefore(placeholderContainer, controlContainer.firstChild);
           }
-        } else {
-          controlContainer.style.height = 'auto';
         }
       }
-
-      const setExpandControlContainerHeight = () => {
-        if (controlContainer.querySelector('.expand-control')) {
-          controlContainer.style.height = '50px';
-        }
-      };
-
-      setExpandControlContainerHeight();
-      window.addEventListener('resize', setExpandControlContainerHeight);
 
       const expandControl = document.createElement('div');
       expandControl.classList.add('expand-control');
       expandControl.style = `
         width: 50px;
-        height: 50px;
+        height: 6px;
         cursor: pointer;
         z-index: 6;
         display: flex;
@@ -1091,28 +1106,9 @@ class UpcomingMediaCard extends HTMLElement {
         align-items: center;
         border-radius: 50%;
       `;
-      const setExpandControlPosition = () => {
-        let verticalOffset = 56;
-        if (!this.content.children[this.collapse - 1]) {
-          let placeholderExists = controlContainer.querySelector('.placeholder');
-          expandControl.style.position = 'absolute';
-          if (placeholderExists) {
-            expandControl.style.top = '41px';
-          }
-          expandControl.style.right = '1px';
-        } else {
-          let targetItem = this.content.children[this.collapse - 1];
-          let containerRect = this.content.getBoundingClientRect();
-          let targetRect = targetItem.getBoundingClientRect();
-          expandControl.style.position = 'absolute';
-          expandControl.style.top = `${targetRect.bottom - containerRect.top + verticalOffset}px`;
-          expandControl.style.right = '1px';
-        }
-      };
-      setTimeout(setExpandControlPosition, 0);
       expandControl.innerHTML = `
         <div style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%;">
-          <div class="rotate-icon" style="opacity: 1; transform: rotate(90deg); transition: transform 0.2s ease-in-out;">⟩</div>
+          <div class="rotate-icon" style="opacity: 1; transform: rotate(90deg); transition: transform 0.2s ease-in-out; margin-top: -2px;">⟩</div>
         </div>`;
 
       controlContainer.appendChild(expandControl);
@@ -1129,16 +1125,8 @@ class UpcomingMediaCard extends HTMLElement {
           });
         }, 60);
       });
-      if (this.resizeObserver) {
-        this.resizeObserver.disconnect();
-      }
-      this.resizeObserver = new ResizeObserver(() => {
-        setExpandControlPosition();
-      });
-      this.resizeObserver.observe(this);
     }
     // END: Expand/Collapse feature
-    this.adjustZIndex();
   }
 
     // Tooltip feature
@@ -1149,12 +1137,15 @@ class UpcomingMediaCard extends HTMLElement {
       let removalTimeoutId;
       const removeTooltip = () => {
         if (tooltip) {
-          tooltip.style.opacity = '0';
-          tooltip.addEventListener('transitionend', function() {
-            if (tooltip) {
-              document.body.removeChild(tooltip);
-              tooltip = null;
-            }
+          const el = tooltip;
+          tooltip = null;
+          el.style.opacity = '0';
+          const fallbackTimer = setTimeout(() => {
+            if (el.parentNode) el.parentNode.removeChild(el);
+          }, 600);
+          el.addEventListener('transitionend', function() {
+            clearTimeout(fallbackTimer);
+            if (el.parentNode) el.parentNode.removeChild(el);
           }, { once: true });
         }
       };
@@ -1251,11 +1242,19 @@ class UpcomingMediaCard extends HTMLElement {
           removalTimeoutId = setTimeout(removeTooltip, 300);
         },
       };
+      const cleanup = () => {
+        clearTimeout(tooltipTimeoutId);
+        clearTimeout(removalTimeoutId);
+        if (tooltip) {
+          if (tooltip.parentNode) tooltip.parentNode.removeChild(tooltip);
+          tooltip = null;
+        }
+      };
       element.addEventListener('mouseenter', listeners.mouseenter);
       element.addEventListener('mouseleave', listeners.mouseleave);
       element.addEventListener('touchstart', listeners.touchstart);
       element.addEventListener('touchend', listeners.touchend);
-      this.tooltipListeners.set(element, listeners);
+      this.tooltipListeners.set(element, { ...listeners, cleanup });
     }
 
   setConfig(config) {
@@ -1269,6 +1268,7 @@ class UpcomingMediaCard extends HTMLElement {
     this.config.tooltip_delay = (config.tooltip_delay !== undefined && config.tooltip_delay !== null) ? Math.max(150, config.tooltip_delay) : 750;
     this.config.enable_trailers = config.enable_trailers !== undefined ? config.enable_trailers : false;
     this.config.disable_hyperlinks = config.disable_hyperlinks !== undefined ? config.disable_hyperlinks : false;
+    this.config.corner_radius = config.corner_radius !== undefined ? config.corner_radius : 0;
   }
 
   getCardSize() {
@@ -1276,7 +1276,7 @@ class UpcomingMediaCard extends HTMLElement {
     return view == "poster" ? this.cardSize * 5 : this.cardSize * 3;
   }
 }
-customElements.define("upcoming-media-card", UpcomingMediaCard);
+if (customElements.get("upcoming-media-card")) console.warn("upcoming-media-card already defined; skipping duplicate registration"); else customElements.define("upcoming-media-card", UpcomingMediaCard);
 
 // Configure the preview in the Lovelace card picker
 window.customCards = window.customCards || [];

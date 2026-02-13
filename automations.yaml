@@ -855,10 +855,10 @@
   initial_state: true
 - id: '1699291427370'
   alias: Speedtest
-  description: Alle 2 Minuten
+  description: Alle 30 Minuten (stabilitätsoptimiert)
   trigger:
   - platform: time_pattern
-    minutes: /2
+    minutes: /30
   condition:
   - condition: state
     entity_id: input_boolean.wartung
@@ -1597,9 +1597,9 @@
   mode: single
 - id: '1713209575955'
   alias: Run Chores
-  description: ''
+  description: Reduziert auf alle 30 Minuten zur Lastreduktion
   triggers:
-  - minutes: /10
+  - minutes: /30
     trigger: time_pattern
   conditions:
   - condition: state

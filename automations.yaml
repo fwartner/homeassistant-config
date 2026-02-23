@@ -130,11 +130,6 @@
               target:
                 entity_id: cover.rollos_schlafzimmer
               action: cover.close_cover
-        - action: remote.turn_on
-          metadata: {}
-          data: {}
-          target:
-            entity_id: remote.tv_schlafzimmer_dlna
   mode: single
 - id: '1674670778068'
   alias: Kaffeemaschine
@@ -150,7 +145,7 @@
   - condition: and
     conditions:
     - condition: state
-      entity_id: sensor.people_home
+      entity_id: sensor.persons
       state: '1'
     - condition: state
       entity_id: input_boolean.wartung
@@ -231,12 +226,12 @@
   trigger:
   - platform: numeric_state
     entity_id:
-    - sensor.balkon_temperature
+    - sensor.aqara_thermo_balkon_temperature
     above: 26
     id: tooHotBalconyOn
   - platform: numeric_state
     entity_id:
-    - sensor.balkon_temperature
+    - sensor.aqara_thermo_balkon_temperature
     id: tooHotBalconyOff
     below: 23
   condition:
@@ -483,7 +478,7 @@
     id: doorOpenOn
     trigger: state
   - entity_id:
-    - sensor.people_home
+    - sensor.persons
     to: '1'
     id: anyoneHomeOn
     trigger: state
@@ -651,7 +646,7 @@
   description: 'Aktionen beim Verlassen der Wohnung (Presence Detection)'
   triggers:
   - entity_id:
-    - sensor.people_home
+    - sensor.persons
     to: '0'
     id: anyoneHomeOff
     trigger: state
@@ -700,7 +695,7 @@
       entity_id: input_boolean.nicht_storen
       state: 'off'
     - condition: numeric_state
-      entity_id: sensor.people_home
+      entity_id: sensor.persons
       above: 0
     - condition: state
       entity_id: input_boolean.wartung
@@ -719,7 +714,7 @@
             id:
             - ringOn
           - condition: numeric_state
-            entity_id: sensor.people_home
+            entity_id: sensor.persons
             below: 1
         sequence:
         - data:
@@ -733,7 +728,7 @@
             id:
             - ringOn
           - condition: numeric_state
-            entity_id: sensor.people_home
+            entity_id: sensor.persons
             above: 0
         sequence:
         - parallel:
@@ -794,13 +789,7 @@
       - condition: trigger
         id:
         - timeOn
-      sequence:
-      - data: {}
-        target:
-          entity_id:
-          - switch.dashboard_flur_bildschirm
-          - switch.lenovo_tab_m10_bildschirm
-        action: switch.turn_on
+      sequence: []
   mode: single
 - id: '1693489965780'
   alias: Rollo Küche
@@ -897,11 +886,6 @@
         then:
         - service: script.duschen_vorbereiten
           data: {}
-        - service: climate.set_hvac_mode
-          data:
-            hvac_mode: 'off'
-          target:
-            entity_id: climate.heizung_badezimmer
 - id: '1701356043476'
   alias: Batterien
   description: 'Benachrichtigung wenn Gerätebatterien niedrig sind'
@@ -915,77 +899,6 @@
             mal nach.
           title: "\U0001FAAB Niedriger Batterie Status"
       day: 1
-- id: '1701773191392'
-  alias: Heizung Toggle
-  description: 'Schaltet die Heizung ein oder aus'
-  trigger:
-  - platform: state
-    entity_id:
-    - input_boolean.heizung_toggle
-    to: 'off'
-    id: alleHeizungenAus
-    from: 'on'
-  - platform: state
-    entity_id:
-    - input_boolean.heizung_toggle
-    to: 'on'
-    id: alleHeizungenAn
-    from: 'off'
-  condition:
-  - condition: state
-    entity_id: input_boolean.wartung
-    state: 'off'
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id:
-        - alleHeizungenAus
-      sequence:
-      - if:
-        - condition: or
-          conditions:
-          - condition: state
-            entity_id: climate.heizung_badezimmer
-            state: heat
-          - condition: state
-            entity_id: climate.heizung_wohnzimmer
-            state: heat
-          - condition: state
-            entity_id: climate.heizung_schlafzimmer
-            state: heat
-          - condition: state
-            entity_id: climate.heizung_buro
-            state: heat
-        then:
-        - service: climate.set_hvac_mode
-          data:
-            hvac_mode: 'off'
-          target:
-            device_id:
-            - 90ee15e301be363c6e674cb006400119
-            - afd3d4982d793f98224ce76064298198
-            - a71ccaedb801d2e7e89232f60fea1706
-            - 5106942131c1dfe9055cba838a26b47b
-        - service: notify.home_ai
-          data:
-            title: ℹ️ Alle Heizungen ausgeschaltet
-            message: Alle Heizungen wurden erfolgreich ausgeschaltet.
-    - conditions:
-      - condition: trigger
-        id:
-        - alleHeizungenAn
-      sequence:
-      - if: []
-        then:
-        - service: climate.set_hvac_mode
-          data:
-            hvac_mode: heat
-        - service: notify.home_ai
-          data:
-            title: ℹ️ Alle Heizungen eingeschaltet
-            message: Alle Heizungen wurden erfolgreich eingeschaltet.
-  mode: single
 - id: '1702645776967'
   alias: Bett Belegung
   description: 'Erkennt ob das Bett belegt ist und passt die Beleuchtung an'
@@ -1315,10 +1228,9 @@
         id:
         - washingMachineOffAfterTime
       sequence:
-      - type: turn_off
-        device_id: 3c45a70c459e2e66b166dca5891180c6
-        entity_id: eb4d372310f986822d024a05f2007c03
-        domain: switch
+      - action: switch.turn_off
+        target:
+          entity_id: switch.steckdose_waschmaschine
       - data:
           title: "\U0001F9FA Wäsche ist fertig"
           message: Die Wäsche ist fertig.
@@ -1328,10 +1240,9 @@
         id:
         - dishWasherOffAfterTime
       sequence:
-      - type: turn_off
-        device_id: 4a05cd597a16be48ba279a90d1ba5c18
-        entity_id: 6a36fb96527589eaed3672a9978a3393
-        domain: switch
+      - action: switch.turn_off
+        target:
+          entity_id: switch.steckdose_spuhlmaschine
       - data:
           title: "\U0001F37D️ Geschirr ist sauber"
           message: Spülmaschine ist fertig.
@@ -1375,7 +1286,7 @@
       entity_id: input_boolean.wartung
       state: 'off'
     - condition: numeric_state
-      entity_id: sensor.people_home
+      entity_id: sensor.persons
       above: 0.3
   actions:
   - choose:
@@ -1407,32 +1318,28 @@
         id:
         - bkwIOSWMAn
       sequence:
-      - type: turn_on
-        device_id: 3c45a70c459e2e66b166dca5891180c6
-        entity_id: eb4d372310f986822d024a05f2007c03
-        domain: switch
+      - action: switch.turn_on
+        target:
+          entity_id: switch.steckdose_waschmaschine
     - conditions:
       - condition: trigger
         id:
         - bkwIOSSMAn
       sequence:
-      - type: turn_on
-        device_id: 4a05cd597a16be48ba279a90d1ba5c18
-        entity_id: 6a36fb96527589eaed3672a9978a3393
-        domain: switch
+      - action: switch.turn_on
+        target:
+          entity_id: switch.steckdose_spuhlmaschine
     - conditions:
       - condition: trigger
         id:
         - bkwIOSALLESAn
       sequence:
-      - type: turn_on
-        device_id: 4a05cd597a16be48ba279a90d1ba5c18
-        entity_id: 6a36fb96527589eaed3672a9978a3393
-        domain: switch
-      - type: turn_on
-        device_id: 3c45a70c459e2e66b166dca5891180c6
-        entity_id: eb4d372310f986822d024a05f2007c03
-        domain: switch
+      - action: switch.turn_on
+        target:
+          entity_id: switch.steckdose_spuhlmaschine
+      - action: switch.turn_on
+        target:
+          entity_id: switch.steckdose_waschmaschine
   mode: single
 - id: '1712905210678'
   alias: Neues Gerät gefunden (Notification)
@@ -1462,14 +1369,14 @@
   - platform: state
     entity_id:
     - binary_sensor.aqara_contact_balkontur_contact
-    - binary_sensor.eve_contact_schlafzimmer_fenster_rechts
+
     id: windowOpenOn
     from: 'off'
     to: 'on'
   - platform: state
     entity_id:
     - binary_sensor.aqara_contact_balkontur_contact
-    - binary_sensor.eve_contact_schlafzimmer_fenster_rechts
+
     id: windowOpenOff
     from: 'on'
     to: 'off'
@@ -1500,7 +1407,7 @@
       entity_id: input_boolean.wartung
       state: 'off'
     - condition: numeric_state
-      entity_id: sensor.people_home
+      entity_id: sensor.persons
       below: 1
     - condition: state
       entity_id: input_boolean.nicht_storen
@@ -1845,7 +1752,7 @@
       - fri
       before: 09:00:00
     - condition: numeric_state
-      entity_id: sensor.people_home
+      entity_id: sensor.persons
       above: 0
     - condition: state
       entity_id: input_boolean.nachrichten
@@ -2000,7 +1907,7 @@
         - 8d09b3d2460d7b46609a435e034c3a59
         - 1e74380a353e5af91767df2483e266fe
         - 3d2124b0362a0b5d69b4f905ec8a36c5
-        - f1b7043426d3c3b2f515c4c34a06a317
+
         - 39b956e7b743a4c9e1809961d0342e07
         - 0659143f2b330e1bc3ac9e03bc644351
         - 171cf6e6bd2c823a2a91c916b23b3e25
@@ -2302,12 +2209,12 @@
   trigger:
   - platform: numeric_state
     entity_id:
-    - sensor.aqara_vibrate_katzenklo_angle_y
+    - sensor.aqara_vibrate_toilette_angle_y
     id: kloAn
     below: -5
   - platform: numeric_state
     entity_id:
-    - sensor.aqara_vibrate_katzenklo_angle_y
+    - sensor.aqara_vibrate_toilette_angle_y
     id: kloAus
     above: -5
   condition:
@@ -2396,7 +2303,7 @@
   - condition: and
     conditions:
     - condition: numeric_state
-      entity_id: sensor.people_home
+      entity_id: sensor.persons
       above: 0
     - condition: state
       entity_id: remote.appletv_wohnzimmer
@@ -2641,20 +2548,20 @@
     path: EPMatt/ikea_e2001_e2002.yaml
     input:
       integration: Zigbee2MQTT
-      controller_entity: sensor.ikea_stybar_silber_wohnzimmer_action
+      controller_entity: sensor.ikea_styrbar_silber_wohnzimmer_action
       action_button_left_short:
       - action: media_player.volume_down
         target:
           device_id:
           - 9d14dca47a5773d55c5f7f9d16c58476
-          - 769df0e4eb3df0faa38fb2311aa42623
+
         data: {}
       action_button_right_short:
       - action: media_player.volume_up
         target:
           device_id:
           - 9d14dca47a5773d55c5f7f9d16c58476
-          - 769df0e4eb3df0faa38fb2311aa42623
+
         data: {}
       action_button_left_long:
       - action: media_player.media_stop
@@ -2680,7 +2587,7 @@
       action_button_right_long:
       - action: mass.play_media
         target:
-          device_id: 769df0e4eb3df0faa38fb2311aa42623
+          entity_id: media_player.sonos_ray_wohnzimmer
         data:
           media_id: spotify://playlist/37i9dQZF1E37gOCuPARKby
           radio_mode: true
@@ -2694,7 +2601,7 @@
     path: EPMatt/ikea_e2001_e2002.yaml
     input:
       integration: Zigbee2MQTT
-      controller_entity: sensor.ikea_stybar_weiss_schlafzimmer_action
+      controller_entity: sensor.ikea_styrbar_weiss_schlafzimmer_action
 - id: '1728284886485'
   alias: Home Assistant Auto-update on a schedule base
   description: 'Automatische Home Assistant Updates nach Zeitplan'
@@ -2723,7 +2630,7 @@
   - condition: and
     conditions:
     - condition: numeric_state
-      entity_id: sensor.people_home
+      entity_id: sensor.persons
       above: 0
     - condition: state
       entity_id: input_boolean.movietime
@@ -3056,7 +2963,7 @@
       entity_id: input_boolean.rollos_wohnzimmer
       state: 'on'
     - condition: numeric_state
-      entity_id: sensor.people_home
+      entity_id: sensor.persons
       above: 0
   actions:
   - choose:
@@ -3179,7 +3086,7 @@
   triggers:
   - trigger: numeric_state
     entity_id:
-    - sensor.people_home
+    - sensor.persons
     for:
       hours: 0
       minutes: 10

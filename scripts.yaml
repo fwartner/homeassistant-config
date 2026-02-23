@@ -885,13 +885,13 @@ activate_alexa_actionable_notification:
   - action: input_text.set_value
     target:
       entity_id: input_text.alexa_actionable_notification
-    data_template:
+    data:
       value: '{"text": "{{ text }}", "event": "{{ event_id }}", "suppress_confirmation":
         "{{ suppress_confirmation }}"}'
   - action: media_player.play_media
     target:
       entity_id: '{{ alexa_device }}'
-    data_template:
+    data:
       media_content_type: skill
       media_content_id: amzn1.ask.skill.f1f4ad37-454a-446e-8c02-f7d4190312ab
   mode: single

@@ -1,0 +1,30 @@
+---
+nuki_lock_offline:
+  name: Nuki Türschloss offline
+  entity_id: binary_sensor.nuki_connected
+  state: "off"
+  can_acknowledge: false
+  repeat: 60
+  title: "Nuki Türschloss ist offline!"
+  message: "Das Nuki Türschloss ist nicht erreichbar. Bitte überprüfe die Verbindung."
+  notifiers:
+    - florian_all
+  data:
+    tag: "nuki-offline"
+    url: "https://ha.wartner.cloud/config/devices/dashboard"
+    ttl: 3600
+
+alarmo_offline:
+  name: Alarmanlage offline
+  entity_id: alarm_control_panel.alarmo
+  state: "unavailable"
+  can_acknowledge: false
+  repeat: 30
+  title: "Alarmanlage ist offline!"
+  message: "Die Alarmo-Alarmanlage ist nicht erreichbar. Bitte sofort überprüfen."
+  notifiers:
+    - florian_all
+  data:
+    tag: "alarmo-offline"
+    url: "https://ha.wartner.cloud/config/devices/dashboard"
+    ttl: 1800

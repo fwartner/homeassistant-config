@@ -44,7 +44,7 @@
   mode: single
 - id: '1670802573901'
   alias: Taster Schlafzimmer Actions
-  description: ''
+  description: 'Aktionen für den Aqara Taster im Schlafzimmer'
   use_blueprint:
     path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
     input:
@@ -227,7 +227,7 @@
   mode: single
 - id: '1686661353814'
   alias: Rollos runter wenn 26 Grad auf Balkon
-  description: ''
+  description: 'Schließt die Rollos automatisch wenn die Temperatur auf dem Balkon 26 Grad übersteigt'
   trigger:
   - platform: numeric_state
     entity_id:
@@ -469,7 +469,7 @@
   mode: single
 - id: '1691741828322'
   alias: Ankommen
-  description: ''
+  description: 'Aktionen beim Ankommen zu Hause (Presence Detection)'
   triggers:
   - entity_id:
     - binary_sensor.aqara_contact_wohnungstur_contact
@@ -550,7 +550,7 @@
   mode: single
 - id: '1691769668517'
   alias: 'Jonas: Zähneputzen Starten'
-  description: ''
+  description: 'Startet den Zähneputz-Timer für Jonas'
   use_blueprint:
     path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
     input:
@@ -573,7 +573,7 @@
           before: '20:00:00'
 - id: '1691786451171'
   alias: Nachtlicht Badezimmer
-  description: ''
+  description: 'Aktiviert das Nachtlicht im Badezimmer bei Bewegung nach Sonnenuntergang'
   triggers:
   - entity_id:
     - binary_sensor.mmwave_badezimmer
@@ -648,7 +648,7 @@
   mode: single
 - id: '1692084370120'
   alias: Verlassen
-  description: ''
+  description: 'Aktionen beim Verlassen der Wohnung (Presence Detection)'
   triggers:
   - entity_id:
     - sensor.people_home
@@ -686,7 +686,7 @@
   mode: single
 - id: '1692134639284'
   alias: Türklingel
-  description: ''
+  description: 'Benachrichtigung und Aktionen bei Betätigung der Türklingel'
   triggers:
   - entity_id:
     - binary_sensor.nuki_haustur_ring_action
@@ -779,7 +779,7 @@
   mode: single
 - id: '1692310400644'
   alias: Aufstehen
-  description: ''
+  description: 'Morgenroutine beim Aufstehen aktivieren'
   triggers:
   - at: 08:30:00
     id: timeOn
@@ -804,7 +804,7 @@
   mode: single
 - id: '1693489965780'
   alias: Rollo Küche
-  description: ''
+  description: 'Automatische Steuerung des Rollos in der Küche'
   trigger:
   - platform: sun
     event: sunset
@@ -841,7 +841,7 @@
   mode: single
 - id: a7c427e6-ce03-49eb-9a23-c5bbe7625aa4
   alias: Admin - Generate README.md
-  description: ''
+  description: 'Generiert automatisch die README.md Dokumentation'
   trigger:
   - platform: time
     at: 05:00:00
@@ -869,7 +869,7 @@
   mode: single
 - id: '1700299245684'
   alias: Taster Badezimmer
-  description: ''
+  description: 'Aktionen für den Aqara Taster im Badezimmer'
   use_blueprint:
     path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
     input:
@@ -884,7 +884,7 @@
           data: {}
 - id: '1700299340055'
   alias: Duschen vorbereiten
-  description: ''
+  description: 'Bereitet das Badezimmer zum Duschen vor (Heizung, Licht, Lüftung)'
   use_blueprint:
     path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
     input:
@@ -904,7 +904,7 @@
             entity_id: climate.heizung_badezimmer
 - id: '1701356043476'
   alias: Batterien
-  description: ''
+  description: 'Benachrichtigung wenn Gerätebatterien niedrig sind'
   use_blueprint:
     path: sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
     input:
@@ -917,7 +917,7 @@
       day: 1
 - id: '1701773191392'
   alias: Heizung Toggle
-  description: ''
+  description: 'Schaltet die Heizung ein oder aus'
   trigger:
   - platform: state
     entity_id:
@@ -988,7 +988,7 @@
   mode: single
 - id: '1702645776967'
   alias: Bett Belegung
-  description: ''
+  description: 'Erkennt ob das Bett belegt ist und passt die Beleuchtung an'
   trigger:
   - alias: Bett Rechts An
     platform: state
@@ -1087,7 +1087,7 @@
   mode: single
 - id: '1702827571661'
   alias: Türen
-  description: ''
+  description: 'Überwacht den Status der Türen und sendet Benachrichtigungen'
   triggers:
   - entity_id: person.florian_wartner
     zone: zone.home
@@ -1159,7 +1159,7 @@
   mode: single
 - id: '1707472829981'
   alias: Wohnungstür (NFC Tag)
-  description: ''
+  description: 'NFC Tag Aktion an der Wohnungstür'
   triggers:
   - tag_id: 80174732-d4b2-4c77-9e71-a05ff997192a
     trigger: tag
@@ -1176,7 +1176,7 @@
   mode: single
 - id: '1710602590906'
   alias: BKW Steckdose Probleme
-  description: ''
+  description: 'Benachrichtigung bei Problemen mit der Balkonkraftwerk-Steckdose'
   trigger:
   - type: problem
     platform: device
@@ -1245,7 +1245,7 @@
   mode: single
 - id: '1711970118796'
   alias: 'BKW: Inverter Power'
-  description: ''
+  description: 'Überwacht die Leistung des BKW Inverters'
   trigger:
   - platform: time
     at: sensor.sun_next_rising
@@ -1282,7 +1282,7 @@
   mode: single
 - id: '1711970540815'
   alias: Küche Steckdosen Power Management
-  description: ''
+  description: 'Intelligentes Power Management für die Küchensteckdosen'
   triggers:
   - entity_id:
     - sensor.steckdose_waschmaschine_energy_power
@@ -1339,7 +1339,7 @@
   mode: single
 - id: '1712829051695'
   alias: 'BKW: Maschinen laufen lassen Notification'
-  description: ''
+  description: 'Benachrichtigung zum Starten von Maschinen bei hoher Solarleistung'
   triggers:
   - entity_id:
     - sensor.shelly_bkw_power
@@ -1436,7 +1436,7 @@
   mode: single
 - id: '1712905210678'
   alias: Neues Gerät gefunden (Notification)
-  description: ''
+  description: 'Benachrichtigung wenn ein neues Gerät im Netzwerk gefunden wird'
   trigger:
   - platform: event
     event_type: device_tracker_new_device
@@ -1457,7 +1457,7 @@
   mode: single
 - id: '1713180340302'
   alias: Fenster und Türen Alert
-  description: ''
+  description: 'Warnung wenn Fenster oder Türen zu lange offen stehen'
   trigger:
   - platform: state
     entity_id:
@@ -1549,7 +1549,7 @@
   mode: single
 - id: '1713181284693'
   alias: Türen Offen Check
-  description: ''
+  description: 'Regelmäßige Überprüfung ob alle Türen geschlossen sind'
   triggers:
   - device_id: 67bc89621a1ceb0aced67ad07618a34b
     domain: hue
@@ -1613,7 +1613,7 @@
   mode: single
 - id: database_repack
   alias: System - Database Repack (Weekly)
-  description: ''
+  description: 'Wöchentliche Datenbankoptimierung für bessere Performance'
   trigger:
   - platform: time
     at: 02:00
@@ -1636,7 +1636,7 @@
   mode: single
 - id: '1713259440389'
   alias: Dashboard Küche
-  description: ''
+  description: 'Steuert das Dashboard-Display in der Küche'
   triggers:
   - entity_id:
     - binary_sensor.hlk_ld2410_7137_anwesenheit
@@ -1696,7 +1696,7 @@
   mode: single
 - id: '1713443188220'
   alias: '[Admin] Zigbee2MQTT Restart Nightly'
-  description: ''
+  description: 'Nächtlicher Neustart von Zigbee2MQTT für Stabilität'
   trigger:
   - platform: time
     at: 00:00:00
@@ -1711,7 +1711,7 @@
   mode: single
 - id: '1713448133488'
   alias: Schalter Flur Deckenlicht
-  description: ''
+  description: 'Steuert das Deckenlicht im Flur über den Wandschalter'
   trigger:
   - platform: device
     type: turned_on
@@ -1784,7 +1784,7 @@
   mode: single
 - id: '1713785658342'
   alias: ESPHome Auto-Update
-  description: ''
+  description: 'Automatische Updates für alle ESPHome Geräte'
   trigger:
   - platform: template
     value_template: '{{ integration_entities(''esphome'') | select(''match'', ''^update.'')
@@ -1821,7 +1821,7 @@
   mode: single
 - id: '1713867813081'
   alias: Starte WELT Livestream morgens
-  description: ''
+  description: 'Startet den WELT Nachrichtenstream am Morgen'
   triggers:
   - entity_id:
     - binary_sensor.presence_couch
@@ -1880,7 +1880,7 @@
   mode: single
 - id: '1713885934064'
   alias: Schalter Flur Nuki
-  description: ''
+  description: 'Steuert das Nuki Türschloss über den Wandschalter im Flur'
   trigger:
   - platform: device
     type: turned_on
@@ -1974,7 +1974,7 @@
   mode: single
 - id: '1713900000210'
   alias: Hue Sync Aus
-  description: ''
+  description: 'Schaltet die Hue Sync Box aus'
   trigger:
   - platform: device
     device_id: 67feb204d2fca3cfd31e143defa33fe5
@@ -2012,7 +2012,7 @@
   mode: single
 - id: '1713949268424'
   alias: 'Person: Reload'
-  description: ''
+  description: 'Lädt die Person-Integration neu'
   trigger:
   - platform: time_pattern
     minutes: /2
@@ -2026,7 +2026,7 @@
   mode: single
 - id: '1715333709045'
   alias: Zigbee2MQTT Offline Devices
-  description: ''
+  description: 'Benachrichtigung wenn Zigbee Geräte offline gehen'
   use_blueprint:
     path: Mr-Groch/offline-notification-for-sensors-with-last_seen.yaml
     input:
@@ -2036,7 +2036,7 @@
           message: '{{ sensors }}'
 - id: '1715335009101'
   alias: Update all AWTRIX
-  description: ''
+  description: 'Aktualisiert alle AWTRIX Displays'
   trigger:
   - platform: state
     entity_id:
@@ -2055,7 +2055,7 @@
   mode: single
 - id: '1715336573998'
   alias: 'AWTRIX: Wohnzimmer Instagram Follower'
-  description: ''
+  description: 'Zeigt Instagram Follower auf dem AWTRIX Display im Wohnzimmer'
   trigger:
   - platform: time_pattern
     minutes: /5
@@ -2075,7 +2075,7 @@
   mode: single
 - id: '1715341229281'
   alias: 'AWTRIX: Speedtest'
-  description: ''
+  description: 'Zeigt Speedtest-Ergebnisse auf dem AWTRIX Display'
   trigger:
   - platform: time_pattern
     minutes: /10
@@ -2101,7 +2101,7 @@
   mode: single
 - id: '1715341461660'
   alias: "Awtrix Spotify NowPlaying \U0001F3B9"
-  description: ''
+  description: 'Zeigt den aktuellen Spotify Track auf dem AWTRIX Display'
   trigger:
   - platform: state
     entity_id: media_player.spotify_florian
@@ -2143,7 +2143,7 @@
           topic: awtrix_wohnzimmer/custom/spotify
 - id: 90a76832-88a6-4da3-94f6-975154c297ff
   alias: Update OpenUV every 59 minutes during the daytime
-  description: ''
+  description: 'Aktualisiert UV-Index Daten tagsüber alle 59 Minuten'
   trigger:
   - minutes: 59
     platform: time_pattern
@@ -2165,7 +2165,7 @@
       - binary_sensor.openuv_schutzfenster
 - id: '1716151253982'
   alias: 'OpenUV: Reload'
-  description: ''
+  description: 'Lädt die OpenUV Integration neu'
   trigger:
   - platform: time_pattern
     hours: /12
@@ -2189,7 +2189,7 @@
   mode: single
 - id: '1716668889277'
   alias: Toggle Abend / Morgen
-  description: ''
+  description: 'Wechselt zwischen Abend- und Morgenmodus'
   trigger:
   - platform: time
     at: '20:00:00'
@@ -2224,7 +2224,7 @@
   mode: single
 - id: '1717147815711'
   alias: '[Zigbee2MQTT] Enable Z2M Join'
-  description: ''
+  description: 'Aktiviert den Zigbee2MQTT Pairing-Modus'
   trigger:
   - platform: state
     entity_id:
@@ -2244,7 +2244,7 @@
       entity_id: timer.z2m_permit_join
 - id: '1717147845731'
   alias: '[Zigbee2MQTT] Disable Z2M Join'
-  description: ''
+  description: 'Deaktiviert den Zigbee2MQTT Pairing-Modus'
   trigger:
   - platform: state
     entity_id:
@@ -2264,7 +2264,7 @@
       entity_id: timer.z2m_permit_join
 - id: '1718549422662'
   alias: '[NFC Tag] Staubsauger Wassertank'
-  description: ''
+  description: 'NFC Tag zum Zurücksetzen des Staubsauger-Wassertank-Timers'
   trigger:
   - platform: tag
     tag_id: staubsauger_wassertank
@@ -2281,7 +2281,7 @@
   mode: single
 - id: '1718562692032'
   alias: '[NFC Tag] Staubsauger Wassertank nachgefüllt'
-  description: ''
+  description: 'NFC Tag bestätigt Auffüllen des Staubsauger-Wassertanks'
   trigger:
   - platform: tag
     tag_id: staubsauger_wassertank
@@ -2298,7 +2298,7 @@
   mode: single
 - id: '1718565264616'
   alias: Klo Besetzt
-  description: ''
+  description: 'Erkennt ob die Toilette besetzt ist und steuert die Beleuchtung'
   trigger:
   - platform: numeric_state
     entity_id:
@@ -2344,7 +2344,7 @@
   mode: single
 - id: '1718614598599'
   alias: Process and Notify
-  description: ''
+  description: 'Verarbeitet Ereignisse und sendet Benachrichtigungen'
   triggers:
   - event_type: call_service
     event_data:
@@ -2386,7 +2386,7 @@
   mode: single
 - id: '1719174034446'
   alias: Wohnzimmer Licht wenn zu dunkel
-  description: ''
+  description: 'Schaltet das Wohnzimmerlicht ein wenn es zu dunkel wird'
   triggers:
   - entity_id:
     - sensor.mi_light_sensor_wohnzimmer_illuminance
@@ -2436,7 +2436,7 @@
   mode: single
 - id: '1719501882967'
   alias: Restart Nightly
-  description: ''
+  description: 'Nächtlicher Neustart des Systems für Stabilität'
   trigger:
   - platform: time
     at: 04:00:00
@@ -2457,7 +2457,7 @@
   mode: single
 - id: '1720118766760'
   alias: Taster Wohnzimmer Laustärke Sonos Ray
-  description: ''
+  description: 'Steuert die Lautstärke des Sonos Ray über den Taster im Wohnzimmer'
   use_blueprint:
     path: EPMatt/ikea_e1766.yaml
     input:
@@ -2493,7 +2493,7 @@
       helper_double_press_delay: 500
 - id: '1726224334152'
   alias: Balkontür Rollo Öffnen
-  description: ''
+  description: 'Öffnet das Rollo an der Balkontür'
   trigger:
   - platform: state
     entity_id:
@@ -2511,7 +2511,7 @@
   mode: single
 - id: '1726392490651'
   alias: Luftreiniger nach Qualität
-  description: ''
+  description: 'Passt den Luftreiniger automatisch an die Luftqualität an'
   trigger:
   - platform: state
     entity_id:
@@ -2636,7 +2636,7 @@
   mode: single
 - id: '1727982759887'
   alias: IKEA Stybar Silber Wohnzimmer
-  description: ''
+  description: 'Aktionen für die IKEA STYRBAR Fernbedienung im Wohnzimmer'
   use_blueprint:
     path: EPMatt/ikea_e2001_e2002.yaml
     input:
@@ -2689,7 +2689,7 @@
       action_button_right_double: []
 - id: '1727983178880'
   alias: IKEA Stybar Weiss Schlafzimmer
-  description: ''
+  description: 'Aktionen für die IKEA STYRBAR Fernbedienung im Schlafzimmer'
   use_blueprint:
     path: EPMatt/ikea_e2001_e2002.yaml
     input:
@@ -2697,7 +2697,7 @@
       controller_entity: sensor.ikea_stybar_weiss_schlafzimmer_action
 - id: '1728284886485'
   alias: Home Assistant Auto-update on a schedule base
-  description: ''
+  description: 'Automatische Home Assistant Updates nach Zeitplan'
   use_blueprint:
     path: edwardtfn/auto_update_scheduled.yaml
     input:
@@ -2705,7 +2705,7 @@
       restart_type: core
 - id: '1728905439373'
   alias: Couch
-  description: ''
+  description: 'Aktionen wenn die Couch belegt wird (Beleuchtung und Medien)'
   triggers:
   - type: not_occupied
     device_id: 779a3e27762696ab42d6562bf3501934
@@ -2817,7 +2817,7 @@
   mode: single
 - id: '1729514153134'
   alias: Serverschrank Fan Controller
-  description: ''
+  description: 'Temperaturbasierte Lüftersteuerung für den Serverschrank'
   triggers:
   - trigger: numeric_state
     entity_id:
@@ -2874,7 +2874,7 @@
   mode: single
 - id: '1730139795585'
   alias: Bambu Lab A1 Image Reload
-  description: ''
+  description: 'Lädt das Kamerabild des Bambu Lab A1 3D-Druckers neu'
   triggers:
   - trigger: state
     entity_id:
@@ -2948,7 +2948,7 @@
   mode: queued
 - id: '1732381912698'
   alias: Bambulab AWTRIX 3 Printer Assistant
-  description: ''
+  description: 'Zeigt den 3D-Drucker Status auf dem AWTRIX Display'
   use_blueprint:
     path: blueforcer/flow_R0ZVOjYYorGl.yaml
     input:
@@ -2967,14 +2967,14 @@
       sensor_current_stage: sensor.bambu_lab_a1_aktueller_arbeitsschritt
 - id: '1739707464405'
   alias: Music Assistant - (nur) lokale Sprachsteuerung - Blueprint
-  description: ''
+  description: 'Lokale Sprachsteuerung für Music Assistant'
   use_blueprint:
     path: music-assistant/mass_assist_blueprint_de.yaml
     input:
       default_player_entity_id_input: media_player.sonos_wohnzimmer
 - id: '1739922705305'
   alias: Licht Büro An/Aus
-  description: ''
+  description: 'Schaltet das Bürolicht basierend auf Anwesenheit ein/aus'
   triggers:
   - type: motion
     device_id: 4c197550e4dbe59f91927b89f482e4d4
@@ -3023,7 +3023,7 @@
   mode: single
 - id: '1740091713939'
   alias: Rollos Wohnzimmer
-  description: ''
+  description: 'Automatische Steuerung der Rollos im Wohnzimmer'
   triggers:
   - trigger: numeric_state
     entity_id:
@@ -3083,7 +3083,7 @@
   mode: single
 - id: '1745140263730'
   alias: Disable AdGuard Filtering at Night
-  description: ''
+  description: 'Deaktiviert AdGuard DNS-Filterung nachts'
   triggers:
   - at: '23:00:00'
     trigger: time
@@ -3094,7 +3094,7 @@
     action: switch.turn_off
 - id: '1745140339650'
   alias: Enable AdGuard Filtering in the Morning
-  description: ''
+  description: 'Aktiviert AdGuard DNS-Filterung morgens'
   triggers:
   - at: 07:00:00
     trigger: time
@@ -3117,7 +3117,7 @@
     action: notify.persistent_notification
 - id: '1745231811625'
   alias: Universal Remote Rollos
-  description: ''
+  description: 'Universelle Fernbedienung für alle Rollos'
   triggers:
   - trigger: event
     event_type: event.universal_remote_rollos
@@ -3148,7 +3148,7 @@
   mode: single
 - id: '1745312564357'
   alias: Bad und Küche reinigen täglich
-  description: ''
+  description: 'Tägliche Reinigungsroutine für Bad und Küche mit dem Roborock'
   triggers:
   - trigger: sun
     event: sunset
@@ -3175,7 +3175,7 @@
   mode: single
 - id: '1745312911625'
   alias: Wohnung reinigen komplett
-  description: ''
+  description: 'Komplette Wohnungsreinigung mit dem Roborock S7 MaxV'
   triggers:
   - trigger: numeric_state
     entity_id:
@@ -3277,7 +3277,7 @@
   mode: single
 - id: '1745357440159'
   alias: Nachtlicht Wohnzimmer
-  description: ''
+  description: 'Aktiviert das Nachtlicht im Wohnzimmer bei Bewegung nach Sonnenuntergang'
   triggers:
   - trigger: state
     entity_id:
@@ -3325,7 +3325,7 @@
   mode: single
 - id: alexa_media_player_authentication_required
   alias: Alexa Media Player Authentication Required
-  description: ''
+  description: 'Benachrichtigung wenn Alexa erneute Authentifizierung benötigt'
   triggers:
   - event_type: alexa_media_relogin_required
     trigger: event
@@ -3342,7 +3342,7 @@
           uri: /lovelace/home
 - id: '1747227567252'
   alias: Alexa Timer Check
-  description: ''
+  description: 'Überprüft aktive Alexa Timer und zeigt sie an'
   triggers:
   - trigger: state
     entity_id:
@@ -3435,7 +3435,7 @@
   mode: single
 - id: '1747228226174'
   alias: Alexa Last Timer DELETE
-  description: ''
+  description: 'Löscht den letzten Alexa Timer'
   triggers:
   - trigger: state
     entity_id:
@@ -3524,7 +3524,7 @@
   mode: single
 - id: '1747657519437'
   alias: Luftfeuchtigkeit Badezimmer Notification
-  description: ''
+  description: 'Benachrichtigung bei zu hoher Luftfeuchtigkeit im Badezimmer'
   triggers:
   - trigger: numeric_state
     entity_id:
@@ -3543,7 +3543,7 @@
   mode: single
 - id: '1747658887532'
   alias: Nuki Auto-Unlock iPhone Battery Low
-  description: ''
+  description: 'Deaktiviert Nuki Auto-Unlock wenn der iPhone Akku niedrig ist'
   triggers:
   - trigger: state
     entity_id:
@@ -3743,7 +3743,7 @@
   mode: single
 - id: '1769617739838'
   alias: '[Core] Guest Mode Sync'
-  description: ''
+  description: 'Synchronisiert den Gastmodus mit allen relevanten Geräten und Diensten'
   triggers: []
   conditions: []
   actions: []

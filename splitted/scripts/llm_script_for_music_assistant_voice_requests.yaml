@@ -1,7 +1,0 @@
-llm_script_for_music_assistant_voice_requests:
-  alias: LLM Script for Music Assistant voice requests
-  description: ''
-  use_blueprint:
-    input:
-      default_player: media_player.sonos_wohnzimmer
-    path: music-assistant/llm_voice_script.yaml

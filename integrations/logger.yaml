@@ -2,4 +2,6 @@
 logger:
   default: warn
   logs:
-    homeassistant.components.device_tracker: debug
+    custom_components.hacs: warning
+    custom_components.browser_mod: warning
+    homeassistant.components.websocket_api: error

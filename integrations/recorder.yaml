@@ -9,9 +9,25 @@ recorder:
     domains:
       - camera
       - media_player
+      - update
+      - button
+      - stt
+      - tts
+      - wake_word
     entity_globs:
       - sensor.*_energy_*
       - sensor.*_power_*
+      - sensor.teddycloud_*
+      - switch.teddycloud_*
+      - number.teddycloud_*
+      - text.teddycloud_*
+      - select.teddycloud_*
+      - binary_sensor.teddycloud_*
+      - sensor.browsermod_*
+      - light.*_browsermod_*
+      - light.*_screen
+      - sensor.umami_*
+      - binary_sensor.updater_*
     entities:
       - sun.sun
       - sensor.last_boot

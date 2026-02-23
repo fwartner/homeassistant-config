@@ -1,0 +1,15 @@
+---
+hacs_update_available:
+  name: HACS Updates verfügbar
+  entity_id: binary_sensor.updater_hacs
+  state: "on"
+  can_acknowledge: true
+  repeat: 720
+  title: "HACS Updates verfügbar"
+  message: "Es sind Updates für HACS-Integrationen verfügbar. Bitte überprüfe die HACS-Seite."
+  notifiers:
+    - florian_all
+  data:
+    tag: "hacs-update-available"
+    url: "https://ha.wartner.cloud/hacs"
+    ttl: 43200

@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: ⤵️ Check out code from GitHub
-        uses: actions/checkout@v4.1.5
+        uses: actions/checkout@v6
       - name: 🚀 Run yamllint
         uses: frenck/action-yamllint@v1.5.0
         with:
@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: ⤵️ Check out code from GitHub
-        uses: actions/checkout@v4.1.5
+        uses: actions/checkout@v6
       - name: 🚀 Run Remark Lint
         uses: "docker://pipelinecomponents/remark-lint:latest"
         continue-on-error: true
@@ -40,7 +40,7 @@ jobs:
       current_version: ${{ steps.currentver.outputs.current_version }}
     steps:
       - name: Get config from GitHub
-        uses: actions/checkout@v4.1.5
+        uses: actions/checkout@v6
       - name: Get Installed Version from .HA_VERSION
         id: currentver
         run: |
@@ -65,7 +65,7 @@ jobs:
           ]
     steps:
       - name: ⤵️  Check out configuration from GitHub
-        uses: actions/checkout@v4.1.5
+        uses: actions/checkout@v6
       - name: ➕  Create dummy files
         run: |
           touch home-assistant.log
